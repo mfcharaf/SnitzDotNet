@@ -1,8 +1,0 @@
-C:\Dev\SnitzDotNet\SnitzCommon\bin\Release\SnitzCommon.dll
-C:\Dev\SnitzDotNet\SnitzCommon\bin\Release\SnitzConfig.dll
-C:\Dev\SnitzDotNet\SnitzCommon\obj\Release\Snitz.Common.csprojResolveAssemblyReference.cache
-C:\Dev\SnitzDotNet\SnitzCommon\obj\Release\SnitzCommon.dll
-C:\Dev\SnitzDotNet\Snitz.Common\bin\Release\SnitzCommon.dll
-C:\Dev\SnitzDotNet\Snitz.Common\bin\Release\SnitzConfig.dll
-C:\Dev\SnitzDotNet\Snitz.Common\obj\Release\Snitz.Common.csprojResolveAssemblyReference.cache
-C:\Dev\SnitzDotNet\Snitz.Common\obj\Release\SnitzCommon.dll

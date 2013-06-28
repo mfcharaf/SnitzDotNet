@@ -1,5 +1,0 @@
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Release\Snitz.ThirdParty.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Release\Snitz.ThirdParty.pdb
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Release\RealWorld.Grids.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\obj\Release\Snitz.ThirdParty.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\obj\Release\Snitz.ThirdParty.pdb

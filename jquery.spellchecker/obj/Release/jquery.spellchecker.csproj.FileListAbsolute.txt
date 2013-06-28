@@ -1,6 +1,0 @@
-C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\bin\Release\jquery.spellchecker.dll
-C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\obj\Release\ResolveAssemblyReference.cache
-C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\obj\Release\jquery.spellchecker.dll
-C:\Dev\SnitzDotNet\jquery.spellchecker\bin\Release\jquery.spellchecker.dll
-C:\Dev\SnitzDotNet\jquery.spellchecker\obj\Release\jquery.spellchecker.dll
-C:\Dev\SnitzDotNet\jquery.spellchecker\obj\Release\jquery.spellchecker.csprojResolveAssemblyReference.cache

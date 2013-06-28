@@ -1,8 +1,0 @@
-C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzData.dll.config
-C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzData.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzData.pdb
-C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\ResolveAssemblyReference.cache
-C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\SnitzData.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\SnitzData.pdb
-C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzConfig.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzConfig.pdb

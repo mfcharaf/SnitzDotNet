@@ -1,6 +1,0 @@
-C:\DEV\SnitzDAL\SnitzData\PMData\bin\Release\PMData.dll.config
-C:\DEV\SnitzDAL\SnitzData\PMData\bin\Release\PMData.dll
-C:\DEV\SnitzDAL\SnitzData\PMData\bin\Release\SnitzCommon.dll
-C:\DEV\SnitzDAL\SnitzData\PMData\bin\Release\SnitzConfig.dll
-C:\DEV\SnitzDAL\SnitzData\PMData\obj\Release\ResolveAssemblyReference.cache
-C:\DEV\SnitzDAL\SnitzData\PMData\obj\Release\PMData.dll

@@ -1,6 +1,0 @@
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Debug\Snitz.ThirdParty.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Debug\Snitz.ThirdParty.pdb
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\bin\Debug\RealWorld.Grids.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\obj\Debug\Snitz.ThirdParty.csprojResolveAssemblyReference.cache
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\obj\Debug\Snitz.ThirdParty.dll
-C:\Dev\SnitzDotNet\Snitz.ThirdParty\obj\Debug\Snitz.ThirdParty.pdb

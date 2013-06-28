@@ -1,9 +1,0 @@
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\SnitzBase.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\RealWorld.Grids.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\SnitzCommon.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\SnitzConfig.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\SnitzMembership.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\SnitzSQLData.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\bin\Release\Cryptos.dll
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\obj\Release\ResolveAssemblyReference.cache
-C:\DEV\SnitzDAL\SnitzData\SnitzBase\obj\Release\SnitzBase.dll
