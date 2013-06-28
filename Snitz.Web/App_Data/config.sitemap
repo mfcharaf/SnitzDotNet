@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap enableLocalization="true">
+  <siteMapNode>
+    <siteMapNode title="General Admin" description="Snitz forum config Options" >
+      <siteMapNode url="~\admin\default.aspx?action=system" title="Main Forum Configuration" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=features" title="Feature Configuration" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=time" title="Date/Time Configuration" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=email" title="Email Configuration" description=""/>
+    </siteMapNode>
+    <siteMapNode title="Forum Admin" description="Create/Edit Forums and Moderators">
+      <!--<siteMapNode url="~\admin\default.aspx?action=groups" title="Group Categories" description=""/>-->
+      <siteMapNode url="~\admin\default.aspx?action=counts" title="Update Totals" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=emoticons" title="manage Emoticons" description=""/>
+      <!--<siteMapNode url="~\admin\default.aspx?action=archive" title="Archive Topics" description=""/>-->
+      <!--<siteMapNode url="~\admin\default.aspx?action=unarchive" title="UnArchive Topics" description=""/>-->
+      <!--<siteMapNode url="~\admin\default.aspx?action=moderators" title="Moderator Configuration" description=""/>-->
+    </siteMapNode>
+    <siteMapNode title="Member Admin" description="">
+      <siteMapNode url="~\admin\default.aspx?action=validate" title="Pending Members" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=adduser" title="Add Member" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=manageusers" title="Manage Members" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=managesubscriptions" title="Manage Subscriptions" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=avatar" title="Avatars" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=profile" title="Manage Profile" description=""/>
+    </siteMapNode>
+    <siteMapNode title="Roles" description="">
+      <!--<siteMapNode url="~\admin\default.aspx?action=newrole" title="Add New Role" description=""/>-->
+      <siteMapNode url="~\admin\default.aspx?action=roles" title="Manage Roles" description=""/>
+    </siteMapNode>
+    <siteMapNode title="Word Filters" description="">
+      <siteMapNode url="~\admin\default.aspx?action=userfilter" title="UserName Filter" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=badwords" title="Bad Word Filter" description=""/>
+    </siteMapNode>
+    <siteMapNode title="Polls" description="">
+      <siteMapNode url="~\admin\default.aspx?action=pollconfig" title="Poll Configuration" description=""/>
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

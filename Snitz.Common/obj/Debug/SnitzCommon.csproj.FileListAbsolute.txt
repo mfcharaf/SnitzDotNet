@@ -1,0 +1,7 @@
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Debug\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Debug\SnitzCommon.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Debug\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Debug\SnitzConfig.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\obj\Debug\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\obj\Debug\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\obj\Debug\SnitzCommon.pdb

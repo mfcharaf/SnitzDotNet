@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 21, 27" name="SnitzSetup">
+  <DataContextMoniker Name="/SnitzSetupDataContext" />
+  <nestedChildShapes>
+    <classShape Id="2ef70a83-9e4b-4cf3-acd7-2266f016189c" absoluteBounds="0.75, 5.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_Application" />
+      <nestedChildShapes>
+        <elementListCompartment Id="78ed514d-ac9d-41ce-8838-45cd3e0fb725" absoluteBounds="0.765, 5.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7ab6bcfb-0103-40c3-99f5-d7ebfde88d27" absoluteBounds="6.75, 3.75, 2, 2.9247054036458326">
+      <DataClassMoniker Name="/SnitzSetupDataContext/ProfileData" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a539df4b-5364-42e7-af1a-dbb1617c07a9" absoluteBounds="6.765, 4.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="799f9d77-29c0-480c-9670-385c653c9594" absoluteBounds="3.5, 4, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_Path" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e1c8f0b6-8425-440b-a02d-57eb6ab17e8c" absoluteBounds="3.515, 4.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e5cbdaa9-5bbd-46fe-917d-a3c214c7a937" absoluteBounds="6.75, 7.75, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_Profile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="78f1b8ef-5756-4734-8116-3b97b81607ee" absoluteBounds="6.765, 8.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="252eb089-53e9-4ded-b944-bf8ee45ee9a9" absoluteBounds="8.75, 0.75, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_Role" />
+      <nestedChildShapes>
+        <elementListCompartment Id="db69717a-e518-4a15-bfea-7e883b48acd7" absoluteBounds="8.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3197f11a-49b6-4630-84db-b6d6db125bfc" absoluteBounds="0.75, 9.75, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_SchemaVersion" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7d77480e-fc0e-4e29-b51b-4e9def634ef4" absoluteBounds="0.765, 10.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5dd4534c-c443-402f-bb62-19dbaf33b280" absoluteBounds="3.5, 6.375, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e8f7bb78-48c5-49c3-9062-48d4b8b6684e" absoluteBounds="3.515, 6.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fa5c1c27-3ac5-447b-a71b-3dcee79a61e0" absoluteBounds="9.75, 3.75, 2, 1.193992513020834">
+      <DataClassMoniker Name="/SnitzSetupDataContext/aspnet_UsersInRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="836e59de-ee65-4aef-a318-eb30d4ac71aa" absoluteBounds="9.765, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6f45c5a0-cd7f-49c1-bc1a-e25df052b37c" absoluteBounds="9.75, 5.75, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_A_REPLY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b58c6d96-1a42-47f5-a0ab-1409bf804fb0" absoluteBounds="9.765, 6.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8932f436-b874-447a-a1f5-172ac841ba79" absoluteBounds="3.75, 10.75, 2, 4.8477197265624987">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_A_TOPIC" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ffaf201e-39e4-44a2-8710-00e872cd9f4d" absoluteBounds="3.765, 11.21, 1.9700000000000002, 4.2877197265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="070fb46a-65b0-492b-ac2d-eb684bfad9b0" absoluteBounds="6.75, 10.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_ALLOWED_MEMBER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5c559b81-268a-4e0c-851e-1b4be8c61c12" absoluteBounds="6.765, 11.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6240fb5c-90cc-494f-b854-b10423f4a3a3" absoluteBounds="9.75, 10.75, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_BADWORD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="02899fb9-df13-43e6-ab47-cbd806b62ebf" absoluteBounds="9.765, 11.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a32c3e3a-e6f1-4b9b-8f2d-c97cb852b3df" absoluteBounds="11.75, 0.75, 2, 1.9631982421875003">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_CATEGORY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="49966898-581c-43a5-9496-1537023e6933" absoluteBounds="11.765, 1.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f179ae8e-3308-4f96-983b-b6f7339cdebd" absoluteBounds="12.75, 3.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_EVENT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="49bdbafd-08c8-4cc4-93e6-b6bf87b742d2" absoluteBounds="12.765, 4.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2ef40201-daa1-4a7a-a706-8ff255614581" absoluteBounds="12.75, 6.75, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_FAQ_CAT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1551527a-97da-4e18-94dd-849ef1362bf6" absoluteBounds="12.765, 7.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="14d95d7b-66e5-40dc-8658-51c4a55b2fd7" absoluteBounds="12.75, 9.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_FAQ_INFO" />
+      <nestedChildShapes>
+        <elementListCompartment Id="02b93eb5-f6cb-4ec7-aaa5-aedbfd57c7ea" absoluteBounds="12.765, 10.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fa209787-53fd-4b38-9394-bb456471a068" absoluteBounds="12.75, 12.75, 2, 6.3861311848958344">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_FORUM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8100eac8-357f-4936-bffd-92cf322efbe7" absoluteBounds="12.765, 13.21, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="db87852f-b44f-440c-a32c-b22854b13e0e" absoluteBounds="6.75, 13.75, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_GROUP_NAME" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5fd4750c-7b65-4605-983c-81b3b29bbce7" absoluteBounds="6.765, 14.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9f49f0ab-f5c3-46db-b10e-bf66f6022868" absoluteBounds="14.75, 0.75, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_GROUP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b7b7ee7f-814b-4331-8f94-ee05c4ada062" absoluteBounds="14.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9ccb58f5-8ba8-439e-b688-ccfc2b522874" absoluteBounds="15.75, 3.75, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_MAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1c49803b-7f65-424b-b969-49c4e463a120" absoluteBounds="15.765, 4.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="eca4e666-9bcf-4d2b-beb7-df49235c0223" absoluteBounds="15.75, 6.75, 2, 11.001365559895831">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_MEMBER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="22e2e7f2-5ab6-4a7d-af57-4aeacf31d509" absoluteBounds="15.765, 7.21, 1.9700000000000002, 10.441365559895832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2a77884b-6350-4ab5-a7ce-a65eb5661227" absoluteBounds="0.75, 16.75, 2, 10.039858398437502">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_MEMBERS_PENDING" />
+      <nestedChildShapes>
+        <elementListCompartment Id="66b333e2-02ff-442d-94f1-2a61e5f3d70f" absoluteBounds="0.765, 17.21, 1.9700000000000002, 9.4798583984375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0036f2ed-577f-4b3d-8c7b-6c5282a9fed3" absoluteBounds="3.75, 16.75, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_MODERATOR" />
+      <nestedChildShapes>
+        <elementListCompartment Id="657d3224-d4ea-4416-bb66-6dbb4fc840c4" absoluteBounds="3.765, 17.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="aabe157b-c514-4f3e-9b4d-f9e46fa3bece" absoluteBounds="6.75, 16.75, 2, 1.1939925130208309">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_NAMEFILTER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7aa32eae-5ab2-4feb-9d6a-7153fccce525" absoluteBounds="6.765, 17.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0156668f-c596-4bba-b29a-22123b1b5935" absoluteBounds="18.75, 0.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_PM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="771e9866-0e9e-4038-be99-18de40961761" absoluteBounds="18.765, 1.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bf8c139d-a336-4ab3-9cd8-568e1812c09b" absoluteBounds="3.5, 0.875, 2, 1.5785953776041664">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_POLLANSWER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="56261b4f-8182-40c0-85bc-835544f1f3dd" absoluteBounds="3.515, 1.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="83f1c4c0-b6a5-44a4-9cfd-1297b7b28449" absoluteBounds="6.25, 1.125, 2, 1.1939925130208338">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_POLLRESPONSE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fc99f594-d122-45a9-89b8-ac682377e272" absoluteBounds="6.265, 1.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0a6e0c60-b3ac-4767-8631-f7ff5403a9b9" absoluteBounds="0.75, 1, 2, 1.3862939453125">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_POLL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5338983b-e3c3-4612-8bfd-711e249fd1aa" absoluteBounds="0.765, 1.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="aacc3e19-b6f5-4f09-9ee3-2ef88c9c2525" absoluteBounds="18.75, 4.75, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_REPLY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="96c50f26-8086-4cc1-b8bd-7c8908512320" absoluteBounds="18.765, 5.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a3a807bc-69a9-4151-980d-1c1fbdcee311" absoluteBounds="6.75, 18.75, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_ROLE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a7e49df7-91f6-4749-86f8-6f6ef2e16fd4" absoluteBounds="6.765, 19.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e7db3145-78c1-4378-bef4-ae0831d6ebef" absoluteBounds="18.75, 9.75, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_SUBSCRIPTION" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d8c0983a-3257-4397-a6f5-18711b9baf90" absoluteBounds="18.765, 10.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7c9fd1c8-db72-4c85-8876-56ea9796b8b5" absoluteBounds="18.75, 12.75, 2, 5.0400211588541666">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_TOPIC" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c57473d6-87a1-4e84-b330-140a3a4d0871" absoluteBounds="18.765, 13.21, 1.9700000000000002, 4.4800211588541661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="086bd27d-f88b-4743-8d4c-a7bec20911a5" absoluteBounds="15.75, 18.75, 2, 1.9631982421875023">
+      <DataClassMoniker Name="/SnitzSetupDataContext/FORUM_TOTAL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e5ffb118-5956-44ee-9034-7500e51832cb" absoluteBounds="15.765, 19.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(1.75 : 5.5); (1.75 : 4.7499995); (3.5 : 4.7499995)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SnitzSetupDataContext/aspnet_Application/aspnet_Application_aspnet_Path" />
+      <nodes>
+        <classShapeMoniker Id="2ef70a83-9e4b-4cf3-acd7-2266f016189c" />
+        <classShapeMoniker Id="799f9d77-29c0-480c-9670-385c653c9594" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 6.72679768880208); (3.5 : 6.72679768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SnitzSetupDataContext/aspnet_Application/aspnet_Application_aspnet_User" />
+      <nodes>
+        <classShapeMoniker Id="2ef70a83-9e4b-4cf3-acd7-2266f016189c" />
+        <classShapeMoniker Id="5dd4534c-c443-402f-bb62-19dbaf33b280" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 1.72199625651042); (6.25 : 1.72199625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SnitzSetupDataContext/FORUM_POLLANSWER/FORUM_POLLANSWER_FORUM_POLLRESPONSE" />
+      <nodes>
+        <classShapeMoniker Id="bf8c139d-a336-4ab3-9cd8-568e1812c09b" />
+        <classShapeMoniker Id="83f1c4c0-b6a5-44a4-9cfd-1297b7b28449" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 1.69314697265625); (3.5 : 1.69314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SnitzSetupDataContext/FORUM_POLL/FORUM_POLL_FORUM_POLLANSWER" />
+      <nodes>
+        <classShapeMoniker Id="0a6e0c60-b3ac-4767-8631-f7ff5403a9b9" />
+        <classShapeMoniker Id="bf8c139d-a336-4ab3-9cd8-568e1812c09b" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

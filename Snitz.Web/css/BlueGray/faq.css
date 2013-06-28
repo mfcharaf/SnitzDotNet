@@ -1,0 +1,68 @@
+﻿        h2
+        {
+            color: #FFFFFF;
+        }
+        h3
+        {
+            font-weight: bold;
+            font-size: 0.9em;
+            text-decoration: none;
+            line-height: 1em;
+            color: #0FA1B8;
+        }
+        #ctl00_CPM_pnlEdit label
+        {
+            display: inline-block;
+            text-align: left;
+            width: 120px;
+            float: left;
+        }
+        #wrap
+        {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        div#body
+        {
+            overflow: hidden;
+            height: 100%;
+        }
+        div#main
+        {
+            margin: 0px 0px 0px 300px;
+            padding: 10px;
+            border-left: 1px solid #0FA1B8;
+            border-collapse: collapse;
+        }
+        
+        #sidebar
+        {
+            float: left;
+            width: 300px !important;
+            padding: 0px;
+            border-right: 1px solid #0FA1B8;
+            border-collapse: collapse;
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .floatright{ float: right;}
+        #footer
+        {
+            clear: both;
+            padding: 5px 10px;
+        }
+        #footer p
+        {
+            margin: 0;
+        }
+        * html #footer
+        {
+            height: 1px;
+        }
+        .faqQuestion{background: #FFFFFF; padding: 4px;}
+        .category{padding: 3px;}
+        
+
+

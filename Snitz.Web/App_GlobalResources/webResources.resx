@@ -1,0 +1,957 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="btnYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="btnNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="btnReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="btnUpload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btnAddLink" xml:space="preserve">
+    <value>Add Link</value>
+  </data>
+  <data name="btnSaveLink" xml:space="preserve">
+    <value>Save Links</value>
+  </data>
+  <data name="lblLoggedOn" xml:space="preserve">
+    <value>&lt;b&gt;Welcome back {0}.&lt;/b&gt; {1}  You last logged in {2}</value>
+  </data>
+  <data name="lblThemes" xml:space="preserve">
+    <value>Choose a Theme</value>
+  </data>
+  <data name="lblLockedTopic" xml:space="preserve">
+    <value>Locked topic</value>
+  </data>
+  <data name="lblSure" xml:space="preserve">
+    <value>Are you sure ?</value>
+  </data>
+  <data name="lblPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="lblEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="lblEmailMessage" xml:space="preserve">
+    <value>Message to send</value>
+  </data>
+  <data name="lblOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="btnUpdate" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>  
+  <data name="lblLastPost" xml:space="preserve">
+    <value>Last Post</value>
+  </data>
+  <data name="lblPosts" xml:space="preserve">
+    <value>Posts</value>
+  </data>
+  <data name="lblTopics" xml:space="preserve">
+    <value>Topics</value>
+  </data>
+  <data name="lblProfile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="btnAgree" xml:space="preserve">
+    <value> Agree </value>
+  </data>
+  <data name="btnPreview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="btnSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="btnSubmit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="lblCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="lblCatForum" xml:space="preserve">
+    <value>Category/Forum</value>
+  </data>
+  <data name="lblForum" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="lblMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="lblPostAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="lblReplies" xml:space="preserve">
+    <value>Replies</value>
+  </data>
+  <data name="lblSubject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="lblHyperlink" xml:space="preserve">
+    <value>Hyperlink</value>
+  </data>
+  <data name="lblTopic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="lblStickyTopic" xml:space="preserve">
+    <value>Sticky Topic</value>
+  </data>
+  <data name="lblViewCount" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="ttlPolicyPage" xml:space="preserve">
+    <value>Forum Policy</value>
+  </data>
+  <data name="ttlPostMessage" xml:space="preserve">
+    <value>Post Form</value>
+  </data>
+  <data name="lblFindFrom" xml:space="preserve">
+    <value>Find posts from</value>
+  </data>
+  <data name="lblForumLocked" xml:space="preserve">
+    <value>Forum is Locked, No Posting Allowed.</value>
+  </data>
+  <data name="lblSearchForums" xml:space="preserve">
+    <value>Search Forums</value>
+  </data>
+  <data name="lblSearchIn" xml:space="preserve">
+    <value>Search in</value>
+  </data>
+  <data name="lblSearchKeywords" xml:space="preserve">
+    <value>Search term(s)</value>
+  </data>
+  <data name="lblSearchUser" xml:space="preserve">
+    <value>Search by Username</value>
+  </data>
+  <data name="lblSearchDate" xml:space="preserve">
+    <value>Search by Date</value>
+  </data>
+  <data name="lblShowAs" xml:space="preserve">
+    <value>Show results as</value>
+  </data>
+  <data name="lblSortResults" xml:space="preserve">
+    <value>Sort results by</value>
+  </data>
+  <data name="lblTopicLocked" xml:space="preserve">
+    <value>Topic is Locked, No Replies Allowed.</value>
+  </data>
+  <data name="lblUsername" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ttlDefaultPage" xml:space="preserve">
+    <value>{0} : Home Page</value>
+  </data>
+  <data name="ttlForumPage" xml:space="preserve">
+    <value>{0} : Forum : {1}</value>
+  </data>
+  <data name="ttlSearchPage" xml:space="preserve">
+    <value>Search Forums</value>
+  </data>
+  <data name="ttlTopicPage" xml:space="preserve">
+    <value>{0} : {1}</value>
+  </data>
+  <data name="btnClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="lblCountry" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="ErrNoMessage" xml:space="preserve">
+    <value>You can not post an empty message</value>
+  </data>
+  <data name="ErrNotAuth" xml:space="preserve">
+    <value>You are not authorised to complete this action.</value>
+  </data>
+  <data name="lblFirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="lblLastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="lblLock" xml:space="preserve">
+    <value>Lock Topic</value>
+  </data>
+  <data name="lblUnlock" xml:space="preserve">
+    <value>Un-Lock Record</value>
+  </data>
+  <data name="ttlPopupDel" xml:space="preserve">
+    <value>Delete Record</value>
+  </data>
+  <data name="ttlPopupEmail" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="ttlPopupMessenger" xml:space="preserve">
+    <value>Messenger Window</value>
+  </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="ErrUploadFileSize" xml:space="preserve">
+    <value>File is too large to upload</value>
+  </data>
+  <data name="ErrUploadFileType" xml:space="preserve">
+    <value>File is not an Image</value>
+  </data>
+  <data name="ErrUploadNoFile" xml:space="preserve">
+    <value>No File was uploaded</value>
+  </data>
+  <data name="lblBack" xml:space="preserve">
+    <value>Go back to Forum</value>
+  </data>
+  <data name="lblHost" xml:space="preserve">
+    <value>HostName</value>
+  </data>
+  <data name="lblIP" xml:space="preserve">
+    <value>IP Address of poster</value>
+  </data>
+  <data name="lblPreview" xml:space="preserve">
+    <value>Preview Message</value>
+  </data>
+  <data name="lblSendTopicMessage" xml:space="preserve">
+    <value>&lt;p&gt;I thought you might be interested in the following post :&lt;br /&gt;&lt;br /&gt;&lt;a href='{0}'&gt;{1}&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="lblStick" xml:space="preserve">
+    <value>Make Topic Sticky</value>
+  </data>
+  <data name="lblTimer" xml:space="preserve">
+    <value>This page was generated in {0} seconds</value>
+  </data>
+  <data name="lblUnstick" xml:space="preserve">
+    <value>Un-Stick Topic</value>
+  </data>
+  <data name="lblUpload" xml:space="preserve">
+    <value>Upload file to server</value>
+  </data>
+  <data name="lblUploadSuccess" xml:space="preserve">
+    <value>File uploaded successfully</value>
+  </data>
+  <data name="ttlPopupSendTopic" xml:space="preserve">
+    <value>Send Topic</value>
+  </data>
+  <data name="ttlPopupUpload" xml:space="preserve">
+    <value>Upload File</value>
+  </data>
+  <data name="ttlPopupViewIP" xml:space="preserve">
+    <value>View members IP</value>
+  </data>
+  <data name="ttlProfilePage" xml:space="preserve">
+    <value>Member Profile</value>
+  </data>
+  <data name="btnSpell" xml:space="preserve">
+    <value>Check Spelling</value>
+  </data>
+  <data name="ErrNotImplemented" xml:space="preserve">
+    <value>Currently Not Implemented</value>
+  </data>
+  <data name="lblDelete" xml:space="preserve">
+    <value>Delete {0}</value>
+  </data>
+  <data name="lblName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="lblQRSig" xml:space="preserve">
+    <value>Include Signature</value>
+  </data>
+  <data name="lblQuickReplyHeader" xml:space="preserve">
+    <value>Quick Reply</value>
+  </data>
+  <data name="lblReply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="lblSubscribeForum" xml:space="preserve">
+    <value>Subscribe to posts in this forum</value>
+  </data>
+  <data name="lblUnSubscribeForum" xml:space="preserve">
+    <value>Remove subscription for this forum</value>
+  </data>
+  <data name="lblSubscribeTopic" xml:space="preserve">
+    <value>Notify me when someone replies to this topic</value>
+  </data>
+  <data name="lblUnSubscribeTopic" xml:space="preserve">
+    <value>Remove notifications for this topic</value>
+  </data>
+  <data name="lblStatsArchive" xml:space="preserve">
+    <value>There are {0} archived posts in {1} archived topic(s)</value>
+  </data>
+  <data name="lblStatsLastVisit" xml:space="preserve">
+    <value>You last visited </value>
+  </data>
+  <data name="lblStatsMembers" xml:space="preserve">
+    <value>{0} of {1} &lt;a class='StatsLnks' href='/Content/Forums/members.aspx' title='View list of forum members'&gt;Members&lt;/a&gt; have made {2} posts, with the last post on {3} by: {4}</value>
+  </data>
+  <data name="lblStatsNewMember" xml:space="preserve">
+    <value>Please welcome our newest member: {0}</value>
+  </data>
+  <data name="lblStatsTopics" xml:space="preserve">
+    <value>There are currently {0} topics and there are {1} &lt;a class='StatsLnks' href='/Content/Forums/active.aspx' title='View active topics'&gt;active&lt;/a&gt; topic(s) since you last visited.</value>
+  </data>
+  <data name="lblMiniStatsTopics" xml:space="preserve">
+    <value>{0} &lt;a class='StatsLnks' href='/Content/Forums/active.aspx' title='View active topics'&gt;active&lt;/a&gt; topic(s) since your last visit.</value>
+  </data>
+  <data name="lblMiniStatsMembers" xml:space="preserve">
+    <value>Total Members: {0} &lt;br/&gt;Total Posts: {1} &lt;br/&gt;Last post {2} by: {3}</value>
+  </data>
+  <data name="lblMiniStatsNewMember" xml:space="preserve">
+    <value>Newest member: {0}</value>
+  </data>
+  <data name="lblUser" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="lblPostDate" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="lblMessengerAIM" xml:space="preserve">
+    <value>{0}'s AIM Options</value>
+  </data>
+  <data name="lblMessengerBuddyList" xml:space="preserve">
+    <value>Add to Buddy List</value>
+  </data>
+  <data name="lblMessengerChat" xml:space="preserve">
+    <value>Open Chat window</value>
+  </data>
+  <data name="lblMessengerMSN" xml:space="preserve">
+    <value>{0}'s MSN Messenger address:</value>
+  </data>
+  <data name="lblMessengerSend" xml:space="preserve">
+    <value>Send a message to Member</value>
+  </data>
+  <data name="litMessengerText" xml:space="preserve">
+    <value>&lt;b&gt;NOTE:&lt;/b&gt; You must have AOL Instant Messenger installed in order for these functions to work properly.</value>
+  </data>
+  <data name="btnLogin" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="btnNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="btnPrev" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="ErrLoginFailure" xml:space="preserve">
+    <value>Your login attempt was not successful. Please try again.</value>
+  </data>
+  <data name="ErrLoginRequired" xml:space="preserve">
+    <value>You must be logged in to access this page, please enter your username and password.&lt;br /&gt;&lt;br /&gt;</value>
+  </data>
+  <data name="ErrNoPassword" xml:space="preserve">
+    <value>Password is Required</value>
+  </data>
+  <data name="ErrNoUsername" xml:space="preserve">
+    <value>Username is Required</value>
+  </data>
+  <data name="lblAIM" xml:space="preserve">
+    <value>AIM Screen Name</value>
+  </data>
+  <data name="lblDelPost" xml:space="preserve">
+    <value>Delete Topic</value>
+  </data>
+  <data name="lblEditPost" xml:space="preserve">
+    <value>Edit Post</value>
+  </data>
+  <data name="lblEditTopic" xml:space="preserve">
+    <value>Edit Topic</value>
+  </data>
+  <data name="lblEditReply" xml:space="preserve">
+    <value>Edit Reply</value>
+  </data>
+  <data name="lblGotoTop" xml:space="preserve">
+    <value>Jump to top of page</value>
+  </data>
+  <data name="lblVisitHomePage" xml:space="preserve">
+    <value>Visit Members Home Page</value>
+  </data>
+  <data name="lblHomePage" xml:space="preserve">
+    <value>Home Page Url</value>
+  </data>
+  <data name="lblICQ" xml:space="preserve">
+    <value>ICQ Number</value>
+  </data>
+  <data name="lblLastPostJump" xml:space="preserve">
+    <value>Jump to Last Post</value>
+  </data>
+  <data name="lblLastVisit" xml:space="preserve">
+    <value>Last activity </value>
+  </data>
+  <data name="lblLockedForum" xml:space="preserve">
+    <value>Forum is Locked</value>
+  </data>
+  <data name="lblLoginTitle" xml:space="preserve">
+    <value>Member Login</value>
+  </data>
+  <data name="lblMemberSince" xml:space="preserve">
+    <value>Joined</value>
+  </data>
+  <data name="lblMSN" xml:space="preserve">
+    <value>MSN Handle</value>
+  </data>
+  <data name="lblOldPosts" xml:space="preserve">
+    <value>No new Posts</value>
+  </data>
+  <data name="lblRememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="lblReplyQuote" xml:space="preserve">
+    <value>Reply with Quote</value>
+  </data>
+  <data name="lblShowIP" xml:space="preserve">
+    <value>Show IP of Poster</value>
+  </data>
+  <data name="lblTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="lblYAHOO" xml:space="preserve">
+    <value>Yahoo! Handle</value>
+  </data>
+  <data name="ttlLoginPage" xml:space="preserve">
+    <value>Forum Login Page</value>
+  </data>
+  <data name="ttlMembersPage" xml:space="preserve">
+    <value>Member List</value>
+  </data>
+  <data name="ErrNoSearchString" xml:space="preserve">
+    <value>You must supply a value to search for</value>
+  </data>
+  <data name="ErrNoSubject" xml:space="preserve">
+    <value>You must enter a subject for your post</value>
+  </data>
+  <data name="lblIncludeSig" xml:space="preserve">
+    <value>Include your profile signature.</value>
+  </data>
+  <data name="lblJumpTo" xml:space="preserve">
+    <value>Jump to</value>
+  </data>
+  <data name="lblPostLockTopic" xml:space="preserve">
+    <value>Check here to lock the topic after this post.</value>
+  </data>
+  <data name="lblPostMakeSticky" xml:space="preserve">
+    <value>Check here to make this topic sticky.</value>
+  </data>
+  <data name="lblHotTopics" xml:space="preserve">
+    <value>Hot Topic, contains {0} or more replies</value>
+  </data>
+  <data name="lblNewPosts" xml:space="preserve">
+    <value>Contains New Posts</value>
+  </data>
+  <data name="ttlActivePage" xml:space="preserve">
+    <value>Active Topics since your last visit</value>
+  </data>
+  <data name="btnUploadAvatar" xml:space="preserve">
+    <value>Upload Avatar</value>
+  </data>
+  <data name="lblAvatar" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="lblBiog" xml:space="preserve">
+    <value>Biography</value>
+  </data>
+  <data name="lblCity" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="lblContactInfo" xml:space="preserve">
+    <value>Contact Info</value>
+  </data>
+  <data name="lblDOB" xml:space="preserve">
+    <value>Date of Birth</value>
+  </data>
+  <data name="lblSiteInfo" xml:space="preserve">
+    <value>Forum Settings</value>
+  </data>
+  <data name="lblExtraInfo" xml:space="preserve">
+    <value>Other Info</value>
+  </data>
+  <data name="lblFavLinks" xml:space="preserve">
+    <value>Favorite Links</value>
+  </data>
+  <data name="lblGender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="lblHobbies" xml:space="preserve">
+    <value>Interests</value>
+  </data>
+  <data name="lblLatestNews" xml:space="preserve">
+    <value>Latest News</value>
+  </data>
+  <data name="lblLinks" xml:space="preserve">
+    <value>Website Links</value>
+  </data>
+  <data name="lblMarStatus" xml:space="preserve">
+    <value>Marital Status</value>
+  </data>
+  <data name="lblOccupation" xml:space="preserve">
+    <value>Occupation</value>
+  </data>
+  <data name="lblQuote" xml:space="preserve">
+    <value>Favorite Quote</value>
+  </data>
+  <data name="lblReceiveEmail" xml:space="preserve">
+    <value>Receive Email</value>
+  </data>
+  <data name="lblSig" xml:space="preserve">
+    <value>Signature</value>
+  </data>
+  <data name="lblSkype" xml:space="preserve">
+    <value>Skype Name</value>
+  </data>
+  <data name="lblState" xml:space="preserve">
+    <value>County</value>
+  </data>
+  <data name="lblTimeOffset" xml:space="preserve">
+    <value>Offset from GMT</value>
+  </data>
+  <data name="lblTimeZone" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="lblDeleteUser" xml:space="preserve">
+    <value>Delete Member</value>
+  </data>
+  <data name="lblEditUser" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="lblLockUser" xml:space="preserve">
+    <value>Lock {0}'s Account</value>
+  </data>
+  <data name="lblUnlockUser" xml:space="preserve">
+    <value>Un-Lock {0}'s Account</value>
+  </data>
+  <data name="ErrNoTopics" xml:space="preserve">
+    <value>No Topics found</value>
+  </data>
+  <data name="ErrSearchFor" xml:space="preserve">
+    <value>You must enter some Keywords or a UserName, and Keywords must contain more than one character</value>
+  </data>
+  <data name="lblNew" xml:space="preserve">
+    <value>New Record</value>
+  </data>
+  <data name="ErrNoSearchResults" xml:space="preserve">
+    <value>&lt;center&gt;&lt;br /&gt;No Records were found that matched your search criteria&lt;br /&gt;&lt;/center&gt;</value>
+  </data>
+  <data name="ErrSearchNoForum" xml:space="preserve">
+    <value>You must select at least one Category or Forum</value>
+  </data>
+  <data name="lblAge" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="lblHideAge" xml:space="preserve">
+    <value>Hide Age from users</value>
+  </data>
+  <data name="lblContactMe" xml:space="preserve">
+    <value>Contact me via {0}</value>
+  </data>
+  <data name="lblForumInfo" xml:space="preserve">
+    <value>ForumInfo</value>
+  </data>
+  <data name="lblLastUpdated" xml:space="preserve">
+    <value>Profile Last Edited</value>
+  </data>
+  <data name="lblMemberID" xml:space="preserve">
+    <value>Member ID</value>
+  </data>
+  <data name="lblNewTopic" xml:space="preserve">
+    <value>New Topic</value>
+  </data>
+  <data name="lblOtherInfo" xml:space="preserve">
+    <value>Other Info</value>
+  </data>
+  <data name="lblPrintTopic" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="lblProfileTitle" xml:space="preserve">
+    <value>{0}'s Profile</value>
+  </data>
+  <data name="lblRecentTopics" xml:space="preserve">
+    <value>Recent Topics</value>
+  </data>
+  <data name="lblReplyToTopic" xml:space="preserve">
+    <value>Reply to Topic</value>
+  </data>
+  <data name="lblRoleTitle" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="lblSearchArchive" xml:space="preserve">
+    <value>Search archived posts</value>
+  </data>
+  <data name="lblSearchExactName" xml:space="preserve">
+    <value>Exact name</value>
+  </data>
+  <data name="lblSendTopic" xml:space="preserve">
+    <value>Send Topic</value>
+  </data>
+  <data name="errError" xml:space="preserve">
+    <value>Forum Error</value>
+  </data>
+  <data name="errFloodError" xml:space="preserve">
+    <value>Flood control is enabled on this forum.&lt;br /&gt;&lt;br /&gt;Please try again later.</value>
+  </data>
+  <data name="errForumView" xml:space="preserve">
+    <value>&lt;p&gt;You are not authorised to view this forum&lt;/p&gt;</value>
+  </data>
+  <data name="errInvalidForumId" xml:space="preserve">
+    <value>&lt;p&gt;The Forum ID was not valid&lt;/p&gt;</value>
+  </data>
+  <data name="errInvalidQueryString" xml:space="preserve">
+    <value>&lt;p&gt;QueryString was not Valid&lt;/p&gt;</value>
+  </data>
+  <data name="errInvalidTopicId" xml:space="preserve">
+    <value>&lt;p&gt;Topic ID does not exist&lt;/p&gt;</value>
+  </data>
+  <data name="errProfileEdit" xml:space="preserve">
+    <value>&lt;p&gt;Only Administrators can edit other members profiles&lt;/p&gt;</value>
+  </data>
+  <data name="errTopicView" xml:space="preserve">
+    <value>&lt;p&gt;You are not permitted to view that Topic&lt;/p&gt;</value>
+  </data>
+  <data name="lblSendTopicFrom" xml:space="preserve">
+    <value>&lt;p&gt;You received this message from {2}&lt;/p&gt;</value>
+  </data>
+  <data name="lblSendTopicHello" xml:space="preserve">
+    <value>Hello {0}</value>
+  </data>
+  <data name="lblSendTopicSubject" xml:space="preserve">
+    <value>Sent From {0}  by {1}</value>
+  </data>
+  <data name="errHtml" xml:space="preserve">
+    <value>HTML markup is not allowed.</value>
+  </data>
+  <data name="lblLockCat" xml:space="preserve">
+    <value>Lock Category</value>
+  </data>
+  <data name="lblUnLockCat" xml:space="preserve">
+    <value>Un-Lock Category</value>
+  </data>
+  <data name="lblLockForum" xml:space="preserve">
+    <value>Lock Forum</value>
+  </data>
+  <data name="lblUnLockForum" xml:space="preserve">
+    <value>Un-Lock Forum</value>
+  </data>
+  <data name="lblCancel" xml:space="preserve">
+    <value>Cancel Edit</value>
+  </data>
+  <data name="lblDelCategory" xml:space="preserve">
+    <value>Delete Category</value>
+  </data>
+  <data name="lblEditCategory" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="lblDelForum" xml:space="preserve">
+    <value>Delete Forum</value>
+  </data>
+  <data name="lblNewForum" xml:space="preserve">
+    <value>Add Forum</value>
+  </data>
+  <data name="lblEmptyForum" xml:space="preserve">
+    <value>Delete all posts in Forum</value>
+  </data>
+  <data name="lblEditForum" xml:space="preserve">
+    <value>Edit Forum properties</value>
+  </data>
+  <data name="lblUpdate" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="lblFullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="lblEditedBy" xml:space="preserve">
+    <value>Edited on {0} by {1}</value>
+  </data>
+  <data name="lblCUserStep1" xml:space="preserve">
+    <value>To complete your registration, please provide a user name for your membership and a valid email address, your password will be emailed to this address.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;If you have spam filterring, please make sure that you allow emails from&lt;/b&gt;</value>
+  </data>
+  <data name="lblArchive" xml:space="preserve">
+    <value>Topic can be archived</value>
+  </data>
+  <data name="lblNoArchive" xml:space="preserve">
+    <value>Do not archive topic</value>
+  </data>
+  <data name="btnEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="lblPage" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="lblChangePassword" xml:space="preserve">
+    <value>Change your password</value>
+  </data>
+  <data name="lblFor" xml:space="preserve">
+    <value>For</value>
+  </data>
+  <data name="lblSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="lblDay" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="lblPagerButton" xml:space="preserve">
+    <value>Page {0} of {1} pages</value>
+  </data>
+  <data name="lblPagerDropdown" xml:space="preserve">
+    <value>of {0} pages</value>
+  </data>
+  <data name="lblYear" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="cbxUseSigbyDefault" xml:space="preserve">
+    <value>Signature checkbox checked by default?</value>
+  </data>
+  <data name="cbxViewSiginPost" xml:space="preserve">
+    <value>View Signatures in Posts?</value>
+  </data>
+  <data name="lblForumTitle" xml:space="preserve">
+    <value>Snitz Forum</value>
+  </data>
+  <data name="TextDirection" xml:space="preserve">
+    <value>ltr</value>
+  </data>
+  <data name="lblStatsMembersOnline" xml:space="preserve">
+    <value>Members online: {0}</value>
+  </data>
+  <data name="lblStatistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="lblChangeEmail" xml:space="preserve">
+    <value>Change Email</value>
+  </data>
+  <data name="lblCharactersRemaining" xml:space="preserve">
+    <value>Characters Remaining (300 MAX)</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="lblGuests" xml:space="preserve">
+    <value>Guests</value>
+  </data>
+  <data name="lblHideEmail" xml:space="preserve">
+    <value>Hide email address from users</value>
+  </data>
+  <data name="lblMembers" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="lblNotShared" xml:space="preserve">
+    <value>Not Shared</value>
+  </data>
+  <data name="lblShare" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="lblAllowedFileTypes" xml:space="preserve">
+    <value>Allowed File Types</value>
+  </data>
+  <data name="lblMaxAdminUploadSize" xml:space="preserve">
+    <value>Admins have unlimited uploads</value>
+  </data>
+  <data name="lblMaxFileSize" xml:space="preserve">
+    <value>Maximum File Size</value>
+  </data>
+  <data name="lblMaxUserUploadFiles" xml:space="preserve">
+    <value>The maximum allowed file uploads is &lt;b&gt;{0}&lt;/b&gt;.</value>
+  </data>
+  <data name="lblMaxUserUploadSize" xml:space="preserve">
+    <value>The maximum allowed total file size uploads is &lt;b&gt;{0}&lt;/b&gt;.</value>
+  </data>
+  <data name="lblNonEnglishFileNames" xml:space="preserve">
+    <value>Non-english filenames might not work correctly</value>
+  </data>
+  <data name="ErrFileTypeNotAllowed" xml:space="preserve">
+    <value>This file type is not allowed.</value>
+  </data>
+  <data name="ErrMaxFilesExceeded" xml:space="preserve">
+    <value>You have reached the maximum number of files that you are allowed to upload.</value>
+  </data>
+  <data name="ErrMaxSpaceExceeded" xml:space="preserve">
+    <value>The uploading of this file will cause your space allocation to be exceeded.</value>
+  </data>
+  <data name="lblAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="lblViewProfile" xml:space="preserve">
+    <value>View {0}'s Profile</value>
+  </data>
+  <data name="Unmoderatedpost" xml:space="preserve">
+    <value>Unmoderated post</value>
+  </data>
+  <data name="OnHold" xml:space="preserve">
+    <value>OnHold</value>
+  </data>
+  <data name="TopicOnHold" xml:space="preserve">
+    <value>Topic is on hold</value>
+  </data>
+  <data name="UnmoderatedPosts" xml:space="preserve">
+    <value>Topic contains unmoderated posts</value>
+  </data>
+  <data name="lblMarkAllRead" xml:space="preserve">
+    <value>Mark all posts as read</value>
+  </data>
+  <data name="NoHomePage" xml:space="preserve">
+    <value>No Home Page specified</value>
+  </data>
+  <data name="lblRequireModeration" xml:space="preserve">
+    <value>!! Awaiting Moderation</value>
+  </data>
+  <data name="ForumIsLocked" xml:space="preserve">
+    <value> (Forum is locked, no posting allowed)</value>
+  </data>
+  <data name="TextDirectionWord" xml:space="preserve">
+    <value>LeftToRight</value>
+  </data>
+  <data name="lblEnglishLang" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="lblFrenchLang" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="lblGermanLang" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="lblItalianLang" xml:space="preserve">
+    <value>Italian</value>
+  </data>
+  <data name="lblIrishLang" xml:space="preserve">
+    <value>Irish</value>
+  </data>
+  <data name="lblJapaneseLang" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="lblPersianLang" xml:space="preserve">
+    <value>Persian(Farsi)</value>
+  </data>
+  <data name="lblNewUrl">
+    <value xml:space="preserve">Add Url link</value>
+  </data>
+  <data name="EmailValMessage">
+    <value xml:space="preserve">Your account has been created, but before you can login you must first verify your email address. A message has been sent to the email address you specified. Please check your email inbox and follow the instructions in that email to verify your account</value>
+  </data>
+</root>

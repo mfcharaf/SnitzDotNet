@@ -1,0 +1,6 @@
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\bin\Release\EventsCalendar.dll.config
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\bin\Release\EventsCalendar.dll
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\bin\Release\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\bin\Release\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\obj\Release\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\EventsCalendar\obj\Release\EventsCalendar.dll

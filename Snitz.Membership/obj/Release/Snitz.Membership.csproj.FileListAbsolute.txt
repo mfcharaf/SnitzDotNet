@@ -1,0 +1,6 @@
+C:\Dev\SnitzDotNet\SnitzSVN\bin\SnitzMembership.dll.config
+C:\Dev\SnitzDotNet\SnitzSVN\bin\SnitzMembership.dll
+C:\Dev\SnitzDotNet\SnitzMembership\obj\Release\Snitz.Membership.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\SnitzMembership\obj\Release\SnitzMembership.dll
+C:\Dev\SnitzDotNet\Snitz.Membership\obj\Release\Snitz.Membership.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\Snitz.Membership\obj\Release\SnitzMembership.dll

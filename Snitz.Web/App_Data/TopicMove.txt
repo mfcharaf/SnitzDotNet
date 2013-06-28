@@ -1,0 +1,13 @@
+Hello <%UserName%>,
+
+Your posting on <%ForumUrl%>
+Regarding the subject - <%TopicSubject%>.
+
+Has been moved to the '<%MovedTo%>' forum, You can view it at ...
+
+	<%URL%>
+
+
+Regards,
+
+Forum Administrator

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ForumTest" Class="PMDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="FORUM_PM" Member="PrivateMessages">
+    <Type Name="PrivateMessage">
+      <Column Name="M_ID" Member="Id" Storage="_M_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="M_SUBJECT" Member="Subject" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_FROM" Member="FromMemberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_TO" Member="ToMemberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_SENT" Member="SentDate" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_MESSAGE" Member="Message" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="M_PMCOUNT" Member="Count" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_READ" Member="Read" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_MAIL" Member="Mail" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_OUTBOX" Member="OutBox" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="PrivateMessage_FromMember" Member="FromMembers" ThisKey="FromMemberId" OtherKey="Id" Type="FromMember" Cardinality="One" />
+      <Association Name="PrivateMessage_ToMember" Member="ToMembers" ThisKey="ToMemberId" OtherKey="Id" Type="ToMember" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="ProfileData" Member="ProfileDatas">
+    <Type Name="ProfileData">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Skype" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HideAge" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="LinkTarget" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FavLinks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Gravatar" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="BookMarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PublicGallery" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PMEmail" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PMReceive" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="true" />
+      <Column Name="PMLayout" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="FromMember_ProfileData" Member="FromMember" ThisKey="UserId" OtherKey="Id" Type="FromMember" IsForeignKey="true" />
+      <Association Name="ToMember_ProfileData" Member="ToMember" ThisKey="UserId" OtherKey="Id" Type="ToMember" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS" Member="FromMembers">
+    <Type Name="FromMember">
+      <Column Name="MEMBER_ID" Member="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="M_NAME" Member="Name" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_EMAIL" Member="Email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_COUNTRY" Member="Country" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_POSTS" Member="Posts" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_TITLE" Member="Title" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_AVATAR" Member="Avatar" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="FromMember_ProfileData" Member="ProfileDatas" ThisKey="Id" OtherKey="UserId" Type="ProfileData" Cardinality="One" />
+      <Association Name="PrivateMessage_FromMember" Member="PrivateMessage" ThisKey="Id" OtherKey="FromMemberId" Type="PrivateMessage" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS" Member="ToMembers">
+    <Type Name="ToMember">
+      <Column Name="MEMBER_ID" Member="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="M_NAME" Member="Name" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_EMAIL" Member="Email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_COUNTRY" Member="Country" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_POSTS" Member="Posts" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_TITLE" Member="Title" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_AVATAR" Member="Avatar" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="ToMember_ProfileData" Member="ProfileDatas" ThisKey="Id" OtherKey="UserId" Type="ProfileData" Cardinality="One" />
+      <Association Name="PrivateMessage_ToMember" Member="PrivateMessage" ThisKey="Id" OtherKey="ToMemberId" Type="PrivateMessage" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS" Member="MemberSearch">
+    <Type Name="MemberSearch">
+      <Column Name="MEMBER_ID" Member="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="M_NAME" Member="Name" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_STATUS" Member="Status" Type="System.Int16" DbType="SmallInt" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+</Database>

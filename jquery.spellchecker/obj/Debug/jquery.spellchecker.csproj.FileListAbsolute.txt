@@ -1,0 +1,10 @@
+C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\bin\Debug\jquery.spellchecker.dll
+C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\bin\Debug\jquery.spellchecker.pdb
+C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\obj\Debug\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\obj\Debug\jquery.spellchecker.dll
+C:\DEV\SnitzDAL\SnitzData\jquery.spellchecker\obj\Debug\jquery.spellchecker.pdb
+C:\Dev\SnitzDotNet\jquery.spellchecker\bin\Debug\jquery.spellchecker.dll
+C:\Dev\SnitzDotNet\jquery.spellchecker\bin\Debug\jquery.spellchecker.pdb
+C:\Dev\SnitzDotNet\jquery.spellchecker\obj\Debug\jquery.spellchecker.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\jquery.spellchecker\obj\Debug\jquery.spellchecker.dll
+C:\Dev\SnitzDotNet\jquery.spellchecker\obj\Debug\jquery.spellchecker.pdb

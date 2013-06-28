@@ -1,0 +1,10 @@
+C:\Dev\SnitzDotNet\SnitzConfig\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\SnitzConfig\obj\Release\SnitzConfig.Resources.emoticons.resources
+C:\Dev\SnitzDotNet\SnitzConfig\obj\Release\Snitz.Config.csproj.GenerateResource.Cache
+C:\Dev\SnitzDotNet\SnitzConfig\obj\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\SnitzConfig\obj\Release\Snitz.Config.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\Snitz.Config\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\Snitz.Config\obj\Release\Snitz.Config.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\Snitz.Config\obj\Release\SnitzConfig.Resources.emoticons.resources
+C:\Dev\SnitzDotNet\Snitz.Config\obj\Release\Snitz.Config.csproj.GenerateResource.Cache
+C:\Dev\SnitzDotNet\Snitz.Config\obj\Release\SnitzConfig.dll

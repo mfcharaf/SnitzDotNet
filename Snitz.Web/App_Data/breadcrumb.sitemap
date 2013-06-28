@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap enableLocalization="true">
+  <siteMapNode url="~\default.aspx" title="$resources:SiteMapLocalizations,DefaultPageTitle,All Forums" description="$resources:SiteMapLocalizations,DefaultPageDescription">
+    <siteMapNode url="~\Content\Forums\forum.aspx" title="" description="" param="id">
+      <siteMapNode url="~\Content\Forums\topic.aspx" title="" description="" param="id" />
+      <siteMapNode url="~\Content\Forums\post.aspx" title="" description="" param="id" />
+      <siteMapNode url="~/Topic" title="Topic" description="" param="TopicId" />
+      <siteMapNode url="~\Content\Forums\search.aspx" title="" description=""/>
+    </siteMapNode>
+    <siteMapNode url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,Profile" description="$resources:SiteMapLocalizations,ProfilePageDescription"/>
+    <siteMapNode url="~\Content\Forums\active.aspx" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription"/>
+    <siteMapNode url="~\Content\Forums\members.aspx" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription"/>
+    <siteMapNode url="~\Content\Faq\faq.aspx" title="$resources:SiteMapLocalizations,FaqPageTitle,Frequently asked Questions" description="$resources:SiteMapLocalizations,FaqPageDescription"/>
+    <siteMapNode url="~\Account\register.aspx" title="$resources:SiteMapLocalizations,RegisterPageTitle,Registration" description="$resources:SiteMapLocalizations,RegisterPageDescription"/>
+    <siteMapNode url="~\admin\default.aspx" title="Admin Home">
+      <siteMapNode url="~\admin\features.aspx" title="Feature Configuration" description="" />
+      <siteMapNode url="~\admin\system.aspx" title="Main Forum Configuration" description="" />
+      <siteMapNode url="~\admin\datetime.aspx" title="Server Date/Time Configuration" description="" />
+      <siteMapNode url="~\admin\email.aspx" title="Email Configuration" description="" />
+      <siteMapNode url="~\admin\ranking.aspx" title="Rank Configuration" description="" />
+      <siteMapNode url="~\admin\badwords.aspx" title="Badword Filter Configuration" description="" />
+      <siteMapNode url="~\admin\namefilter.aspx" title="Username Filter Configuration" description="" />
+      <siteMapNode url="~\admin\moderators.aspx" title="Moderator/Roles Configuration" description="" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>
+

@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnResetResource1.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="btnSubmitResource1.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Label1Resource1.Text" xml:space="preserve">
+    <value>Allow User Galleries</value>
+  </data>
+  <data name="Label2Resource1.Text" xml:space="preserve">
+    <value>Show Public Galleries</value>
+  </data>
+  <data name="Label30Resource1.Text" xml:space="preserve">
+    <value>Emoticons</value>
+  </data>
+  <data name="Label3Resource1.Text" xml:space="preserve">
+    <value>Use CAPTCHA for login/Registration</value>
+  </data>
+  <data name="lblArchiveResource1.Text" xml:space="preserve">
+    <value>Archive Functions</value>
+  </data>
+  <data name="lblBadWordsResource1.Text" xml:space="preserve">
+    <value>Bad Word Filter</value>
+  </data>
+  <data name="lblEditedByResource1.Text" xml:space="preserve">
+    <value>Show Edited By on Date</value>
+  </data>
+  <data name="lblEmailModeResource1.Text" xml:space="preserve">
+    <value>ShowRanking</value>
+  </data>
+  <data name="lblFloodResource1.Text" xml:space="preserve">
+    <value>Flood Control</value>
+  </data>
+  <data name="lblForumCodeResource1.Text" xml:space="preserve">
+    <value>Allow Forum Code</value>
+  </data>
+  <data name="lblGroupCatResource1.Text" xml:space="preserve">
+    <value>Group Categories</value>
+  </data>
+  <data name="lblHotTopicsResource1.Text" xml:space="preserve">
+    <value>Hot Topics</value>
+  </data>
+  <data name="lblIPLoggingResource1.Text" xml:space="preserve">
+    <value>IP Logging</value>
+  </data>
+  <data name="lblMoveNotifyResource1.Text" xml:space="preserve">
+    <value>AutoEmail author when moving topics</value>
+  </data>
+  <data name="lblPageCountResource1.Text" xml:space="preserve">
+    <value>Items per page</value>
+  </data>
+  <data name="lblPostImagesResource1.Text" xml:space="preserve">
+    <value>Images in Posts</value>
+  </data>
+  <data name="lblPrevNextResource1.Text" xml:space="preserve">
+    <value>Show Prev / Next Topic</value>
+  </data>
+  <data name="lblPrinterResource1.Text" xml:space="preserve">
+    <value>Show Printer Friendly Link</value>
+  </data>
+  <data name="lblQuickReplyResource1.Text" xml:space="preserve">
+    <value>Show Quick Reply</value>
+  </data>
+  <data name="lblRestrictMoveResource1.Text" xml:space="preserve">
+    <value>Restrict Moderators to moving their own topics</value>
+  </data>
+  <data name="lblSearchPageCountResource1.Text" xml:space="preserve">
+    <value>Search results per page</value>
+  </data>
+  <data name="lblSendTopicResource1.Text" xml:space="preserve">
+    <value>Show Send Topic to a Friend Link</value>
+  </data>
+  <data name="lblShowModeratorsResource1.Text" xml:space="preserve">
+    <value>Show Moderators</value>
+  </data>
+  <data name="lblSignaturesResource1.Text" xml:space="preserve">
+    <value>Allow Signatures</value>
+  </data>
+  <data name="lblSmilieTableResource1.Text" xml:space="preserve">
+    <value>Show Smilies Table</value>
+  </data>
+  <data name="lblStatisticsResource1.Text" xml:space="preserve">
+    <value>Show Detailed Statistics</value>
+  </data>
+  <data name="lblSubscriptionResource1.Text" xml:space="preserve">
+    <value>Highest level of Subscription</value>
+  </data>
+  <data name="lblTimerResource1.Text" xml:space="preserve">
+    <value>Show Timer</value>
+  </data>
+  <data name="lblTopicModerationResource1.Text" xml:space="preserve">
+    <value>Allow Topic Moderation</value>
+  </data>
+  <data name="ListItemResource11.Text" xml:space="preserve">
+    <value>No subscriptions</value>
+  </data>
+  <data name="ListItemResource12.Text" xml:space="preserve">
+    <value>Subscribe to Whole Board</value>
+  </data>
+  <data name="ListItemResource13.Text" xml:space="preserve">
+    <value>Subscribe by Category</value>
+  </data>
+  <data name="ListItemResource14.Text" xml:space="preserve">
+    <value>Subscribe by Forum</value>
+  </data>
+  <data name="ListItemResource15.Text" xml:space="preserve">
+    <value>Subscribe by Topic</value>
+  </data>
+  <data name="ListItemResource5.Text" xml:space="preserve">
+    <value>30 seconds</value>
+  </data>
+  <data name="ListItemResource6.Text" xml:space="preserve">
+    <value>60 seconds</value>
+  </data>
+  <data name="ListItemResource60.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="ListItemResource61.Text" xml:space="preserve">
+    <value>Rank Only</value>
+  </data>
+  <data name="ListItemResource62.Text" xml:space="preserve">
+    <value>Stars Only</value>
+  </data>
+  <data name="ListItemResource63.Text" xml:space="preserve">
+    <value>Rank and Stars</value>
+  </data>
+  <data name="ListItemResource7.Text" xml:space="preserve">
+    <value>90 seconds</value>
+  </data>
+  <data name="ListItemResource8.Text" xml:space="preserve">
+    <value>120 seconds</value>
+  </data>
+  <data name="Panel2Resource1.GroupingText" xml:space="preserve">
+    <value>General Features</value>
+  </data>
+  <data name="Panel3Resource1.GroupingText" xml:space="preserve">
+    <value>Moderation Features</value>
+  </data>
+  <data name="Panel4Resource1.GroupingText" xml:space="preserve">
+    <value>Forum Features</value>
+  </data>
+  <data name="Panel5Resource1.GroupingText" xml:space="preserve">
+    <value>Topic Features</value>
+  </data>
+  <data name="Panel6Resource1.GroupingText" xml:space="preserve">
+    <value>Posting Features</value>
+  </data>
+  <data name="Panel7Resource1.GroupingText" xml:space="preserve">
+    <value>Misc Features</value>
+  </data>
+  <data name="Panel9Resource1.GroupingText" xml:space="preserve">
+    <value>Galleries</value>
+  </data>
+  <data name="ListItemResource1.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="ListItemResource2.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+</root>

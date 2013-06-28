@@ -1,0 +1,114 @@
+
+html 
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;	
+}
+body
+{
+    background-color: #666666;
+    background: url(bg-pattern.gif);
+    margin-top: 0px;
+    color: #4B4B4B;
+}
+
+/* Topic+Reply */
+
+#replyHeader{width:100%; text-align:right;border:1px solid #0FA1B8;background-color:#CCCCCC;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px;}
+.TopicDiv{text-align:left;width:auto;margin:10px;border:1px solid #0FA1B8;background-color:White;color:Navy;overflow:auto;padding:5px;}
+.topictitle	{ margin:8px;font-weight:bold; line-height:1.3em; }
+.usertitle	{ font-weight:bold; color:#0FA1B8; line-height:1.2em; }
+.MessageDIV{position:relative;
+    padding: 1px;
+    min-height:200px;
+    height:auto !important;
+	 height:185px;
+	 border-left:1px solid #0FA1B8;
+	 margin-left:187px;
+	 margin-right:0px;
+    }
+	 
+blockquote.quoteMessage {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   margin-left: 50px;
+   padding-left: 15px;
+   border-left: 2px solid #ccc;
+   font-size:smaller;
+   font-style: italic;
+   color:Silver;
+ } 
+ 
+ /*code window*/
+.codebox
+{
+    position: relative;
+    white-space:nowrap;
+    display: block;
+    margin: 5px 20px 5px 20px;
+    padding-top: 0px;
+    padding-bottom: 1px;
+    border: 1px solid #0FA1B8;
+    line-height: 1em;
+    font: 0.8em Monospace;
+    color: black;
+    overflow: hidden;
+    width: auto !important;
+    width: 700px;
+    min-height: 100px;
+    min-width: 500px;
+    max-height: 250px;
+    height: auto !important;
+    height: 100px;
+    background-color: #ffffff;
+}
+.codebox a{
+	color:#ffffff;
+}
+.stickytable div{max-width:600px;}
+.codehead {
+	margin: 0;
+	margin-bottom: 1px;
+	padding-left: 8px;
+	padding-bottom: 1px;
+	border-bottom: 1px solid  #808080;
+	font: 1.1em Verdana;
+	line-height: 1.2em;
+	font-weight: normal;
+	color: white;
+	background-color: #CCCCCC;
+	position:relative;
+}
+.scrollcode, pre.scrollcode
+{
+	position:relative;
+	display: block;
+	margin: 0px;
+	line-height: 1em;
+	color: black;
+	overflow: auto;
+	min-width:500px;
+    width:auto !important;
+	width: 700px;
+	min-height: 100px;
+	max-height:250px;
+    height:auto !important;
+	height: 100px;
+	background-color: #ffffff;
+	white-space:pre;
+}
+.scrollcode ol
+{
+    background: #E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;
+    overflow: auto;
+    margin: 0;
+    padding: 0.7em 0 0.7em 2.8em;
+    color: #fff;
+}
+.scrollcode ol li {
+	background:#fff;
+    padding-left:4px;
+    width:auto;
+} 
+.scrollcode ol code {color:#036;}
+			

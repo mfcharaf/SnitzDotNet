@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Snitznet" Class="SnitzSetupDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.\SQLExpress;Initial Catalog=snitzupgrade;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ForumConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="aspnet_Applications">
+    <Type Name="aspnet_Application">
+      <Column Name="ApplicationName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredApplicationName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Association Name="aspnet_Application_aspnet_Path" Member="aspnet_Paths" ThisKey="ApplicationId" OtherKey="ApplicationId" Type="aspnet_Path" />
+      <Association Name="aspnet_Application_aspnet_User" Member="aspnet_Users" ThisKey="ApplicationId" OtherKey="ApplicationId" Type="aspnet_User" />
+    </Type>
+  </Table>
+  <Table Name="ProfileData" Member="ProfileDatas">
+    <Type Name="ProfileData">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Skype" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HideAge" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="LinkTarget" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FavLinks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Gravatar" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="BookMarks" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PublicGallery" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PMEmail" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PMReceive" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PMLayout" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_Paths">
+    <Type Name="aspnet_Path">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="PathId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Path" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredPath" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Association Name="aspnet_Application_aspnet_Path" Member="aspnet_Application" ThisKey="ApplicationId" OtherKey="ApplicationId" Type="aspnet_Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_Profile" Member="aspnet_Profiles">
+    <Type Name="aspnet_Profile">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PropertyNames" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="PropertyValuesString" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="PropertyValuesBinary" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LastUpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_Roles">
+    <Type Name="aspnet_Role">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="RoleName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredRoleName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_SchemaVersions">
+    <Type Name="aspnet_SchemaVersion">
+      <Column Name="Feature" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompatibleSchemaVersion" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IsCurrentVersion" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_Users">
+    <Type Name="aspnet_User">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredUserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileAlias" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="IsAnonymous" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="aspnet_Application_aspnet_User" Member="aspnet_Application" ThisKey="ApplicationId" OtherKey="ApplicationId" Type="aspnet_Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="aspnet_UsersInRoles">
+    <Type Name="aspnet_UsersInRole">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_A_REPLY" Member="FORUM_A_REPLies">
+    <Type Name="FORUM_A_REPLY">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOPIC_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="REPLY_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="R_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="R_MAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="R_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="R_MESSAGE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="R_DATE" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="R_IP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="R_LAST_EDIT" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="R_LAST_EDITBY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="R_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_A_TOPICS" Member="FORUM_A_TOPICs">
+    <Type Name="FORUM_A_TOPIC">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOPIC_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="T_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_MAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_SUBJECT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="T_MESSAGE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="T_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_REPLIES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_UREPLIES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_VIEW_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_LAST_POST" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="T_DATE" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="T_LAST_POSTER" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_IP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="T_LAST_POST_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_LAST_POST_REPLY_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_LAST_EDIT" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="T_LAST_EDITBY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_STICKY" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_ALLOWED_MEMBERS" Member="FORUM_ALLOWED_MEMBERs">
+    <Type Name="FORUM_ALLOWED_MEMBER">
+      <Column Name="MEMBER_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_BADWORDS" Member="FORUM_BADWORDs">
+    <Type Name="FORUM_BADWORD">
+      <Column Name="B_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="B_BADWORD" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="B_REPLACE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_CATEGORY" Member="FORUM_CATEGORies">
+    <Type Name="FORUM_CATEGORY">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CAT_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="CAT_NAME" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="CAT_MODERATION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CAT_SUBSCRIPTION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CAT_ORDER" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_EVENT" Member="FORUM_EVENTs">
+    <Type Name="FORUM_EVENT">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Audience" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Author" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventDate" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_FAQ_CAT" Member="FORUM_FAQ_CATs">
+    <Type Name="FORUM_FAQ_CAT">
+      <Column Name="FC_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FC_DESCRIPTION" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FC_LANG_ID" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="FC_ORDER" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_FAQ_INFO" Member="FORUM_FAQ_INFOs">
+    <Type Name="FORUM_FAQ_INFO">
+      <Column Name="FI_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FI_ORDER" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FI_LINK" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FI_LINK_TITLE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FI_LINK_BODY" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FI_CAT" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FI_LANG_ID" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_FORUM" Member="FORUM_FORUMs">
+    <Type Name="FORUM_FORUM">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="F_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="F_MAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="F_SUBJECT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="F_URL" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="F_DESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="F_TOPICS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_LAST_POST" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="F_PASSWORD_NEW" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="F_PRIVATEFORUMS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_TYPE" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="F_IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="F_LAST_POST_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_A_TOPICS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_A_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_MODERATION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_SUBSCRIPTION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_ORDER" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_L_ARCHIVE" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="F_ARCHIVE_SCHED" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_L_DELETE" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="F_DELETE_SCHED" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_DEFAULTDAYS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_COUNT_M_POSTS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="F_LAST_POST_TOPIC_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_LAST_POST_REPLY_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_POLLS" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_GROUP_NAMES" Member="FORUM_GROUP_NAMEs">
+    <Type Name="FORUM_GROUP_NAME">
+      <Column Name="GROUP_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GROUP_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GROUP_DESCRIPTION" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="GROUP_ICON" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="GROUP_IMAGE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_GROUPS" Member="FORUM_GROUPs">
+    <Type Name="FORUM_GROUP">
+      <Column Name="GROUP_KEY" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GROUP_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GROUP_CATID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MAIL" Member="FORUM_MAILs">
+    <Type Name="FORUM_MAIL">
+      <Column Name="MAIL_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MAIL_DATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MAIL_TO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MAIL_FROM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MAIL_MESSAGE" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS" Member="FORUM_MEMBERs">
+    <Type Name="FORUM_MEMBER">
+      <Column Name="MEMBER_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="M_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_NAME" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" />
+      <Column Name="M_USERNAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_PASSWORD" Type="System.String" DbType="NVarChar(65)" CanBeNull="true" />
+      <Column Name="M_EMAIL" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_COUNTRY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_HOMEPAGE" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_SIG" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_DEFAULT_VIEW" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="M_LEVEL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_AIM" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_YAHOO" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_ICQ" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_POSTS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="M_DATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_LASTHEREDATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_LASTPOSTDATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_TITLE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_SUBSCRIPTION" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_HIDE_EMAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_RECEIVE_EMAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_LAST_IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_FIRSTNAME" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_LASTNAME" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_OCCUPATION" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_SEX" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_AGE" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="M_HOBBIES" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_LNEWS" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_QUOTE" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_BIO" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_MARSTATUS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_LINK1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_LINK2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_CITY" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_STATE" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_PHOTO_URL" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_KEY" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="M_NEWEMAIL" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_MSN" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_SHA256" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_PWKEY" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="M_VIEW_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_DOB" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="M_SIG_DEFAULT" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_VOTED" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_LASTUPDATED" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_AVATAR" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_THEME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_TIMEOFFSET" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="M_VALID" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS_PENDING" Member="FORUM_MEMBERS_PENDINGs">
+    <Type Name="FORUM_MEMBERS_PENDING">
+      <Column Name="MEMBER_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="M_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_NAME" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" />
+      <Column Name="M_USERNAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_PASSWORD" Type="System.String" DbType="NVarChar(65)" CanBeNull="true" />
+      <Column Name="M_EMAIL" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_COUNTRY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_HOMEPAGE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_SIG" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_VIEW_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_SIG_DEFAULT" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_DEFAULT_VIEW" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="M_LEVEL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_AIM" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_ICQ" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_MSN" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_YAHOO" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="M_POSTS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="M_DATE" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="M_LASTHEREDATE" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="M_LASTPOSTDATE" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="M_TITLE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_SUBSCRIPTION" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_HIDE_EMAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_RECEIVE_EMAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_LAST_IP" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="M_IP" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="M_FIRSTNAME" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_LASTNAME" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_OCCUPATION" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_SEX" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_AGE" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="M_DOB" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="M_HOBBIES" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_LNEWS" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_QUOTE" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_BIO" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_MARSTATUS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_LINK1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_LINK2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_CITY" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_STATE" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_PHOTO_URL" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="M_KEY" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="M_NEWEMAIL" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_PWKEY" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="M_APPROVE" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="M_SHA256" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MODERATOR" Member="FORUM_MODERATORs">
+    <Type Name="FORUM_MODERATOR">
+      <Column Name="MOD_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MEMBER_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MOD_TYPE" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_NAMEFILTER" Member="FORUM_NAMEFILTERs">
+    <Type Name="FORUM_NAMEFILTER">
+      <Column Name="N_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="N_NAME" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_PM" Member="FORUM_PMs">
+    <Type Name="FORUM_PM">
+      <Column Name="M_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="M_SUBJECT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="M_FROM" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_TO" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_SENT" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_MESSAGE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="M_PMCOUNT" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_READ" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="M_MAIL" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="M_OUTBOX" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_POLLANSWERS" Member="FORUM_POLLANSWERs">
+    <Type Name="FORUM_POLLANSWER">
+      <Column Name="PollAnswerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PollID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayText" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="SortOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FORUM_POLLANSWER_FORUM_POLLRESPONSE" Member="FORUM_POLLRESPONSEs" ThisKey="PollAnswerID" OtherKey="PollAnswerID" Type="FORUM_POLLRESPONSE" />
+      <Association Name="FORUM_POLL_FORUM_POLLANSWER" Member="FORUM_POLL" ThisKey="PollID" OtherKey="PollID" Type="FORUM_POLL" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_POLLRESPONSE" Member="FORUM_POLLRESPONSEs">
+    <Type Name="FORUM_POLLRESPONSE">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PollAnswerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="FORUM_POLLANSWER_FORUM_POLLRESPONSE" Member="FORUM_POLLANSWER" ThisKey="PollAnswerID" OtherKey="PollAnswerID" Type="FORUM_POLLANSWER" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_POLLS" Member="FORUM_POLLs">
+    <Type Name="FORUM_POLL">
+      <Column Name="PollID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DisplayText" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="TopicId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FORUM_POLL_FORUM_POLLANSWER" Member="FORUM_POLLANSWERs" ThisKey="PollID" OtherKey="PollID" Type="FORUM_POLLANSWER" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_REPLY" Member="FORUM_REPLies">
+    <Type Name="FORUM_REPLY">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TOPIC_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="REPLY_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="R_MAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="R_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="R_MESSAGE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="R_DATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="R_IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="R_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="R_LAST_EDIT" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="R_LAST_EDITBY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="R_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_ROLES" Member="FORUM_ROLEs">
+    <Type Name="FORUM_ROLE">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Forum_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Role_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_SUBSCRIPTIONS" Member="FORUM_SUBSCRIPTIONs">
+    <Type Name="FORUM_SUBSCRIPTION">
+      <Column Name="SUBSCRIPTION_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MEMBER_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOPIC_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_TOPICS" Member="FORUM_TOPICs">
+    <Type Name="FORUM_TOPIC">
+      <Column Name="CAT_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FORUM_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TOPIC_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="T_STATUS" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_MAIL" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_SUBJECT" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="T_MESSAGE" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="T_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_REPLIES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_VIEW_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_LAST_POST" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="T_DATE" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="T_LAST_POSTER" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_IP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="T_ARCHIVE_FLAG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_LAST_POST_AUTHOR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_STICKY" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_LAST_EDIT" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Column Name="T_LAST_EDITBY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_SIG" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="T_LAST_POST_REPLY_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_UREPLIES" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_TOTALS" Member="FORUM_TOTALs">
+    <Type Name="FORUM_TOTAL">
+      <Column Name="COUNT_ID" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="P_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="P_A_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="T_A_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="U_COUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

@@ -1,0 +1,131 @@
+body
+{
+    background-color:white;
+    font-family:Tahoma, Arial, Helvetica;
+    font-size:0.8em;
+    color:#191970;
+}
+
+h2{
+	font-size:Medium;
+}
+.ReplyDiv, .AltReplyDiv{border-top:1px dotted silver;}
+NormalText{font-size:0.8em;}
+
+a:link    {color:#00008B;text-decoration:underline;}
+a:visited {color:#0000FF;text-decoration:underline;}
+a:hover   {color:#FF0000;text-decoration:underline;}
+a:active  {color:#FF0000;text-decoration:underline;}
+
+.spnSearchHighlight {background-color:#FFFF00;}
+input.radio {background:#8199DA;color:#000000;}
+
+.pageTimer {font-size:0.7em;color:#ffa800;}
+.footer
+{
+    background-color: #F7B154;
+    color:#ff5f11;
+    font-size: 0.7em;
+}
+.smallText{
+	color:#191970;font-size:0.7em;
+}
+.quoteMessage
+{
+    color:#191970;font-size:0.7em;
+}
+
+.PageTitle{
+	font-size:1.3em;
+	font-weight:bold;
+	text-transform:capitalize;
+}
+
+.CategoryTitle{
+	font-weight:bold;
+	font-size:1.0em;
+}
+#replyHeader{display:none;}
+
+.spnMessageText hr
+{
+    color:silver;
+    height:1px;
+}
+.scrollcode
+{
+	display:inline-block;
+	margin: 0;
+	margin-left:20px;
+	margin-bottom: 5px;
+	padding-bottom: 3px;
+	padding-left:10px;
+	border : 1px solid #F7B154;
+	line-height: 1em;
+	font-size : 1em;
+	color: silver;
+    width:95%;
+    white-space:normal;
+    height:auto; overflow:auto;
+    background-color:White;
+}
+PRE{white-space:normal;}
+.scrollcode h3 {
+	margin: 0;
+	margin-bottom: 5px;
+	padding-left: 8px;
+	padding-bottom: 3px;
+	border-bottom: solid 1px #F7B154;
+	font-size : 1em;
+	line-height: 1.2em;
+	font-weight: normal;
+	color: #191970;
+	background-color:#F7B154;
+}
+
+
+.brImage{
+	padding:0 0 0 0;
+}
+.NoBorder,.NoBorder TD{
+	border-top:0px;
+	border-bottom:0px;
+	border-left:0px ;
+	border-right:0px;
+}
+
+
+/* Topic page layout DIVs */
+#MessageList{position: relative;width: 95%;top: 0px;margin: auto;}
+.TopicHeader{border-top:1px solid silver;border-left:1px solid silver;border-right:1px solid silver;background-color:silver;height:22px;}
+.TopicDiv{text-align:left;width:100%;}
+.TopicHeader{visibility: hidden;display:none;}
+.leftColumn img {visibility: hidden;display:none;}
+.leftColumn .smallText {visibility: hidden;display:none;}
+
+
+.testDIV{margin-right:0px;padding-left: 10px;padding-right: 14px;padding-bottom: 14px;}
+#buttonbar{display:none;}
+.buttonbarImg {visibility: hidden;display:block;}
+.Boxborder{border-top:1px solid silver;}
+.spacer br{line-height:0.3em;}
+
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+/*hide the signatures*/
+.sigDIV{visibility: hidden;display:none;}
+.sigDIV p{line-height:0.1em;visibility: hidden;display:none;}
+.sigDIV hr{line-height: 0px;}
+.sigDIV br{line-height: 0.1em;}
+.sigDIV img {visibility: hidden;display:none;}
+
+.codehead{visibility: hidden;display:none;}
+.PageNav{visibility: hidden;display:none;}
+.pagelink, .pagelinklast, .pagelinkfirst {display:none;}
+.profBtn{display:none;}
+.TopIcon, .msgIcons{display:none;}

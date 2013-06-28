@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{11BB8CCB-CA05-44B6-BB16-18107F00E60D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EventsCalendar</RootNamespace>
+    <AssemblyName>EventsCalendar.UI</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>..\Dependency\AjaxControlToolkit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Events\Events.aspx" />
+    <Content Include="UserControls\Events\EventCalendar.ascx" />
+    <Content Include="UserControls\Events\ExtendedCalendar.ascx" />
+    <Content Include="UserControls\Events\UpcomingEvents.ascx" />
+    <Content Include="UserControls\Popups\ViewEvent.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\webResources.designer.cs">
+      <DependentUpon>webResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Content\Events\Events.aspx.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Events\Events.aspx.designer.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EventPageRouteHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\Events\EventCalendar.ascx.cs">
+      <DependentUpon>EventCalendar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Events\EventCalendar.ascx.designer.cs">
+      <DependentUpon>EventCalendar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Events\ExtendedCalendar.ascx.cs">
+      <DependentUpon>ExtendedCalendar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Events\ExtendedCalendar.ascx.designer.cs">
+      <DependentUpon>ExtendedCalendar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Events\UpcomingEvents.ascx.cs">
+      <DependentUpon>UpcomingEvents.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Events\UpcomingEvents.ascx.designer.cs">
+      <DependentUpon>UpcomingEvents.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Popups\ViewEvent.ascx.cs">
+      <DependentUpon>ViewEvent.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Popups\ViewEvent.ascx.designer.cs">
+      <DependentUpon>ViewEvent.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Snitz.EventsCalendar.DB\Snitz.EventsCalendar.DB.csproj">
+      <Project>{831e0ed7-7ad5-4f6f-8ee7-5a5243f97ae4}</Project>
+      <Name>Snitz.EventsCalendar.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Base\Snitz.Base.csproj">
+      <Project>{0cbdec20-f26f-49ba-bc77-bcf0234cdc4a}</Project>
+      <Name>Snitz.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
+      <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
+      <Name>Snitz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Config\Snitz.Config.csproj">
+      <Project>{eaac5b1e-e704-4233-97ce-9fd309cebd9f}</Project>
+      <Name>Snitz.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.DB.MSSQL\Snitz.DB.MSSQL.csproj">
+      <Project>{3d01fe24-b984-476d-a38a-614f0993ec88}</Project>
+      <Name>Snitz.DB.MSSQL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\webResources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>webResources.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52612/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y "$(ProjectDir)UserControls\Events\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Events\"
+xcopy /s /y "$(ProjectDir)UserControls\Popups\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Popups\"
+xcopy /s /y "$(ProjectDir)bin\EventsCalendar.Data.dll" "$(SolutionDir)Snitz.Web\bin\"
+xcopy /s /y "$(ProjectDir)bin\EventsCalendar.UI.dll" "$(SolutionDir)Snitz.Web\bin\"
+xcopy /s /y "$(ProjectDir)Content\Events\*.aspx" "$(SolutionDir)Snitz.Web\Content\Events\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

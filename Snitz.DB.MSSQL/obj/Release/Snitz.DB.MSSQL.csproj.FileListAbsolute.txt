@@ -1,0 +1,14 @@
+C:\Dev\SnitzDotNet\SnitzData\bin\Release\SnitzSQLData.dll.config
+C:\Dev\SnitzDotNet\SnitzData\bin\Release\SnitzSQLData.dll
+C:\Dev\SnitzDotNet\SnitzData\bin\Release\SnitzCommon.dll
+C:\Dev\SnitzDotNet\SnitzData\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\SnitzData\bin\Release\SnitzMembership.dll
+C:\Dev\SnitzDotNet\SnitzData\obj\Release\Snitz.DB.MSSQL.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\SnitzData\obj\Release\SnitzSQLData.dll
+C:\Dev\SnitzDotNet\Snitz.Data\bin\Release\SnitzSQLData.dll.config
+C:\Dev\SnitzDotNet\Snitz.Data\bin\Release\SnitzSQLData.dll
+C:\Dev\SnitzDotNet\Snitz.Data\bin\Release\SnitzCommon.dll
+C:\Dev\SnitzDotNet\Snitz.Data\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\Snitz.Data\bin\Release\SnitzMembership.dll
+C:\Dev\SnitzDotNet\Snitz.Data\obj\Release\Snitz.DB.MSSQL.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\Snitz.Data\obj\Release\SnitzSQLData.dll

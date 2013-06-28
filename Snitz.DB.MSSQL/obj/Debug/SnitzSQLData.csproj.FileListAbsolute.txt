@@ -1,0 +1,13 @@
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzSQLData.dll.config
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzSQLData.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzSQLData.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzMembership.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\Cryptos.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzCommon.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzConfig.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Debug\SnitzMembership.pdb
+C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\SnitzSQLData.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Debug\SnitzSQLData.pdb

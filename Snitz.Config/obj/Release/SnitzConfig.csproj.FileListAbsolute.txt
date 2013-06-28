@@ -1,0 +1,6 @@
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\bin\Release\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\obj\Release\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\obj\Release\SnitzConfig.Resources.emoticons.resources
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\obj\Release\ResGen.read.1.tlog
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\obj\Release\ResGen.write.1.tlog
+C:\DEV\SnitzDAL\SnitzData\SnitzConfig\obj\Release\SnitzConfig.dll

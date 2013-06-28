@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ForumTest" Class="EventsCalendarDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="FORUM_EVENT" Member="CalEvents">
+    <Type Name="CalEvent">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Audience" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Author" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventDate" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(400) NULL" CanBeNull="true" />
+      <Association Name="CalEvent_Member" Member="Members" ThisKey="Author" OtherKey="Author" Type="Member" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="FORUM_MEMBERS" Member="Members">
+    <Type Name="Member">
+      <Column Name="MEMBER_ID" Member="Author" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="M_STATUS" Member="Status" Type="System.Int16" DbType="SmallInt" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_NAME" Member="Username" Type="System.String" DbType="NVarChar(75)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_PASSWORD" Member="Password" Type="System.String" DbType="NVarChar(65)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="M_EMAIL" Member="Email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="CalEvent_Member" Member="CalEvent" ThisKey="Author" OtherKey="Author" Type="CalEvent" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

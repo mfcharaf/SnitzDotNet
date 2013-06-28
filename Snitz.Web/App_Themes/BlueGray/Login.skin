@@ -1,0 +1,57 @@
+
+
+<asp:LoginStatus SkinID="LoginStatus" LogoutText="LogOut" runat="server" TabIndex="1" LogoutImageUrl="images/buttons/logout.gif"  />
+<asp:Login  runat="server" SkinID="AnonLogin" Orientation="Horizontal">
+    <LayoutTemplate>
+                    <table cellpadding="2">
+                        <tr>
+                            <td>
+                                <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">User Name:</asp:Label>
+                                <asp:TextBox ID="UserName" runat="server"></asp:TextBox>
+                                        
+                                <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">Password:</asp:Label>
+                                <asp:TextBox ID="Password" runat="server" TextMode="Password"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" Display="dynamic" 
+                                    ControlToValidate="Password" ErrorMessage="Password is required." 
+                                    ToolTip="Password is required." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+                                <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" 
+                                    ControlToValidate="UserName" ErrorMessage="User Name is required." Display="dynamic"
+                                    ToolTip="User Name is required." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+                                <asp:Button ID="LoginButton" runat="server" CommandName="Login" Text="Log In" 
+                                    ValidationGroup="ctl00$ctl00$Login1" />
+                                    <asp:CheckBox ID="RememberMe" runat="server" Checked="True" 
+                                    Text="Remember me next time.&nbsp;&nbsp;&nbsp;&nbsp;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color:Red;">
+                                <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+                            </td>
+                        </tr>
+                    </table>
+    </LayoutTemplate>
+</asp:Login>
+<asp:LoginStatus SkinID="NewLoginStatus" LogoutText="LogOut" runat="server" TabIndex="1" />
+<asp:Login  runat="server" SkinID="NewLogin" Orientation="Horizontal">
+    <LayoutTemplate>
+
+            <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">User Name:</asp:Label>
+            <asp:TextBox ID="UserName" runat="server"></asp:TextBox>
+                                        
+            <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">Password:</asp:Label>
+            <asp:TextBox ID="Password" runat="server" TextMode="Password"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" Display="dynamic" 
+                ControlToValidate="Password" ErrorMessage="Password is required." 
+                ToolTip="Password is required." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" 
+                ControlToValidate="UserName" ErrorMessage="User Name is required." Display="dynamic"
+                ToolTip="User Name is required." ValidationGroup="ctl00$ctl00$Login1">*</asp:RequiredFieldValidator>
+            <asp:Button ID="LoginButton" runat="server" CommandName="Login" Text="Log In" 
+                ValidationGroup="ctl00$ctl00$Login1" />
+                <asp:CheckBox ID="RememberMe" runat="server" Checked="True" 
+                Text="Remember me next time.&nbsp;&nbsp;&nbsp;&nbsp;" />
+
+            <asp:Literal ID="FailureText" runat="server" EnableViewState="False"></asp:Literal>
+
+    </LayoutTemplate>
+</asp:Login>

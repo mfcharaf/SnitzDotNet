@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActivePageDescription" xml:space="preserve">
+    <value>View Posts since my last visit</value>
+  </data>
+  <data name="ActivePageTitle" xml:space="preserve">
+    <value>Active Topics</value>
+  </data>
+  <data name="AdminPageDescription" xml:space="preserve">
+    <value>Admin Options</value>
+  </data>
+  <data name="AdminPageTitle" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="cbxUseSigbyDefault" xml:space="preserve">
+    <value>Signature checkbox checked by default?</value>
+  </data>
+  <data name="cbxViewSiginPost" xml:space="preserve">
+    <value>View Signatures in Posts?</value>
+  </data>
+  <data name="DefaultPageDescription" xml:space="preserve">
+    <value>View All Forums?</value>
+  </data>
+  <data name="DefaultPageTitle" xml:space="preserve">
+    <value>All Forums</value>
+  </data>
+  <data name="ErrSpamCheck" xml:space="preserve">
+    <value>&lt;p&gt;&lt;strong&gt;Your Registration attempt failed our anti spam checks&lt;/strong&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="ForumPageDescription" xml:space="preserve">
+    <value>Forum View</value>
+  </data>
+  <data name="ForumPageTitle" xml:space="preserve">
+    <value>Forum View</value>
+  </data>
+  <data name="HomePageDescription" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="HomePageTitle" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="LayoutPageDescription" xml:space="preserve">
+    <value>Change Forum Layout</value>
+  </data>
+  <data name="LayoutPageTitle" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="lblAdministrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="lblDay" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="lblForgottenPassword" xml:space="preserve">
+    <value>Forgoten Your Password?</value>
+  </data>
+  <data name="lblPagerButton" xml:space="preserve">
+    <value>Page {0} of {1} pages</value>
+  </data>
+  <data name="lblPagerDropdown" xml:space="preserve">
+    <value>of {0} pages</value>
+  </data>
+  <data name="lblProhibitReg" xml:space="preserve">
+    <value>&lt;strong&gt;The Administrator has turned off Registration for this forum.&lt;br /&gt;Only registered members are able to log in&lt;/strong&gt;</value>
+  </data>
+  <data name="lblRegisterLink" xml:space="preserve">
+    <value>If you do not have an account you may register using the link below&lt;br/&gt;&lt;a href='/Account/register.aspx'&gt; register here&lt;/a&gt;</value>
+  </data>
+  <data name="lblRetrieve" xml:space="preserve">
+    <value>If you have forgotten your password, you may reset it using the link below</value>
+  </data>
+  <data name="lblRetrievePasswordText" xml:space="preserve">
+    <value>Enter your Username to reset your password.&lt;br /&gt;Your new password will be emailed to the address in your profile.&lt;br /&gt;&lt;br /&gt;</value>
+  </data>
+  <data name="lblSmilie" xml:space="preserve">
+    <value>Smilies</value>
+  </data>
+  <data name="lblTopicMoveHidden" xml:space="preserve">
+    <value>Has been removed from public display, If you have any questions regarding this, please contact the Administrator of the forum</value>
+  </data>
+  <data name="lblTopicMoveSubject" xml:space="preserve">
+    <value>Topic moved notification</value>
+  </data>
+  <data name="lblYear" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="MembersPageDescription" xml:space="preserve">
+    <value>View list of Members</value>
+  </data>
+  <data name="MembersPageTitle" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="PolicyPageDescription" xml:space="preserve">
+    <value>Registration Rules and Policy Agreement</value>
+  </data>
+  <data name="PolicyAgree" xml:space="preserve">
+    <value>I agree to the Rules and Policy</value>
+  </data>
+  <data name="PolicyValidator" xml:space="preserve">
+    <value>You must agree to the Rules and Policy</value>
+  </data>
+  <data name="PolicyPageTitle" xml:space="preserve">
+    <value>Policy</value>
+  </data>
+  <data name="PostPageDescription" xml:space="preserve">
+    <value>Post Form</value>
+  </data>
+  <data name="PostPageTitle" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="ProfilePageDescription" xml:space="preserve">
+    <value>View my profile</value>
+  </data>
+  <data name="ProfilePageTitle" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="RegApproval" xml:space="preserve">
+    <value>Registration Approval</value>
+  </data>
+  <data name="RegApprovalMsg" xml:space="preserve">
+    <value>Your registration has now been approved by an Administrator.[br][br]You may now begin posting at {0} [br]Once you have logged in for the first time, you may change your password to something more memorable, to change your password ..[br][br]1) Click 'Profile' from the menu and your profile should open[br]2) click on the 'Change your password' link and a pop-up window will appear[br]3) Near the top of the window, you should see 'Password' and 'Password Again'. Enter your new password in both boxes and click 'Submit'. Your password should now be changed.[br][br]Many thanks.[br]Forum Administrator</value>
+  </data>
+  <data name="RegisterTitle" xml:space="preserve">
+    <value>Sign Up for Your New Account</value>
+  </data>
+  <data name="RegisterPageDescription" xml:space="preserve">
+    <value>Registration form</value>
+  </data>
+  <data name="RegisterPageTitle" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RegisterSuccess" xml:space="preserve">
+    <value>You should now receive an email containing your password and an activation key. Once you have received the email you should visit the &lt;a href="/Account/activate.aspx" rel="nofollow" title="Activate Membersip"&gt;activation page&lt;/a&gt; to validate your account.</value>
+  </data>
+  <data name="SuccessLabel" xml:space="preserve">
+    <value> The account has been successfully created.</value>
+  </data>
+  <data name="SearchPageDescription" xml:space="preserve">
+    <value>Search the forum posts</value>
+  </data>
+  <data name="SearchPageTitle" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TopicPageTitle" xml:space="preserve">
+    <value>Topic View</value>
+  </data>
+  <data name="ViewProfile" xml:space="preserve">
+    <value>View {0}'s Profile</value>
+  </data>
+  <data name="lblSubscribe" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="lblUnSubscribe" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
+  <data name="GuestLabel">
+    <value xml:space="preserve">Guests : </value>
+  </data>
+</root>

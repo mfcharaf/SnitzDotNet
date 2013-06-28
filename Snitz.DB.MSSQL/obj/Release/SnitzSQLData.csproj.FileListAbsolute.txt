@@ -1,0 +1,8 @@
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\SnitzSQLData.dll.config
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\SnitzSQLData.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\Cryptos.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\bin\Release\SnitzMembership.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Release\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\SnitzData\obj\Release\SnitzSQLData.dll

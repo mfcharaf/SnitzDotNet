@@ -1,0 +1,135 @@
+﻿body {
+}
+#divEditForum label{
+ display:inline-block;
+ text-align:right;
+ width:170px;
+ float:left;
+ }
+#divEditForum span{
+ display:inline-block;
+ text-align:right;
+ width:170px;
+ }
+#divEditForum span.cbx{
+ width:Auto;
+ }
+ #divEditForum .small{
+ color:#666666;
+ display:block;
+ font-weight:normal;
+ text-align:right;
+ width:170px;
+ }
+ #divEditForum input,  #divEditForum textarea{
+ 
+ border:solid 1px #aacfe4;
+ width:380px;
+ margin:0px 0 10px 10px;
+ }
+ #divEditForum select{
+ border:solid 1px #aacfe4;
+ min-width:60px;
+ width:60px;
+ width:auto !important;
+ margin:0px 0 10px 10px;
+ }
+ #divEditForum input[type="image"]
+ {
+ clear:both;
+ margin-left:0px;
+ width:88px;
+ height:20px;
+
+ }
+  #divEditForum input[type="checkbox"]
+ {
+ clear:both;
+ width:12px;
+ height:12px;
+ border:0px;
+ }
+
+
+div.ListViewContainer {
+	width: 100%; /* Table width will be 99% of this */
+	height: 60px; /* Must be greater than tbody */
+	overflow: auto;
+	}
+
+div.ListViewContainer table {
+	width: 99%; /* 100% of container produces horizontal scroll in Mozilla */
+	border: none;
+	}
+	
+div.ListViewContainer table>tbody	{ /* Child selector syntax which IE6 and older do not support */
+	overflow: auto; 
+	height: 1em;
+	overflow-x: hidden;
+	}
+	
+div.ListViewContainer thead tr {
+	position:relative; 
+	top: expression(offsetParent.scrollTop); /* For IE5+ only */
+	}
+	
+div.ListViewContainer thead td {
+	background-color: #CCCCCC;
+	font-weight: bold;
+	}	
+	
+div.ListViewContainer td {
+    color: #000000;
+    text-align: left;
+    }
+	
+div.ListViewContainer table tfoot tr {
+      position: relative; 
+      overflow-x: hidden;
+      top: expression(parentNode.parentNode.offsetHeight >= offsetParent.offsetHeight ? 0 - parentNode.parentNode.offsetHeight + offsetParent.offsetHeight + offsetParent.scrollTop : 0);
+      }
+
+div.ListViewContainer tfoot td {
+    background-color: #CCCCCC;
+    }
+
+div.ListViewContainer td:last-child { /* Prevent Mozilla scrollbar from hiding cell content */
+    padding-right: 20px;
+    }
+    
+    
+#divEditCat label{
+ display:inline-block;
+ text-align:right;
+ width:140px;
+ float:left;
+ }
+#divEditCat span{
+ display:inline-block;
+ text-align:right;
+ width:140px;
+ float:left;
+ }
+ #divEditCat input{
+ 
+ border:solid 1px #aacfe4;
+ width:380px;
+ margin:0px 0 10px 10px;
+ }
+ #divEditCat select{
+ border:solid 1px #aacfe4;
+ min-width:60px;
+ width:60px;
+ width:auto !important;
+ margin:0px 0 10px 10px;
+ }
+
+  #divEditCat input[type="checkbox"]
+ {
+ clear:both;
+ width:12px;
+ height:12px;
+ border:0px;
+ }
+.AspNet-DataList table{width:100%}
+.AspNet-FormView{ background-color:#ffffff;}

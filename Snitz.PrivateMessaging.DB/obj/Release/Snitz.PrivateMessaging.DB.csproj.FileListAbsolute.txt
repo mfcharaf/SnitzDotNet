@@ -1,0 +1,12 @@
+C:\Dev\SnitzDotNet\PMData\bin\Release\PrivateMessaging.Data.dll.config
+C:\Dev\SnitzDotNet\PMData\bin\Release\PrivateMessaging.Data.dll
+C:\Dev\SnitzDotNet\PMData\bin\Release\SnitzCommon.dll
+C:\Dev\SnitzDotNet\PMData\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\PMData\obj\Release\Snitz.PrivateMessaging.DB.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\PMData\obj\Release\PrivateMessaging.Data.dll
+C:\Dev\SnitzDotNet\PrivateMessages.Data\bin\Release\PrivateMessaging.Data.dll.config
+C:\Dev\SnitzDotNet\PrivateMessages.Data\bin\Release\PrivateMessaging.Data.dll
+C:\Dev\SnitzDotNet\PrivateMessages.Data\bin\Release\SnitzCommon.dll
+C:\Dev\SnitzDotNet\PrivateMessages.Data\bin\Release\SnitzConfig.dll
+C:\Dev\SnitzDotNet\PrivateMessages.Data\obj\Release\Snitz.PrivateMessaging.DB.csprojResolveAssemblyReference.cache
+C:\Dev\SnitzDotNet\PrivateMessages.Data\obj\Release\PrivateMessaging.Data.dll

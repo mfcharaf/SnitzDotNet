@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.DB.MSSQL", "Snitz.DB.MSSQL\Snitz.DB.MSSQL.csproj", "{3D01FE24-B984-476D-A38A-614F0993EC88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Config", "Snitz.Config\Snitz.Config.csproj", "{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Membership", "Snitz.Membership\Snitz.Membership.csproj", "{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Base", "Snitz.Base\Snitz.Base.csproj", "{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Common", "Snitz.Common\Snitz.Common.csproj", "{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jquery.spellchecker", "jquery.spellchecker\jquery.spellchecker.csproj", "{5C790F5D-25FB-48E3-8564-D8C618F3F89B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.DB", "Snitz.EventsCalendar.DB\Snitz.EventsCalendar.DB.csproj", "{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Web", "Snitz.Web\Snitz.Web.csproj", "{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11BB8CCB-CA05-44B6-BB16-18107F00E60D} = {11BB8CCB-CA05-44B6-BB16-18107F00E60D}
+		{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4} = {831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}
+		{1505E6FE-C135-4558-A125-19610A6061B1} = {1505E6FE-C135-4558-A125-19610A6061B1}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.PrivateMessaging.UI", "Snitz.PrivateMessaging.UI\Snitz.PrivateMessaging.UI.csproj", "{1505E6FE-C135-4558-A125-19610A6061B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.UI", "Snitz.EventsCalendar.UI\Snitz.EventsCalendar.UI.csproj", "{11BB8CCB-CA05-44B6-BB16-18107F00E60D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.PrivateMessaging.DB", "Snitz.PrivateMessaging.DB\Snitz.PrivateMessaging.DB.csproj", "{D88FBA0D-D2D4-4337-BB72-E33C10264B46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.ThirdParty", "Snitz.ThirdParty\Snitz.ThirdParty.csproj", "{21797D78-2887-460F-9E7E-5360A16C6DCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependency", "Dependency", "{2B0A8785-BE3A-4B88-A8CA-42EF44E93ECD}"
+	ProjectSection(SolutionItems) = preProject
+		Dependency\Cryptos.dll = Dependency\Cryptos.dll
+		Dependency\CSSFriendly.dll = Dependency\CSSFriendly.dll
+		Dependency\RealWorld.Grids.dll = Dependency\RealWorld.Grids.dll
+		Dependency\WebOptimizer.dll = Dependency\WebOptimizer.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D01FE24-B984-476D-A38A-614F0993EC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D01FE24-B984-476D-A38A-614F0993EC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D01FE24-B984-476D-A38A-614F0993EC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D01FE24-B984-476D-A38A-614F0993EC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C790F5D-25FB-48E3-8564-D8C618F3F89B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C790F5D-25FB-48E3-8564-D8C618F3F89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C790F5D-25FB-48E3-8564-D8C618F3F89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C790F5D-25FB-48E3-8564-D8C618F3F89B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{831E0ED7-7AD5-4F6F-8EE7-5A5243F97AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1505E6FE-C135-4558-A125-19610A6061B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1505E6FE-C135-4558-A125-19610A6061B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1505E6FE-C135-4558-A125-19610A6061B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1505E6FE-C135-4558-A125-19610A6061B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BB8CCB-CA05-44B6-BB16-18107F00E60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BB8CCB-CA05-44B6-BB16-18107F00E60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BB8CCB-CA05-44B6-BB16-18107F00E60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BB8CCB-CA05-44B6-BB16-18107F00E60D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88FBA0D-D2D4-4337-BB72-E33C10264B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88FBA0D-D2D4-4337-BB72-E33C10264B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88FBA0D-D2D4-4337-BB72-E33C10264B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88FBA0D-D2D4-4337-BB72-E33C10264B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21797D78-2887-460F-9E7E-5360A16C6DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21797D78-2887-460F-9E7E-5360A16C6DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21797D78-2887-460F-9E7E-5360A16C6DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21797D78-2887-460F-9E7E-5360A16C6DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

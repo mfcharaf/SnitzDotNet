@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+  <Ad>
+    <!-- The URL for the ad image -->
+    <ImageUrl>/images/ad1.png</ImageUrl>
+    <!-- The URL the ad redirects the user to -->
+    <NavigateUrl>http://forum.snitz.com</NavigateUrl>
+    <!-- The alternate text for the image -->
+    <AlternateText>Visit Snitz Forum 2000's Site</AlternateText>
+    <!-- The relative number of times this ad should appear -->
+    <!-- compared to the others -->
+    <Impressions>80</Impressions>
+    <!-- The topic of this ad (used for filtering) -->
+    <Keyword>Forums</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>/images/ad2.png</ImageUrl>
+    <NavigateUrl>http://forum.snitz.com</NavigateUrl>
+    <AlternateText>Visit Snitz Forum 2000's Site</AlternateText>
+    <Impressions>40</Impressions>
+    <Keyword>Forums</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>/images/ad3.png</ImageUrl>
+    <NavigateUrl>http://forum.snitz.com</NavigateUrl>
+    <AlternateText>Visit Snitz Forum 2000's Site</AlternateText>
+    <Impressions>40</Impressions>
+    <Keyword>Forums</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>/images/ad4.png</ImageUrl>
+    <NavigateUrl>http://forum.snitz.com</NavigateUrl>
+    <AlternateText>Visit Snitz Forum 2000's Site</AlternateText>
+    <Impressions>40</Impressions>
+    <Keyword>narrow</Keyword>
+  </Ad>
+</Advertisements>
+

@@ -1,0 +1,163 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SingleCol.Master.cs" Inherits="SnitzUI.MasterTemplates.SingleCol" %>
+
+<%@ Import Namespace="SnitzConfig" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
+<%@ Register TagPrefix="uc1" TagName="Password" Src="~/UserControls/popups/passwordretrieve.ascx" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html id="Html1" runat="server" xmlns="http://www.w3.org/1999/xhtml" dir='<%$ Resources: webresources,TextDirection%>'>
+<head id="Head1" runat="server">
+    <title></title>
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta name="Generator" content="SnitzDotNet Forums v 1.0" />
+    <asp:ContentPlaceHolder ID="CPMeta" runat="server"></asp:ContentPlaceHolder>
+    <link rel="stylesheet" href="/css/jquery-ui.css" />
+    <script type="text/javascript" src="/scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
+    <script src="/scripts/jquery.timeago.min.js" type="text/javascript"></script>
+    <script src="/scripts/confirmHandler.min.js" type="text/javascript"></script>
+
+    <asp:ContentPlaceHolder ID="CPhead" runat="server"></asp:ContentPlaceHolder>
+    <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
+    <style type="text/css">
+        b{font-size: 110%;}
+        .PageTitle{color:White;float:left;margin-left:5px;font-size:1em;margin-top:8px;}
+        h2{ background:#0FA1B8;color:#ffffff;height:20px;margin-top:0px;padding:3px;}
+        .daydetail{border:1px solid #0FA1B8;border-top:0px;width:35%;float:left;}
+        .ui-tooltip{
+        background: #0FA1B8;
+        border: 1px solid white;
+        padding: 5px 10px;
+        color: white;
+        border-radius: 10px;
+        font: 11px "Helvetica Neue", Sans-Serif;
+        text-transform: uppercase;
+        box-shadow: 0 0 4px black;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <ajaxtoolkit:ToolkitScriptManager ID="MainSM" runat="server" ScriptMode="Release" LoadScriptsBeforeUI="true" EnablePageMethods="true" EnableScriptGlobalization="true" EnableScriptLocalization="true">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/Main.min.js" />
+        </Scripts>
+    </ajaxtoolkit:ToolkitScriptManager>
+    <div id="maincontainer">
+
+    <div id="topsection">
+        <div id="header" class="clearfix">
+            <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
+            <Login:login ID="login1" runat="server" Skin="LoginTop" />
+        </div>
+        <div class="innertube clearfix">
+            <div id="LogoDIV">
+                 <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server" NavigateUrl="<%# Config.ForumUrl %>" ToolTip="<%# Config.ForumTitle %>" ></asp:HyperLink>
+            </div>
+            <div id="TitleDIV">
+                <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
+                        
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+        <div id="MenuDIV" class="SnitzMenu">
+            <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Secure" />
+        </div>
+    </div>
+    <div id="subheadDIV" class="clearfix">
+        <div id="breadcrumbDIV" class="clearfix">
+            <asp:SiteMapPath SkinID="TopicBreadCrumb" CssClass="breadcrumb" runat="server" ID="SiteMap"
+                EnableViewState="true" />
+        </div>
+        <div class="innertube">
+            <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
+                <snitz:announcebox ID="announce" runat="server" Show="<%# Config.Announcement %>"/>
+            </asp:ContentPlaceHolder>
+         </div>
+    </div>
+    <div id="contentwrapper">
+            <div class="innertube">
+            <div id="HdrDIV" class="nowrap">
+                <asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div id="RightHdrDIV" class="nowrap">
+                <asp:ContentPlaceHolder ID="CPHR" runat="server" EnableViewState="False">
+                </asp:ContentPlaceHolder>
+            </div>
+            <div id="LeftHdrDIV" class="nowrap">
+                <asp:ContentPlaceHolder ID="CPHL" runat="server" EnableViewState="False">
+                </asp:ContentPlaceHolder>
+            </div>
+                <div id="contentDIV" class="clearfix">
+                    <asp:ContentPlaceHolder ID="CPM" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+                <div id="contentfooterDIV" class="clearfix">
+                    <asp:ContentPlaceHolder ID="CPF1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+    </div>
+
+    <div id="footer">
+        <div class="pagefooter">
+            <div id="snitzfooterDIV">
+                <div class="FooterTable">
+                    <table width="100%">
+                    <tr>
+                    <td width="90%"><asp:Label CssClass="footerText" ID="lblFooterTitle" runat="server" EnableViewState="False" Text="<%# Config.ForumTitle %>"></asp:Label></td>
+                    <td width="*" style=" white-space:nowrap;">&copy; <asp:Label CssClass="footerText" ID="lblCopyright" runat="server" EnableViewState="False" Text="<%# Config.Copyright %>"></asp:Label>&nbsp;</td>
+                    <td width="20px"><asp:HyperLink CssClass="footerText" ID="imgGoUp" SkinID="GoUpFooter" runat="server" NavigateUrl="~/?#top" Text="<%$ Resources:webResources, lblGotoTop %>" ToolTip="<%$ Resources:webResources, lblGotoTop %>" ></asp:HyperLink></td>
+                    </tr>
+                    <tr><td colspan="3"><asp:Label CssClass="pageTimer" runat="server" Text="" ID="TimerLabel" EnableViewState="False" Visible="<%# Config.ShowTimer %>"></asp:Label></td></tr>
+                    </table>
+                </div>
+            </div>            
+            <asp:ContentPlaceHolder ID="CPF2" runat="server" EnableViewState="False">
+                <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+            </asp:ContentPlaceHolder>
+        </div>
+        <asp:ContentPlaceHolder ID="W3CVal" runat="server">
+            <div style="text-align: center;width:100%;">
+                <a href="http://validator.w3.org/check?uri=referer"><asp:Image ID="validXHTML" SkinID="XHTML" runat="server" EnableViewState="False" /></a>
+                <a href="http://jigsaw.w3.org/css-validator/check/referer"><asp:Image ID="validCSS" SkinID="CSS" runat="server" EnableViewState="False" /></a>
+            </div>  
+        </asp:ContentPlaceHolder>
+    </div>
+        <asp:ContentPlaceHolder ID="RightCol" runat="server" Visible="false">
+        </asp:ContentPlaceHolder>
+    </div>
+
+    <!-- Change Password Popup -->
+    <asp:Panel ID="CPPanel" runat="server" Style="display: none">
+        <div class="mainModalPopup mainModalBorder" style="width: 500px;">
+            <div class="mainModalInnerDiv mainModalInnerBorder">
+                <div id="cpheader" style="width: 100%;" class="clearfix">
+                    <div class="mainModalDraggablePanelDiv">
+                        <asp:Panel CssClass="mainModalDraggablePanel" ID="CPMPD" runat="server">
+                            <span class="mainModalTitle" id="cpTitle">Change Password</span>
+                        </asp:Panel>
+                    </div>
+                    <div class="mainModalDraggablePanelCloseDiv">
+                        <asp:ImageButton SkinID="CloseModal" runat="server" ID="CPclB" CausesValidation="false" />
+                    </div>
+                </div>
+                <div class="mainModalContent" style="white-space: normal;">
+                    <div id="CPModalContents">
+                        <uc1:Password runat="server" ID="recoverpass" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
+    <ajaxtoolkit:ModalPopupExtender ID="cpModal" runat="server" PopupControlID="CPPanel"
+        TargetControlID="CPHid" BehaviorID="cpMain" BackgroundCssClass="modalBackground"
+        CancelControlID="CPclB" OnCancelScript="CancelModal();" DropShadow="true" />
+    <asp:Button runat="server" ID="CPHid" Style="display: none;" />
+    </form>
+</body>
+</html>
+

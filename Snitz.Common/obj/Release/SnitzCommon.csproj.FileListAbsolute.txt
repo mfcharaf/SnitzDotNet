@@ -1,0 +1,4 @@
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Release\SnitzCommon.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\bin\Release\SnitzConfig.dll
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\obj\Release\ResolveAssemblyReference.cache
+C:\DEV\SnitzDAL\SnitzData\SnitzCommon\obj\Release\SnitzCommon.dll

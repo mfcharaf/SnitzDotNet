@@ -1,0 +1,40 @@
+      #html,body{height:100%;}
+      #divAjaxTimer, #ifAjaxTimer{
+        position: absolute;
+        top: 0px;
+        left: 200px;
+        display: none;
+        width: 350px;
+        height: 150px;
+      }
+      
+      #divAjaxTimer{
+        background-color: silver;
+        border: 3px outset;
+        z-index: 101;
+      }
+      #ifAjaxTimer
+      {
+		z-index: 100;
+      }
+      #divAjaxContent,#divAjaxTitle{
+        font-family: Tahoma, Arial, Helvetica, sans-serif;
+        font-size: 1em;
+        font-weight: bold;
+      }
+      #divAjaxTitle{
+        background-color: blue;
+        background-image: url("/images/top-bar.gif");
+        color: white;
+      }
+      #divAjaxContent{
+        color: black;
+        width: 330px;
+        margin: 5px 5px 10px 5px;
+      }
+      #divAjaxBut{
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      #divAjaxBut .confirm{color: green; width: 70px;}
+      #divAjaxBut .ignore{color: red; width: 70px;}
