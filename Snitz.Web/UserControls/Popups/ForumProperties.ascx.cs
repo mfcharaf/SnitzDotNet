@@ -75,7 +75,6 @@ namespace SnitzUI.UserControls.Popups
             #region Subscriptions
             if (Config.SubscriptionLevel > 0)
             {
-                ddlSub.SelectedValue = forum.SubscriptionLevel.ToString();
                 ddlSub.Items.Clear();
                 ddlSub.Items.Add(new ListItem("No Subscriptions Allowed","0"));
                 if(Config.SubscriptionLevel < SubscriptionLevel.Topic)
@@ -83,6 +82,7 @@ namespace SnitzUI.UserControls.Popups
                     ddlSub.Items.Add(new ListItem("Forum Subscriptions Allowed", "1"));
                 }
                 ddlSub.Items.Add(new ListItem("Topic Subscriptions Allowed", "2"));
+                ddlSub.SelectedValue = forum.SubscriptionLevel.ToString();
 
             }
             else

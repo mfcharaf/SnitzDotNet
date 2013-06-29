@@ -80,13 +80,20 @@
         }
         function SaveForum() {
             PageMethods.SaveForum($("form").serializeNoViewState());
-            mainScreen.CancelModal();
-            location.reload();
+            var millisecondsToWait = 500;
+            setTimeout(function () {
+                mainScreen.CancelModal();
+                location.reload();
+            }, millisecondsToWait);
+            
         }
         function SaveCategory() {
             PageMethods.SaveCategory($("form").serializeNoViewState());
-            mainScreen.CancelModal();
-            location.reload();
+            var millisecondsToWait = 500;
+            setTimeout(function () {
+                mainScreen.CancelModal();
+                location.reload();
+            }, millisecondsToWait);
         }
 
     </script>
@@ -121,42 +128,46 @@
                     <asp:ImageButton ID="NewUrl" SkinID="NewUrl" runat="server" Visible='<%# IsAdministrator %>' Text="<%$ Resources:webResources, lblNewUrl %>"
                         ToolTip="<%$ Resources:webResources, lblNewUrl %>" EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                        runat="server" ToolTip="<%$ Resources:webResources, lbllockCat %>" 
-                        CausesValidation="False" EnableViewState="False" OnClick="LockCategory" />
+                            runat="server" ToolTip="<%$ Resources:webResources, lbllockCat %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Lock', 'Lock?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to lock the Category?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="LockCategory" />
                     <asp:ImageButton ID="CatUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                        runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" 
-                        CausesValidation="False" EnableViewState="False" OnClick="UnLockCategory" />
+                            runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Unlock?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to unlock the Category?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="UnLockCategory" />
                     <asp:ImageButton ID="EditCat" SkinID="Properties" runat="server" Visible='<%# IsAdministrator %>'
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="<%$ Resources:webResources, lblEditCategory %>" EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                        runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" 
-                        CausesValidation="False" EnableViewState="False" OnClick="DeleteCategory" />
+                    runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the Category?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete the Category?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="DeleteCategory" />
+
                 </td>
             </tr>
             <asp:Repeater ID="repForum" runat="server" OnItemDataBound="RepForumItemDataBound" EnableViewState="False">
                 <HeaderTemplate>
                     <tr style="padding: 0px;">
                         <td style="padding: 0px;" valign="top" colspan="3">
-                            <table width="100%" class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%; margin: 0px; table-layout: fixed;"
-                                border="0">
-                                <thead runat="server" id="fTableHeader">
-                                    <tr>
-                                        <th class="tableheader" width="20px"></th>
-                                        <th class="tableheader nowrap" width="*">
-                                            <asp:Label ID="LF" runat="server" Text="<%$ Resources:webResources, lblForum %>" EnableViewState="False"></asp:Label>
-                                        </th>
-                                        <th class="tableheader center nowrap" width="60px">
-                                            <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopics %>" EnableViewState="False"></asp:Label>
-                                        </th>
-                                        <th class="tableheader center nowrap" width="60px">
-                                            <asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblPosts %>" EnableViewState="False"></asp:Label>
-                                        </th>
-                                        <th class="tableheader center" width="180px">
-                                            <asp:Label ID="Label3" runat="server" Text="<%$ Resources:webResources, lblLastPost %>" EnableViewState="False"></asp:Label>
-                                        </th>
-                                        <th class="tableheader" style="width: 50px"></th>
-                                    </tr>
-                                </thead>
+                            <table width="100%" class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%;
+                                margin: 0px; table-layout: fixed;" border="0" >
+                                <thead runat="server" ID="fTableHeader">
+                                <tr>
+                                <th class="tableheader" width="20px"></th>
+                                <th class="tableheader nowrap" width="*">
+                                    <asp:Label ID="LF" runat="server" Text="<%$ Resources:webResources, lblForum %>" EnableViewState="False"></asp:Label>
+                                </th>
+                                <th class="tableheader center nowrap" width="60px">
+                                    <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopics %>" EnableViewState="False"></asp:Label>
+                                </th>
+                                <th class="tableheader center nowrap" width="60px">
+                                    <asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblPosts %>" EnableViewState="False"></asp:Label>
+                                </th>
+                                <th class="tableheader center" width="180px">
+                                    <asp:Label ID="Label3" runat="server" Text="<%$ Resources:webResources, lblLastPost %>" EnableViewState="False"></asp:Label>
+                                </th>
+                                <th class="tableheader" style="width: 50px"></th>
+                            </tr>
+                            </thead>
                 </HeaderTemplate>
                 <ItemTemplate>
                     <tr class="row">
@@ -192,24 +203,30 @@
                             <asp:ImageButton ID="ForumEdit" SkinID="Properties" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                 runat="server" ToolTip="<%$ Resources:webResources, lblEditForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                             <asp:ImageButton ID="ForumLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lbllockForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="LockForum" />
+                                    runat="server" ToolTip="<%$ Resources:webResources, lbllockForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Lock', 'Do you want to lock the Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to lock the Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="LockForum" />
                             <asp:ImageButton ID="ForumUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="UnLockForum" />
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to unlock the Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="UnLockForum" />
                             <asp:ImageButton ID="ForumDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lblDelForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="DeleteForum" />
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblDelForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete the Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="DeleteForum" />
                             <asp:ImageButton ID="ForumEmpty" SkinID="EmptyForum" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lblEmptyForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="EmptyForum" />
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblEmptyForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Empty', 'Do you want to delete all the posts in the Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete all the posts in the Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="EmptyForum" />
                             <asp:ImageButton ID="ForumSub" SkinID="Subscribe" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' CommandName="sub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="SubscribeForum" />
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to subscribe to new posts in the Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to subscribe to new posts in the Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="SubscribeForum" />
                             <asp:ImageButton ID="ForumUnSub" SkinID="UnSubscribe" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeForum %>" 
-                                CausesValidation="False" EnableViewState="False" OnClick="SubscribeForum" />
-
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeForum %>" OnClientClick="mainScreen.ShowConfirm(this, 'Remove Subscription', 'Do you want to remove your subscription for this Forum?');
+mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to remove your subscription for this Forum?'},'confirmHandlers.BeginRecieve');
+return false;" CausesValidation="False" EnableViewState="False" OnClick="SubscribeForum" />
+                        
                         </td>
                     </tr>
                 </ItemTemplate>

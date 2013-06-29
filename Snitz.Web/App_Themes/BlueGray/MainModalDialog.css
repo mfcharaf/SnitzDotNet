@@ -61,10 +61,9 @@
 	background-color:#FFFFFF;
 	margin:4px;
 }
-.modalBackground
-{
-    background-color: #E5E5E5;
-    opacity: 0.7;
+.modalBackground {
+    background-color: #666666;
+    opacity: 0.8;
 }
  
 .modalBackgroundDark

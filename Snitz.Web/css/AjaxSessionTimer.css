@@ -23,8 +23,8 @@
         font-weight: bold;
       }
       #divAjaxTitle{
-        background-color: blue;
-        background-image: url("/images/top-bar.gif");
+        background-color: #000;
+        
         color: white;
       }
       #divAjaxContent{

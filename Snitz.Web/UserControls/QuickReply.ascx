@@ -100,9 +100,10 @@
                             <table style="border-collapse: collapse; border-left: solid 1px #aaaaff; border-top: solid 1px #aaaaff;"
                                 runat="server" cellpadding="3" id="clientSide" />
                         </div>
+                            <caption>
                                 <br />
                                 <asp:HyperLink ID="updPost" runat="server" NavigateUrl="#">Insert link into post</asp:HyperLink>
-
+                        </caption>
                     </div>
                 </div>
             </div>

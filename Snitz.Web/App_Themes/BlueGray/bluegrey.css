@@ -107,9 +107,9 @@ img.captchaImage
 
 .emptyrow{text-align:center;}
 
-.category{background-color: #0FA1B8; height: 24px;background-image:url(/images/cat-bar.gif)}
-tr.category {background-image:url(/images/cat-bar.gif);}
-td.category, .row td.categorylink{background-color: #0FA1B8; height: 24px;padding-top:4px;background-image:url(/images/cat-bar.gif)}
+.category{background-color: #0FA1B8; height: 24px;background-image:url(images/cat-bar.gif)}
+tr.category {background-image:url(images/cat-bar.gif);}
+td.category, .row td.categorylink{background-color: #0FA1B8; height: 24px;padding-top:4px;background-image:url(images/cat-bar.gif)}
 .categorylink,th.categorylink ,td.categorylink {color:#ffffff;font-size:1.2em;font-weight:bold;}
 .CategoryExpanded{
 	background-image: url(/images/collapse_blue.png);

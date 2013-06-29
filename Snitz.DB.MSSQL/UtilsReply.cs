@@ -76,7 +76,7 @@ namespace SnitzData
                 }
                 else
                 {
-                    topic.UnModeratedReplies += 1;
+                    //topic.UnModeratedReplies += 1;
                 }
                 dc.SubmitChanges();
                 if (subType != Enumerators.Subscription.None && reply.Status != Enumerators.PostStatus.UnModerated)
@@ -189,9 +189,15 @@ namespace SnitzData
             using (SnitzDataClassesDataContext dc = new SnitzDataClassesDataContext())
             {
                 Reply reply = dc.Replies.SingleOrDefault(r => r.Id == replyid);
+                Topic topic = dc.Topics.SingleOrDefault(t => t.Id == reply.TopicId);
+                if (reply.Status == Enumerators.PostStatus.UnModerated && status == Enumerators.PostStatus.Open)
+                {
+                    topic.UnModeratedReplies -= 1;
+                }
                 reply.R_STATUS = (short)status;
+
                 dc.SubmitChanges();
-                UpdateLastForumPost(reply.ForumId);
+                UpdateLastTopicPost(topic.Id);
             }
         }
         /// <summary>

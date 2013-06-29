@@ -224,9 +224,14 @@ namespace SnitzData
                              where subs.ForumId == topic.ForumId && subs.TopicId == 0
                              select subs.MemberId).ToArray();
                     }
-                    strSubject = Config.ForumTitle + " - New posting";
+                    if (memberid.Length > 0)
+                    {
+                        strSubject = Config.ForumTitle + " - New posting";
 
-                    Message.AppendFormat("{0} has posted to the forum {1} at {2} that you requested notification on.", topic.Author.Name, topic.Forum.Subject, Config.ForumTitle);
+                        Message.AppendFormat(
+                            "{0} has posted to the forum {1} at {2} that you requested notification on.",
+                            topic.Author.Name, topic.Forum.Subject, Config.ForumTitle);
+                    }
                     break;
                 case Enumerators.Subscription.TopicSubscription:
                     using (LookupsDataContext dc = new LookupsDataContext())
@@ -236,9 +241,11 @@ namespace SnitzData
                              where subs.TopicId == topic.Id
                              select subs.MemberId).ToArray();
                     }
-
-                    strSubject = Config.ForumTitle + " - Reply to a posting";
-                    Message.AppendFormat("{0} has replied to a topic on <b>{1}</b> that you requested notification to.", reply.Author.Name, Config.ForumTitle);
+                    if (memberid.Length > 0)
+                    {
+                        strSubject = Config.ForumTitle + " - Reply to a posting";
+                        Message.AppendFormat("{0} has replied to a topic on <b>{1}</b> that you requested notification to.", reply.Author.Name, Config.ForumTitle);  
+                    }
 
                     break;
             }

@@ -192,12 +192,21 @@
                         <ItemTemplate>
                             <asp:ImageButton ID="TopicLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lbllock %>"
+                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Lock', 'Do you want to lock the topic?');
+            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Lock Topic ?'},'confirmHandlers.BeginRecieve');
+            return false;"
                                 CausesValidation="False" EnableViewState="False" OnClick="LockTopic" />
                             <asp:ImageButton ID="TopicUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lblUnlock %>"
+                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the topic?');
+            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'UnLock Topic ?'},'confirmHandlers.BeginRecieve');
+            return false;"
                                 CausesValidation="False" EnableViewState="False" OnClick="UnLockTopic" />
                             <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>"
+                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the topic?');
+            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Delete Topic ?'},'confirmHandlers.BeginRecieve');
+            return false;"
                                 CausesValidation="False" EnableViewState="False" OnClick="DeleteTopic" />
                             <asp:HyperLink rel="nofollow" ID="hypEditTopic" SkinID="EditTopic" runat="server"
                                 Visible="False" Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
@@ -206,10 +215,14 @@
                             <asp:HyperLink rel="nofollow" ID="hypNewTopic" SkinID="NewTopic" runat="server" Text="<%$ Resources:webResources, lblNewTopic %>"
                                 ToolTip="<%$ Resources:webResources, lblNewTopic %>"></asp:HyperLink>
                             <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>' CommandName="sub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" 
+                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to be notified when someone posts a reply?');
+            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Subscribe to Topic ?'},'confirmHandlers.BeginRecieve');
+            return false;"
                                 CausesValidation="False" EnableViewState="False" OnClick="TopicSubscribe" />
                             <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" 
+                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Remove', 'Do you want to remove notifications from topic?');
+            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to remove notifications from topic?'},'confirmHandlers.BeginRecieve');
+            return false;"
                                 CausesValidation="False" EnableViewState="False" OnClick="TopicSubscribe" />
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />

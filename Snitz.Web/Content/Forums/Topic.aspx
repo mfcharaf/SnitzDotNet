@@ -67,11 +67,18 @@
         }
         function ApprovePost(topicid, replyid) {
             PageMethods.Approval(topicid, replyid);
-            __doPostBack("", "");
+            var millisecondsToWait = 500;
+            setTimeout(function () {
+                location.reload();
+            }, millisecondsToWait);
+            
         }
         function OnHold(topicid, replyid) {
             PageMethods.PutOnHold(topicid, replyid);
-            __doPostBack("", "");
+            var millisecondsToWait = 500;
+            setTimeout(function () {
+                __doPostBack("", "");
+            }, millisecondsToWait);
         }
         function uploadError(sender, args) {
             addToClientTable(args.get_fileName(), "<span style='color:red;'>" + args.get_errorMessage() + "</span>");

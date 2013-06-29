@@ -13,24 +13,5 @@ Default skin template. The following skins are provided as examples only.
 
 <asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
 --%>
-<asp:ImageButton runat="server" SkinID="topicB" ImageUrl="images/buttons/newtopic.gif" />
-<asp:ImageButton runat="server" SkinID="searchB" ImageUrl="images/buttons/search.gif" />
-<asp:ImageButton runat="server" SkinID="editB" ImageUrl="images/buttons/edit.png" />
-<asp:ImageButton runat="server" SkinID="resetB" ImageUrl="images/buttons/reset.gif" />
-<asp:ImageButton runat="server" SkinID="cancelB" ImageUrl="images/buttons/cancel.gif" />
-<asp:ImageButton runat="server" SkinID="agreeB" ImageUrl="images/buttons/agree.gif" />
-<asp:ImageButton runat="server" SkinID="finishB" ImageUrl="images/buttons/finish.gif" />
-<asp:ImageButton runat="server" SkinID="submitB" ImageUrl="images/buttons/submit.gif" />
-<asp:ImageButton runat="server" SkinID="attachB" ImageUrl="images/buttons/attach.gif" />
-<asp:ImageButton runat="server" SkinID="previewB" ImageUrl="images/buttons/preview.gif" />
-<asp:ImageButton runat="server" SkinID="uploadB" ImageUrl="images/buttons/upload.gif" />
-<asp:ImageButton runat="server" SkinID="updateB" ImageUrl="images/buttons/update.gif" />
-<asp:ImageButton runat="server" SkinID="prevB" ImageUrl="images/buttons/prev.gif" />
-<asp:ImageButton runat="server" SkinID="nextB" ImageUrl="images/buttons/next.gif" />
-<asp:ImageButton runat="server" SkinID="sendB" ImageUrl="images/buttons/send.gif" />
-<asp:ImageButton runat="server" SkinID="continueB" ImageUrl="images/buttons/continue.gif" />
-<asp:ImageButton runat="server" SkinID="spellB" ImageUrl="images/buttons/spell.gif" />
-<asp:ImageButton runat="server" SkinID="subscribeB" ImageUrl="images/buttons/subscribe.gif" />
-<asp:ImageButton runat="server" SkinID="unsubscribeB" ImageUrl="images/buttons/unsubscribe.gif" />
-<asp:ImageButton runat="server" SkinID="MarkRead" ImageUrl="images/admin/markread.png" cssclass="msgIcons"/>
+
 <asp:ImageButton SkinID="ShowIP" runat="server" ImageUrl="Images/message/ip.png" cssclass="msgIcons" />

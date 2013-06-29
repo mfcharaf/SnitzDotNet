@@ -1,0 +1,75 @@
+﻿.mainModalPopup
+{
+	border-width:0px;
+	min-width:440px;
+	width:450px;
+	width:auto !important;
+	max-width:800px;
+	background-color:#ffffff;
+	padding:0px;
+    max-height: 90%;
+    line-height: 1em;
+    font-size: 0.8em;
+}
+.mainModalPopup fieldset{ font-size: inherit;}
+.mainModalBorder
+{
+	border-left: 1px solid #ECE9D8; 
+	border-right: 1px solid #716F64; 
+	border-top: 1px solid #ECE9D8;
+	border-bottom: 1px solid #716F64;
+}
+.mainModalInnerDiv
+{
+	border-width:0px;
+	width:auto;
+}
+.mainModalInnerBorder
+{
+	border-left: 1px solid #FFFFFF; 
+	border-right: 1px solid #ACA899; 
+	border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #ACA899;
+}
+.mainModalDraggablePanelDiv
+{
+    white-space: nowrap;
+    height: 20px;
+    width: 90%;
+    float:left;
+    padding-top: 3px;
+}
+.mainModalDraggablePanelCloseDiv
+{
+	float:right;
+	height: 20px;
+	padding-top: 3px;
+}
+.mainModalDraggablePanel
+{
+	/*cursor:move; */
+	width:100%;
+}
+.mainModalTitle
+{
+	color:#FFFFFF;
+	font-weight:bold;
+}
+.mainModalContent
+{
+
+	background-color:#FFFFFF;
+	margin:4px;
+}
+.modalBackground {
+    background-color: #666666;
+    opacity: 0.8;
+}
+ 
+.modalBackgroundDark
+{
+    background-color: #000000;
+
+}
+#header,#upheader,#brwsheader{width:100%;background:#000;height:26px; vertical-align:middle;background-image:url(images/top-bar.gif)}
+#header a,#upheader a,#brwsheader a{color:White;font-weight:bolder;}

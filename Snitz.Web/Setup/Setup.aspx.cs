@@ -172,6 +172,7 @@ namespace SnitzUI.Setup
                     //no database so lets create one based on the entity diagram
                     updateType.Value = "new";
                     AdminUserRequired.Visible = true;
+                    UpdateDB.Text = "Create Database";
                 }else
                 {
                     //make sure that dbo is the table owner otherwise we will have problems
@@ -181,13 +182,15 @@ namespace SnitzUI.Setup
                     {
                         //no members table so let's create the base forum tables
                         updateType.Value = "empty";
-
+                        UpdateDB.Text = "Create Tables";
                         AdminUserRequired.Visible = true;
                     }
                     else
                     {
                         AdminUserRequired.Visible = false;
+                        UpdateDB.Text = "Upgrade Database";
                         UpdateDatabase("upgrade");
+
                     }
                 }
             }

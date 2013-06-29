@@ -1,0 +1,100 @@
+﻿#PostOptionsDIV{padding-left:5px;text-align:center;}
+input,textarea, select {
+    border-left-width : 1px; 
+    border-right-width : 1px;  
+}
+span.topicPageLnk{border:1px solid silver;padding-right:2px;padding-left:2px;}
+
+.row td
+{
+    border-left: 1px solid #BEF2FA;
+}
+.altrow td
+{
+    border-left: 1px solid #BEF2FA;
+}
+.category, td.category, .row td.categorylink{background-color:#CCCCCC; height: 20px;border-right:1px solid #BEF2FA;border-left:1px solid #BEF2FA;padding-top:4px;}
+.cattitle		{ font-weight: bold; color : #FFFFFF; margin-right:3px;}
+.snitzpager .pagecount
+{
+    margin-left: 2px;
+}
+.snitzpager .pagecount {
+    margin-left: 5px;
+}
+
+/* Topic+Reply */
+.AspNet-FormView {width:100%;margin:0px;background-color:#0FA1B8;padding-left:1px;}
+.AspNet-FormView-Data{padding-left:1px;}
+.topicPrev{float:right;width:20%;padding:3px;font-size:large;}
+.topicNext{float:left;width:auto;padding:3px;font-size:large;}
+#replyHeader{width:100%; text-align:left;border:1px solid #0FA1B8;background-color:#CCCCCC;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px;}
+.leftColumn{float:right;
+	 }
+.MessageDIV{
+	 border-right:1px solid #0FA1B8;
+	 margin-right:187px;
+	 margin-left:0px;
+    }
+	 
+.buttonbarImg{height:auto;display:inline;vertical-align:bottom;float:left;}
+.buttonbarTxt{float:right;}
+.TopIcon{ padding:1px;float:left;}
+blockquote.quoteMessage {
+   margin-right: 50px;
+   padding-right: 15px;
+   border-right: 2px solid #ccc;
+ } 
+ 
+.codehead {
+	padding-right: 8px;
+}
+.scrollcode ol
+{
+    padding: 0.7em 2.8em 0.7em 0;
+}
+.scrollcode ol li {
+    padding-right:4px;
+} 
+.SearchLinks a:link,
+.SearchLinks a:visited
+{
+    margin-left: 2px;
+}
+
+#postForm label{
+ float:right;
+ }
+  #postForm input
+{
+    margin: 0px 10px 2px 0;
+}
+ #postForm select{
+ margin:0px 10px 10px 0;
+ }
+  #postForm input[type="image"]
+ {
+ margin-right:0px;
+ }
+  #postForm input[type="checkbox"]
+ {
+  float:right;
+ }
+   #postForm span.cbx label {
+ float:right;
+ }
+
+#emoticons{width:125px;float:right;top:0px;height:auto;margin-bottom:0px;padding-top:100px;}
+#Editor{float:right;}
+
+.QRLeft{float:right;width:140px;padding-right:5px;}
+.QRRight{margin-right:145px;margin-left:0px;vertical-align:top;}
+
+#ContactFieldset label{
+ float:right;
+ }
+  #ContactFieldset input, #ContactFieldset textarea{
+ margin:0px 10px 10px 0;
+ }
+ 
+
