@@ -101,29 +101,33 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snitz.PrivateMessaging.DB\Snitz.PrivateMessaging.DB.csproj">
-      <Project>{d88fba0d-d2d4-4337-bb72-e33c10264b46}</Project>
-      <Name>Snitz.PrivateMessaging.DB</Name>
+    <ProjectReference Include="..\Snitz.BLL\Snitz.BusinessLayer.csproj">
+      <Project>{531b229d-52ef-458e-91c8-f7bc64fb38c3}</Project>
+      <Name>Snitz.BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
+      <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
+      <Name>Snitz.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Base\Snitz.Base.csproj">
       <Project>{0cbdec20-f26f-49ba-bc77-bcf0234cdc4a}</Project>
       <Name>Snitz.Base</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
       <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
       <Name>Snitz.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Config\Snitz.Config.csproj">
       <Project>{eaac5b1e-e704-4233-97ce-9fd309cebd9f}</Project>
       <Name>Snitz.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.DB.MSSQL\Snitz.DB.MSSQL.csproj">
-      <Project>{3d01fe24-b984-476d-a38a-614f0993ec88}</Project>
-      <Name>Snitz.DB.MSSQL</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Membership\Snitz.Membership.csproj">
       <Project>{7e2a124a-d5d5-4971-b1ff-408efd3b331e}</Project>
       <Name>Snitz.Membership</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +135,18 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PrivateMessage.Designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Snitz.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -159,7 +175,6 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy /s /y "$(ProjectDir)bin\PrivateMessaging.UI.dll" "$(SolutionDir)Snitz.Web\bin\"
-xcopy /s /y "$(ProjectDir)bin\PrivateMessaging.Data.dll" "$(SolutionDir)Snitz.Web\bin\"
 xcopy /s /y "$(ProjectDir)UserControls\PrivateMessaging\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\PrivateMessaging\"
 xcopy /s /y "$(ProjectDir)Content\PrivateMessages\*.aspx" "$(SolutionDir)Snitz.Web\Content\PrivateMessages\"
 xcopy /s /y "$(ProjectDir)App_GlobalResources\*.*" "$(SolutionDir)Snitz.Web\App_GlobalResources\"</PostBuildEvent>

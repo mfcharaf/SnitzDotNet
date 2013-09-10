@@ -1,10 +1,31 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzMembership - ProfileCommon
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Profile;
 using System.Web.Security;
 using System.Web;
-using SnitzCommon;
+using Snitz.Entities;
 
 namespace SnitzMembership
 {
@@ -180,6 +201,100 @@ namespace SnitzMembership
             set
             {
                 this.SetPropertyValue("PublicGallery", value);
+            }
+        }
+        
+        [CustomProviderData("TimeOffset;int")]
+        public virtual int TimeOffset
+        {
+            get
+            {
+                try
+                {
+                    object timeoffset = this.GetPropertyValue("TimeOffset");
+                    if (timeoffset != null)
+                        return Convert.ToInt32(timeoffset);
+                    return 0;
+                }
+                catch (SettingsPropertyNotFoundException)
+                {
+
+                    return 0;
+                }
+            }
+            set
+            {
+                this.SetPropertyValue("TimeOffset", value);
+            }
+        }
+
+        [CustomProviderData("PMEmail;int")]
+        public virtual int? PMEmail
+        {
+            get
+            {
+                try
+                {
+                    object pmemail = this.GetPropertyValue("PMEmail");
+                    if (pmemail != null)
+                        return Convert.ToInt32(pmemail);
+                    return 0;
+                }
+                catch (SettingsPropertyNotFoundException)
+                {
+
+                    return 0;
+                }
+            }
+            set
+            {
+                this.SetPropertyValue("PMEmail", value);
+            }
+        }
+
+        [CustomProviderData("PMReceive;int")]
+        public virtual int? PMReceive
+        {
+            get
+            {
+                try
+                {
+                    object pmreceive = this.GetPropertyValue("PMReceive");
+                    if (pmreceive != null)
+                        return Convert.ToInt32(pmreceive);
+                    return 0;
+                }
+                catch (SettingsPropertyNotFoundException)
+                {
+
+                    return 0;
+                }
+            }
+            set
+            {
+                this.SetPropertyValue("PMReceive", value);
+            }
+        }
+
+        [CustomProviderData("PMLayout;nvarchar")]
+        public virtual string PMLayout
+        {
+            get
+            {
+                try
+                {
+                    object pmlayout = this.GetPropertyValue("PMLayout");
+                    return (string) pmlayout;
+                }
+                catch (SettingsPropertyNotFoundException)
+                {
+
+                    return null;
+                }
+            }
+            set
+            {
+                this.SetPropertyValue("PMLayout", value);
             }
         }
     }

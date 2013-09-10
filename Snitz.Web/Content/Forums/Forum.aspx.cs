@@ -1,44 +1,26 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.Forums - Forum.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
+using System.Linq;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -47,23 +29,31 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzData;
+using Polls = Resources.Polls;
+
 
 namespace SnitzUI
 {
     public partial class ForumPage : PageBase
     {
+        const string session = "FORUMID";
+
         bool _bGetSelectCount;
-        private Forum _currentForum;
+        private ForumInfo _currentForum;
         public bool IsForumModerator;
         private GridPager _replyPager;
         private int RowCount
         {
             get
             {
+                if (ViewState["RowCount"] == null)
+                    return 0;
+
                 return (int)ViewState["RowCount"];
             }
             set
@@ -100,7 +90,7 @@ namespace SnitzUI
             ForumTable.PageSize = Config.TopicPageSize;
 
             if (ForumId != null)
-                IsForumModerator = new SnitzRoleProvider().IsUserForumModerator(HttpContext.Current.User.Identity.Name, ForumId.Value);
+                IsForumModerator = Moderators.IsUserForumModerator(HttpContext.Current.User.Identity.Name, ForumId.Value);
             if (IsAdministrator || IsForumModerator)
             {
                 ddlShowTopicDays.Items.Add(new ListItem("Unmoderated Posts", "999"));
@@ -116,13 +106,13 @@ namespace SnitzUI
             
             if (ForumId != null)
             {
-                _currentForum = Util.GetForum(ForumId.Value);
+                _currentForum = Forums.GetForum(ForumId.Value);
                 if (_currentForum == null) throw new ArgumentException("Invalid Forum ID");
                 if(_currentForum.Type == 1)
                 {
-                    Response.Redirect(_currentForum.URL,true);
+                    Response.Redirect(_currentForum.Url,true);
                 }
-                string session = "FORUM" + ForumId;
+                
                 fLogin.forum = _currentForum;
                 if (!IsPostBack)
                 {
@@ -130,9 +120,9 @@ namespace SnitzUI
                     {
 
                         //do we have access to this forum
-                        if (!SnitzRoleProvider.IsUserInForumRole(Member.Name, ForumId.Value))
+                        if (!Moderators.IsUserInForumRole(Member.Username, ForumId.Value))
                         {
-                            if (Session[session] == null || Session[session].ToString() != "true")
+                            if (Session[session] == null || Session[session].ToString() != ForumId.ToString())
                             {
 
                                 if (_currentForum.Password != null &&
@@ -152,24 +142,28 @@ namespace SnitzUI
                                     }
                                     else
                                     {
-                                        if (Session[session].ToString() != "true")
+                                        if (Session[session].ToString() != ForumId.ToString())
                                             throw new SecurityException("You are not authorised to view this forum");
                                     }
                                 }
                             }
                         }else
                         {
-                            Session[session] = "true";
+                            Session[session] = ForumId.ToString();
                         }
                     }
 
                 }
+                _currentForum.Roles = SnitzRoleProvider.GetForumRoles(_currentForum.Id).ToList();
                 if (!IsAuthenticated && (_currentForum.Roles.Count > 0 && !_currentForum.Roles.Contains("All")))
                 {
-                    if (Session[session] == null || Session[session].ToString() != "true")
+                    if (Session[session] == null || Session[session].ToString() != ForumId.ToString())
                         throw new SecurityException("You must be logged in to view this forum");
                 }
-
+                if (IsAdministrator || IsForumModerator)
+                    Session["IsAdminOrModerator"] = true;
+                else
+                    Session["IsAdminOrModerator"] = false;
 
                 Page.Title = string.Format(webResources.ttlForumPage, _currentForum.Subject,  Config.ForumTitle);
                 lblHotTopic.Text = string.Format(webResources.lblHotTopics, Config.HotTopicNum);
@@ -184,7 +178,7 @@ namespace SnitzUI
                 throw new HttpException(404,"Forum not found");
             }
             InitializeStickyCollapse();
-            BindData();
+            
 
             if (Request.Params["whichpage"] != null)
             {
@@ -199,13 +193,26 @@ namespace SnitzUI
                 }
                 
             }
-
+            if (!IsPostBack)
+            {
+                //create CacheKeyDependency if it does not exists
+                if (Cache[TopicODS.CacheKeyDependency] == null || (int)Cache[TopicODS.CacheKeyDependency] != ForumId)
+                {
+                    object obj = ForumId;
+                    Cache[TopicODS.CacheKeyDependency] = obj;
+                }
+                BindData();
+            }
+                
         }
 
         private void BindData()
         {
+            _currentForum.StickyTopics = Forums.GetStickyTopics(_currentForum.Id);
+
             StickyGrid.DataSource = _currentForum.StickyTopics;
             StickyGrid.DataBind();
+            
             if (_currentForum.StickyTopics.Count == 0)
             {
                 Sticky_HeaderPanel.Visible = false;
@@ -233,7 +240,6 @@ namespace SnitzUI
                 case "0": //All Open Topics
                     Session["LastPostDate"] = "";
                     Session["TopicStatus"] = Enumerators.PostStatus.Open;
-                    //ForumTable.DataSource = _Forum.Topics.Where(t => t.Status == Enumerators.PostStatus.Open).ToList();
                     break;
                 case "999" :
                     Session["LastPostDate"] = "";
@@ -246,11 +252,10 @@ namespace SnitzUI
                 default: //Topics within Date Range
                     Session["LastPostDate"] = (newdate - diff).ToForumDateStr();
                     Session["TopicStatus"] = "";
-                    //ForumTable.DataSource = _Forum.Topics.Where(t => t.LastPostDate > (newdate - diff)).ToList();
                     break;
             }
 
-            TopicODS.Select();
+            //TopicODS.Select();
 
         }
      
@@ -275,11 +280,12 @@ namespace SnitzUI
 
         protected void ForumTableRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
+
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var topic = (Topic) e.Row.DataItem;
-
+                var topic = (TopicInfo) e.Row.DataItem;
+                topic.Forum = Forums.GetForum(topic.ForumId);
+                topic.PollId = Topics.GetTopicPollId(topic.Id);
                 string currentUser = HttpContext.Current.User.Identity.Name;
 
                 Image img = GetTopicIcon(topic);
@@ -304,7 +310,7 @@ namespace SnitzUI
                 if(popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
-                    popuplink.Text = topic.LastPostAuthor != null ? Regex.Replace(topic.LastPostAuthor.ProfilePopup, @"\[!(.*)!]", title) : "";
+                    popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
                 if(subscribe != null)
                 {
@@ -316,7 +322,7 @@ namespace SnitzUI
                     unsubscribe.Visible = false;
                     if(subscribe.Visible)
                     {
-                        if(Member.IsSubscribedToTopic(topic.Id))
+                        if(Members.IsSubscribedToTopic(topic.Id,Member.Id))
                         {
                             subscribe.Visible = false;
                             unsubscribe.Visible = true;
@@ -334,22 +340,22 @@ namespace SnitzUI
                 }
                 if (lockIcon != null)
                 {
-                    lockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status != Enumerators.PostStatus.Closed));
+                    lockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status != (int)Enumerators.PostStatus.Closed));
                 }
                 if (unlockIcon != null)
                 {
-                    unlockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status == Enumerators.PostStatus.Closed));
+                    unlockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status == (int)Enumerators.PostStatus.Closed));
                 }
                 if (replyIcon != null)
                     replyIcon.NavigateUrl = "/Content/Forums/post.aspx?method=reply&TOPIC_ID=" + topic.Id;
                 if (noArchiveIcon != null)
                 {
-                    noArchiveIcon.Visible = false; // IsAdministrator && (topic.AllowArchive == 1);
+                    noArchiveIcon.Visible = IsAdministrator && (Topics.IsArchived(topic));
                     noArchiveIcon.NavigateUrl = "javascript:openConfirmDialog('pop_archive.aspx?archive=0&ID=" + topic.Id + "')";
                 }
                 if (archiveIcon != null)
                 {
-                    archiveIcon.Visible = false;  //IsAdministrator && (topic.AllowArchive == 0);
+                    archiveIcon.Visible = IsAdministrator && (Topics.AllowArchive(topic));
                     archiveIcon.NavigateUrl = "javascript:openConfirmDialog('pop_archive.aspx?archive=1&ID=" + topic.Id + "')";
                 }
                 if (delIcon != null)
@@ -364,7 +370,7 @@ namespace SnitzUI
                 if(approve != null)
                 {
                     approve.Visible = false;
-                    if (topic.Status == Enumerators.PostStatus.UnModerated || topic.Status == Enumerators.PostStatus.OnHold)
+                    if (topic.Status == (int)Enumerators.PostStatus.UnModerated || topic.Status == (int)Enumerators.PostStatus.OnHold)
                         approve.Visible = (IsForumModerator || IsAdministrator);
                     approve.OnClientClick = string.Format(
                         "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0}'}}, 'methodHandlers.BeginRecieve');return false;",
@@ -385,13 +391,13 @@ namespace SnitzUI
                     if (delIcon != null) delIcon.Visible = true;
                     if (editIcon != null) editIcon.Visible = true;
                 }
-                else if (topic.Status == Enumerators.PostStatus.Closed || topic.Forum.Status == Enumerators.PostStatus.Closed)
+                else if (topic.Status == (int)Enumerators.PostStatus.Closed ||topic.Forum.Status == (int)Enumerators.PostStatus.Closed)
                 {
                     if (replyIcon != null) replyIcon.Visible = false;
                     if (delIcon != null) delIcon.Visible = false;
                     if (editIcon != null) editIcon.Visible = false;
                 }
-                else if (currentUser.ToLower() == topic.Author.Name.ToLower())
+                else if (currentUser.ToLower() == topic.AuthorName.ToLower())
                 {
                     if (delIcon != null) delIcon.Visible = (topic.ReplyCount == 0);
                     if (editIcon != null) editIcon.Visible = true;
@@ -412,7 +418,7 @@ namespace SnitzUI
             }
         }
 
-        private Image GetTopicIcon(Topic topic)
+        private Image GetTopicIcon(TopicInfo topic)
         {
             var image = new Image { ID = "imgTopicIcon" };
             string _new = "";
@@ -429,7 +435,7 @@ namespace SnitzUI
             }
             if (topic.ReplyCount >= Config.HotTopicNum)
                 hot = "Hot";
-            switch (topic.Status)
+            switch ((Enumerators.PostStatus)topic.Status)
             {
                 case Enumerators.PostStatus.Open:
                     locked = "";
@@ -459,12 +465,12 @@ namespace SnitzUI
 
             image.SkinID = "Folder" + _new + hot +  sticky + locked;
 
-            if (topic.Status == Enumerators.PostStatus.UnModerated)
+            if (topic.Status == (int)Enumerators.PostStatus.UnModerated)
             {
                 image.ToolTip = webResources.Unmoderatedpost;
                 image.SkinID = "UnModerated";
             }
-            if (topic.Status == Enumerators.PostStatus.OnHold)
+            if (topic.Status == (int)Enumerators.PostStatus.OnHold)
             {
                 image.ToolTip = webResources.TopicOnHold;
                 image.SkinID = "OnHold";
@@ -474,7 +480,7 @@ namespace SnitzUI
                 image.ToolTip = webResources.UnmoderatedPosts;
                 image.SkinID = "UnmoderatedPosts";
             }
-            if (topic.PollID > 0)
+            if (topic.PollId > 0)
             {
                 image.ToolTip = Polls.lblPoll;
                 image.SkinID = "Poll";
@@ -490,11 +496,11 @@ namespace SnitzUI
                 SiteMapNode tempNode = currentNode;
 
                 tempNode.Title = _currentForum.Subject.CleanForumCodeTags();
-                if(_currentForum.ModerationLevel != Enumerators.Moderation.UnModerated)
+                if (_currentForum.ModerationLevel != (int)Enumerators.Moderation.UnModerated)
                 {
-                    tempNode.Title += String.Format(" ({0})", EnumHelper.GetDescription(_currentForum.ModerationLevel));
+                    tempNode.Title += String.Format(" ({0})", EnumHelper.GetDescription((Enumerators.Moderation)_currentForum.ModerationLevel));
                 }
-                if(_currentForum.Status == Enumerators.PostStatus.Closed)
+                if (_currentForum.Status == (int)Enumerators.PostStatus.Closed)
                 {
                     tempNode.Title += webResources.ForumIsLocked;
                 }
@@ -506,6 +512,11 @@ namespace SnitzUI
         protected void TopicOdsSelecting(object sender, ObjectDataSourceSelectingEventArgs e)
         {
             _bGetSelectCount = e.ExecutingSelectCount;
+            if (e.ExecutingSelectCount)
+            {
+                //Cancel the event   
+                return;
+            }
         }
 
         protected void TopicOdsSelected(object sender, ObjectDataSourceStatusEventArgs e)
@@ -520,37 +531,51 @@ namespace SnitzUI
 
         protected void DeleteTopic(object sender, ImageClickEventArgs e)
         {
+            var lbl = UpdateProgress1.FindControl("lblProgress");
+            if (lbl != null)
+                ((Label) lbl).Text = "Deleting Topic";
             var btn = (ImageButton) sender;
-            Util.DeleteTopic(Convert.ToInt32(btn.CommandArgument));
+            Topics.Delete(Convert.ToInt32(btn.CommandArgument));
+            InvalidateCache();
             ForumTable.DataBind();
         }
 
         protected void LockTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Closed);
+            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Closed);
+            InvalidateCache();
             ForumTable.DataBind();
         }
 
         protected void UnLockTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Open);
+            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Open);
+            InvalidateCache();
             ForumTable.DataBind();
         }
 
         protected void StickTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.MakeSticky(Convert.ToInt32(btn.CommandArgument), true);
+            Topics.MakeSticky(Convert.ToInt32(btn.CommandArgument), true);
+            InvalidateCache();
             ForumTable.DataBind();
         }
 
         protected void UnStickTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.MakeSticky(Convert.ToInt32(btn.CommandArgument), false);
+            Topics.MakeSticky(Convert.ToInt32(btn.CommandArgument), false);
+            InvalidateCache();
             ForumTable.DataBind();
+        }
+
+        private void InvalidateCache()
+        {
+            object obj = -1;
+            Cache[TopicODS.CacheKeyDependency] = obj;
         }
 
         protected void FilterTopics(object sender, ImageClickEventArgs e)
@@ -568,10 +593,10 @@ namespace SnitzUI
             switch (btn.CommandName)
             {
                 case "sub" :
-                    Util.AddTopicSubscription(Member.Id, topicid);
+                    Subscriptions.AddTopicSubscription(Member.Id, topicid);
                     break;
                 case "unsub" :
-                    Util.RemoveTopicSubscription(Member.Id, topicid);
+                    Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
                     break;
             }
             
@@ -584,21 +609,21 @@ namespace SnitzUI
             if (!String.IsNullOrEmpty(topicid))
             {
                 int id = Convert.ToInt32(topicid);
-                Topic topic = Util.GetTopic(id);
-
-                Util.SetTopicStatus(id, Enumerators.PostStatus.Open);
+                TopicInfo topic = Topics.GetTopic(id);
+                //topic.Forum = Forums.GetForum(topic.ForumId);
+                Topics.SetTopicStatus(id, (int)Enumerators.PostStatus.Open);
                 if(topic.Forum.SubscriptionLevel == (int)Enumerators.Subscription.ForumSubscription)
-                    Util.ProcessSubscriptions(Enumerators.Subscription.ForumSubscription,topic,null);
+                    Subscriptions.ProcessForumSubscriptions(topic);
 
             }
             if (!String.IsNullOrEmpty(replyid))
             {
                 int id = Convert.ToInt32(replyid);
-                Reply reply = Util.GetReply(id);
-                Topic topic = Util.GetTopic(reply.TopicId);
-                Util.SetReplyStatus(Convert.ToInt32(replyid), Enumerators.PostStatus.Open);
+                ReplyInfo reply = Replies.GetReply(id);
+                TopicInfo topic = Topics.GetTopic(reply.TopicId);
+                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.Open);
                 if(topic.AllowSubscriptions)
-                    Util.ProcessSubscriptions(Enumerators.Subscription.TopicSubscription,topic,reply);
+                    Subscriptions.ProcessTopicSubscriptions(topic, reply);
             }
 
         }
@@ -606,9 +631,9 @@ namespace SnitzUI
         public static void PutOnHold(string topicid, string replyid)
         {
             if (!String.IsNullOrEmpty(topicid))
-                Util.SetTopicStatus(Convert.ToInt32(topicid), Enumerators.PostStatus.OnHold);
+                Topics.SetTopicStatus(Convert.ToInt32(topicid), (int)Enumerators.PostStatus.OnHold);
             if (!String.IsNullOrEmpty(replyid))
-                Util.SetReplyStatus(Convert.ToInt32(replyid), Enumerators.PostStatus.OnHold);
+                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.OnHold);
         }
 
     }

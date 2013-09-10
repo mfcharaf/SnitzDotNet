@@ -5,8 +5,6 @@
 #LoginBox .content {font-size:small;color:White; border:0px;}
 #topsection{background: #111;}
 
-b{font-size: 105%;}
-
 fieldset{padding:5px;font-size:1.1em;border:1px solid #000;margin:3px;}
 legend{color:#000;}
 
@@ -30,14 +28,16 @@ input,textarea, select {
     border-left-width : 1px;  
 }
 input { text-indent : 2px; }
-
+input[type="image"] {
+    background-color: transparent;
+}
 a:link, a:active
 {
-    color: #111;text-decoration: none;
+    color: silver;text-decoration: none;
 }
 a:visited
 {
-    color: Gray;
+    color: #000;
     text-decoration: none;
 }
 a:hover
@@ -51,10 +51,10 @@ a:hover
 a.forumlink 	{ text-decoration: none; }
 a.forumlink:visited
 {
-    color: #ccc;
+    color: #000;
 }
 a.forumlink:hover{ text-decoration: underline; }
-a.active:visited {color:#FFFFFF;}
+a.active:visited {color:#000;}
 .poweredText a, a.poweredText{
 	color:silver;font-size:0.6em;
 }
@@ -62,12 +62,12 @@ a.active:visited {color:#FFFFFF;}
 
  
 .tableheader a{	color: #FFFFFF; font-weight : bold;text-decoration:none;}
-#contentfooterDIV .statsPanelHeader a {color:#111;}
+#contentfooterDIV .statsPanelHeader a {color:#eee;}
 #contentfooterDIV .statsPanelHeader a:hover {text-decoration:none;background:none;}
 span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;}
 
 .allReadButton { 
-    background:url(images/buttons/book.png) no-repeat; 
+    background:url(images/admin/book.png) no-repeat; 
     cursor:pointer; 
     width: 15px; 
     height: 15px; 
@@ -93,7 +93,7 @@ img.captchaImage
 
 .row td
 {
-    background-color: #333;
+    background-color: #444;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;
     vertical-align:top;
@@ -101,16 +101,16 @@ img.captchaImage
 }
 .altrow td
 {
-    background-color: #222;
+    background-color: #333;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;
     vertical-align:top;
     overflow:hidden;
 }
 .row td.CatHeaderRow{background-color:#000;border:0px;}
-.row td.ForumHeaderRow {background-color: #333; color:silver;border:0px;}
+.row td.ForumHeaderRow {background-color: #222; color:silver;border:0px;}
 .row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;}
-.row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;}
+.row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;background-color:#111;}
 .row td.subjectCol, .altrow td.subjectCol {overflow:hidden;max-width:300px;width:300px;}
 
 .emptyrow{text-align:center;}
@@ -132,7 +132,7 @@ td.category, .row td.categorylink{background-color: #000; height: 24px;padding-t
     background-color: transparent;
 }
 .tableheader, th.tableheader, .tableheader th,  td.tableheader {
-    color: #333333;
+    color: #fff;
     font-weight: normal;
     background-color: #111;
     font-size: smaller;
@@ -163,21 +163,26 @@ td.category, .row td.categorylink{background-color: #000; height: 24px;padding-t
 	padding:5px;
 	overflow:hidden;
 }
-
+.categorybuttons {
+    float: right;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 5px;
+}
 .statsPanelHeader{
 	width:100%;
 	color:#FFF;
 	height:30px;
 	font-weight:bold;
     background-color:#000;
-	background-image:url(images/cat-bar.gif);
+	background-image:url(/App_Themes/Dark/images/cat-bar.gif);
 	vertical-align:text-bottom;
 	overflow:hidden;
 }
 .statsPanelHeader img{ margin: 0px;}
 .stickytable
 {
-	background-color: #ECFFFF;
+	background-color: #333;
 	border: 1px solid #000;
 	width:100%;
 	display:inline-table;
@@ -186,7 +191,7 @@ td.category, .row td.categorylink{background-color: #000; height: 24px;padding-t
 tr.rowsticky{border-bottom:1px solid #000;}
 .rowsticky td
 {
-    background-color: #ECFFFF;
+    background-color: #333;
 
 }
 .rowsticky td.iconCol {max-width:20px;width:20px; vertical-align:top;}
@@ -242,12 +247,12 @@ tr.rowsticky{border-bottom:1px solid #000;}
 .topicNext a{font-size:small;text-decoration:none;color:White;}
 
 #replyHeader{width:100%; text-align:right;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px;background-color:#222;}
-.TopicDiv{width:100%;border:1px solid #000;background-color:#111;color:Navy;overflow:hidden;}
+.TopicDiv{width:100%;border:1px solid #000;background-color:#222;color:silver;overflow:hidden;}
 .TopicSubject{width:100%;border:1px solid #000;background-color:#000;color:White;overflow:hidden;}
 .topictitle	{ margin:8px;font-weight:bold; line-height:1.3em; }
 .usertitle	{ font-weight:bold; color:#000; line-height:1.2em; }
-.ReplyDiv{width:100%;border:1px solid #000;background-color:#222;color:#aaa;overflow:hidden !important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left;}
-.AltReplyDiv{width:100%;border:1px solid #000;background-color:#333;color:#eee;overflow:hidden !important;overflow:hidden;}
+.ReplyDiv{width:100%;border:1px solid #000;background-color:#333;color:#aaa;overflow:hidden !important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left;}
+.AltReplyDiv{width:100%;border:1px solid #000;background-color:#444;color:#eee;overflow:hidden !important;overflow:hidden;}
 .leftColumn{float:left;
     min-height:160px;
     width:181px;
@@ -426,7 +431,7 @@ tr.rowsticky{border-bottom:1px solid #000;}
     margin-right: 2px;
 }
 
-#postForm {height:400px;width:auto;margin:auto;padding:3px;height:auto !important;width:75%;border: 1px solid #000;}
+#postForm {height:400px;width:auto;margin:auto;padding:3px;height:auto !important;width:95%;border: 1px solid #000;}
 #postForm label{
  display:inline-block;
  width:140px;
@@ -444,6 +449,7 @@ tr.rowsticky{border-bottom:1px solid #000;}
  width:60px;
  width:auto !important;
  margin:0px 0 10px 10px;
+ background-color: transparent;
  }
   #postForm input[type="image"]
  {
@@ -451,7 +457,6 @@ tr.rowsticky{border-bottom:1px solid #000;}
  margin-left:0px;
  width:88px;
  height:20px;
-
  }
   #postForm input[type="checkbox"]
  {
@@ -466,6 +471,12 @@ tr.rowsticky{border-bottom:1px solid #000;}
  width:350px;
  float:left;
  }
+.PostForm
+{
+    background-color:#222;
+    margin: 0 auto;
+            
+}
  #container:after {
 content:'';
 display:block;
@@ -475,12 +486,12 @@ clear:both;
 #emoticons{width:125px;top:0px;height:auto;margin:auto;}
 #Editor{float:left;}
 
-.QRBox{margin:0px; background-color:White;}
-.QRBox #contentwrapper{background-color:White;}
+.QRBox{margin:0px; background-color:#222;}
+.QRBox #contentwrapper{background-color:#222;}
 .QRHeader{background-color:#000;color:#ffffff;font-weight:bold;height:22px;}
-.QRLeft{width:150px;background-color:White;float: left;}
+.QRLeft{width:150px;background-color:#222;float: left;}
 .QRRight{margin-top:16px;vertical-align:top;float: left;width: 80%;}
-.QRFooter{clear: left;background-color:White;
+.QRFooter{clear: left;background-color:#222;
 width: 100%;
 text-align: center;
 padding: 2px 0;}
@@ -491,7 +502,7 @@ textarea.QRMsgArea{
 }
 
 .profBtn img{padding:1px;}
-input.profBtn{padding:1px;}
+input.profBtn{padding:1px;padding-top: 0px;}
 .NoBorder{border: 0px;}
 
 #ContactFieldset label{
@@ -548,7 +559,7 @@ span.moderation{font-weight:bolder; color:Red;}
 }
 table.smallCal { table-layout:auto;}
 .smallCal table { table-layout:auto;}
-.PMContainer{width:80%;padding:10px;margin:auto;	background-color: white;
+.PMContainer{width:80%;padding:10px;margin:auto;	background-color: #222;
 	border: 1px solid #000;}
 
 
@@ -595,7 +606,7 @@ a.Snitzbutton:hover span{
 .table-bottom{text-align: left;margin: 0px auto;padding: 0px;border:0;}
 .table-bottom-left{float:left;width:50%;}
 .table-bottom-right{margin:0;float:right;width:50%;text-align:right;}
-.table-bottom-footer{clear: both;}
+.table-bottom-footer{clear: both;font-size: smaller;}
 
 .snitzMenu div.AspNet-Menu-Horizontal:after{content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 .snitzMenu div.AspNet-Menu-Horizontal
@@ -703,8 +714,10 @@ a.Snitzbutton:hover span{
 	/* For IE 5.5 - 7 */
 	/*filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');*/
  }
+
  .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none;}
  .announceBox{text-align:center;width:80%;margin:auto;border:3px ridge #EFEFEF; background-color:#efefef;}
 .hidden{ display: none;visibility: hidden;}
+
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

@@ -16,30 +16,13 @@ Default skin template. The following skins are provided as examples only.
 <asp:Image SkinID="XHTML" runat="server" ImageUrl="images/valid-xhtml10.png" AlternateText="Valid XHTML 1.0 Transitional" ToolTip="Valid XHTML 1.0 Transitional" Width=88 Height=31 />
 <asp:Image SkinID="CSS" runat="server" ImageUrl="images/vcss.gif" AlternateText="Valid CSS!" ToolTip="Valid CSS!" Width=88 Height=31 />
 <asp:Image SkinID="LoadingImage" runat="server" ImageUrl="images/activity.gif"/>
-<asp:Image SkinID="EditorBold" ImageUrl="Images/editor/icon_editor_bold.gif" runat="server" Width=20 Height=20/>
-<asp:Image SkinID="EditorCenter" ImageUrl="Images/editor/icon_editor_center.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorCode" ImageUrl="Images/editor/icon_editor_code.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorEmail" ImageUrl="Images/editor/icon_editor_email.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorHR" ImageUrl="Images/editor/icon_editor_hr.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorLeft" ImageUrl="Images/editor/icon_editor_left.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorImage" ImageUrl="Images/editor/icon_editor_image.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorItalicize" ImageUrl="Images/editor/icon_editor_italicize.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorList" ImageUrl="Images/editor/icon_editor_list.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorQuote" ImageUrl="Images/editor/icon_editor_quote.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorRight" ImageUrl="Images/editor/icon_editor_right.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorStrike" ImageUrl="Images/editor/icon_editor_strike.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorUnderline" ImageUrl="Images/editor/icon_editor_underline.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorUrl" ImageUrl="Images/editor/icon_editor_url.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorTextcolour" ImageUrl="Images/editor/icon_editor_textcolor.gif" runat="server" Width=20 Height=20 />
-<asp:Image SkinID="EditorSeperator" ImageUrl="Images/editor/icon_separator.gif" Width=5 Height=21 runat="server"/>
-<asp:Image SkinID="EditorSmilie" ImageUrl="Images/editor/icon_editor_smile.gif" runat="server" Width=20 Height=20 />
 
 <asp:Image SkinID="WebLink" ImageUrl="Images/message/weblink.png" runat="server" Width="16" Height="16" />
 <asp:Image SkinID="Folder" ImageUrl="Images/message/foldernoposts.png" runat="server" Width="16" Height="16" />
 <asp:Image SkinID="FolderHot" ImageUrl="Images/hotold.png" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderLocked" ImageUrl="Images/message/folder_locked.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderLocked" ImageUrl="Images/admin/lock.png" runat="server" Width="16" Height="16" />
 <asp:Image SkinID="FolderNew" ImageUrl="Images/message/foldernewposts.png" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderNewLocked" ImageUrl="Images/message/folder_locked.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderNewLocked" ImageUrl="Images/admin/lock.png" runat="server" Width="16" Height="16" />
 <asp:Image SkinID="FolderSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
 <asp:Image SkinID="FolderHotSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
 <asp:Image SkinID="FolderNewSticky" ImageUrl="Images/icon_folder_new_sticky.gif" runat="server" Width=15 Height=15 />
@@ -58,7 +41,7 @@ Default skin template. The following skins are provided as examples only.
 <asp:Image SkinID="FolderOpenTopic" ImageUrl="Images/icon_folder_open_topic.gif" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="FolderPencil" ImageUrl="Images/icon_folder_pencil.gif" runat="server" Width=16 Height=16 />
 <asp:Image SkinID="FolderUnlocked" ImageUrl="Images/icon_folder_unlocked.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderUnmoderated" ImageUrl="Images/icon_folder_unmoderated.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderUnmoderated" ImageUrl="Images/admin/unmoderated.png" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="UnModerated" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unmoderated.png" GenerateEmptyAlternateText="true"/>
 <asp:Image SkinID="UnModeratedPosts" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/warning.png" GenerateEmptyAlternateText="true"/>
 <asp:Image SkinID="OnHold" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/onhold.png" GenerateEmptyAlternateText="true"/>
@@ -71,7 +54,7 @@ Default skin template. The following skins are provided as examples only.
 
 <asp:Image SkinID="Profile" ImageUrl="Images/icon_profile.gif" runat="server" Width=16 Height=16 />
 <asp:Image SkinID="ProfileLocked" ImageUrl="Images/icon_profile_locked.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="Trashcan" ImageUrl="Images/icon_trashcan.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="Trashcan" ImageUrl="Images/trash.png" runat="server" Width=16 Height=16 />
 
 <asp:Image SkinID="SortAsc" ImageUrl="Images/sort_ascending.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
 <asp:Image SkinID="SortDesc" ImageUrl="Images/sort_descending.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>

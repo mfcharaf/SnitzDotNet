@@ -1,10 +1,33 @@
-﻿
+﻿/*
+####################################################################################################################
+##
+## SnitzMembership - SnitzRoleProvider
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web.Security;
 using System.Configuration.Provider;
-using SnitzMembership;
+using Snitz.Entities;
+using SnitzMembership.Helpers;
 
 namespace Snitz.Providers
 {
@@ -33,13 +56,7 @@ namespace Snitz.Providers
         /// <returns>Array of all available roles</returns>
         public override string[] GetAllRoles()
         {
-            string[] roles;
-            using (var db = new MembershipDataDataContext())
-            {
-                roles = (from r in db.Roles
-                         select r.RoleName).ToArray();
-            }
-            return roles;
+            return BusinessUtil.GetAllRoles();
         }
 
         /// <summary>
@@ -49,14 +66,7 @@ namespace Snitz.Providers
         /// <returns>Array of assigned roles</returns>
         public override string[] GetRolesForUser(string username)
         {
-            string[] roles;
-            using (var db = new MembershipDataDataContext())
-            {
-                roles = (from mg in db.MembersInRoles
-                         where mg.Member.Username == username
-                         select mg.Role.RoleName).ToArray();
-            }
-            return roles;
+            return BusinessUtil.GetRolesForUser(username);
         }
 
         /// <summary>
@@ -64,15 +74,7 @@ namespace Snitz.Providers
         /// </summary>
         public override string[] GetUsersInRole(string roleName)
         {
-            string[] roles;
-            using (var db = new MembershipDataDataContext())
-            {
-                roles = (from r in db.MembersInRoles
-                         where r.Role.RoleName == roleName
-                         select r.Member.Username).ToArray();
-
-            }
-            return roles;
+            return BusinessUtil.GetUsersInRole(roleName);
         }
 
         /*************************************************************************
@@ -87,13 +89,10 @@ namespace Snitz.Providers
             // No need to add if it already exists
             if (!RoleExists(roleName))
             {
-                var r = new Role {RoleName = roleName, LoweredRoleName = roleName.ToLower()};
+                var r = new RoleInfo { RoleName = roleName, LoweredRolename = roleName.ToLower(), Description = roleName };
 
-                using (var db = new MembershipDataDataContext())
-                {
-                    db.Roles.InsertOnSubmit(r);
-                    db.SubmitChanges();
-                }
+                BusinessUtil.AddRole(r);
+
             }
         }
 
@@ -115,13 +114,9 @@ namespace Snitz.Providers
             {
                 throw new ProviderException("Role name already exists.");
             }
-            var r = new Role {RoleId = roleId, RoleName = roleName, LoweredRoleName = roleName.ToLower() , Description = roleDescription};
+            var r = new RoleInfo {Id = roleId, RoleName = roleName, LoweredRolename = roleName.ToLower() , Description = roleDescription};
 
-            using (var db = new MembershipDataDataContext())
-            {
-                db.Roles.InsertOnSubmit(r);
-                db.SubmitChanges();
-            }
+            BusinessUtil.AddRole(r);
 
             return true;
         }
@@ -141,28 +136,17 @@ namespace Snitz.Providers
             // You can only delete an existing role
             if (RoleExists(roleName))
             {
-                using (var db = new MembershipDataDataContext())
+                if (throwOnPopulatedRole)
                 {
-                        int[] users = (from mr in db.MembersInRoles
-                                        where mr.Role.RoleName == roleName
-                                        select mr.Member.UserId).ToArray();
-                    if (throwOnPopulatedRole)
+
+                    if (BusinessUtil.GetUsersInRole(roleName).Any())
                     {
-
-                        if (users.Count() > 0)
-                            throw new ProviderException("Cannot delete roles with users assigned to them");
+                        throw new ProviderException("Cannot delete roles with users assigned to them");
                     }
-
-                    Role r = (from roles in db.Roles
-                                where roles.RoleName == roleName
-                                select roles).FirstOrDefault();
-
-                    db.MembersInRoles.DeleteAllOnSubmit(db.MembersInRoles.Where(mr=>mr.RoleId == r.RoleId));
-                    if (r != null) db.Roles.DeleteOnSubmit(r);
-                    db.SubmitChanges();
-
-                    ret = true;
                 }
+
+                BusinessUtil.DeleteRole(roleName);
+                ret = true;
             }
 
             return ret;
@@ -177,45 +161,7 @@ namespace Snitz.Providers
         /// </summary>
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {
-            // Get the actual available roles
-            string[] allRoles = GetAllRoles();
-
-            // See if any of the given roles match the available roles
-            IEnumerable<string> roles = allRoles.Intersect(roleNames);
-
-            // There were some roles left after removing non-existent ones
-            if (roles.Any())
-            {
-                // Cleanup duplicates first
-                RemoveUsersFromRoles(usernames, roleNames);
-
-                using (var db = new MembershipDataDataContext())
-                {
-                    // Get the user IDs
-                    List<int> mlist = (from members in db.Members
-                                       where usernames.Contains(members.Username)
-                                       select members.UserId).ToList();
-
-                    // Get the role IDs
-                    List<int> rlist = (from r in db.Roles
-                                       where roleNames.Contains(r.RoleName)
-                                       select r.RoleId).ToList();
-
-                    // Fresh list of user-role assignments
-                    var mrlist = new List<MembersInRole>();
-                    foreach (int m in mlist)
-                    {
-                        foreach (int r in rlist)
-                        {
-                            var mr = new MembersInRole {UserId = m, RoleId = r};
-                            mrlist.Add(mr);
-                        }
-                    }
-
-                    db.MembersInRoles.InsertAllOnSubmit(mrlist);
-                    db.SubmitChanges();
-                }
-            }
+            BusinessUtil.AddUsersToRoles(usernames, roleNames);
         }
 
         /// <summary>
@@ -223,26 +169,7 @@ namespace Snitz.Providers
         /// </summary>
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
-            // Get the actual available roles
-            string[] allRoles = GetAllRoles();
-
-            // See if any of the given roles match the available roles
-            IEnumerable<string> roles = allRoles.Intersect(roleNames);
-
-            // There were some roles left after removing non-existent ones
-            if (roles.Any())
-            {
-                using (var db = new MembershipDataDataContext())
-                {
-                    List<MembersInRole> mg = (from members in db.MembersInRoles
-                                               where usernames.Contains(members.Member.Username) &&
-                                               roleNames.Contains(members.Role.RoleName)
-                                               select members).ToList();
-
-                    db.MembersInRoles.DeleteAllOnSubmit(mg);
-                    db.SubmitChanges();
-                }
-            }
+            BusinessUtil.RemoverUsersFromRoles(usernames, roleNames);
         }
 
         /*************************************************************************
@@ -255,23 +182,7 @@ namespace Snitz.Providers
         public override bool IsUserInRole(string username, string roleName)
         {
             // Return status defaults to false
-            bool ret = false;
-
-            if (RoleExists(roleName))
-            {
-                using (var db = new MembershipDataDataContext())
-                {
-                    int c = (from m in db.MembersInRoles
-                             where m.Member.Username == username &&
-                             m.Role.RoleName == roleName
-                             select m).Count();
-
-                    if (c > 0)
-                        ret = true;
-                }
-            }
-
-            return ret;
+            return BusinessUtil.IsUserInRole(username, roleName);
         }
 
         /// <summary>
@@ -299,16 +210,7 @@ namespace Snitz.Providers
 
         public bool RoleExists(int roleid)
         {
-            bool ret;
-            using (var db = new MembershipDataDataContext())
-            {
-                var res = from r in db.Roles
-                          where r.RoleId == roleid
-                          select r;
-                ret = (res.Any());
-            }
-
-            return ret;
+            return BusinessUtil.RoleExists(roleid);
         }
 
         /*************************************************************************
@@ -346,64 +248,13 @@ namespace Snitz.Providers
 
         public static string[] GetForumRoles(int forumId)
         {
-            string[] roles;
-            using (var db = new MembershipDataDataContext())
-            {
-                roles = (from fr in db.ForumRoles
-                         where fr.ForumId == forumId
-                         select fr.Roles.RoleName.Trim()).ToArray();
-
-            }
-
-            return roles;
+            return BusinessUtil.GetForumRoles(forumId);
         }
-
-        public bool IsUserForumModerator(string username, int forumid)
-        {
-            using (var db = new MembershipDataDataContext())
-            {
-                if (!IsUserInRole(username, "Moderator"))
-                    return false;
-                var res = from fm in db.ForumModerators
-                          where fm.ForumId == forumid && fm.Members.Username == username
-                          select fm;
-                return res.Any();
-            }
-        }
-
-        //public Dictionary<int,string> ListAllRoles()
-        //{
-        //    Dictionary<int, string> roles = null;
-        //    using (var db = new MembershipDataDataContext())
-        //    {
-        //        roles = (from r in db.Roles
-        //                 select r).ToDictionary(d => d.RoleId, d => d.RoleName);
-        //    }
-        //    return roles;
-        //}
 
         public Dictionary<int,string> ListAllRolesForUser(string username)
         {
-            Dictionary<int, string> roles;
-            using (var db = new MembershipDataDataContext())
-            {
-                roles = (from mg in db.MembersInRoles
-                         where mg.Member.Username == username
-                         select mg.Role).ToDictionary(d => d.RoleId, d => d.RoleName);
-            }
-            return roles;
+            return BusinessUtil.GetRoleListForUser(username);
         }
-
-        //public static List<Member> ListRoleMembers(string rolename)
-        //{
-        //    using (var db = new MembershipDataDataContext())
-        //    {
-        //        var res = (from mr in db.MembersInRoles
-        //                   where mr.Role.RoleName == rolename
-        //                   select mr.Member).ToList();
-        //        return res;
-        //    }
-        //}
 
         /*************************************************************************
          * Private helper methods
@@ -417,91 +268,28 @@ namespace Snitz.Providers
             return configValue;
         }
         
-        public static bool IsUserInForumRole(string username, int forumid)
+
+
+        public static RoleInfo GetRoleFull(int roleid)
         {
-            if (Roles.IsUserInRole("Administrator"))
-                return true;
-            using (var db = new MembershipDataDataContext())
-            {
-                //is the forum restricted
-                var forumroles = (from fr in db.ForumRoles where fr.ForumId == forumid select fr);
-                if (!forumroles.Any())
-                    return true;
-                if (forumroles.Count() == 1)
-                {
-                    if (forumroles.Single().Roles.LoweredRoleName == "all")
-                        return true;
-                }
-                var res = (from fr in db.ForumRoles
-                           where fr.ForumId == forumid
-                           join mr in db.MembersInRoles on fr.RoleId equals mr.RoleId
-                           where mr.Member.Username == username
-                           select mr.Member).Count();
-                return res > 0;
-            }
+            return BusinessUtil.GetRoleFull(roleid);
         }
 
-        public static Role GetRoleFull(int roleid)
+        public static IEnumerable<RoleInfo> GetAllRolesFull()
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                return (from r in db.Roles where r.RoleId == roleid select r).SingleOrDefault();
-            }
-        }
-
-        public static IEnumerable<Role> GetAllRolesFull()
-        {
-            using (var db = new MembershipDataDataContext())
-            {
-                return (from r in db.Roles select r).ToList();
-            }
+            return BusinessUtil.GetAllRolesFull();
         }
 
         public static void AddRolesToForum(int forumId, string[] newroles)
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                List<string> rolesToAdd = newroles.ToList();
-                var existingroles = (from fr in db.ForumRoles where fr.ForumId == forumId select fr);
-                var removeroles = new List<int>();
-                foreach (ForumRole existingrole in existingroles)
-                {
-                    if (!newroles.Contains(existingrole.Roles.LoweredRoleName))
-                    {
-                        removeroles.Add(existingrole.Id);
-                    }
-                    else if(newroles.Contains(existingrole.Roles.LoweredRoleName))
-                    {
-                        rolesToAdd.Remove(existingrole.Roles.LoweredRoleName);
-                    }
-                }
-                
-                db.ForumRoles.DeleteAllOnSubmit(db.ForumRoles.Where(f=> removeroles.Contains(f.Id)));
-                db.SubmitChanges();
-
-                var addroles = from role in db.Roles where rolesToAdd.Contains(role.LoweredRoleName) select role;
-                foreach (Role role in addroles)
-                {
-                    var forumRole = new ForumRole {ForumId = forumId, RoleId = role.RoleId};
-                    db.ForumRoles.InsertOnSubmit(forumRole);
-                }
-                db.SubmitChanges();
-            }
+            BusinessUtil.AddRolesToForum(forumId, newroles);
         }
 
         public static void UpdateRoleInfo(int roleid, string name, string description)
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                Role role = (from r in db.Roles where r.RoleId == roleid select r).Single();
-                if(role != null)
-                {
-                    role.RoleName = name;
-                    role.Description = description;
-                    db.SubmitChanges();
-                }
-            }
+            BusinessUtil.UpdateRoleInfo(roleid, name, description);
         }
+
     }
 }
 

@@ -23,7 +23,7 @@
     </LoggedInTemplate>
     <AnonymousTemplate>
         <div class="loggedout">
-            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Account/Register.aspx" ToolTip='<%$ Resources:SiteMapLocalizations,RegisterPageTitle %>' Text="<%$ Resources:SiteMapLocalizations,RegisterPageTitle %>"></asp:HyperLink>&nbsp;|&nbsp;<asp:LoginStatus runat="server" id="LO2" SkinID="NewLoginStatus" />
+            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Account/Register.aspx" ToolTip='<%$ Resources:SiteMapLocalizations,RegisterPageTitle %>' Text="<%$ Resources:SiteMapLocalizations,RegisterPageTitle %>"></asp:HyperLink>&nbsp;|&nbsp;<a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a>
         </div>
     </AnonymousTemplate>
 </asp:LoginView>

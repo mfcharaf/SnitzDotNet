@@ -38,6 +38,7 @@
 using System;
 using System.IO;
 using System.Web.UI;
+using Snitz.BLL;
 
 
 public partial class Admin_Statistics : UserControl
@@ -45,7 +46,7 @@ public partial class Admin_Statistics : UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        lblDBSize.Text = SnitzData.Util.GetDBSize();
+        lblDBSize.Text = Admin.GetDBSize();
         lblAvatar.Text = GetAvatarInfo();
         lblFiles.Text = GetTotalFiles();
         lblForumVersion.Text = SnitzBase.Version.Current;

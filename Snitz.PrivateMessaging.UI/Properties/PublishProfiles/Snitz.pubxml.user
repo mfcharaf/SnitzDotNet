@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="App_GlobalResources/PrivateMessage.resx">
+      <publishTime>11/11/2012 20:50:31</publishTime>
+    </File>
+    <File Include="bin/PrivateMessaging.Data.dll">
+      <publishTime>07/21/2013 13:02:14</publishTime>
+    </File>
+    <File Include="bin/PrivateMessaging.UI.dll">
+      <publishTime>07/21/2013 22:12:30</publishTime>
+    </File>
+    <File Include="bin/RealWorld.Grids.dll">
+      <publishTime>08/28/2007 07:58:12</publishTime>
+    </File>
+    <File Include="bin/Snitz.ThirdParty.dll">
+      <publishTime>06/28/2013 21:53:39</publishTime>
+    </File>
+    <File Include="bin/SnitzBase.dll">
+      <publishTime>07/21/2013 13:02:16</publishTime>
+    </File>
+    <File Include="bin/SnitzCommon.dll">
+      <publishTime>07/21/2013 13:02:12</publishTime>
+    </File>
+    <File Include="bin/SnitzConfig.dll">
+      <publishTime>07/21/2013 13:02:11</publishTime>
+    </File>
+    <File Include="bin/SnitzMembership.dll">
+      <publishTime>07/21/2013 13:02:14</publishTime>
+    </File>
+    <File Include="bin/SnitzSQLData.dll">
+      <publishTime>07/21/2013 13:02:15</publishTime>
+    </File>
+    <File Include="Content/PrivateMessages/PrivateMessageView.aspx">
+      <publishTime>07/21/2013 17:26:47</publishTime>
+    </File>
+    <File Include="UserControls/PrivateMessaging/PMAlert.ascx">
+      <publishTime>11/11/2012 21:35:44</publishTime>
+    </File>
+    <File Include="UserControls/PrivateMessaging/pmSend.ascx">
+      <publishTime>11/11/2012 20:51:43</publishTime>
+    </File>
+    <File Include="UserControls/PrivateMessaging/pmView.ascx">
+      <publishTime>06/30/2013 08:07:47</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>07/21/2013 18:16:52</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

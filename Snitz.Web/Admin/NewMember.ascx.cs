@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
 using Snitz.Providers;
 using SnitzConfig;
 

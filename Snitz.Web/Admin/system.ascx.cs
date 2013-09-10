@@ -17,7 +17,7 @@ public partial class Admin_system : UserControl
         tbxCopyright.Text = Config.Copyright;
         tbxHomeUrl.Text = Config.HomeUrl;
         tbxForumUrl.Text = Config.ForumUrl;
-        tbxTheme.Text = Config.DefaultTheme;
+        tbxTheme.Text = Config.UserTheme;
         tbxVersion.Text = SnitzBase.Version.Current;
         chkRightColum.Checked = Config.ShowRightColumn;
         chkShowHeaderAds.Checked = Config.ShowHeaderAds;

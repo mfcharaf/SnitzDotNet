@@ -18,7 +18,7 @@
         <br />
         <span class="smallText">last post by:&nbsp;<asp:Literal 
                         ID="popuplink" runat="server" 
-                        Text='<%# Eval("LastPostAuthor.ProfilePopup") %>' EnableViewState="False"></asp:Literal>&nbsp;<asp:HyperLink
+                        Text='<%# Eval("LastPostAuthorPopup") %>' EnableViewState="False"></asp:Literal>&nbsp;<asp:HyperLink
                         ID="lpLnk" runat="server" CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&amp;whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                         ToolTip="<%$ Resources:webResources, lblLastPostJump %>" 
                         Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>&nbsp;

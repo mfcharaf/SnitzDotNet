@@ -54,7 +54,7 @@ public partial class QuickReply {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::SnitzUI.UserControls.emoticons emoticons1;
+    protected global::SnitzUI.UserControls.Emoticons emoticons1;
     
     /// <summary>
     /// cbxSig control.
@@ -109,15 +109,6 @@ public partial class QuickReply {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-    
-    /// <summary>
-    /// Panel1_RoundedCornersExtender control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::AjaxControlToolkit.RoundedCornersExtender Panel1_RoundedCornersExtender;
     
     /// <summary>
     /// fUpload control.

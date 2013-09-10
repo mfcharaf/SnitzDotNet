@@ -26,14 +26,14 @@
 </asp:Content>
 <asp:Content runat="server" ID="head" ContentPlaceHolderID="CPHead">
 
-    <script src="/scripts/bbcode.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.js" type="text/javascript"></script>
+    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
+    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         //Parse the bbcode
         $(document).ready(function () {
             $(".bbcode").each(function () {
                 var test = $(this).text();
-                $(this).html(parseBBCode(parseEmoticon($(this).text())));
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
         });
         // This section Keeps the memory for the collapsible panels in the menu pane
@@ -91,6 +91,38 @@
 
 <asp:Content runat="server" ID="Cph1" ContentPlaceHolderID="CPH1">
     <uc2:ForumLogin ID="fLogin" runat="server"></uc2:ForumLogin>
+        <script type="text/javascript" language="javascript">
+<!--
+
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            var postBackElement;
+
+            function CancelAsyncPostBack() {
+                if (prm.get_isInAsyncPostBack()) {
+                    prm.abortPostBack();
+                }
+            }
+
+            prm.add_initializeRequest(InitializeRequest);
+            prm.add_endRequest(EndRequest);
+
+            function InitializeRequest(sender, args) {
+                if (prm.get_isInAsyncPostBack()) {
+                    args.set_cancel(true);
+                }
+                postBackElement = args.get_postBackElement();
+                if (postBackElement.id == '<%= ddlShowTopicDays.ClientID %>') {
+                    $get('<%= UpdateProgress1.ClientID %>').style.display = 'block';
+                }
+            }
+            function EndRequest(sender, args) {
+                if (postBackElement.id.search("ucSearch") == '<%= ddlShowTopicDays.ClientID %>') {
+                    $get('<%= UpdateProgress1.ClientID %>').style.display = 'none';
+                }
+            }
+
+    // -->
+</script>   
 </asp:Content>
 <asp:Content runat="server" ID="Cphr" ContentPlaceHolderID="CPHR">
     <asp:DropDownList CssClass="ddActiveRefresh" runat="server" ID="ddlShowTopicDays"
@@ -114,6 +146,7 @@
     <uc5:PostButtons ID="pb1" runat="server"></uc5:PostButtons>
 </asp:Content>
 <asp:Content runat="server" ID="Cpm" ContentPlaceHolderID="CPM">
+    
     <asp:UpdatePanel ID="stickyUPD" runat="server" ChildrenAsTriggers="false" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:Panel ID="Sticky_HeaderPanel" runat="server" CssClass="statsPanelHeader" Style="cursor: pointer;">
@@ -147,9 +180,9 @@
                             <ItemStyle VerticalAlign="Top" Width="50%" />
                             <HeaderStyle Width="50%" HorizontalAlign="Left"></HeaderStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Name">
+                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Username">
                             <ItemTemplate>
-                                <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Name") %>'><%# Eval("Author.Name") %></a>
+                                <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Left" Width="80px" VerticalAlign="Top" />
                             <HeaderStyle Width="80px" HorizontalAlign="Left"></HeaderStyle>
@@ -163,14 +196,14 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount" Visible="true">
                             <ItemTemplate>
-                                <%# Common.TranslateNumerals(Eval("ViewCount"))%>
+                                <%# Common.TranslateNumerals(Eval("Views"))%>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
                             <HeaderStyle Width="60px"></HeaderStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
                             <ItemTemplate>
-                                <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthor.ProfilePopup") %>'></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
+                                <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
                                     CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
                             </ItemTemplate>
@@ -235,7 +268,7 @@ return false;"
             </asp:Panel>
             <asp:HiddenField ID="stickystate" runat="server" />
             <ajaxtoolkit:CollapsiblePanelExtender ID="Sticky_Panel_CollapsiblePanelExtender"
-                runat="server" Enabled="True" TargetControlID="StickyPanel"
+                runat="server" Enabled="True" TargetControlID="StickyPanel" SkinID="StickyExpandSkin"
                 CollapseControlID="Sticky_HeaderPanel" ExpandControlID="Sticky_HeaderPanel"
                 ImageControlID="stickyExpand" SuppressPostBack="True" BehaviorID="stickyHide">
             </ajaxtoolkit:CollapsiblePanelExtender>
@@ -243,21 +276,23 @@ return false;"
     </asp:UpdatePanel>
 
     <asp:ObjectDataSource ID="TopicODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="GetForumTopicsPaged" SelectCountMethod="GetForumTopicCount" TypeName="SnitzData.PagedObjects"
-        EnablePaging="True" OnSelected="TopicOdsSelected"
-        OnSelecting="TopicOdsSelecting">
+        SelectMethod="GetForumTopicsSince" SelectCountMethod="GetForumTopicsSinceCount" TypeName="Snitz.BLL.Forums"
+        EnablePaging="True" OnSelected="TopicOdsSelected" EnableCaching="True" EnableViewState="False"
+        OnSelecting="TopicOdsSelecting" CacheKeyDependency="RefreshKey">
         <SelectParameters>
+            <asp:SessionParameter Name="isAdminOrModerator" DefaultValue="false" SessionField="IsAdminOrModerator" Type="Boolean" />
             <asp:SessionParameter Name="forumid" DefaultValue="-1" SessionField="ForumId" Type="Int32" />
             <asp:SessionParameter ConvertEmptyStringToNull="true" Name="topicstatus" DefaultValue="" SessionField="TopicStatus" Type="Int32" />
             <asp:SessionParameter ConvertEmptyStringToNull="true" Name="fromdate" DefaultValue="" SessionField="LastPostDate" Type="String" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
-            <asp:Parameter Name="maximumRows" Type="Int32" />
+            <asp:Parameter Name="maximumRows" DefaultValue="20" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="topicUPD">
         <ProgressTemplate>
-            <asp:Label ID="lblProgress" runat="server" Text="Loading...." Width="200px" BackColor="#FFFF80"
-                ForeColor="Maroon" Font-Bold="True" Style="padding: 5px"></asp:Label>
+            <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+                <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+            </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
     <br style="clear: both;" class="seperator" />
@@ -275,11 +310,11 @@ return false;"
                 <Columns>
                     <asp:TemplateField HeaderText=" ">
                         <HeaderTemplate>
-                            <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# String.Format("~/Handlers/rss.ashx?id={0}", ForumId ) %>' runat="server" ImageUrl="/images/rss.png" ToolTip="rss feed">RSS</asp:HyperLink>
+                            <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# String.Format("~/Handlers/rss.ashx?id={0}", ForumId ) %>' runat="server" SkinID="RSS" ToolTip="rss feed">RSS</asp:HyperLink>
                         </HeaderTemplate>
                         <HeaderStyle Width="20px" />
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                        <ItemTemplate>
+                        <ItemTemplate>&nbsp;
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="Subject">
@@ -291,10 +326,7 @@ return false;"
                                 &nbsp;<asp:HyperLink ID="tLink" runat="server" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}", Eval("Id")) %>'
                                     ToolTip='<%# Eval("Subject")%>' Text='<%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>' /></span>
                             <br />
-
-                            <span class="smallText">
-                                <%# Eval("PageCount")%>
-                                page(s)</span>
+                            <span class="smallText"><%# Eval("PageCount")%> page(s)</span>
                         </ItemTemplate>
                         <HeaderTemplate>
                             <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopic %>"></asp:Label>
@@ -309,7 +341,7 @@ return false;"
                         <HeaderStyle Width="80px" />
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         <ItemTemplate>
-                            <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Name") %>'><%# Eval("Author.Name") %></a>
+                            <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName") %></a>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
@@ -323,14 +355,14 @@ return false;"
                         <HeaderStyle Width="60px" />
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         <ItemTemplate>
-                            <%# Eval("ViewCount") %>
+                            <%# Eval("Views") %>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
                         <HeaderStyle Width="90px" />
                         <ItemStyle HorizontalAlign="Center" CssClass="nowrap"></ItemStyle>
                         <ItemTemplate>
-                            <span class="smallText">by:<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthor.ProfilePopup") %>'></asp:Literal>
+                            <span class="smallText">by:<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>
                                 &nbsp;<asp:HyperLink ID="lpLnk" runat="server"
                                     CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>

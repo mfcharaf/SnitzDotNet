@@ -19,7 +19,7 @@
     
     winprint.document.open();
     winprint.document.write('<html><head><LINK href="/css/print.css" rel="Stylesheet">');
-    winprint.document.write('<script type="text/javascript" src="/scripts/jquery-1.7.1.min.js">');
+    winprint.document.write('<script type="text/javascript" src="/scripts/jquery-1.8.2.min.js">');
     winprint.document.write('<\/script>');
     winprint.document.write('<script type="text/javascript">');
     winprint.document.write('jQuery(function ($) {');

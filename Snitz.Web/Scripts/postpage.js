@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $(".QRMsgArea").markItUp(mySettings);
-    $('#ctl00_CPM_emoticons1_DataList1 a').click(function () {
-        emoticon = $(this).attr("title");
+    $('#emoticons a').click(function () {
+        emoticon = $(this).attr("rel");
         $.markItUp({ replaceWith: emoticon });
     });
     if (updPostId != 'undefined') {

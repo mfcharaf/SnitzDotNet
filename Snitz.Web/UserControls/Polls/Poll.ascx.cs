@@ -1,19 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using Snitz.BLL;
+using Snitz.Entities;
+using SnitzCommon;
 using SnitzConfig;
 
 public partial class Poll : UserControl
 {
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        PollFormView.Visible = (Config.ActivePoll > 0);
-    }
+    protected PageBase page;
 
     #region Public Properties
+    
     public int PollId
     {
         get
@@ -35,35 +37,26 @@ public partial class Poll : UserControl
         }
         set { ViewState["PollEnabled"] = value; }
     }
+
+
     #endregion
 
-    #region SqlDataSource Control Event Handlers
-    /*
-     * The following three event handlers are used to populate the @PollID parameter
-     * based on the User Control's PollID property for assorted SqlDataSource controls...
-     */
-
-    protected void PollAnswersDataSourceSelecting(object sender, LinqDataSourceSelectEventArgs e)
+    protected override void OnInit(EventArgs e)
     {
-        e.WhereParameters.Add("PollID", PollId);
+        base.OnInit(e);
+
+        page = (PageBase)this.Page;
+
     }
-    protected void PollResultsDataSourceSelecting(object sender, SqlDataSourceSelectingEventArgs e)
+    protected void Page_Load(object sender, EventArgs e)
     {
-        e.Command.Parameters["@PollID"].Value = PollId;
+        PollFormView.Visible = (Config.ActivePoll > 0 || ViewState["PollID"] != null);
+        var polls = new List<PollInfo>();
+        polls.Add(Polls.GetTopicPoll(PollId));
+        PollFormView.DataSource = polls;
+        PollFormView.DataBind();
     }
 
-    // Sets the @UserID parameter when voting in order to associate the currently logged on
-    // user's UserId value with the vote.
-    protected void PollAnswersDataSourceInserting(object sender, SqlDataSourceCommandEventArgs e)
-    {
-        int userId = -1;
-        MembershipUser currentUser = Membership.GetUser();
-        if (currentUser != null)
-            if (currentUser.ProviderUserKey != null) userId = (int)currentUser.ProviderUserKey;
-
-        e.Command.Parameters["@UserID"].Value = userId;
-    }
-    #endregion
 
     #region PollFormView DataBound Event Handler
     // This event handler fires when data is bound to the FormView. It shows either
@@ -84,11 +77,27 @@ public partial class Poll : UserControl
         // Show/hide the Panels based on the value of showResults
         var takePollPanel = PollFormView.FindControl("pnlTakePoll") as Panel;
         if (takePollPanel != null)
+        {
+            RadioButtonList choices = (RadioButtonList) takePollPanel.FindControl("rblPollAnswer");
+            if (choices != null)
+            {
+                choices.DataSource = Polls.GetPollChoices(PollId);
+                choices.DataBind();
+            }
             takePollPanel.Visible = !showResults;
+        }
 
         var pollResultsPanel = PollFormView.FindControl("pnlPollResults") as Panel;
         if (pollResultsPanel != null)
+        {
+            DataList results = (DataList) pollResultsPanel.FindControl("resultsDataList");
+            if (results != null)
+            {
+                results.DataSource = Polls.GetResults(PollId);
+                results.DataBind();
+            }
             pollResultsPanel.Visible = showResults;
+        }
 
         var viewCommentsPanel = PollFormView.FindControl("pnlPollComments") as Panel;
         var hTopicId = PollFormView.FindControl("hidTopicId") as HiddenField;
@@ -115,21 +124,6 @@ public partial class Poll : UserControl
     }
     #endregion
 
-    //#region "Vote" Button Click Event Handler
-    //// When the "Vote" button is clicked, this event handler executes. It calls the
-    //// PollAnswersDataSource's Insert() method, thereby INSERTing a record into the
-    //// UserResponses table. It then rebinds the data to the control, which causes the
-    //// poll interface to be updated, showing the poll results (since the user has now
-    //// taken the poll) and with the updated poll results.
-    //protected void btnSubmitVote_Click(object sender, EventArgs e)
-    //{
-    //    SqlDataSource answersDataSource = PollFormView.FindControl("PollAnswersDataSource") as SqlDataSource;
-    //    answersDataSource.Insert();
-
-    //    PollFormView.DataBind();        // rebind the data to the poll interface
-    //}
-    //#endregion
-
     #region ResultsDataList Event Handlers
     // Determines how many total votes have been cast for this poll. Used to determine the
     // percentages for each answer as well as for displaying the total number of votes in
@@ -137,15 +131,7 @@ public partial class Poll : UserControl
     private int _totalVotes;
     protected void ResultsDataListDataBinding(object sender, EventArgs e)
     {
-        // Calculate the total # of votes
-        using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ForumConnectionString"].ConnectionString))
-        {
-            conn.Open();
-            var cmd = new SqlCommand("SELECT COUNT(*) FROM FORUM_POLLRESPONSE r INNER JOIN FORUM_POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID", conn);
-            cmd.Parameters.Add(new SqlParameter("@PollID", PollId));
-            _totalVotes = (int)cmd.ExecuteScalar();
-            conn.Close();
-        }
+        _totalVotes = Polls.GetTotalVotes(PollId);
 
         // Display the # of votes
         var totalVotesLabel = PollFormView.FindControl("TotalVotesLabel") as Label;
@@ -179,39 +165,29 @@ public partial class Poll : UserControl
     }
     #endregion
 
-    #region CanUserTakePoll Method (EXTENSION POINT)
-    // Determines whether a user can take the poll or if the results must be shown.
-    // My implementation only allows authenticated users who have not already taken the
-    // poll to vote. 
-    // EXTENSION POINT: If you want to modify what users can take the poll (such as allowing
-    //                  anonymous users), modify the CanUserTakePoll() method...)
+    #region CanUserTakePoll
+
+    /// <summary>
+    /// Determines whether a user can take the poll or if the results must be shown.
+    /// My implementation only allows authenticated users who have not already taken the poll to vote. 
+    /// EXTENSION POINT: If you want to modify what users can take the poll (such as allowing
+    ///                  anonymous users), modify the CanUserTakePoll() method...)
+    /// </summary>
+    /// <returns>true if user can vote</returns>
     private bool CanUserTakePoll()
     {
         // Anonymous visitors cannot take poll
         if (!Request.IsAuthenticated)
             return false;
 
-        // Determine if this user has already taken this poll... if so, she cannot retake it.
+        // Determine if this user has already taken this poll... if so, they cannot retake it.
         MembershipUser currentUser = Membership.GetUser();
         if (currentUser != null)
         {
             if (currentUser.ProviderUserKey != null)
             {
                 var userId = (int)currentUser.ProviderUserKey;
-                bool hasUserTakenPoll;
-
-                using (var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ForumConnectionString"].ConnectionString))
-                {
-                    conn.Open();
-                    var cmd = new SqlCommand("SELECT COUNT(*) FROM FORUM_POLLRESPONSE r INNER JOIN FORUM_POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID AND r.UserID = @UserID", conn);
-                    cmd.Parameters.Add(new SqlParameter("@PollID", PollId));
-                    cmd.Parameters.Add(new SqlParameter("@UserID", userId));
-
-                    hasUserTakenPoll = ((int)cmd.ExecuteScalar()) > 0;
-                    conn.Close();
-                }
-
-                return hasUserTakenPoll == false;
+                return Polls.CanUserTakePoll(PollId, userId);
             }
         }
 
@@ -219,8 +195,4 @@ public partial class Poll : UserControl
     }
     #endregion
 
-    protected void PollDataSourceSelecting(object sender, LinqDataSourceSelectEventArgs e)
-    {
-        e.WhereParameters.Add("PollID", PollId);
-    }
 }

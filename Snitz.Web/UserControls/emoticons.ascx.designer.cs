@@ -10,7 +10,7 @@
 namespace SnitzUI.UserControls {
     
     
-    public partial class emoticons {
+    public partial class Emoticons {
         
         /// <summary>
         /// DataList1 control.

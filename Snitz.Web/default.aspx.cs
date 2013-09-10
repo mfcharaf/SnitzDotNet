@@ -1,46 +1,28 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI - default.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
-*/
-#endregion
-
+#################################################################################################################### 
+*/ 
+      
+   
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -50,10 +32,13 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
+using SnitzUI.UserControls;
+
 
 public partial class Homepage : PageBase
 {
@@ -62,9 +47,9 @@ public partial class Homepage : PageBase
     {
         base.OnInit(e);
         if (webResources.TextDirection == "rtl")
-            pageCSS.Attributes.Add("href", "css/" + Page.StyleSheetTheme + "/homepagertl.css");
+            pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/homepagertl.css");
         else
-            pageCSS.Attributes.Add("href", "css/" + Page.StyleSheetTheme + "/homepage.css");
+            pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/homepage.css");
 
         string pagedescription = Config.ForumDescription;
         metadescription.Text = String.Format("<meta name=\"description\" content=\"{0}\">", HttpUtility.HtmlEncode(pagedescription));
@@ -73,83 +58,110 @@ public partial class Homepage : PageBase
 
     private void Page_Load(object sender, EventArgs e)
 	{
+        if (Page.IsPostBack)
+        {
+            string postbackbtn = Request.Form["__EVENTTARGET"];
+            string argument = Request.Form["__EVENTARGUMENT"];
+            int id;
+            switch (postbackbtn)
+            {
+                case "ForumDelete":
+                    id = Convert.ToInt32(argument);
+                    DeleteForum(id);
+                    break;
+                case "ForumLock":
+                    id = Convert.ToInt32(argument);
+                    SetForumLockState(id, Enumerators.PostStatus.Closed);
+                    break;
+                case "ForumUnLock":
+                    id = Convert.ToInt32(argument);
+                    SetForumLockState(id, Enumerators.PostStatus.Open);
+                    break;
+                case "ForumEmpty":
+                    id = Convert.ToInt32(argument);
+                    EmptyForum(id);
+                    break;
+                case "ForumSubscribe":
+                    id = Convert.ToInt32(argument);
+                    SubscribeForum(id, false);
+                    break;
+                case "ForumUnSubscribe":
+                    id = Convert.ToInt32(argument);
+                    SubscribeForum(id, true);
+                    break;
+                case "DeleteCategory":
+                    id = Convert.ToInt32(argument);
+                    DeleteCategory(id);
+                    break;
+                case "LockCategory":
+                    id = Convert.ToInt32(argument);
+                    SetCategoryLockState(id, Enumerators.PostStatus.Closed);
+                    break;
+                case "UnLockCategory":
+                    id = Convert.ToInt32(argument);
+                    SetCategoryLockState(id, Enumerators.PostStatus.Open);
+                    break;
+                case "ForumArchive":
+                    id = Convert.ToInt32(argument);
+
+                    Archive.ArchiveForums(new int[] {id}, null);
+                    break;
+
+            }
+        }
+
         Session["TopicId"] = "";
         Session["ForumId"] = "";
         Session["CatId"] = "";
 
-        var cats = Util.ListCategories();
+        var cats = Categories.GetCategories();
         if (CatId != null)
             cats = cats.Where(c => c.Id == CatId).ToList();
-	    repCatDL.DataSource = cats;
+        repCatDL.DataSource = cats;
 
         repCatDL.DataBind();
         Page.Title = string.Format(webResources.ttlDefaultPage, Config.ForumTitle);
         GroupDIV.Visible = Config.ShowGroups;
-
-        WriteJavascript();
+        //WriteJavascript();
 
         var smp = (SiteMapPath)Master.FindControl("SiteMap");
-        if(smp != null)
+        if (smp != null)
             smp.Visible = false;
 	}
 
     private void WriteJavascript()
     {
-        //writes the javascript to collaps categories
-        var sScript = new StringBuilder();
-        sScript.AppendLine("function _getRowIndex(col) {");
-        sScript.AppendLine("var row = col.parentNode;");
-        sScript.AppendLine("var obj = row;");
-        sScript.AppendLine("var rtrn = row.rowIndex || 0;");
-        sScript.AppendLine("if (rtrn == 0) {");
-        sScript.AppendLine("do{");
-        sScript.AppendLine("if (row.nodeType == 1) rtrn++;");
-        sScript.AppendLine("row = row.previousSibling;");
-        sScript.AppendLine("} while (row);");
-        sScript.AppendLine("--rtrn;");
-        sScript.AppendLine("}");
-        sScript.AppendLine("if(obj.parentNode.parentNode.rows[rtrn+1].style.display == 'none'){");
-        sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display = obj.parentNode.parentNode.rows[rtrn].style.display;");
-        sScript.AppendLine("obj.cells[0].className = 'CategoryExpanded';");
-        sScript.AppendLine("}else{");
-        sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display= 'none';");
-        sScript.AppendLine("obj.cells[0].className = 'CategoryCollapsed';");
-        sScript.AppendLine("}");
-        sScript.AppendLine("}");
-        ClientScript.RegisterClientScriptBlock(GetType(), "collapse_cat", sScript.ToString(), true);
-    }
-
-    private static Image GetForumIcon(string username, DateTime lasthere, Enumerators.PostStatus fStatus, DateTime? tLastPost)
-    {
-        var image = new Image { ID = "imgTopicIcon", EnableViewState = false };
-
-        switch (fStatus)
-        {
-            case Enumerators.PostStatus.Open:
-                image.SkinID = "Folder";
-                image.AlternateText = webResources.lblOldPosts;
-                if (username != "")
-                    if (tLastPost > lasthere)
-                    {
-                        image.SkinID = "FolderNew";
-                        image.AlternateText = webResources.lblNewPosts;
-                    }
-                break;
-            default:
-                image.SkinID = "FolderLocked";
-                image.AlternateText = webResources.lblLockedForum;
-                break;
-        }
-        return image;
+        //writes the javascript to collapse categories
+        //var sScript = new StringBuilder();
+        //sScript.AppendLine("function _getRowIndex(col) {");
+        //sScript.AppendLine("var row = col.parentNode;");
+        //sScript.AppendLine("var obj = row;");
+        //sScript.AppendLine("var rtrn = row.rowIndex || 0;");
+        //sScript.AppendLine("if (rtrn == 0) {");
+        //sScript.AppendLine("do{");
+        //sScript.AppendLine("if (row.nodeType == 1) rtrn++;");
+        //sScript.AppendLine("row = row.previousSibling;");
+        //sScript.AppendLine("} while (row);");
+        //sScript.AppendLine("--rtrn;");
+        //sScript.AppendLine("}");
+        //sScript.AppendLine("if(obj.parentNode.parentNode.rows[rtrn+1].style.display == 'none'){");
+        //sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display = obj.parentNode.parentNode.rows[rtrn].style.display;");
+        //sScript.AppendLine("obj.cells[0].className = 'CategoryExpanded';");
+        //sScript.AppendLine("}else{");
+        //sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display= 'none';");
+        //sScript.AppendLine("obj.cells[0].className = 'CategoryCollapsed';");
+        //sScript.AppendLine("}");
+        //sScript.AppendLine("}");
+        //ClientScript.RegisterClientScriptBlock(GetType(), "collapse_cat", sScript.ToString(), true);
     }
 
     protected void CategoryDataListItemDataBound(object sender, RepeaterItemEventArgs e)
-	{
+    {
 	    RepeaterItem item = e.Item;
 	    if( (item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem) )
 	    {
-            var nestedRepeater = (Repeater)item.FindControl("repForum");
-            var cat = (Category)item.DataItem;
+            //var nestedRepeater = (Repeater)item.FindControl("repForum");
+            var cat = (CategoryInfo)item.DataItem;
             var lockIcon = item.FindControl("CatLock") as ImageButton;
             var unlockIcon = item.FindControl("CatUnLock") as ImageButton;
             var editIcon = item.FindControl("EditCat") as ImageButton;
@@ -160,9 +172,7 @@ public partial class Homepage : PageBase
             if(delIcon != null)
             {
                 delIcon.OnClientClick =
-                    "mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the Category?'); " +
-                    "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete the Category?'},'confirmHandlers.BeginRecieve'); " +
-                    "return false;";
+                    "setArgAndPostBack('Do you want to delete the Category?','DeleteCategory'," + cat.Id + ");return false;";
             }
             if (editIcon != null)
             {
@@ -185,25 +195,22 @@ public partial class Homepage : PageBase
             }
             if (lockIcon != null)
             {
-                lockIcon.Visible = ((IsAdministrator) && (cat.Status == Enumerators.PostStatus.Open));
-                lockIcon.OnClientClick = "mainScreen.ShowConfirm(this, 'Confirm Lock', 'Lock?'); " +
-                                         "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to lock the Category?'},'confirmHandlers.BeginRecieve'); " +
-                                         "return false;";
+                lockIcon.Visible = ((IsAdministrator) && (cat.Status == (int)Enumerators.PostStatus.Open));
+                lockIcon.OnClientClick =
+                    "setArgAndPostBack('Do you want to lock the Category?','LockCategory'," + cat.Id + ");return false;";
             }
             if (unlockIcon != null)
             {
-                unlockIcon.Visible = ((IsAdministrator) && (cat.Status == Enumerators.PostStatus.Closed));
-                unlockIcon.OnClientClick = "mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Unlock?'); " +
-                                           "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to unlock the Category?'},'confirmHandlers.BeginRecieve'); " +
-                                           "return false;";
-            }
-	        //RoleList.AddRange(SnitzCachedLists.UserRoles().Select(_role => _role.Key));
-	        List<Forum> allowedForums = cat.Forums.AllowedForums(IsAdministrator);
+                unlockIcon.Visible = ((IsAdministrator) && (cat.Status == (int)Enumerators.PostStatus.Closed));
+                unlockIcon.OnClientClick =
+                    "setArgAndPostBack('Do you want to unlock the Category?','UnLockCategory'," + cat.Id + ");return false;";
 
-            if (allowedForums.Count == 0 && cat.Forums.Count != 0)
+            }
+
+	        cat.ForumCount = Forums.GetForumsByCategory(cat.Id, 0, 1000).Count();
+            if (!Categories.GetCategoryForums(cat.Id, Member).Any() && cat.ForumCount != 0)
                 e.Item.Visible = false;
-            nestedRepeater.DataSource = allowedForums;
-            nestedRepeater.DataBind();
+
 	    }
 	}
     
@@ -211,261 +218,79 @@ public partial class Homepage : PageBase
     {
     }
 
-    protected void RepForumItemDataBound(object sender, RepeaterItemEventArgs e)
+    protected void DeleteCategory(int catid)
     {
-        RepeaterItem item = e.Item;
-        var page = (PageBase)this.Page;
-
-
-        if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
-        {
-
-            var forum = (Forum)item.DataItem;
-
-            var lockIcon = item.FindControl("ForumLock") as ImageButton;
-            var unlockIcon = item.FindControl("ForumUnLock") as ImageButton;
-            var delIcon = item.FindControl("ForumDelete") as ImageButton;
-            var editIcon = item.FindControl("ForumEdit") as ImageButton;
-            var subscribe = item.FindControl("ForumSub") as ImageButton;
-            var unsubscribe = item.FindControl("ForumUnSub") as ImageButton;
-            var empty = item.FindControl("ForumEmpty") as ImageButton;
-            var newIcon = item.FindControl("hypNewTopic") as HyperLink;
-            var popuplink = item.FindControl("popuplink") as Literal;
-            var ldate = (Literal)item.FindControl("lDate");
-            var iconPh = (PlaceHolder)item.FindControl("Ticons");
-
-            var repeater = (RepeaterItem)item.Parent.Controls[0];
-            var header = repeater.FindControl("fTableHeader");
-
-            if (forum.Type == 1) //External link
-            {
-                header.Visible = false;
-                var link = (HyperLink) item.FindControl("forumLink");
-                var linkcol = (HtmlTableCell)item.FindControl("linkCol");
-                var tCount = (HtmlTableCell)item.FindControl("tCount");
-                var pCount = (HtmlTableCell)item.FindControl("pCount");
-                var lastpost = (HtmlTableCell)item.FindControl("lastpost");
-                var buttonCol = (HtmlTableCell)item.FindControl("adminBtn");
-
-                link.NavigateUrl = forum.URL;
-                link.Target = "_blank";
-                linkcol.ColSpan = 4;
-                tCount.Visible = false;
-                pCount.Visible = false;
-                lastpost.Visible = false;
-
-                if (iconPh != null)
-                {
-                    var img = new Image { ID = "imgTopicIcon", SkinID = "WebLink", AlternateText = "", EnableViewState = false };
-                    img.ApplyStyleSheetSkin(Page);
-                    iconPh.Controls.Add(img);
-                }
-                if (!IsAuthenticated)
-                {
-                    buttonCol.Visible = false;
-                    linkcol.ColSpan = 5;
-                    return;
-                }
-                
-            }
-
-            header.Visible = true;
-
-            if (iconPh != null && forum.Type != 1)
-            {
-                var img =
-                    GetForumIcon(HttpContext.Current.User.Identity.Name, LastVisitDateTime, forum.Status,
-                                 forum.LastPostDate);
-                img.ApplyStyleSheetSkin(Page);
-                img.EnableViewState = false;
-                iconPh.Controls.Add(img);
-            }
-            
-            if(ldate != null)
-            {
-                int offset = 0;
-                if (page.Member != null)
-                    offset = page.Member.TimeOffset;
-                if(forum.LastPostDate.HasValue && !(forum.LastPostDate.Value == DateTime.MinValue))
-                    ldate.Text = Common.TimeAgoTag(forum.LastPostDate.Value,page.IsAuthenticated,offset);
-            }
-            bool isForumModerator = new SnitzRoleProvider().IsUserForumModerator(HttpContext.Current.User.Identity.Name, forum.Id);
-
-
-            if (popuplink != null)
-            {
-                string title = String.Format(webResources.lblViewProfile, "$1");
-                popuplink.Text = forum.LastPostAuthor != null ? Regex.Replace(forum.LastPostAuthor.ProfilePopup, @"\[!(.*)!]", title) : "";
-            }
-            if (IsAuthenticated)
-            {
-                if (subscribe != null)
-                {
-                    subscribe.Visible = IsAuthenticated &&
-                                        forum.SubscriptionLevel == (int) Enumerators.Subscription.ForumSubscription;
-                    subscribe.Visible = subscribe.Visible && (forum.Type != 1);
-                    subscribe.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to subscribe to new posts in the Forum?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to subscribe to new posts in the Forum?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
-                }
-                if (unsubscribe != null)
-                {
-                    unsubscribe.Visible = false;
-                    if (subscribe.Visible)
-                    {
-                        if (Member.IsSubscribedToForum(forum.Id))
-                        {
-                            subscribe.Visible = false;
-                            unsubscribe.Visible = true;
-                        }
-                    }
-                    unsubscribe.Visible = unsubscribe.Visible && (forum.Type != 1);
-                    unsubscribe.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Remove Subscription', 'Do you want to remove your subscription for this Forum?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to remove your subscription for this Forum?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
-                }
-                if (newIcon != null)
-                {
-                    newIcon.Visible = IsAuthenticated;
-                    newIcon.Visible = newIcon.Visible && forum.Status != Enumerators.PostStatus.Closed;
-                    newIcon.Visible = newIcon.Visible || (IsAdministrator || isForumModerator);
-                    newIcon.NavigateUrl = string.Format("~/Content/Forums/post.aspx?method=topic&FORUM={0}&CAT={1}",
-                                                        forum.Id, forum.CatId);
-                    newIcon.Visible = newIcon.Visible && (forum.Type != 1);
-                }
-                if (lockIcon != null)
-                {
-                    lockIcon.Visible = ((IsAdministrator || isForumModerator) && (forum.Status == Enumerators.PostStatus.Open));
-                    lockIcon.Visible = lockIcon.Visible && (forum.Type != 1);
-                    lockIcon.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Lock', 'Do you want to lock the Forum?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to lock the Forum?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
-                }
-                if (unlockIcon != null)
-                {
-                    unlockIcon.Visible = ((IsAdministrator || isForumModerator) &&
-                                          (forum.Status == Enumerators.PostStatus.Closed));
-                    unlockIcon.Visible = unlockIcon.Visible && (forum.Type != 1);
-                    unlockIcon.OnClientClick =
-                        " mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the Forum?');" +
-                        " mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to unlock the Forum?'},'confirmHandlers.BeginRecieve');" +
-                        " return false;";
-                }
-                if (delIcon != null)
-                {
-                    delIcon.Visible = IsAdministrator;
-                    delIcon.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the Forum?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete the Forum?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
-                }
-                if (editIcon != null)
-                {
-                    editIcon.OnClientClick = string.Format(
-                        "mainScreen.LoadServerControlHtml(' Edit Properties',{{'pageID':8,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
-                        forum.Id, forum.CatId,forum.Type);
-                    editIcon.Visible = (IsAdministrator || isForumModerator);
-                }
-                if (empty != null)
-                {
-                    empty.Visible = empty.Visible && (forum.Type != 1);
-                    empty.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Empty', 'Do you want to delete all the posts in the Forum?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to delete all the posts in the Forum?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
-                }
-            }else
-            {
-                var buttonCol = (HtmlTableCell)item.FindControl("adminBtn");
-                var lastpost = (HtmlTableCell)item.FindControl("lastpost");
-                buttonCol.Visible = false;
-                lastpost.ColSpan = 2;
-            }
-
-        }
-    }
-
-    #region ImageButton Events
-
-    protected void LockForum(object sender, ImageClickEventArgs e)
-    {
-        var btn = (ImageButton)sender;
-        Util.SetForumStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Closed);
+        Categories.DeleteCategory(catid);
         Response.Redirect(Request.RawUrl);
     }
 
-    protected void UnLockForum(object sender, ImageClickEventArgs e)
+    protected void SetCategoryLockState(int catid, Enumerators.PostStatus lockstatus)
     {
-        var btn = (ImageButton)sender;
-        Util.SetForumStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Open);
+        Categories.SetCatStatus(catid, (int)lockstatus);
         Response.Redirect(Request.RawUrl);
     }
 
-    protected void DeleteForum(object sender, ImageClickEventArgs e)
+    #region Forum button Events
+
+    protected void SetForumLockState(int forumid,Enumerators.PostStatus lockstatus)
     {
-        var btn = (ImageButton)sender;
-        Util.DeleteForum(Convert.ToInt32(btn.CommandArgument));
+        Forums.SetForumStatus(forumid, (int)lockstatus);
         Response.Redirect(Request.RawUrl);
     }
 
-    protected void EmptyForum(object sender, ImageClickEventArgs e)
+    protected void DeleteForum(int forumid)
     {
-        var btn = (ImageButton)sender;
-        Util.EmptyForum(Convert.ToInt32(btn.CommandArgument));
+        Forums.DeleteForum(forumid);
         Response.Redirect(Request.RawUrl);
     }
 
-    protected void DeleteCategory(object sender, ImageClickEventArgs e)
+    protected void EmptyForum(int forumid)
     {
-        var btn = (ImageButton)sender;
-        Util.DeleteCat(Convert.ToInt32(btn.CommandArgument));
+        Forums.EmptyForum(forumid);
         Response.Redirect(Request.RawUrl);
     }
 
-    protected void LockCategory(object sender, ImageClickEventArgs e)
+    protected void SubscribeForum(int forumid, bool remove)
     {
-        var btn = (ImageButton)sender;
-        Util.SetCatStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Closed);
-        Response.Redirect(Request.RawUrl);
-    }
-
-    protected void UnLockCategory(object sender, ImageClickEventArgs e)
-    {
-        var btn = (ImageButton)sender;
-        Util.SetCatStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Closed);
-        Response.Redirect(Request.RawUrl);
-    }
-
-    protected void SubscribeForum(object sender, ImageClickEventArgs e)
-    {
-        var btn = (ImageButton)sender;
-        int forumid = Convert.ToInt32(btn.CommandArgument);
-        switch (btn.CommandName)
-        {
-            case "sub" :
-                Util.AddForumSubscription(Member.Id, forumid);
-                break;
-            case "unsub" :
-                Util.RemoveForumSubscription(Member.Id,forumid);
-                break;
-        }
-        
+        if(remove)
+            Subscriptions.RemoveForumSubscription(Member.Id, forumid);
+        else
+            Subscriptions.AddForumSubscription(Member.Id, forumid);
     }
 
     #endregion
+    #region Page methods for Ajax 
 
-    #region Page methods for Ajax Name and Email checks
-
+    [WebMethod]
+    public static string GetForums(string categoryId)
+    {
+        Page page = new Page();
+        
+        CategoryForums ctl = (CategoryForums)page.LoadControl("~/UserControls/CategoryForums.ascx");
+        ctl.Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
+        ctl.CategoryId = categoryId;
+        page.Controls.Add(ctl);
+        HtmlForm tempForm = new HtmlForm();
+        tempForm.Controls.Add(ctl);
+        page.Controls.Add(tempForm);
+        StringWriter writer = new StringWriter();
+        HttpContext.Current.Server.Execute(page, writer, false);
+        string outputToReturn = writer.ToString();
+        outputToReturn = outputToReturn.Substring(outputToReturn.IndexOf("<div"));
+        outputToReturn = outputToReturn.Substring(0, outputToReturn.IndexOf("</form>"));
+        writer.Close();
+        string viewStateRemovedOutput = Regex.Replace(outputToReturn,
+        "<input type=\"hidden\" name=\"__VIEWSTATE\" id=\"__VIEWSTATE\" value=\".*?\" />",
+        "", RegexOptions.IgnoreCase);
+        return viewStateRemovedOutput;
+    } 
     [WebMethod]
     public static void SaveForum(string jsonform)
     {
         var test = HttpUtility.UrlDecode(jsonform);
         System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
         int forumid = Convert.ToInt32(formresult["ctl00$hdnForumId"]);
-        var forum = forumid == -1 ? new Forum { Id = -1 } : Util.GetForum(forumid);
+        ForumInfo forum = forumid == -1 ? new ForumInfo { Id = -1,Status = 1} : Forums.GetForum(forumid);
         forum.SubscriptionLevel = 0;
         forum.ModerationLevel = 0;
         var roles = new string[] { };
@@ -488,7 +313,7 @@ public partial class Homepage : PageBase
                         forum.CatId = Convert.ToInt32(formresult[key]);
                         break;
                     case "tbxUrl":
-                        forum.URL = formresult[key];
+                        forum.Url = formresult[key];
                         break;
                     case "tbxSubject":
                         forum.Subject = formresult[key];
@@ -499,14 +324,17 @@ public partial class Homepage : PageBase
                     case "cbxCountPost":
                         forum.UpdatePostCount = formresult[key] == "on";
                         break;
+                    case "tbxOrder":
+                        forum.Order = Convert.ToInt32(formresult[key]);
+                        break;
                     case "ddlMod":
-                        forum.ModerationLevel = (Enumerators.Moderation)Convert.ToInt32(formresult[key]);
+                        forum.ModerationLevel = Convert.ToInt32(formresult[key]);
                         break;
                     case "ddlSub":
                         forum.SubscriptionLevel = Convert.ToInt32(formresult[key]);
                         break;
                     case "ddlAuthType":
-                        forum.AuthType = (Enumerators.ForumAuthType)Convert.ToInt32(formresult[key]);
+                        forum.AuthType = Convert.ToInt32(formresult[key]);
                         break;
                     case "hdnRoleList":
                         roles = formresult[key].ToLower().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -531,9 +359,9 @@ public partial class Homepage : PageBase
 
         forum.Password = password.Trim();
 
-        int newId = Util.SaveForum(forum);
+        int newId = Forums.SaveForum(forum);
         SnitzRoleProvider.AddRolesToForum(newId,roles);
-        Util.AddForumModerators(newId, moderators);
+        Forums.AddForumModerators(newId, moderators);
     }
     [WebMethod]
     public static void SaveCategory(string jsonform)
@@ -541,7 +369,7 @@ public partial class Homepage : PageBase
         var test = HttpUtility.UrlDecode(jsonform);
         System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
         int catid = Convert.ToInt32(formresult["ctl00$hdnCatId"]);
-        Category cat = catid == -1 ? new Category { Id = -1 } : Util.GetCategory(catid);
+        CategoryInfo cat = catid == -1 ? new CategoryInfo { Id = -1 } : Categories.GetCategory(catid);
         foreach (string key in formresult.AllKeys)
         {
             //ctl00$
@@ -549,6 +377,9 @@ public partial class Homepage : PageBase
             {
                 case "tbxSubject":
                     cat.Name = formresult[key];
+                    break;
+                case "tbxOrder" :
+                    cat.Order = Convert.ToInt32(formresult[key]);
                     break;
                 case "ddlMod":
                     cat.ModerationLevel = Convert.ToInt32(formresult[key]);
@@ -566,7 +397,7 @@ public partial class Homepage : PageBase
             }
 
         }
-        Util.SaveCategory(cat);
+        Categories.UpdateCategory(cat);
     }
 
     #endregion

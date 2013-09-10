@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using SnitzData;
+using Snitz.BLL;
+
 
     public partial class Admin_Subscriptions : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            grdSubs.DataSource = Util.GetAllSubscriptions();
+            grdSubs.DataSource = Admin.GetAllSubscriptions();
             grdSubs.DataBind();
         }
 
@@ -41,8 +42,8 @@ using SnitzData;
             int memberid = Convert.ToInt32(grdSubs.DataKeys[e.RowIndex]["MemberId"]);
 
             if (topicid > 0)
-                Util.RemoveTopicSubscription(memberid, topicid);
+                Subscriptions.RemoveTopicSubscription(memberid, topicid);
             else if (forumid > 0)
-                Util.RemoveForumSubscription(memberid, forumid);
+                Subscriptions.RemoveForumSubscription(memberid, forumid);
         }
     }

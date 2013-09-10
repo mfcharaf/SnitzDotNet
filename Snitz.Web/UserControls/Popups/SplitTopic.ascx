@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SplitTopic.ascx.cs" Inherits="SnitzUI.UserControls.Popups.SplitTopic" %>
+<%@ Import Namespace="Snitz.BLL" %>
 
 <style type="text/css">
 .mainModalContent{white-space:normal;min-height:100px;}
@@ -36,13 +37,13 @@
             <asp:BoundField DataField="Id" Visible="false" />
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label ID="Label3" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Author.Name") %>'></asp:Label>
+                    <asp:Label ID="Label3" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "AuthorName") %>'></asp:Label>
                 </ItemTemplate>
                 <ItemStyle Wrap="true" CssClass="smallText" VerticalAlign="Top" Width="100px" />
             </asp:TemplateField>
             <asp:TemplateField> 
                 <ItemTemplate>
-                    <asp:Label ID="Label4" runat="server" Text="<%$ Resources:webResources,lblPostDate %>"></asp:Label><asp:Literal runat="server" Text='<%# Eval("DateTimeAgo") %>'></asp:Literal>
+                    <asp:Label ID="Label4" runat="server" Text="<%$ Resources:webResources,lblPostDate %>"></asp:Label><asp:Literal runat="server" Text='<%# Replies.DateTimeAgo(Container.DataItem) %>'></asp:Literal>
                 <hr />
                 <asp:Label runat="server" Text='<%# Eval("CleanedMessage") %>'></asp:Label>
                 </ItemTemplate>

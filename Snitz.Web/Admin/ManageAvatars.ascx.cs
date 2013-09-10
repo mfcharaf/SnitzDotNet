@@ -1,7 +1,8 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using SnitzData;
+using Snitz.BLL;
+
 
 
 public partial class Admin_ManageAvatars : UserControl
@@ -16,8 +17,8 @@ public partial class Admin_ManageAvatars : UserControl
 
     private void PopulateList()
     {
-        Avatars.DataSource = Avatar.GetAvatars();
-        Avatars.DataBind();
+        dlAvatars.DataSource = Avatar.GetAvatars();
+        dlAvatars.DataBind();
     }
 
     protected void Avatars_ItemCommand(object source, DataListCommandEventArgs e)
@@ -25,7 +26,7 @@ public partial class Admin_ManageAvatars : UserControl
         switch(e.CommandName)
         {
             case "select":
-                Avatars.SelectedIndex = e.Item.ItemIndex;
+                dlAvatars.SelectedIndex = e.Item.ItemIndex;
                 break;
             case "delete":
                 Avatar.Delete(e.CommandArgument.ToString());

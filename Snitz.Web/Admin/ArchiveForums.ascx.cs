@@ -1,7 +1,10 @@
 using System;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Snitz.DataBaseLayer;
+using Snitz.BLL;
+using Snitz.Entities;
+using SnitzConfig;
 
 public partial class Admin_ArchiveForums : UserControl
 {
@@ -9,9 +12,12 @@ public partial class Admin_ArchiveForums : UserControl
     {
         if (!Page.IsPostBack)
         {
-            AvForumsList.DataSource = ForumDatasource.GetForumList();
-            AvForumsList.DataTextField = "Title";
-            AvForumsList.DataValueField = "ForumId";
+            var forums = Forums.GetAllForums();
+            ForumList.DataSource = forums;
+            ForumList.DataBind();
+                AvForumsList.DataSource = forums;
+            AvForumsList.DataTextField = "Subject";
+            AvForumsList.DataValueField = "Id";
             ArchiveBtn.Enabled = false;
             Panel2.Visible = false;
         }
@@ -116,7 +122,7 @@ public partial class Admin_ArchiveForums : UserControl
               
         numDays = Convert.ToInt32(dateList.SelectedValue);
 
-        TimeSpan ts = new TimeSpan(-numDays,config.timeAdjust,0,0);
+        TimeSpan ts = new TimeSpan(-numDays,Config.TimeAdjust,0,0);
 
         dt += ts;
 
@@ -131,11 +137,11 @@ public partial class Admin_ArchiveForums : UserControl
                 forumList[count++] = Convert.ToInt32(li.Value);
 
 
-            int res = ForumDatasource.ArchiveForums(forumList, strStartDate);
+            int res = Archive.ArchiveForums(forumList, strStartDate);
 
             if (res >= 0)
             {
-                lblRes.Text = String.Format("Topic Archiving Completed.<br />{0} Topics Were Archived.", res);
+                lblRes.Text = String.Format("Topic Archiving Completed.", res);
                 Panel2.Visible = true;
             }
             else
@@ -143,6 +149,26 @@ public partial class Admin_ArchiveForums : UserControl
                 lblRes.Text = "Error archiving forums.";
                 Panel2.Visible = true;
             }
+        }
+    }
+
+    protected void ForumList_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        var row = e.Row;
+        ForumInfo data = (ForumInfo) row.DataItem;
+        var overdue = (Literal) row.FindControl("overdue");
+        if (overdue != null)
+        {
+            if (data.LastArchived.HasValue)
+            {
+                var res = data.LastArchived.Value.AddDays(data.ArchiveFrequency ?? 0) < DateTime.UtcNow;
+                if (res)
+                {
+                    row.ForeColor = Color.Red;
+                    overdue.Visible = true;
+                }
+            }
+            
         }
     }
 }

@@ -155,7 +155,7 @@ namespace ResxWebEditor.Editor
 			keyColumn.HeaderText = "Key";
 			keyColumn.DataAlternateTextField = "Key";
 			keyColumn.DataImageUrlField = "Key";
-			keyColumn.DataImageUrlFormatString = "~/images/information.png"; // ignore key
+			keyColumn.DataImageUrlFormatString = "~/App_Themes/" + Page.Theme + "/images/information.png"; // ignore key
 			//keyColumn.DataField = "Key";
 			//keyColumn.ItemStyle.BackColor = Color.Gray;
 			//keyColumn.ItemStyle.ForeColor = Color.White;

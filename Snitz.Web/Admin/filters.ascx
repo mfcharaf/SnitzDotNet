@@ -31,8 +31,8 @@
                         <HeaderStyle CssClass="category" />
 
                     </asp:GridView>
-                    <asp:ObjectDataSource ID="dsWordFilters" runat="server" SelectMethod="ListBadWords"
-                        TypeName="SnitzData.Util" DeleteMethod="DeleteBadWord" InsertMethod="InsertBadWord" UpdateMethod="UpdateBadWord">
+                    <asp:ObjectDataSource ID="dsWordFilters" runat="server" SelectMethod="GetAllBadwords"
+                        TypeName="Snitz.BLL.Filters" DeleteMethod="DeleteBadWord" InsertMethod="AddBadword" UpdateMethod="UpdateBadWord">
                         <DeleteParameters>
                             <asp:Parameter Name="Id" Type="Int32" />
                         </DeleteParameters>
@@ -43,6 +43,7 @@
                         </UpdateParameters>
                         <InsertParameters>
                             <asp:Parameter Name="Badword" Type="String" DefaultValue="new badword" />
+                            <asp:Parameter Name="Replace" Type="String" DefaultValue="********" />
                         </InsertParameters>
                     </asp:ObjectDataSource>
         <br />
@@ -64,8 +65,8 @@
             </Columns>
             <HeaderStyle CssClass="category" />
         </asp:GridView>
-        <asp:ObjectDataSource ID="dsNameFilter" runat="server" SelectMethod="ListNameFilters"
-            TypeName="SnitzData.Util" DeleteMethod="DeleteNameFilter" InsertMethod="InsertNameFilter" UpdateMethod="UpdateNameFilter">
+        <asp:ObjectDataSource ID="dsNameFilter" runat="server" SelectMethod="GetAllNameFilters"
+            TypeName="Snitz.BLL.Filters" DeleteMethod="DeleteNameFilter" InsertMethod="AddNameFilter" UpdateMethod="UpdateNameFilter">
             <DeleteParameters>
                 <asp:Parameter Name="Id" Type="Int32" />
             </DeleteParameters>

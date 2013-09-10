@@ -1,3 +1,24 @@
+/*
+####################################################################################################################
+##
+## SnitzUI.UserControls - GridPager.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
 using System.Text;
 using System.Web.UI;
@@ -13,7 +34,7 @@ public partial class GridPager : UserControl
 
     #region Public Properties
 
-    public PagerType PagerStyle { get; set; }
+    public Enumerators.PagerType PagerStyle { get; set; }
     public int PageCount
     {
         get { return _pageCount; }
@@ -49,20 +70,20 @@ public partial class GridPager : UserControl
 
         switch (PagerStyle)
         {
-            case PagerType.Button:
+            case Enumerators.PagerType.Button:
                 buttonPager.Visible = true;
                 break;
-            case PagerType.Dropdown:
+            case Enumerators.PagerType.Dropdown:
                 dropdownPager.Visible = true;
                 break;
-            case PagerType.Text:
+            case Enumerators.PagerType.Text:
                 textPager.Visible = true;
                 string url = Request.RawUrl;
                 if (url.Contains("&"))
                     url = url.Substring(0, Request.RawUrl.IndexOf("&"));
                 litPager.Text = CreatePagerLinks(url);
                 break;
-            case PagerType.Lnkbutton:
+            case Enumerators.PagerType.Lnkbutton:
                 linkPager.Visible = true;
                 CreatePagingControl();
                 break;

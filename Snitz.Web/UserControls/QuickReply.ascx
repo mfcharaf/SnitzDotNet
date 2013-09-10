@@ -33,14 +33,26 @@
             cell.innerHTML = text;
             cell.style.borderBottom = cell.style.borderRight = "solid 1px #aaaaff";
         }
-
+//        function hideTooltip() {
+//            var isDisabled = $(".markItUpButton").tooltip("option", "disabled");
+//            if (isDisabled) {
+//                $(".markItUpButton").tooltip("enable");
+//            } else {
+//                $(".markItUpButton").tooltip({ disabled: true });
+//            }
+//            
+//        }
+//        function showTooltip() {
+//            alert("show");
+//            $(".markItUpButton").tooltip("enable");
+//        }        
     </script>
     <input type="hidden" id="caretP" />
     <asp:Panel ID="Panel1" runat="server" CssClass="QRBox clearfix">
-        <asp:Panel id="QRH" runat="server" Width="100%" CssClass="QRHeader category">
-            <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblQuickReplyHeader %>"></asp:Label>
+        <asp:Panel id="QRH" runat="server" Width="100%" CssClass="QRHeader">
+            &nbsp;<asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblQuickReplyHeader %>"></asp:Label>
         </asp:Panel>
-        <div id="contentwrapper" class="clearfix">  
+        <div id="qrcontentwrapper" class="clearfix">  
             <asp:Panel id="QRL" runat="server" CssClass="QRLeft smallText">
                 <br />
                     <uc2:emoticons ID="emoticons1" runat="server" />
@@ -57,9 +69,6 @@
             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="qreply" runat="server" ControlToValidate="qrMessage" ErrorMessage="<%$ Resources:webResources, ErrNoMessage %>" ></asp:RequiredFieldValidator>
         </asp:Panel>
 
-<ajaxtoolkit:RoundedCornersExtender ID="Panel1_RoundedCornersExtender" runat="server" Corners="Bottom" Enabled="true" Radius="10" 
-    TargetControlID="QRF">
-</ajaxtoolkit:RoundedCornersExtender>
     <!-- Upload popup -->
     <asp:Panel ID="fUpload" runat="server" Style="display: none" EnableViewState="false">
         <div class="mainModalPopup mainModalBorder">

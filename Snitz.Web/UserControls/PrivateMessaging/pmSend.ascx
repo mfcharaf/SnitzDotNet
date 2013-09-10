@@ -1,7 +1,7 @@
-﻿<%@ Control Inherits="PrivateMessaging.PmSend" Language="C#" AutoEventWireup="True" CodeBehind="pmSend.ascx.cs" %>
+﻿<%@ Control Inherits="SnitzUI.UserControls.PrivateMessaging.PmSend" Language="C#" AutoEventWireup="True" CodeBehind="pmSend.ascx.cs" %>
 
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
-<asp:ImageButton CssClass="profBtn" ID="ImageButton1" SkinID="PMSend" runat="server" AlternateText="Send PM"/>
+<asp:ImageButton CssClass="profBtn" ID="ImageButton1" SkinID="PMSend" runat="server" ToolTip="Send PM"  AlternateText="Send PM"/>
 
 
     <asp:Panel ID="sendPM" runat="server" Style="display: none;max-width:600px;" EnableViewState="false">
@@ -19,16 +19,14 @@
                 </div>
                 <div class="mainModalContent">
                     <div id="Div3">
+                    <asp:Label ID="Label1" runat="server" Text="Subject" AssociatedControlID="tbxSubject"></asp:Label>&nbps;<asp:TextBox ID="tbxSubject" runat="server"></asp:TextBox>
                     <br />
-                            <asp:Label ID="Label1" runat="server" Text="Subject" AssociatedControlID="tbxSubject"></asp:Label><asp:TextBox ID="tbxSubject" runat="server"></asp:TextBox>
-    <br />
-    <asp:Label ID="Label2" runat="server" Text="Message" AssociatedControlID="qrMessage"/>
-    <asp:TextBox ID="qrMessage" runat="server" CssClass="QRMsgArea" Rows="6" 
-        TextMode="MultiLine"></asp:TextBox>
-    <br />
-    <asp:Label ID="pmSuccess" runat="server" Text="" />
-    <asp:LinkButton ID="btnSend" runat="server" Text="<%$ Resources:webResources,btnSend %>" OnClick="SendPm" CausesValidation="false" />
-    <asp:LinkButton ID="btnCancel" runat="server" Text="<%$ Resources:webResources,btnCancel %>" />
+                    <asp:TextBox ID="qrMessage" runat="server" CssClass="QRMsgArea" Rows="5" 
+                        TextMode="MultiLine"></asp:TextBox>
+                    <br />
+                    <asp:Label ID="pmSuccess" runat="server" Text="" />
+                    <asp:LinkButton ID="btnSend" runat="server" Text="<%$ Resources:webResources,btnSend %>" OnClick="SendPm" CausesValidation="false" />
+                    <asp:LinkButton ID="btnCancel" runat="server" Text="<%$ Resources:webResources,btnCancel %>" />
                     </div>
                 </div>
             </div>

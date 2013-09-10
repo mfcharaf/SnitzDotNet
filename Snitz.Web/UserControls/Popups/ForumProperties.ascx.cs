@@ -1,9 +1,31 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.UserControls.Popups - ForumProperties.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
 
 namespace SnitzUI.UserControls.Popups
 {
@@ -21,22 +43,19 @@ namespace SnitzUI.UserControls.Popups
                 _catid = Convert.ToInt32(ids[1]);
                 _forumtype = Convert.ToInt16(ids[2]);
 
-                Forum forum = forumid > 0 ? Util.GetForum(forumid) : new Forum { Id = -1 };
+                ForumInfo forum = forumid > 0 ? Forums.GetForum(forumid) : new ForumInfo { Id = -1 };
                 SetupPage(forum);
-            }else
-            {
-                
             }
         }
 
-        private void SetupPage(Forum forum)
+        private void SetupPage(ForumInfo forum)
         {
             hdnForumId.Value = forum.Id.ToString();
 
             tbxSubject.Text = forum.Subject;
             tbxBody.Text = forum.Description;
-
-            ddlCat.DataSource = Util.ListCategories();
+            tbxOrder.Text = forum.Order.ToString();
+            ddlCat.DataSource = Categories.GetCategories();
             ddlCat.DataValueField = "Id";
             ddlCat.DataTextField = "Name";
             ddlCat.DataBind();
@@ -46,15 +65,12 @@ namespace SnitzUI.UserControls.Popups
             {
                 pnlOptions.Visible = false;
                 pnlAuth.Visible = false;
-                tbxUrl.Text = forum.URL;
+                tbxUrl.Text = forum.Url;
                 pnlUrl.Visible = true;
                 return;
             }
-            else
-            {
-                pnlUrl.Visible = false;
-                tbxUrl.Text = "";
-            }
+            pnlUrl.Visible = false;
+            tbxUrl.Text = "";
 
             tbxPassword.Text = forum.Password;
 
@@ -64,7 +80,7 @@ namespace SnitzUI.UserControls.Popups
 
             if (Config.Moderation)
             {
-                ddlMod.SelectedValue = ((int) forum.ModerationLevel).ToString();
+                if (forum.ModerationLevel != null) ddlMod.SelectedValue = ((int) forum.ModerationLevel).ToString();
             }
             else
             {
@@ -77,7 +93,7 @@ namespace SnitzUI.UserControls.Popups
             {
                 ddlSub.Items.Clear();
                 ddlSub.Items.Add(new ListItem("No Subscriptions Allowed","0"));
-                if(Config.SubscriptionLevel < SubscriptionLevel.Topic)
+                if(Config.SubscriptionLevel < Enumerators.SubscriptionLevel.Topic)
                 {
                     ddlSub.Items.Add(new ListItem("Forum Subscriptions Allowed", "1"));
                 }
@@ -95,7 +111,7 @@ namespace SnitzUI.UserControls.Popups
             }
             #endregion
 
-            ddlAuthType.SelectedValue = forum.F_PRIVATEFORUMS.ToString();
+            ddlAuthType.SelectedValue = forum.AuthType.ToString();
 
             if (forum.Id > 0)
             {
@@ -103,13 +119,13 @@ namespace SnitzUI.UserControls.Popups
                 ListView2.DataSource = roleList;
                 ListView2.DataBind();
                 hdnRoleList.Value = String.Join(",",roleList);
-                ListView1.DataSource = forum.Moderators;
+                ListView1.DataSource = Forums.GetForumModerators(forum.Id);
                 ListView1.DataBind();
             }
             ddlRole.DataSource = new SnitzRoleProvider().GetAllRoles();
             ddlRole.DataBind();
-            ddlModUsers.DataSource = Util.ListModerators();
-            ddlModUsers.DataValueField = "Id";
+            ddlModUsers.DataSource = Forums.GetAvailableModerators(forum.Id);
+            ddlModUsers.DataValueField = "MemberId";
             ddlModUsers.DataTextField = "Name";
             ddlModUsers.DataBind();
         }

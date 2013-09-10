@@ -24,7 +24,7 @@
 // [url]http://forum.sntz.com/forum/default.asp[/url]
 // [url="http://forum.sntz.com/forum/default.asp"][b]BBCode[/b] Parser[/url]
 //
-// [q=http://blogs.stonesteps.ca/showpost.asp?pid=33]inline quote[/q]
+// [q= http://blogs.stonesteps.ca/showpost.asp?pid=33 quote[/q]
 // [q]inline quote[/q]
 // [blockquote="User"]block quote[/blockquote]
 // [blockquote]block quote[/blockquote]
@@ -99,8 +99,11 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
     //
     if (isValidTag(m2)) {
         // if in the noparse state, just echo the tag
-        if (noparse)
-            return "[" + m2 + "]";
+        if (noparse) {
+            //alert(mstr + "|" + m2 + "|" + m3 + "|" + string);
+            return mstr; //"[" + m2 + "]";
+            
+        }
 
         // ignore any tags if there's an open option-less [url] tag
         if (opentags.length && opentags[opentags.length - 1].bbtag == "url" && urlstart >= 0)
@@ -115,7 +118,9 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
                 opentags.push(new taginfo_t(m2, "</iframe></body>"));
                 if (m3.length)
                     m3 = m3.replace(/"/ig, "");
-                return "<iframe src=\"http://www.youtube.com/embed/" + m3 + "\">";
+                if (m3.indexOf("http") > 0)
+                    return "<iframe src=\"" + m3 + "\">";
+                return "<iframe src=\"http://youtu.be/" + m3 + "\">";
             case "pre":
                 opentags.push(new taginfo_t(m2, "</pre>"));
                 crlf2br = false;
@@ -200,7 +205,7 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
                 if(m3 && m3.length)
                 m3 = m3.replace(/\"/g, "");
                 opentags.push(new taginfo_t(m2, "</blockquote>"));
-                return m3 && m3.length && uri_re.test(m3) ? "<blockquote cite=\"" + m3 + "\">" : "<blockquote>";
+                return m3 && m3.length && uri_re.test(m3) ? "<blockquote class=\"quoteMessage\" cite=\"" + m3 + "\">" : "<blockquote>";
             case "table":
                 opentags.push(new taginfo_t(m2, "</table>"));
                 if (!m3) {

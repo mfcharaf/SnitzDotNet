@@ -11,7 +11,7 @@
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="Generator" content="SnitzDotNet Forums v 1.0" />
 
-<script src="/scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="/scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
 <asp:ContentPlaceHolder id="CPHead" runat="server"></asp:ContentPlaceHolder>
 <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
 </head>
@@ -46,7 +46,7 @@
 <div id="subheadDIV" class="clearfix">
             <div class="innertube">
             <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
-                <snitz:announcebox ID="announce" runat="server" Show="<%# Config.Announcement %>"/>
+                <snitz:announcebox ID="announce" runat="server" />
             </asp:ContentPlaceHolder>
          </div>
     <div id="CPH1DIV" class="nowrap"><asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False"></asp:ContentPlaceHolder></div>

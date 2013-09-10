@@ -16,8 +16,9 @@
                     </asp:UpdatePanel>
                     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdateCounts">
                         <ProgressTemplate>
-                            <asp:Label ID="lblProgress" runat="server" Text="Updating Forum Counts..." Width="200px" BackColor="#FFFF80"
-                                ForeColor="Maroon" Font-Bold="True" Style="padding: 5px"></asp:Label>
+                            <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+                                <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+                            </div>
                         </ProgressTemplate>
                     </asp:UpdateProgress>
                

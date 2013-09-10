@@ -40,6 +40,15 @@ namespace SnitzUI.MasterTemplates {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder CPMeta;
         
         /// <summary>
+        /// jqUi control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal jqUi;
+        
+        /// <summary>
         /// CPhead control.
         /// </summary>
         /// <remarks>

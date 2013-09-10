@@ -1,3 +1,24 @@
+/*
+####################################################################################################################
+##
+## SnitzUI.UserControls - MessageProfile.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
 using System.Web;
 using System.Web.Security;
@@ -5,6 +26,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
 using SnitzMembership;
@@ -12,8 +35,8 @@ using SnitzMembership;
 
 public partial class MessageProfile : UserControl
 {
-    protected SnitzData.Member _author;
-
+    protected int _authorId;
+    private AuthorInfo _author;
     private readonly bool _loggedonuser = HttpContext.Current.User.Identity.IsAuthenticated;
 
     public MessageProfile()
@@ -21,12 +44,13 @@ public partial class MessageProfile : UserControl
         if(_author == null)
             base.Dispose();
     }
-    public SnitzData.Member Author
+    public int AuthorId
     {
-        get { return _author; }
+        get { return _authorId; }
         set
         {
-            _author = value;
+            _authorId = value;
+            _author = Members.GetAuthor(_authorId);
             SetProperties();
         }
     }
@@ -49,8 +73,8 @@ public partial class MessageProfile : UserControl
             }
         }
 
-        
-        ProfileCommon prof = ProfileCommon.GetUserProfile(_author.Name);
+
+        ProfileCommon prof = ProfileCommon.GetUserProfile(_author.Username);
         if(prof.Gravatar)
         {
             Gravatar avatar = new Gravatar { Email = _author.Email };
@@ -60,8 +84,8 @@ public partial class MessageProfile : UserControl
 
         }else
         {
-            SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Name);
-            Literal avatar = new Literal {Text = _author.Avatar};
+            SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Username);
+            Literal avatar = new Literal { Text = _author.AvatarUrl };
             if (mu.IsActive)
                 avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
             phAvatar.Controls.Add(avatar);
@@ -72,7 +96,7 @@ public partial class MessageProfile : UserControl
         hProf.Visible = _loggedonuser;
         hProf.OnClientClick =
             String.Format(
-                "mainScreen.LoadServerControlHtml('Public Profile',{{'pageID':1,'data':{0}}}, 'methodHandlers.BeginRecieve');return false;",_author.Id);
+                "mainScreen.LoadServerControlHtml('Public Profile',{{'pageID':1,'data':{0}}}, 'methodHandlers.BeginRecieve');return false;", _author.Id);
 
         if (!String.IsNullOrEmpty(_author.HomePage))
         {
@@ -107,7 +131,7 @@ public partial class MessageProfile : UserControl
         //hAIM.Text = hAIM.ToolTip = Resources.webResources.lblAIM;
 
         hMSN.Visible = false; // (drv.Row.ItemArray[15].ToString().Trim() != "");
-        hMSN.NavigateUrl = "javascript:openWindow('pop_messengers.aspx?mode=MSN&user=" + _author.Name + "&amp;id=" + _author.MSN + "')";
+        hMSN.NavigateUrl = "javascript:openWindow('pop_messengers.aspx?mode=MSN&user=" + _author.Username + "&amp;id=" + _author.MSN + "')";
         hMSN.Text = hMSN.ToolTip = Resources.webResources.lblMSN;
 
         hSKYPE.Visible = false;

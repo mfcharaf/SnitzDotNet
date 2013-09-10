@@ -1,43 +1,24 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.Forums - Post.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -49,11 +30,13 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using AjaxControlToolkit;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzUI.MasterTemplates;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
+
 
 namespace SnitzUI
 {
@@ -62,8 +45,8 @@ namespace SnitzUI
         private string _action;
         private string _type;
         private int _recId;
-        private Forum _forum;
-        private Topic _thisTopic;
+        private ForumInfo _forum;
+        private TopicInfo _thisTopic;
         private bool _topicLocked;
         private bool _inModeratedList;
         bool pingSiteMap = Config.PingSearchEngine;
@@ -79,11 +62,11 @@ namespace SnitzUI
                 if (null == ViewState["PageThemeDirectory"])
                 {
                     if (string.IsNullOrEmpty(Page.Theme))
-                        ViewState["PageThemeDirectory"] = "/App_Themes/" + Config.DefaultTheme;
+                        ViewState["PageThemeDirectory"] = "/css/" + Config.UserTheme;
                     else
                     {
-                        if (Directory.Exists(Server.MapPath("/App_Themes/" + Page.Theme)))
-                            ViewState["PageThemeDirectory"] = "/App_Themes/" + Page.Theme;
+                        if (Directory.Exists(Server.MapPath("/css/" + Page.Theme)))
+                            ViewState["PageThemeDirectory"] = "/css/" + Page.Theme;
                         else
                             ViewState["PageThemeDirectory"] = string.Empty;
                     }
@@ -97,10 +80,10 @@ namespace SnitzUI
             base.OnInit(e);
             var master = (SingleCol)Master;
             if (master != null) master.rootScriptManager.EnablePageMethods = true;
-            
-            markitupCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/markitup.css");
 
-            ForumDropDown.DataSource = Util.ListForums();
+            editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
+
+            ForumDropDown.DataSource = Forums.AllowedForumsList(Member);
             ForumDropDown.DataBind();
         }
 
@@ -126,7 +109,7 @@ namespace SnitzUI
                             DateTime? lastpost = Session["LastPostMade"].ToString().ToDateTime();
                             DateTime dt = DateTime.UtcNow - diff1;
                             if (lastpost > dt)
-                                throw new HttpException(403, "Access denied please try later");
+                                throw new HttpException(403, "Flood check enabled, please try later");
 
                         }
                     }
@@ -144,7 +127,7 @@ namespace SnitzUI
 
         private void SetupPageControls()
         {
-            cbxSig.Checked = (Member.UseSig == 1);
+            cbxSig.Checked = Member.UseSignature;
             cbxLock.Checked = _topicLocked;
             if (_thisTopic != null)
                 cbxSticky.Checked = _thisTopic.IsSticky;
@@ -208,19 +191,19 @@ namespace SnitzUI
 
             if (ForumId != null)
             {
-                _inModeratedList = new SnitzRoleProvider().IsUserForumModerator(User.Identity.Name, ForumId.Value);
-                _forum = Util.GetForum(ForumId.Value);
+                _inModeratedList = Moderators.IsUserForumModerator(User.Identity.Name, ForumId.Value);
+                _forum = Forums.GetForum(ForumId.Value);
             }
             if (TopicId != null)
             {
-                _thisTopic = Util.GetTopic(TopicId.Value, false);
-                _topicLocked = _thisTopic.Status == Enumerators.PostStatus.Closed;
+                _thisTopic = Topics.GetTopic(TopicId.Value);
+                _topicLocked = _thisTopic.Status == (int)Enumerators.PostStatus.Closed;
             }
             else if (_type == "topics")
             {
                 TopicId = Int32.Parse(Request.Params["id"]);
-                _thisTopic = Util.GetTopic(TopicId.Value, false);
-                _topicLocked = _thisTopic.Status == Enumerators.PostStatus.Closed;
+                _thisTopic = Topics.GetTopic(TopicId.Value);
+                _topicLocked = _thisTopic.Status == (int)Enumerators.PostStatus.Closed;
             }
         }
 
@@ -229,10 +212,10 @@ namespace SnitzUI
             switch (_type)
             {
                 case "reply" :
-                    Reply reply = Util.GetReply(_recId);
-                    return String.Format("[quote=\"{0}\"]{1}[/quote]", reply.Author.Name, reply.Message);
+                    ReplyInfo reply = Replies.GetReply(_recId);
+                    return String.Format("[quote=\"{0}\"]{1}[/quote]", reply.AuthorName, reply.Message);
                 case "topics" :
-                    return String.Format("[quote=\"{0}\"]{1}[/quote]", _thisTopic.Author.Name, _thisTopic.Message);
+                    return String.Format("[quote=\"{0}\"]{1}[/quote]", _thisTopic.AuthorName, _thisTopic.Message);
             }
             return String.Empty;
         }
@@ -244,8 +227,9 @@ namespace SnitzUI
             switch (_type)
             {
                 case "reply":
-                    Reply reply = Util.GetReply(_recId);
+                    ReplyInfo reply = Replies.GetReply(_recId);
                     SubjectDiv.Visible = false;
+                    ForumDiv.Visible = false;
                     //_IsAuthor = (reply.Author.Name.ToLower() == HttpContext.Current.User.Identity.Name.ToLower());
                     msg = HttpUtility.HtmlDecode(reply.Message);
                     break;
@@ -258,9 +242,9 @@ namespace SnitzUI
                     //_IsAuthor = (thisTopic.Author.Name == HttpContext.Current.User.Identity.Name.ToLower());
                     //ForumDiv.Visible = ForumDiv.Visible || (_IsAuthor && IsModerator);
                     string poll = "";
-                    if(_thisTopic.PollID != null)
+                    if(_thisTopic.PollId != null)
                     {
-                        poll = Util.GetTopicPoll(_thisTopic.PollID);
+                        poll = Polls.GetTopicPollString(_thisTopic.PollId);
                     }
                     msg = poll + HttpUtility.HtmlDecode(_thisTopic.Message);
                     break;
@@ -288,34 +272,34 @@ namespace SnitzUI
                     switch (_type)
                     {
                         case "reply" :
-                            Util.UpdateReply(_recId, Message.Text, Member, IsAdministrator, cbxSig.Checked);
+                            Replies.UpdateReply(_recId, Message.Text, Member, IsAdministrator, cbxSig.Checked);
                             
                             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                                Util.SetTopicStatus(_thisTopic.Id, Enumerators.PostStatus.Closed);
+                                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
                             if (_inModeratedList || IsAdministrator)
-                                Util.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
+                                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
                             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + _recId);
                             break;
                         case "topics":
                             #region check for changes to poll
 
-                            var poll = new Regex(@"(?<poll>\[poll=\x22(?<question>.+?)\x22](?<answers>.+?)\[\/poll])", RegexOptions.Singleline);
+                            var pollregex = new Regex(@"(?<poll>\[poll=\x22(?<question>.+?)\x22](?<answers>.+?)\[\/poll])", RegexOptions.Singleline);
 
-                            if (poll.IsMatch(Message.Text))
+                            if (pollregex.IsMatch(Message.Text))
                             {
-                                string topicPoll = poll.Match(Message.Text).Value;
+                                string topicPoll = pollregex.Match(Message.Text).Value;
                                 if (topicPoll == "" || topicPoll == "remove")
                                 {
-                                    Util.DeleteTopicPoll(_thisTopic.PollID);
+                                    Polls.DeleteTopicPoll(_thisTopic.PollId.Value);
                                 }
                                 else if(_thisTopic.Forum.AllowPolls)
                                 {
                                     var answers = new Regex(@"\[\*=(?<sort>[0-9]+)](?<answer>.+?)\[/\*]",
                                                               RegexOptions.Singleline | RegexOptions.ExplicitCapture);
                                     string question = "";
-                                    var s = new SortedList<int, string>();
+                                    var choices = new SortedList<int, string>();
 
-                                    MatchCollection mc = poll.Matches(topicPoll);
+                                    MatchCollection mc = pollregex.Matches(topicPoll);
                                     if (mc.Count > 0)
                                     {
                                         foreach (Match m in mc)
@@ -326,26 +310,33 @@ namespace SnitzUI
                                             MatchCollection ans = answers.Matches(answer);
                                             foreach (Match match in ans)
                                             {
-                                                s.Add(Convert.ToInt32(match.Groups["sort"].Value), match.Groups["answer"].Value);
+                                                choices.Add(Convert.ToInt32(match.Groups["sort"].Value), match.Groups["answer"].Value);
                                             }
                                         }
-
-                                        Util.UpdateTopicPoll(_thisTopic.PollID, question, s);
+                                        if(_thisTopic.PollId.HasValue)
+                                            Polls.UpdateTopicPoll(_thisTopic.PollId.Value, question, choices);
                                     }
                                 }
-                                Message.Text = poll.Replace(Message.Text, "");
+                                Message.Text = pollregex.Replace(Message.Text, "");
                             }
 
                             #endregion
 
-                            Util.UpdateTopic(_thisTopic.Id, Message.Text, tbxSubject.Text, Member, IsAdministrator, cbxSig.Checked);
-                            if(ForumDropDown.SelectedValue != _thisTopic.ForumId.ToString())
+                            int oldforumId = _thisTopic.ForumId;
+                            Topics.Update(_thisTopic.Id, Message.Text, tbxSubject.Text, Member, IsAdministrator, cbxSig.Checked);
+                            if (ForumDropDown.SelectedValue != oldforumId.ToString())
                             {
                                 //move the topic
-                                Util.ChangeTopicForum(_thisTopic.Id, ForumDropDown.SelectedValue);
-                                if(Config.MoveNotify)
+                                int forumid = Convert.ToInt32(ForumDropDown.SelectedValue);
+                                Topics.ChangeTopicForum(_thisTopic.Id, forumid);
+                                Snitz.BLL.Admin.UpdateForumCounts();
+                                object obj = -1;
+                                Cache["RefreshKey"] = obj;
+                                _thisTopic.Author = Members.GetAuthor(_thisTopic.AuthorId);
+
+                                if(Config.MoveNotify && _thisTopic.Author.Status != 0)
                                 {
-                                    _forum = Util.GetForum(Convert.ToInt32(ForumDropDown.SelectedValue));
+                                    _forum = Forums.GetForum(forumid);
                                     string mailFile = Server.MapPath("~/App_Data/TopicMove.txt");
                                     string strSubject = "Sent From " + Config.ForumTitle + ": Topic move notification";
 
@@ -355,7 +346,7 @@ namespace SnitzUI
 
                                     var file = new StreamReader(mailFile);
                                     string msgBody = file.ReadToEnd();
-                                    msgBody = msgBody.Replace("<%UserName%>", _thisTopic.Author.UserName);
+                                    msgBody = msgBody.Replace("<%UserName%>", _thisTopic.AuthorName);
                                     msgBody = msgBody.Replace("<%ForumUrl%>", Config.ForumTitle);
                                     msgBody = msgBody.Replace("<%TopicSubject%>", _thisTopic.Subject);
                                     msgBody = msgBody.Replace("<%MovedTo%>", _forum.Subject);
@@ -363,7 +354,7 @@ namespace SnitzUI
 
                                     var mailsender = new snitzEmail
                                     {
-                                        toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.Author.UserName),
+                                        toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.AuthorName),
                                         fromUser = "Forum Administrator",
                                         subject = strSubject,
                                         msgBody = msgBody
@@ -372,9 +363,10 @@ namespace SnitzUI
                                 }
                             }
                             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                                Util.SetTopicStatus(_thisTopic.Id, Enumerators.PostStatus.Closed);
+                                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
                             if (_inModeratedList || IsAdministrator)
-                                Util.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
+                                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
+                            
                             if (pingSiteMap) { Ping(""); }
                             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id);
                             break;
@@ -402,34 +394,38 @@ namespace SnitzUI
             }
             #endregion
 
-            var topic = new Topic
+            var topic = new TopicInfo
                               {
                                   Subject = tbxSubject.Text,
                                   Message = Message.Text,
                                   Date = DateTime.UtcNow,
                                   UseSignatures = cbxSig.Checked,
                                   IsSticky = cbxSticky.Checked,
-                                  PostersIP = ipaddress,
-                                  Status = Enumerators.PostStatus.Open
+                                  PosterIp = ipaddress,
+                                  Status = (int)Enumerators.PostStatus.Open,
+                                  UnModeratedReplies = 0,
+                                  AuthorId = Member.Id,
+                                  ReplyCount = 0,
+                                  Views = 0
                               };
-
+            if (ForumId.HasValue) topic.Forum = Forums.GetForum(ForumId.Value);
             if (cbxLock.Checked)
-                topic.Status = Enumerators.PostStatus.Closed;
+                topic.Status = (int)Enumerators.PostStatus.Closed;
             else if (_inModeratedList)
             {
-                if(topic.Forum.ModerationLevel == Enumerators.Moderation.AllPosts ||
-                    topic.Forum.ModerationLevel == Enumerators.Moderation.Topics)
-                topic.Status = Enumerators.PostStatus.UnModerated;
+                if (topic.Forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||
+                    topic.Forum.ModerationLevel == (int)Enumerators.Moderation.Topics)
+                    topic.Status = (int)Enumerators.PostStatus.UnModerated;
             }
 
             if (ForumId != null) topic.ForumId = ForumId.Value;
             if (CatId != null) topic.CatId = CatId.Value;
-            int topicid = Util.AddTopic(topic, Member);
+            topic.Id = Topics.Add(topic);
             if (pingSiteMap) { Ping(""); }
 
             if (topicPoll != String.Empty && topic.Forum.AllowPolls)
-                CreatePoll(topicPoll, topicid);
-            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + topicid);
+                CreatePoll(topicPoll, topic.Id);
+            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + topic.Id);
         }
 
         private static void CreatePoll(string topicPoll, int topicid)
@@ -454,7 +450,7 @@ namespace SnitzUI
                     }
                 }
 
-                Util.AddTopicPoll(topicid, question, s);
+                Polls.AddTopicPoll(topicid, question, s);
             }
         }
 
@@ -470,31 +466,34 @@ namespace SnitzUI
                 Message.Text = poll.Replace(Message.Text, "");
             }
 
-            var reply = new Reply
+            var reply = new ReplyInfo
                               {
                                   Message = Message.Text,
-                                  PostersIP = ipaddress,
-                                  Status = Enumerators.PostStatus.Open,
-                                  UseSignatures = cbxSig.Checked
+                                  PosterIp = ipaddress,
+                                  Status = (int)Enumerators.PostStatus.Open,
+                                  UseSignatures = cbxSig.Checked,
+                                  AuthorId = Member.Id,
+                                  Date = DateTime.UtcNow
                               };
             if (cbxLock.Checked)
-                reply.Status = Enumerators.PostStatus.Closed;
+                reply.Status = (int)Enumerators.PostStatus.Closed;
             else if (_inModeratedList)
             {
-                
-                if (_thisTopic.Forum.ModerationLevel == Enumerators.Moderation.AllPosts ||
-                    _thisTopic.Forum.ModerationLevel == Enumerators.Moderation.Replies)
-                    reply.Status = Enumerators.PostStatus.UnModerated;
+
+                if (_thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||
+                    _thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.Replies)
+                    reply.Status = (int)Enumerators.PostStatus.UnModerated;
             }
 
             reply.TopicId = _thisTopic.Id;
             reply.CatId = _thisTopic.CatId;
             reply.ForumId = _thisTopic.ForumId;
-            int postid = Util.AddReply(reply, Member);
+            reply.Id = Replies.AddReply(reply);
+
             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                Util.SetTopicStatus(_thisTopic.Id, Enumerators.PostStatus.Closed);
+                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
             if (pingSiteMap) { Ping(""); }
-            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + postid);
+            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + reply.Id);
         }
 
         protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
@@ -542,7 +541,7 @@ namespace SnitzUI
 
         private void AsyncFileUpload1UploadedFileError(object sender, AsyncFileUploadEventArgs e)
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';});", true);
         }
 
         private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
@@ -571,14 +570,14 @@ namespace SnitzUI
                 string thumbPath = Page.MapPath(String.Format("~/Gallery/{0}/thumbnail/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")));
                 if (File.Exists(savePath))
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
                     AsyncFileUpload1.FailedValidation = true;
                     return;
                 }
 
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
                 if (e.FileName != null)
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';});", true);
 
                 if (!Directory.Exists(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name))))
                 {

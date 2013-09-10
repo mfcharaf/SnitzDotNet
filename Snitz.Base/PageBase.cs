@@ -1,42 +1,24 @@
-#region Copyright Notice
 /*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2006-07 Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## All rights reserved.
-## http://forum.snitz.com
+####################################################################################################################
 ##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## SnitzBase - PageBase
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 
 using System;
 using System.Configuration;
@@ -48,8 +30,9 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PersianCulture;
+using Snitz.BLL;
 using SnitzConfig;
-using SnitzData;
+using Snitz.Entities;
 using SnitzMembership;
 
 namespace SnitzCommon
@@ -72,17 +55,14 @@ namespace SnitzCommon
                 ViewState["CurrentPage"] = value;
             }
         }
-
         public int? CatId;
 	    public int? ForumId;
 	    public int? TopicId;
-
         public readonly ProfileCommon Profile = ProfileCommon.GetProfile();
         public ScriptManager PageScriptManager
         {
             get { return _pageScriptManager ?? (_pageScriptManager = ScriptManager.GetCurrent(this)); }
         }
-
 	    public readonly bool IsAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
         public bool IsModerator
         {
@@ -119,42 +99,9 @@ namespace SnitzCommon
             }
            
         }
-
-	    public readonly SnitzData.Member Member = Util.GetMember(HttpContext.Current.User.Identity.Name);
-
-        public DateTime LastVisitDateTime
-	    {
-            get
-            {
-                if(Session["_LastVisit"] != null)
-                {
-                    string lastvisit = Session["_LastVisit"].ToString();
-
-                    var dateTime = lastvisit.ToDateTime();
-                    if (dateTime != null) return dateTime.Value;
-                }
-                return DateTime.UtcNow;
-            }
-	    }
-	         
-        public override String StyleSheetTheme
-        {
-            get
-            {
-                //HttpCookie cookie = Request.Cookies.Get("Theme");
-                //return cookie != null ? cookie.Value : Config.DefaultTheme;
-                return Config.DefaultTheme;
-            }
-            set
-            {
-                HttpCookie cookie = new HttpCookie("Theme", value);
-                Response.Cookies.Add(cookie);
-                //Request.Cookies["Theme"].Value = value;
-            }
-        }
-        
+	    public readonly MemberInfo Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
         public Stopwatch stopWatch = Stopwatch.StartNew();
-
+        
         private ScriptManager _pageScriptManager;
         private string LastVisitCookie 
         { 
@@ -169,6 +116,20 @@ namespace SnitzCommon
                 Response.Cookies.Add(cookie);
             }
         }
+        public DateTime LastVisitDateTime
+	    {
+            get
+            {
+                if(Session["_LastVisit"] != null)
+                {
+                    string lastvisit = Session["_LastVisit"].ToString();
+
+                    var dateTime = lastvisit.ToDateTime();
+                    if (dateTime != null) return dateTime.Value;
+                }
+                return DateTime.UtcNow;
+            }
+	    }
         private DateTime? _lastLoggedOn;
 	    private DateTime LastLoggedOn
 	    {
@@ -179,7 +140,8 @@ namespace SnitzCommon
                     MembershipUser mu = Membership.GetUser(HttpContext.Current.User.Identity.Name, HttpContext.Current.User.Identity.IsAuthenticated);
                     if (mu != null)
                     {
-                        _lastLoggedOn = mu.LastLoginDate;
+                        //a > b ? a : b;
+                        _lastLoggedOn = LastVisitDateTime > mu.LastLoginDate ? mu.LastLoginDate : LastVisitDateTime;
                         return _lastLoggedOn.Value;
                     }
                     
@@ -188,59 +150,10 @@ namespace SnitzCommon
 	        }
 	    }
 	    
-
-	    protected virtual void Page_PreRender(object sender, EventArgs e)
-        {
-            stopWatch.Stop();
-            BaseMasterPage master = (BaseMasterPage) this.Master;
-            //TODO: fix this later
-            if (master != null)
-                master.PageTimer = string.Format(Resources.webResources.lblTimer, ((float)stopWatch.ElapsedMilliseconds / 1000));
-        }
-
-        public void Page_Error(object sender, EventArgs e)
-        {
-            Exception objErr = Server.GetLastError().GetBaseException();
-            string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
-                         "<br/><b>Error in: </b>" + Request.Url.ToString() +
-                         "<br/><b>Error Message: </b>" + objErr.Message.ToString();
-            if (IsAdministrator || Config.DebugMode)
-                    err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
-            Response.Write("<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
-            Response.Write(err);
-            Response.Write("<br/></div>");
-            Response.Write("<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
-            Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
-            Response.Write("</div>");
-            Server.ClearError();
-        }
-
 		public event SiteMapResolveEventHandler SiteMapResolve;
 
         protected override void OnPreInit(EventArgs e)
         {
-            
-            #region Theme Setting
-            string ThemeName = Config.DefaultTheme;
-            HttpCookie themecookie = Request.Cookies.Get("Theme");
-            if (themecookie != null)
-            {
-                ThemeName = StyleSheetTheme;
-                Session.Add("_theme", ThemeName);
-            }
-            if (Session["_theme"] == null)
-            {
-                //if (IsAuthenticated)
-                //{
-                //    if (Member != null)
-                //        if (Member.Theme  != "")
-                //            ThemeName = Member.Theme;
-                //}
-                Session.Add("_theme", ThemeName);
-
-            }
-            #endregion
-
             //DO we need to run the Database setup
             if (ConfigurationManager.AppSettings["RunSetup"] == "true")
             {
@@ -248,6 +161,10 @@ namespace SnitzCommon
             }
             base.OnPreInit(e);
 
+            #region Theme Setting
+            Page.Theme = Config.UserTheme;
+            Session.Add("PageTheme",Page.Theme);
+            #endregion
 
             if(!Config.ShowRightColumn)
             {
@@ -280,6 +197,7 @@ namespace SnitzCommon
                     MembershipUser mu = Membership.GetUser(current.User.Identity.Name, true);
                     if (mu != null)
                     {
+                        mu.LastActivityDate = mu.LastLoginDate;
                         mu.LastLoginDate = DateTime.UtcNow;
                         Membership.UpdateUser(mu);
                     }
@@ -287,7 +205,7 @@ namespace SnitzCommon
                 else
                 {
                     //we are not logged in, so check the cookie for our lastheredate
-                    current.Session.Add("_LastVisit", LastVisitCookie ?? DateTime.UtcNow.ToForumDateStr());
+                    current.Session.Add("_LastVisit", LastLoggedOn.ToForumDateStr());
                 }
                 
                 
@@ -373,6 +291,34 @@ namespace SnitzCommon
             SiteMap.SiteMapResolve -= SiteMapSiteMapResolve;
         }
 
+	    protected virtual void Page_PreRender(object sender, EventArgs e)
+        {
+            stopWatch.Stop();
+            BaseMasterPage master = (BaseMasterPage) this.Master;
+            //TODO: fix this later
+            if (master != null)
+                master.PageTimer = string.Format(Resources.webResources.lblTimer, ((float)stopWatch.ElapsedMilliseconds / 1000));
+        }
+
+        //public void Page_Error(object sender, EventArgs e)
+        //{
+        //    Exception objErr = Server.GetLastError().GetBaseException();
+        //    string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
+        //                 "<br/><b>Error in: </b>" + Request.Url.ToString() +
+        //                 "<br/><b>Error Message: </b>" + objErr.Message.ToString();
+        //    if (IsAdministrator || Config.DebugMode)
+        //            err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
+        //    Response.Write("<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
+        //    Response.Write(err);
+        //    Response.Write("<br/></div>");
+        //    Response.Write("<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
+        //    Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
+        //    Response.Write("</div>");
+        //    Server.ClearError();
+        //}
+
+
+
 		SiteMapNode SiteMapSiteMapResolve(object sender, SiteMapResolveEventArgs e)
 		{
 
@@ -452,7 +398,7 @@ namespace SnitzCommon
             string answerid = responseid;
             if (answerid != null)
             {
-                bool res = Util.CastVote(Membership.GetUser().ProviderUserKey, Convert.ToInt32(answerid));
+                bool res = Polls.CastVote(Membership.GetUser().ProviderUserKey, Convert.ToInt32(answerid));
                 if (res)
                     return "Your vote was cast";
             }

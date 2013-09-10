@@ -117,7 +117,7 @@ public partial class Homepage {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Statistics Statistics1;
+    protected global::ucStatistics Statistics1;
     
     /// <summary>
     /// Master property.

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Account - Profile.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
@@ -9,10 +30,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
+
 using SnitzMembership;
 
 namespace SnitzUI
@@ -22,8 +45,7 @@ namespace SnitzUI
         private bool _editmode;
         private bool _isMyProfile;
         private string _userProfile;
-        private RegisterMember _memberUtil;
-        private SnitzData.Member _user;
+        private MemberInfo _user;
         private ProfileCommon _profile;
         private string _cancelUrl;
         private List<SnitzLink> _weblinks;
@@ -35,11 +57,11 @@ namespace SnitzUI
             {
                 throw new SecurityException("You must be a logged in member to view users profiles");
             }
-            markitupCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/markitup.css");
+            editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
             if (webResources.TextDirection == "rtl")
-                pageCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/profilepagertl.css");
+                pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/profilepagertl.css");
             else
-                pageCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/profilepage.css");
+                pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/profilepage.css");
 
             for (int tZone = -12; tZone < 13; tZone++)
             {
@@ -58,17 +80,16 @@ namespace SnitzUI
             {
                 _userProfile = HttpContext.Current.Items["user"].ToString();
             }else
-                _userProfile = !String.IsNullOrEmpty(Request.Params["user"]) ? Request.Params["user"] : Member.Name;
+                _userProfile = !String.IsNullOrEmpty(Request.Params["user"]) ? Request.Params["user"] : Member.Username;
             if (Session["CurrentProfile"] == null)
                 Session.Add("CurrentProfile", _userProfile);
             else
                 _userProfile = Session["CurrentProfile"].ToString();
-            _memberUtil = new RegisterMember();
-            _user = _memberUtil.GetMember(_userProfile);
+            _user = Members.GetMember(_userProfile);
 
             _profile = ProfileCommon.GetUserProfile(_userProfile);
             Page.Title = String.Format(webResources.lblProfile, _userProfile);
-            _isMyProfile = _userProfile == Member.Name;
+            _isMyProfile = _userProfile == Member.Username;
             
             if (!IsPostBack)
             {
@@ -120,7 +141,7 @@ namespace SnitzUI
                     TextMode = TextBoxMode.MultiLine,
                     CssClass = "QRMsgArea",
                     Height = new Unit(99, UnitType.Pixel),
-                    Text = _user.Quote
+                    Text = _user.FavouriteQuote
                 };
                 phQuote.Controls.Add(tbxQuote);
             }
@@ -131,7 +152,7 @@ namespace SnitzUI
                     ID = "lblQuote",
                     Width = new Unit(100, UnitType.Percentage),
                     Height = new Unit(),
-                    Text = _user.Quote
+                    Text = _user.FavouriteQuote
                 };
                 phQuote.Controls.Add(tbxQuote);
             }
@@ -207,7 +228,7 @@ namespace SnitzUI
                     CssClass = "bbcode",
                     Width = new Unit(100, UnitType.Percentage),
                     Height = new Unit(),
-                    Text = _user.Hobby
+                    Text = _user.Hobbies
                 };
                 phHobby.Controls.Add(tbxHobby);
             }
@@ -232,7 +253,7 @@ namespace SnitzUI
                     CssClass = "bbcode",
                     Width = new Unit(100, UnitType.Percentage),
                     Height = new Unit(),
-                    Text = _user.News
+                    Text = _user.LatestNews
                 };
                 phNews.Controls.Add(tbxNews);
             }
@@ -295,10 +316,12 @@ namespace SnitzUI
             _profile = ProfileCommon.GetUserProfile(_userProfile);
             
             _profile.Gravatar = cbxGravatar.Checked;
-            _profile.LinkTarget = ddlTarget.SelectedValue;
+            
             _profile.HideAge = cbxHideAge.Checked;
             _profile.Skype = tbxSkype.Text;
             _profile.PublicGallery = cbxPublic.Checked;
+            _profile.LinkTarget = ddlTarget.SelectedValue;
+            _profile.TimeOffset = Convert.ToInt32(ddlTimeZone.SelectedValue);
             _profile.Save();
 
             string folderPath = "/gallery/";
@@ -323,15 +346,20 @@ namespace SnitzUI
             //tbxName.Text = user.Name;
             if (tbxRealName.Text.Trim() != "")
             {
-                _user.FirstName = tbxRealName.Text.Substring(0, tbxRealName.Text.IndexOf(" ")).Trim();
-                _user.LastName = tbxRealName.Text.Replace(_user.FirstName, "").Trim();
+                int i = tbxRealName.Text.IndexOf(" ");
+                if (i > 0)
+                    _user.Firstname = tbxRealName.Text.Substring(0, tbxRealName.Text.IndexOf(" ")).Trim();
+                else
+                    _user.Firstname = tbxRealName.Text.Trim();
+
+                _user.Lastname = tbxRealName.Text.Replace(_user.Firstname, "").Trim();
             }
             _user.Age = Common.GetAgeFromDOB(DatePicker1.DOBStr);
             _user.DateOfBirth = DatePicker1.DOBStr;
             if(ddlMarStatus.SelectedIndex >= 0)
                 _user.MaritalStatus = ddlMarStatus.SelectedValue;
             if (ddlGender.SelectedIndex >= 0)
-                _user.Sex = ddlGender.SelectedValue;
+                _user.Gender = ddlGender.SelectedValue;
 
             _user.State = tbxState.Text;
             _user.City = tbxCity.Text;
@@ -342,26 +370,27 @@ namespace SnitzUI
                 _user.TimeOffset = Convert.ToInt32(ddlTimeZone.SelectedValue);
             
             //email
-            _user.ReceiveEmail = (short) (cbxReceiveEmail.Checked ? 1 : 0);
-            _user.HideEmail = (short?) (cbxHideEmail.Checked ? 1 : 0);
+            _user.ReceiveEmails = cbxReceiveEmail.Checked;
+            _user.HideEmail = cbxHideEmail.Checked;
             _user.Yahoo = tbxYAHOO.Text;
-            _user.Aim = tbxAIM.Text;
+            _user.AIM = tbxAIM.Text;
             _user.MSN = tbxMSN.Text;
             _user.ICQ = tbxICQ.Text;
             
-            _user.Quote = ((TextBox)phQuote.FindControl("tbxQuote")).Text;
+            _user.FavouriteQuote = ((TextBox)phQuote.FindControl("tbxQuote")).Text;
             _user.Signature = ((TextBox)phSig.FindControl("tbxSig")).Text;
             _user.Biography = ((TextBox)phBiog.FindControl("tbxBiog")).Text;
-            _user.UseSig = (short?) (cbxUseSig.Checked ? 1 : 0);
-            _user.ViewSig = (short?) (cbxViewSig.Checked ? 1 : 0);
+            _user.UseSignature = cbxUseSig.Checked;
+            _user.ViewSignatures = (cbxViewSig.Checked ? true : false);
 
             _user.LatestNews = ((TextBox)phNews.FindControl("tbxNews")).Text;
             _user.Hobbies = ((TextBox)phHobby.FindControl("tbxHobby")).Text;
             _user.HomePage = ((TextBox)phHomePage.FindControl("tbxHomePage")).Text;
-
+            _user.Theme = ddlTheme.Text;
+            Config.UserTheme = _user.Theme;
             //fav links
 
-            _memberUtil.SaveMember(_user);
+            Members.SaveMember(_user);
 
 
         }
@@ -372,13 +401,13 @@ namespace SnitzUI
 
             SetControlStatus();
 
-            tbxName.Text = _user.Name;
-            tbxRealName.Text = String.Format("{0} {1}", _user.FirstName, _user.LastName);
+            tbxName.Text = _user.Username;
+            tbxRealName.Text = String.Format("{0} {1}", _user.Firstname, _user.Lastname);
             tbxAge.Text = Common.TranslateNumerals(Common.GetAgeFromDOB(_user.DateOfBirth));
-            if (_profile.HideAge && _userProfile != Member.Name)
+            if (_profile.HideAge && _userProfile != Member.Username)
                 tbxAge.Text = @"Mind your own business";
             ddlMarStatus.SelectedValue = _user.MaritalStatus;
-            ddlGender.SelectedValue = _user.Sex;
+            ddlGender.SelectedValue = _user.Gender;
             tbxState.Text = _user.State;
             tbxCity.Text = _user.City;
             tbxCountry.Text = _user.Country;
@@ -387,7 +416,7 @@ namespace SnitzUI
             if(_user.DateOfBirth.Trim() != "")
                 DatePicker1.SetDOB(_user.DateOfBirth.ToDateTime().Value);
             ddlTimeZone.SelectedValue = _user.TimeOffset.ToString();
-
+            ddlTheme.SelectedValue = Config.UserTheme;
             if (_profile.Gravatar)
             {
                 var grav = new Gravatar()
@@ -403,20 +432,20 @@ namespace SnitzUI
                 phAvatar.Controls.Add(grav);
             }else
             {
-                var img = new Literal {Text = _user.Avatar};
+                var img = new Literal {Text = _user.AvatarUrl};
                 phAvatar.Controls.Add(img);
             }
 
-            cbxReceiveEmail.Checked = _user.ReceiveEmail == 1;
-            cbxHideEmail.Checked = _user.HideEmail == 1;
-            cbxUseSig.Checked = _user.UseSig == 1;
-            cbxViewSig.Checked = _user.ViewSig == 1;
+            cbxReceiveEmail.Checked = _user.ReceiveEmails;
+            cbxHideEmail.Checked = _user.HideEmail;
+            cbxUseSig.Checked = _user.UseSignature;
+            cbxViewSig.Checked = _user.ViewSignatures;
             cbxHideAge.Checked = _profile.HideAge;
             cbxGravatar.Checked = _profile.Gravatar;
 
             tbxSkype.Text = _profile.Skype;
             tbxYAHOO.Text = _user.Yahoo;
-            tbxAIM.Text = _user.Aim;
+            tbxAIM.Text = _user.AIM;
             tbxMSN.Text = _user.MSN;
             tbxICQ.Text = _user.ICQ;
 
@@ -424,19 +453,19 @@ namespace SnitzUI
             repBookMarks.DataSource = _profile.BookMarks;
             repBookMarks.DataBind();
 
-            rptRecentTopics.DataSource = _memberUtil.GetRecentTopics(_user.Id,Member);
+            rptRecentTopics.DataSource = Members.GetRecentTopics(_user.Id,Member);
             rptRecentTopics.DataBind();
 
             string[] roles = Roles.GetRolesForUser(_userProfile);
             LitRoles.Text = String.Join("<br/>",roles);
             lblUserId.Text += @" : " + _user.Id;
             lblPosts.Text += @" : " + _user.PostCount;
-            lblSince.Text += @" : " + _user.MemberSinceTimeAgo;
-            lblVisit.Text += @" : " + _user.LastVisitTimeAgo;
+            lblSince.Text += @" : " + Members.MemberSinceTimeAgo(_user);
+            lblVisit.Text += @" : " + Members.LastVisitTimeAgo(_user);
 
             cbxPublic.Checked = _profile.PublicGallery;
             TabSubscriptions.Visible = _isMyProfile;
-            grdSubs.DataSource = _user.Subscriptions;
+            grdSubs.DataSource = Subscriptions.GetMemberSubscriptions(_user.Id);
             grdSubs.DataBind();
 
         }
@@ -507,7 +536,7 @@ namespace SnitzUI
             Gallery.Visible = _isMyProfile || IsAdministrator || _profile.PublicGallery;
         }
         
-        private Image GetTopicIcon(Topic topic)
+        private Image GetTopicIcon(TopicInfo topic)
         {
             var image = new Image { ID = "imgTopicIcon" };
             string _new = "";
@@ -521,7 +550,7 @@ namespace SnitzUI
                 _new = "New";
             }
 
-            switch (topic.Status)
+            switch ((Enumerators.PostStatus)topic.Status)
             {
                 case Enumerators.PostStatus.Open:
                     locked = "";
@@ -590,7 +619,7 @@ namespace SnitzUI
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var thisrow = (Topic)(e.Row.DataItem);
+                var thisrow = (TopicInfo)(e.Row.DataItem);
                 Image img = GetTopicIcon(thisrow);
                 img.ApplyStyleSheetSkin(Page);
                 e.Row.Cells[0].Controls.Add(img);
@@ -686,7 +715,7 @@ namespace SnitzUI
 
         private void AsyncFileUpload1UploadedFileError(object sender, AsyncFileUploadEventArgs e)
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';});", true);
         }
 
         private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
@@ -717,11 +746,11 @@ namespace SnitzUI
                 throw ex;
             }
             string savePath = Page.MapPath(String.Format("~/Avatars/{0}", Path.GetFileName(filename).Replace(" ", "+")));
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
 
             AsyncFileUpload1.SaveAs(savePath);
             _user.Avatar = Path.GetFileName(filename).Replace(" ", "+");
-            _memberUtil.SaveMember(_user);
+            Members.SaveMember(_user);
 
         }
 
@@ -767,7 +796,7 @@ namespace SnitzUI
             //MemberSubscription ms = (MemberSubscription) e.CommandSource;
             if (e.CommandName == "DeleteAll")
             {
-                Util.RemoveMemberSubscription(_user.Id);
+                Subscriptions.RemoveMemberSubscriptions(_user.Id);
             }
             else
             {
@@ -776,9 +805,9 @@ namespace SnitzUI
                 int forumid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["ForumId"]);
 
                 if (topicid > 0)
-                    Util.RemoveTopicSubscription(_user.Id, topicid);
+                    Subscriptions.RemoveTopicSubscription(_user.Id, topicid);
                 else if (forumid > 0)
-                    Util.RemoveForumSubscription(_user.Id, forumid);
+                    Subscriptions.RemoveForumSubscription(_user.Id, forumid);
             }
         }
     }

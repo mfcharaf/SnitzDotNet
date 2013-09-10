@@ -1,0 +1,6 @@
+﻿<asp:ImageButton 
+    runat="server" 
+    SkinID="CloseModal" 
+    Width="16" 
+    Height="16" 
+    ImageURL="Images/close.png" />

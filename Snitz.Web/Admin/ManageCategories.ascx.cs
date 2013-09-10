@@ -2,7 +2,10 @@ using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Snitz.DataBaseLayer;
+using Snitz.BLL;
+using Snitz.Entities;
+using SnitzConfig;
+
 
 public partial class Admin_ManageCategories : UserControl
 {
@@ -19,9 +22,17 @@ public partial class Admin_ManageCategories : UserControl
     {
         switch (e.CommandName)
         {                            
-
+            case "NewClick" :
+                catID.Value  = "0";
+                catStatus.SelectedValue = "1";
+                catMod.SelectedIndex = -1;
+                catSub.SelectedIndex = -1;
+                txtName.Text = "";
+                txtOrder.Text = "";
+                Panel2.Visible = true; 
+                break;
             case "DeleteClick":
-                bool resPosts = ForumDatasource.CategoryHasPosts(Convert.ToInt32(e.CommandArgument));
+                bool resPosts = Categories.CategoryHasPosts(Convert.ToInt32(e.CommandArgument));
 
                 if (resPosts)
                 {
@@ -35,31 +46,33 @@ public partial class Admin_ManageCategories : UserControl
                     }
                     else
                     {
-                        if (!ForumDatasource.DeleteCategory(Convert.ToInt32(e.CommandArgument)))
+                        try
                         {
-                            errLbl2.Text = "Error deleting the category.";
-                            errLbl2.Visible = true;
-                        }
-                        else 
-                        {
+                            Categories.DeleteCategory(Convert.ToInt32(e.CommandArgument));
                             errLbl2.Text ="Category deleted successfully.";
                             errLbl2.Visible = true;
                         }
-
+                        catch (Exception)
+                        {
+                            errLbl2.Text = "Error deleting the category.";
+                            errLbl2.Visible = true;
+                            throw;
+                        }
                     }
                 }
                 else
                 {
-                   
-                    if (!ForumDatasource.DeleteCategory(Convert.ToInt32(e.CommandArgument)))
+                    try
+                    {
+                        Categories.DeleteCategory(Convert.ToInt32(e.CommandArgument));
+                        errLbl2.Text = "Category deleted successfully.";
+                            errLbl2.Visible = true;
+                    }
+                    catch (Exception)
                     {
                         errLbl2.Text = "Error deleting the category.";
                         errLbl2.Visible = true;
-                    }
-                    else
-                    {
-                        errLbl2.Text = "Category deleted successfully.";
-                            errLbl2.Visible = true;
+                        throw;
                     }
                 }
 
@@ -69,28 +82,29 @@ public partial class Admin_ManageCategories : UserControl
 
             case "EditClick":
 
-                DataTable dt = ForumDatasource.GetCategoryFullData(Convert.ToInt32(e.CommandArgument));
-
-                if (dt.Rows.Count != 0)
+                CategoryInfo cat = Categories.GetCategory(Convert.ToInt32(e.CommandArgument));
+                if (cat != null)
                 {
-                    catID.Value  = dt.Rows[0].ItemArray[0].ToString();
-                    catStatus.SelectedValue = dt.Rows[0].ItemArray[2].ToString();
-                    catMod.SelectedValue = dt.Rows[0].ItemArray[3].ToString();
-                    catSub.SelectedValue = dt.Rows[0].ItemArray[4].ToString();
-                    txtName.Text = dt.Rows[0].ItemArray[1].ToString();
-                    txtOrder.Text = dt.Rows[0].ItemArray[5].ToString();
+                    catID.Value  = cat.Id.ToString();
+                    catStatus.SelectedValue = cat.Status.ToString();
+                    catMod.SelectedValue = cat.ModerationLevel.ToString();
+                    catSub.SelectedValue = cat.SubscriptionLevel.ToString();
+                    txtName.Text = cat.Name;
+                    txtOrder.Text = cat.Order.ToString();
                     Panel2.Visible = true; 
                 }
 
                 break;
 
             case "LockClick":
-                catStatus.SelectedValue = ForumDatasource.LockCategory(Convert.ToInt32(e.CommandArgument)).ToString();
+                Categories.SetCatStatus(Convert.ToInt32(e.CommandArgument), (int)Enumerators.PostStatus.Closed);
+                catStatus.SelectedValue = "1";
                 errLbl2.Visible = false;
                 break;
 
             case "UnlockClick":
-                catStatus.SelectedValue = ForumDatasource.UnLockCategory(Convert.ToInt32(e.CommandArgument)).ToString();
+                Categories.SetCatStatus(Convert.ToInt32(e.CommandArgument), (int)Enumerators.PostStatus.Open);
+                catStatus.SelectedValue = "0";
                 errLbl2.Visible = false;
                 break;
 
@@ -106,22 +120,28 @@ public partial class Admin_ManageCategories : UserControl
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         bool res;
-
-        res = ForumDatasource.UpdateAllCategoryInfo(Convert.ToInt32(catID.Value), txtName.Text, Convert.ToInt32(txtOrder.Text), 
-                       Convert.ToInt32(catStatus.SelectedValue), Convert.ToInt32(catMod.SelectedValue), Convert.ToInt32(catSub.SelectedValue));
-
-        if (!res)
+        CategoryInfo cat = catID.Value == "0" ? new CategoryInfo() : Categories.GetCategory(Convert.ToInt32(catID.Value));
+        cat.Name = txtName.Text;
+        cat.Order = Convert.ToInt32(txtOrder.Text);
+        cat.Status = Convert.ToInt32(catStatus.SelectedValue);
+        cat.ModerationLevel = Convert.ToInt32(catMod.SelectedValue);
+        cat.SubscriptionLevel = Convert.ToInt32(catSub.SelectedValue);
+        try
         {
-            errLbl.Text = "Error Updating Category";
-            errLbl.Visible = false;
-        }
-        else
-        {
+            if (catID.Value == "0")
+                Categories.AddCategory(cat);
+            else
+                Categories.UpdateCategory(cat);
             errLbl.Visible = false;
             Panel2.Visible = false;
             GridView1.DataBind();
         }
-
+        catch (Exception)
+        {
+            errLbl.Text = catID.Value == "0" ? "Error Adding Category" : "Error Updating Category";
+            errLbl.Visible = false;
+            throw;
+        }
     }
     protected void btnReset_Click(object sender, EventArgs e)
     {

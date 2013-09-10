@@ -3,6 +3,7 @@ using System.Configuration.Provider;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.Entities;
 using Snitz.Providers;
 using SnitzMembership;
 
@@ -41,7 +42,7 @@ public partial class Admin_ManageRoles : UserControl
             SnitzRoleProvider srp = new SnitzRoleProvider();
             
             int roleid = Convert.ToInt32(e.CommandArgument);
-            Role role  = SnitzRoleProvider.GetRoleFull(roleid);
+            RoleInfo role  = SnitzRoleProvider.GetRoleFull(roleid);
 
             txtRoleID.Text = roleid.ToString();
             txtName.Text = role.RoleName;

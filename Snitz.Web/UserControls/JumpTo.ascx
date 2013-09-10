@@ -9,7 +9,13 @@
 --%>
 
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="WebUserControl"  Codebehind="JumpTo.ascx.cs" %>
+<script type="text/javascript">
+    function navFromList(qsParam) {
+        document.location.href = "/Content/Forums/forum.aspx?FORUM=" + qsParam;
+        return false;
+    }
+</script>
 <%@ Register Assembly="SnitzCommon" Namespace="GroupDropDownList" TagPrefix="cc1" %>
 <asp:Label ID="Label1" CssClass="jumpto" runat="server" Text="<%$ Resources:webResources, lblJumpTo %>" ></asp:Label> :
-<cc1:GroupDropDownList ID="GroupDropDownList1" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" EnableViewState="false">
+<cc1:GroupDropDownList ID="GroupDropDownList1" runat="server" onchange="navFromList(this.value);" EnableViewState="false">
 </cc1:GroupDropDownList>

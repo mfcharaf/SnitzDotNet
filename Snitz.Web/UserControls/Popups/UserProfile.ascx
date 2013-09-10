@@ -3,11 +3,11 @@
 
 <asp:Repeater ID="rpt" runat="server" onitemdatabound="RptItemDataBound">
     <ItemTemplate>
-        <asp:Literal ID="AvatarLabel" runat="server" Text='<%# Bind("Avatar") %>' />
+        <asp:Literal ID="AvatarLabel" runat="server" Text='<%# Bind("AvatarUrl") %>' />
         <asp:PlaceHolder ID="phAvatar" runat="server"></asp:PlaceHolder>
         <asp:Label ID="MemberTitleLabel" runat="server" CSSClass="usertitle" Text='<%# Bind("Rank.Title") %>' /><br />
         <asp:Label CssClass="usrlabel" ID="Label1" runat="server" Text="<%$ Resources:webResources, lblName %>"></asp:Label>:
-        <asp:Label ID="NameLabel" runat="server" Text='<%# Bind("Name") %>' /><br />
+        <asp:Label ID="NameLabel" runat="server" Text='<%# Bind("Username") %>' /><br />
         <asp:Label CssClass="usrlabel" ID="Label2" runat="server" Text="<%$ Resources:webResources, lblCountry %>"></asp:Label>:
         <asp:Label ID="CountryLabel" runat="server" Text='<%# Bind("Country") %>' /><br />
         <asp:Label CssClass="usrlabel" ID="Label3" runat="server" Text="Number of posts"></asp:Label>:

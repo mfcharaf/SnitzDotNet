@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Web.UI;
 using SnitzCommon;
 using SnitzConfig;
@@ -71,7 +70,7 @@ public partial class Admin_features : UserControl
             toUpdate.Add("PublicGallery".GetPropertyDescription(), rblPublicGallery.SelectedValue);
         if (Config.ShowGallery != (rblShowGallery.SelectedValue == "1"))
             toUpdate.Add("ShowGallery".GetPropertyDescription(), rblShowGallery.SelectedValue);
-        if (Config.SubscriptionLevel != (SubscriptionLevel)Convert.ToInt32(ddlSubs.SelectedValue))
+        if (Config.SubscriptionLevel != (Enumerators.SubscriptionLevel)Convert.ToInt32(ddlSubs.SelectedValue))
             toUpdate.Add("SubscriptionLevel".GetPropertyDescription(), ddlSubs.SelectedValue);
         if (Config.Moderation != (rblTopicMod.SelectedValue == "1"))
             toUpdate.Add("Moderation".GetPropertyDescription(), rblTopicMod.SelectedValue);
@@ -92,29 +91,30 @@ public partial class Admin_features : UserControl
             toUpdate.Add("PrintTopic".GetPropertyDescription(), rblPrint.SelectedValue);
 
         if (Config.HotTopicNum != Convert.ToInt32(tbxHotTopics.Text))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), tbxHotTopics.Text);
+            toUpdate.Add("HotTopicNum".GetPropertyDescription(), tbxHotTopics.Text);
         if (Config.TopicPageSize != Convert.ToInt32(tbxPageItems.Text))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), tbxPageItems.Text);
+            toUpdate.Add("TopicPageSize".GetPropertyDescription(), tbxPageItems.Text);
         if (Config.SearchPageSize != Convert.ToInt32(tbxSearchItems.Text))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), tbxSearchItems.Text);
+            toUpdate.Add("SearchPageSize".GetPropertyDescription(), tbxSearchItems.Text);
 
         if (Config.AllowForumCode != (rblForumCode.SelectedValue =="1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("AllowForumCode".GetPropertyDescription(), rblForumCode.SelectedValue);
         if (Config.AllowIcons != (rblIcons.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("AllowIcons".GetPropertyDescription(), rblIcons.SelectedValue);
         if (Config.AllowImages != (rblImages.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("AllowImages".GetPropertyDescription(), rblImages.SelectedValue);
         if (Config.ShowTimer != (rblPageTimer.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("ShowTimer".GetPropertyDescription(), rblPageTimer.SelectedValue);
         if (Config.EmoticonTable != (rblSmilieTable.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("EmoticonTable".GetPropertyDescription(), rblSmilieTable.SelectedValue);
         if (Config.ShowQuickReply != (rblQuickReply.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
+            toUpdate.Add("ShowQuickReply".GetPropertyDescription(), rblQuickReply.SelectedValue);
         if (Config.AllowSignatures != (rblSignatures.SelectedValue == "1"))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
-        if (Config.ShowRankType != (RankType)Convert.ToInt32(ddlShowRank.SelectedValue))
-            toUpdate.Add("UseEmail".GetPropertyDescription(), "");
-
+            toUpdate.Add("AllowSignatures".GetPropertyDescription(), rblSignatures.SelectedValue);
+        if (Config.ShowRankType != (Enumerators.RankType)Convert.ToInt32(ddlShowRank.SelectedValue))
+            toUpdate.Add("ShowRankType".GetPropertyDescription(), ddlShowRank.SelectedValue);
+        if (Config.Announcement != (rblAnnouncement.SelectedValue == "1"))
+            toUpdate.Add("Announcement".GetPropertyDescription(), rblAnnouncement.SelectedValue);
         Config.UpdateKeys(toUpdate);
 
     }

@@ -8,7 +8,7 @@
             font-size: 0.9em;
             text-decoration: none;
             line-height: 1em;
-            color: #0FA1B8;
+            color: #fff;
         }
         #ctl00_CPM_pnlEdit label
         {
@@ -27,6 +27,7 @@
         {
             overflow: hidden;
             height: 100%;
+            background-color: #222;
         }
         div#main
         {
@@ -59,8 +60,9 @@
         {
             height: 1px;
         }
-        .faqQuestion{background: #FFFFFF; padding: 4px;}
-        .category{padding: 3px;}
+        .faqQuestion{background-color: #222; padding: 4px;}
+        .category{padding: 3px;color: silver;}
+        a.faqLnk { color: silver;}
         
 
 

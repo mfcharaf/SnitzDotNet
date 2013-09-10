@@ -49,6 +49,24 @@ namespace SnitzUI.UserControls.Popups {
         protected global::System.Web.UI.WebControls.TextBox tbxSubject;
         
         /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+        
+        /// <summary>
+        /// tbxOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbxOrder;
+        
+        /// <summary>
         /// cbxCountPost control.
         /// </summary>
         /// <remarks>

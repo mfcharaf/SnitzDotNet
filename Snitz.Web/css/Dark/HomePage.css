@@ -1,5 +1,6 @@
 ﻿body {
 }
+#breadcrumbDIV{ display: none;}
 #divEditForum label{
  display:inline-block;
  text-align:right;
@@ -40,7 +41,7 @@
  margin-left:0px;
  width:88px;
  height:20px;
-
+ border: 0px none;
  }
   #divEditForum input[type="checkbox"]
  {
@@ -50,7 +51,11 @@
  border:0px;
  }
 
-
+fieldset li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 div.ListViewContainer {
 	width: 100%; /* Table width will be 99% of this */
 	height: 60px; /* Must be greater than tbody */

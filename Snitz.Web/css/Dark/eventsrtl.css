@@ -7,8 +7,8 @@ width: 100%;
 #contentcolumn{
 margin-right: 222px; /*Set left margin to LeftColumnWidth*/
 }
-h2{ background:#0FA1B8;color:#ffffff;height:20px;margin-top:0px;padding:3px;}
-.daydetail{border:1px solid #0FA1B8;border-top:0px;width:35%;float:right;}
+h2{ background:#111;color:#ffffff;height:20px;margin-top:0px;padding:3px;}
+.daydetail{border:1px solid #000;border-top:0px;width:35%;float:right;}
 #leftcolumn{
 float: right;
 width: 220px; /*Width of left column*/

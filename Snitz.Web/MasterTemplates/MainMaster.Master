@@ -1,48 +1,82 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MainMaster.Master.cs" Inherits="MainMaster"  EnableViewState="False" %>
 <%@ Import Namespace="SnitzConfig" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
+<!DOCTYPE html>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html id="Html1" runat="server" xmlns="http://www.w3.org/1999/xhtml" dir='<%$ Resources: webresources,TextDirection%>'>
+<html id="Html1" runat="server" xmlns="http://www.w3.org/1999/xhtml" dir='<%$ Resources:webResources, TextDirection%>'>
 <head runat="server">
     <title></title>
+    <!--[if IE 8]>
+    <meta http-equiv="x-ua-compatible" content="IE=EmulateIE8" >
+    <![endif]-->
     <meta name="robots" content="index, follow" />
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="Generator" content="SnitzDotNet Forums v 2.0" />
     <asp:ContentPlaceHolder ID="CPMeta" runat="server"></asp:ContentPlaceHolder>
 
-    <link rel="stylesheet" href="/css/jquery-ui.css" />
+    <asp:Literal ID="jqUi" runat="server"></asp:Literal>
     <link rel="stylesheet" type="text/css" href="/css/ajaxsessiontimer.css" />
-    <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
+    <link rel="canonical" href="http://snitzdemo.reddiweb.com" />
 
-    <script type="text/javascript" src="/scripts/net.js"></script> 
-    <script type="text/javascript" src="/scripts/AjaxSessionTimer.js"></script>
+    <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
+    <%--<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>--%>
+    <script type="text/javascript" src="/scripts/net.min.js"></script> 
+    <%--<script type="text/javascript" src="/scripts/AjaxSessionTimer.js"></script>--%>
     <script type="text/javascript" src="/scripts/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery-ui.js"></script>
     <script type="text/javascript" src="/scripts/jquery.timeago.min.js"></script>
     <script type="text/javascript" src="/scripts/confirmHandler.min.js"></script>
     <asp:ContentPlaceHolder ID="CPhead" runat="server"></asp:ContentPlaceHolder>
-    
-    <style type="text/css">
-            .ui-tooltip{
-        background: #0FA1B8;
-        border: 1px solid white;
-        padding: 5px 10px;
-        color: white;
-        border-radius: 10px;
-        font: 11px "Helvetica Neue", Sans-Serif;
-        text-transform: uppercase;
-        box-shadow: 0 0 4px black;
-    }
-    </style>
+    <script type="text/javascript">
 
+        (function ($) {
+            //detect the width on page load
+            $(document).ready(function () {
+                var current_width = $(window).width();
+                //do something with the width value here!
+                if (current_width < 1024) {
+                    $(".maincolumn").css('margin-right', '0');
+                    $(".rightcolumn").css('display', 'none');
+                    if (current_width < 600) {
+                        $("body").css('font-size', '0.7em');
+                    } else {
+                        $("body").css('font-size', '0.8em');
+                    }
+                    
+                } else {
+                    $(".maincolumn").css('margin-right', '325px');
+                    $(".rightcolumn").css('display', 'block');
+                    $("body").css('font-size', '');
+                }
+            });
+            //update the width value when the browser is resized (useful for devices which switch from portrait to landscape)
+            $(window).resize(function () {
+                var current_width = $(window).width();
+                //do something with the width value here!
+                if (current_width < 1024) {
+                    $(".maincolumn").css('margin-right', '0');
+                    $(".rightcolumn").css('display', 'none');
+                    if (current_width < 600) {
+                        $("body").css('font-size', '0.7em');
+                    } else {
+                        $("body").css('font-size', '0.8em');
+                    }
+                } else {
+                    $(".maincolumn").css('margin-right', '325px');
+                    $(".rightcolumn").css('display', 'block');
+                    $("body").css('font-size', '');
+                }
+            });
+
+        })(jQuery);
+
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
     <ajaxtoolkit:ToolkitScriptManager ID="MainSM" runat="server" ScriptMode="Release" LoadScriptsBeforeUI="true" EnablePageMethods="true" EnableScriptGlobalization="true" EnableScriptLocalization="true">
         <Scripts>
-            <asp:ScriptReference Path="~/Scripts/Main.min.js" />
+            <asp:ScriptReference Path="~/Scripts/main.min.js" />
         </Scripts>
     </ajaxtoolkit:ToolkitScriptManager>
     <div id="maincontainer">
@@ -67,6 +101,7 @@
         <div id="MenuDIV" class="SnitzMenu">
             <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Secure" />
         </div>
+
     </div>
     <div id="subheadDIV" class="clearfix">
         <div id="breadcrumbDIV" class="clearfix">
@@ -75,12 +110,12 @@
         </div>
         <div class="innertube">
             <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
-                <snitz:announcebox ID="announce" runat="server" Show="<%# Config.Announcement %>"/>
+                <snitz:announcebox ID="announce" runat="server" />
             </asp:ContentPlaceHolder>
          </div>
     </div>
     <div id="contentwrapper">    
-        <div id="contentcolumn">
+        <div id="contentcolumn" class="maincolumn">
             <div class="innertube">
                 <div id="HdrDIV" class="nowrap">
                     <asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False">
@@ -94,7 +129,7 @@
                     <asp:ContentPlaceHolder ID="CPHR" runat="server" EnableViewState="False">
                     </asp:ContentPlaceHolder>
                 </div>
-                <div id="contentDIV">
+                <div id="contentDIV" class="clearfix">
                     <asp:ContentPlaceHolder ID="CPM" runat="server">
                     </asp:ContentPlaceHolder>
                 </div>
@@ -106,7 +141,7 @@
         </div>
 
     </div>
-        <div id="rightcolumn">
+        <div id="rightcolumn" class="rightcolumn">
             <div class="innertube">
                 <asp:ContentPlaceHolder ID="RightCol" runat="server" >
 
@@ -119,7 +154,7 @@
 
     <div id="footer">
         <div class="pagefooter">
-            <div id="snitzfooterDIV clearfix">
+            <div id="snitzfooterDIV" class="clearfix">
                 <div class="FooterTable clearfix">
                     <table width="100%">
                     <tr>
@@ -172,5 +207,9 @@
         CancelControlID="CPclB" OnCancelScript="CancelModal();" DropShadow="true" />
     <asp:Button runat="server" ID="CPHid" Style="display: none;" />
     </form>
+<%--<g:plusone size="medium" annotation="inline" href="..."></g:plusone>--%>
+<%--            <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsnitzdemo.reddiweb.com&amp;width=150&amp;height=21&amp;colorscheme=light&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;send=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;" allowTransparency="true"></iframe>--%>
+
+
 </body>
 </html>

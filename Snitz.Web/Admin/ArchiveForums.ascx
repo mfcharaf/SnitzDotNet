@@ -1,4 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ArchiveForums.ascx.cs" Inherits="Admin_ArchiveForums" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_ArchiveForums" Codebehind="ArchiveForums.ascx.cs" %>
+<%@ Register TagPrefix="cc1" Namespace="Snitz.ThirdParty" Assembly="Snitz.Controls" %>
 
 <asp:Panel ID="Panel2" Visible="false" runat="server" CssClass="clearfix">
 
@@ -15,13 +16,13 @@
  
         <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;" class="forumtable white">
             <tr>
-                <td colspan="2" class="tableheader" style="width: 100%">
+                <td class="tableheader" style="width: 100%">
                     <asp:Label ID="Label1" runat="server" Text="Archive Topics:"></asp:Label>
                 </td>
             </tr>
             
             <tr>
-                <td colspan="2">
+                <td>
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
                 <tr><td>
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" >
@@ -95,5 +96,44 @@
             </tr>                    
             
 </table>
+
+    </asp:Panel>
+    
+    <asp:Panel ID="Panel3" runat="server" CssClass="ConfigForm clearfix">
+        <cc1:BulkEditGridViewEx runat="server" ID="ForumList" 
+            AutoGenerateColumns="False" BackColor="White" BorderColor="#DEDFDE" 
+            BorderStyle="None" BorderWidth="1px" BulkEdit="False" CellPadding="4" 
+            EnableInsert="False" EnableModelValidation="True" ForeColor="Black" 
+            GridLines="Vertical" InsertRowCount="1" SaveButtonID="" Width="100%" OnRowDataBound="ForumList_RowDataBound">
+
+            <AlternatingRowStyle BackColor="White" />
+            <Columns>
+                <asp:BoundField DataField="Id" ReadOnly="True">
+                <HeaderStyle Width="50px" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Subject" HeaderText="Forum" ReadOnly="True">
+                <ControlStyle Width="99%" />
+                </asp:BoundField>
+                <asp:BoundField ApplyFormatInEditMode="True" DataField="LastArchived" 
+                    DataFormatString="{0:dd/MM/yyyy}" HeaderText="Last Archived" 
+                    NullDisplayText="Not Archived" ReadOnly="True">
+                <ControlStyle Width="99%" />
+                <HeaderStyle Width="150px" Wrap="False" />
+                </asp:BoundField>
+                <asp:TemplateField>
+                    <EditItemTemplate>
+                        <asp:Literal ID="overdue" runat="server" Visible="False">(Overdue)</asp:Literal></EditItemTemplate>
+                </asp:TemplateField>
+                <asp:BoundField DataField="ArchiveFrequency" HeaderText="Schedule">
+                <ControlStyle Width="99%" />
+                <HeaderStyle Width="100px" />
+                </asp:BoundField>
+            </Columns>
+            <FooterStyle BackColor="#CCCC99" />
+            <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#F7F7DE" ForeColor="Black" HorizontalAlign="Right" />
+            <RowStyle BackColor="#F7F7DE" />
+            <SelectedRowStyle BackColor="#CE5D5A" Font-Bold="True" ForeColor="White" />
+        </cc1:BulkEditGridViewEx>
 
     </asp:Panel>

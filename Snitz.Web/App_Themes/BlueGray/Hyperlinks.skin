@@ -51,3 +51,4 @@
 <asp:HyperLink SkinID="GotoTop" runat="server" ImageUrl="Images/message/up.png" cssclass="TopIcon"></asp:HyperLink>
 
 <asp:HyperLink SkinID="GoUpFooter" runat="server" ImageUrl="Images/message/up.png"></asp:HyperLink>
+<asp:HyperLink SkinID="RSS" runat="server" Text="RSS Feed" ImageUrl="Images/rss.png"></asp:HyperLink>

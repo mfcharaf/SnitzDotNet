@@ -9,7 +9,7 @@
 
 
 
-public partial class Statistics {
+public partial class ucStatistics {
     
     /// <summary>
     /// Stats_HeaderPanel control.

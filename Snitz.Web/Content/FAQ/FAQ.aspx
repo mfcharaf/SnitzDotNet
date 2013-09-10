@@ -15,9 +15,9 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Reference Control = "~/UserControls/SideColumn.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
-    <link rel="stylesheet" type="text/css" runat="server" id="markitupCSS"/>
+    <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
     <link rel="stylesheet" type="text/css" runat="server" id="faqCSS"/>
-    <script src="/scripts/editor.js" type="text/javascript"></script>
+    <script src="/scripts/editor.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         function SetSource(sourceId) {
             var hidSourceId = $("#<%=customPostBack.ClientID%>");
@@ -30,7 +30,7 @@
     <asp:HiddenField ID="customPostBack" runat="server" Value="" />
     <div class="POTButtons clearfix">
         <asp:LinkButton ID="addTopic" Text="Add help Topic" runat="server" ToolTip="Add new help Topic" Visible='<%# IsAdministrator || Roles.IsUserInRole("FaqAdmin") %>' OnClientClick = "SetSource(this.id)"  OnClick="NewTopic" EnableViewState="False" />
-        <asp:LinkButton EnableViewState="False" ID="manageCats" OnClick="ManageCategories" runat="server" Text="Manage Categories" ToolTip="Manage Categories" Visible='<%# IsAdministrator || Roles.IsUserInRole("FaqAdmin") %>' />
+        <asp:LinkButton EnableViewState="False" ID="manageCats" OnClientClick = "SetSource(this.id)" OnClick="ManageCategories" runat="server" Text="Manage Categories" ToolTip="Manage Categories" Visible='<%# IsAdministrator || Roles.IsUserInRole("FaqAdmin") %>' />
     </div>
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="CPM" runat="server">
@@ -43,7 +43,7 @@
                         Width="175px" CssClass="floatright"></asp:TextBox>
             </div>
         </div>
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true">
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
             <ContentTemplate>
                 <script type="text/javascript">
                     var prm = Sys.WebForms.PageRequestManager.getInstance();
@@ -76,15 +76,19 @@
                     </div>
                     <div id="main">
                         <asp:HiddenField ID="faqId" runat="server" />
-                        <asp:Panel runat="server" ID="Category" Visible="False" EnableViewState="False">
-                            <asp:Panel ID="Panel1" runat="server" EnableViewState="False">
-                                <asp:Label ID="Label3" runat="server" Text="Category" AssociatedControlID="DropDownList1" EnableViewState="False"></asp:Label>
-                                <asp:DropDownList ID="DropDownList1" runat="server" DataValueField="Id" DataTextField="Description" EnableViewState="False">
+                        <asp:Panel runat="server" ID="Category" Visible="False" CssClass="faqCat" EnableViewState="False" GroupingText="Manage Categories">
+                            <asp:Panel ID="Panel1" runat="server" EnableViewState="False" >
+                                <asp:Label ID="Label3" runat="server" Text="Category" AssociatedControlID="ddlCategoryEdit" EnableViewState="False"></asp:Label>
+                                <asp:DropDownList ID="ddlCategoryEdit" AutoPostBack="true" OnSelectedIndexChanged="SelectCategory" runat="server" DataValueField="Id" DataTextField="Description" EnableViewState="False">
                                 </asp:DropDownList>
                             </asp:Panel>
-                            <asp:Label ID="Label4" runat="server" Text="Name" AssociatedControlID="TextBox1" EnableViewState="False"></asp:Label><asp:TextBox
-                                ID="TextBox1" runat="server" Width="60%"></asp:TextBox><br />
-                            
+                            <asp:Label ID="Label4" runat="server" Text="Name" AssociatedControlID="catDescription" EnableViewState="False"></asp:Label><asp:TextBox
+                                ID="catDescription" runat="server" Width="60%"></asp:TextBox><br />
+                            <asp:Label ID="Label6" runat="server" Text="Language code" AssociatedControlID="catLang" EnableViewState="False"></asp:Label><asp:TextBox
+                                ID="catLang" runat="server" Width="30px" ReadOnly="True"></asp:TextBox><br />
+                            <asp:Label ID="Label5" runat="server" Text="Order" AssociatedControlID="catOrder" EnableViewState="False"></asp:Label><asp:TextBox
+                                ID="catOrder" runat="server" Width="20px"></asp:TextBox><br /><br />
+                            <asp:ImageButton ID="btnAddCat" SkinID="Edit" runat="server" OnClick="ToggleEdit" Visible="false" OnClientClick = "SetSource(this.id)" EnableViewState="False" />
                             <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
                             <asp:LinkButton ID="LinkButton2" runat="server">Cancel</asp:LinkButton>                            
                         </asp:Panel>

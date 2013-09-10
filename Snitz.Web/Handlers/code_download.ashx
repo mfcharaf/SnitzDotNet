@@ -1,11 +1,32 @@
 <%@ WebHandler Language="C#" Class="code_download" %>
+/*
+####################################################################################################################
+##
+## SnitzUI.Handlers - code_download
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
 
 using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using SnitzData;
+using Snitz.BLL;
+
 
 public class code_download : IHttpHandler
 {
@@ -24,10 +45,10 @@ public class code_download : IHttpHandler
         switch (context.Request.Params["type"])
         {
             case "T":
-                txtMessage = HttpUtility.HtmlDecode(Util.GetTopic(Convert.ToInt32(context.Request.Params["id"])).Message);
+                txtMessage = HttpUtility.HtmlDecode(Topics.GetTopic(Convert.ToInt32(context.Request.Params["id"])).Message);
                 break;
             case "R":
-                txtMessage = HttpUtility.HtmlDecode(Util.GetReply(Convert.ToInt32(context.Request.Params["id"])).Message);
+                txtMessage = HttpUtility.HtmlDecode(Replies.GetReply(Convert.ToInt32(context.Request.Params["id"])).Message);
                 break;
         }
 

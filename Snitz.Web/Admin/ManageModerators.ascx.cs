@@ -1,7 +1,9 @@
 using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
+using Snitz.Entities;
 using Snitz.Providers;
 
 
@@ -17,44 +19,40 @@ public partial class Admin_ManageModerators : UserControl
 
             if (avIndex == 0) //Moderator View
             {
-                DataSet forumList, unForumList;
-                int memberID;
+                int memberId;
 
-                ModeratorList.DataSource = SnitzRoleProvider.ListRoleMembers("Moderator");
-                ModeratorList.DataTextField = "UserName";
-                ModeratorList.DataValueField = "UserId";
+                ModeratorList.DataSource = srp.GetUsersInRole("Moderator");
+                //ModeratorList.DataTextField = "UserName";
+                //ModeratorList.DataValueField = "UserId";
 
                 ModeratorList.DataBind();
 
 
                 if (ModeratorList.SelectedItem == null)
                     ModeratorList.SelectedIndex = 0;
-                if (ModeratorList.Items.Count > 0) 
-                    memberID = Convert.ToInt32(ModeratorList.SelectedItem.Value); 
+                if (ModeratorList.Items.Count > 0)
+                    memberId = Members.GetMember(ModeratorList.SelectedValue).Id; 
                 else
                 {
                     SaveBtn.Enabled = false; 
-                    memberID = 0;
+                    memberId = 0;
                 }
 
-                unForumList = srp.ListUnModeratedForums(memberID);
+                Dictionary<int, string> unForumList = Moderators.GetUnModeratedForumsIdNameList(memberId);
                 AvForumsList.DataSource = unForumList;
-                AvForumsList.DataTextField = "F_SUBJECT";
-                AvForumsList.DataValueField = "FORUM_ID";
+                AvForumsList.DataTextField = "Value";
+                AvForumsList.DataValueField = "Key";
 
-                forumList  = srp.ListModeratedForums(memberID);
+                Dictionary<int, string> forumList = Moderators.GetModeratedForumsIdNameList(memberId);
                 MdForumsList.DataSource = forumList;
-                MdForumsList.DataTextField = "F_SUBJECT";
-                MdForumsList.DataValueField = "FORUM_ID";
+                MdForumsList.DataTextField = "Value";
+                MdForumsList.DataValueField = "Key";
             }
             else  // Forums View
             {
-
-                int forumID;
-
                 //DataTable fList = ForumDatasource.GetForumsIDSubject();
 
-                ForumsList.DataSource = SnitzData.Util.ListForums();
+                ForumsList.DataSource = Forums.GetAllForums();
                 ForumsList.DataTextField = "Title";
                 ForumsList.DataValueField = "ForumId";
 
@@ -63,14 +61,14 @@ public partial class Admin_ManageModerators : UserControl
                 if (ForumsList.SelectedItem == null)
                     ForumsList.SelectedIndex = 0;
 
-                forumID = Convert.ToInt32(ForumsList.SelectedItem.Value);
+                int forumId = Convert.ToInt32(ForumsList.SelectedItem.Value);
 
-                DataTable avList = srp.GetAvailableModerators(forumID);
+                List<MemberInfo> avList = Moderators.GetAvailableModerators(forumId);
                 AvModsList.DataSource = avList;
                 AvModsList.DataTextField = "M_NAME";
                 AvModsList.DataValueField = "MEMBER_ID";
 
-                CurModsList.DataSource = SnitzData.Util.GetForum(forumID).Moderators;
+                CurModsList.DataSource = Forums.GetForumModerators(forumId);
                 CurModsList.DataTextField = "Value";
                 CurModsList.DataValueField = "Key";
                 
@@ -90,13 +88,10 @@ public partial class Admin_ManageModerators : UserControl
 
         if (avIndex == 0) //Moderator View
         {
-            DataSet forumList, unForumList;
-            int memberID;
-
             if (ModeratorList.Items.Count == 0) // if the list has never been filled 
             {
 
-                ModeratorList.DataSource = SnitzRoleProvider.GetRoleMembers("Moderator");
+                ModeratorList.DataSource = srp.GetUsersInRole("Moderator");
                 ModeratorList.DataTextField = "u.UserName";
                 ModeratorList.DataValueField = "u.UserId";
                 ModeratorList.DataBind();
@@ -106,29 +101,26 @@ public partial class Admin_ManageModerators : UserControl
             }
 
             
-            memberID = Convert.ToInt32(ModeratorList.SelectedItem.Value);
+            int memberId = Convert.ToInt32(ModeratorList.SelectedItem.Value);
 
-            unForumList = srp.GetUnModeratedForumsIdNameList(memberID);
+            Dictionary<int, string> unForumList = Moderators.GetUnModeratedForumsIdNameList(memberId);
             AvForumsList.DataSource = unForumList;
-            AvForumsList.DataTextField = "F_SUBJECT";
-            AvForumsList.DataValueField = "FORUM_ID";
+            AvForumsList.DataTextField = "Value";
+            AvForumsList.DataValueField = "Key";
 
-            forumList = srp.GetModeratedForumsIdNameList(memberID);
+            Dictionary<int, string> forumList = Moderators.GetModeratedForumsIdNameList(memberId);
             MdForumsList.DataSource = forumList;
-            MdForumsList.DataTextField = "F_SUBJECT";
-            MdForumsList.DataValueField = "FORUM_ID";
+            MdForumsList.DataTextField = "Value";
+            MdForumsList.DataValueField = "Key";
 
             
         }
         else  // Forums View
         {
-            DataTable avList, mList;
-            int forumID;
-
             if (ForumsList.Items.Count == 0)
             {
 
-                ForumsList.DataSource = SnitzData.Util.ListForums();
+                ForumsList.DataSource = Forums.GetAllForums();
                 ForumsList.DataTextField = "Subject";
                 ForumsList.DataValueField = "Id";
 
@@ -139,17 +131,17 @@ public partial class Admin_ManageModerators : UserControl
             }
            
 
-            forumID = Convert.ToInt32(ForumsList.SelectedItem.Value);
+            int forumId = Convert.ToInt32(ForumsList.SelectedItem.Value);
 
-            avList = srp.GetAvailableModeratorsIdName(forumID);
+            Dictionary<int, string> avList = Moderators.GetAvailableModeratorsIdName(forumId);
             AvModsList.DataSource = avList;
-            AvModsList.DataTextField = "M_NAME";
-            AvModsList.DataValueField = "MEMBER_ID";
+            AvModsList.DataTextField = "Value";
+            AvModsList.DataValueField = "Key";
 
-            mList = srp.GetCurrentModeratorsIdName(forumID);
+            Dictionary<int, string> mList = Moderators.GetCurrentModeratorsIdName(forumId);
             CurModsList.DataSource = mList;
-            CurModsList.DataTextField = "M_NAME";
-            CurModsList.DataValueField = "MEMBER_ID";
+            CurModsList.DataTextField = "Value";
+            CurModsList.DataValueField = "Key";
 
         }
 
@@ -160,22 +152,18 @@ public partial class Admin_ManageModerators : UserControl
 
     protected void ModeratorList_SelectedIndexChanged(object sender, EventArgs e)
     {
-        SnitzRoleProvider srp = new SnitzRoleProvider();
-        DataSet forumList, unForumList;
-        int memberID;
 
+        int memberId = Convert.ToInt32(ModeratorList.SelectedItem.Value);
 
-        memberID = Convert.ToInt32(ModeratorList.SelectedItem.Value);
-
-        unForumList = srp.GetUnModeratedForumsIdNameList(memberID);
+        Dictionary<int, string> unForumList = Moderators.GetUnModeratedForumsIdNameList(memberId);
         AvForumsList.DataSource = unForumList;
-        AvForumsList.DataTextField = "F_SUBJECT";
-        AvForumsList.DataValueField = "FORUM_ID";
+        AvForumsList.DataTextField = "Value";
+        AvForumsList.DataValueField = "Key";
 
-        forumList = srp.GetModeratedForumsIdNameList(memberID);
+        Dictionary<int, string> forumList = Moderators.GetModeratedForumsIdNameList(memberId);
         MdForumsList.DataSource = forumList;
-        MdForumsList.DataTextField = "F_SUBJECT";
-        MdForumsList.DataValueField = "FORUM_ID";
+        MdForumsList.DataTextField = "Value";
+        MdForumsList.DataValueField = "Key";
 
         Page.DataBind();
         
@@ -267,27 +255,22 @@ public partial class Admin_ManageModerators : UserControl
 
 
             SnitzRoleProvider srp = new SnitzRoleProvider();
-            srp.SetUserAsModeratorForForums(memberID, forumList);
+            Moderators.SetUserAsModeratorForForums(memberID, forumList);
     }
 
     protected void ForumsList_SelectedIndexChanged(object sender, EventArgs e)
     {
-        SnitzRoleProvider srp = new SnitzRoleProvider();
-        DataTable avList, mList;
-        int forumID;
+        int forumID = Convert.ToInt32(ForumsList.SelectedItem.Value);
 
-
-        forumID = Convert.ToInt32(ForumsList.SelectedItem.Value);
-
-        avList = srp.GetAvailableModeratorsIdName(forumID);
+        var avList = Moderators.GetAvailableModeratorsIdName(forumID);
         AvModsList.DataSource = avList;
-        AvModsList.DataTextField = "M_NAME";
-        AvModsList.DataValueField = "MEMBER_ID";
+        AvModsList.DataTextField = "Value";
+        AvModsList.DataValueField = "Key";
 
-        mList = srp.GetCurrentModeratorsIdName(forumID);
+        var mList = Moderators.GetCurrentModeratorsIdName(forumID);
         CurModsList.DataSource = mList;
-        CurModsList.DataTextField = "M_NAME";
-        CurModsList.DataValueField = "MEMBER_ID";
+        CurModsList.DataTextField = "Value";
+        CurModsList.DataValueField = "Key";
 
         Page.DataBind();
     }
@@ -373,9 +356,7 @@ public partial class Admin_ManageModerators : UserControl
             foreach (ListItem li in CurModsList.Items)
                 userList[count++] = Convert.ToInt32(li.Value);
 
-
-            SnitzRoleProvider srp = new SnitzRoleProvider();
-            srp.SetForumModerators(forumID, userList);
+            Moderators.SetForumModerators(forumID, userList);
         //}
 
     }

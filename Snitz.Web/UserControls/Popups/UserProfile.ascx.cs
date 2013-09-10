@@ -1,10 +1,33 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.UserControls.Popups - UserProfile.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
-using SnitzData;
 using SnitzMembership;
 
 
@@ -16,18 +39,19 @@ namespace SnitzUI.UserControls
 
         protected bool IsAuthenticated { get; set; }
 
-        protected SnitzData.Member CurrentUser { get; set; }
+        protected MemberInfo CurrentUser { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Data != null)
             {
                 UserId = ((int)Data);
-                CurrentUser = Util.GetMember(HttpContext.Current.User.Identity.Name);
+                CurrentUser = Members.GetMember(HttpContext.Current.User.Identity.Name);
                 IsAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
-
-            rpt.DataSource = Util.GetAuthor(UserId);
-            rpt.DataBind();
+                List<MemberInfo> authrsrc = new List<MemberInfo>();
+                authrsrc.Add(Members.GetMember(UserId));
+                rpt.DataSource = authrsrc;
+                rpt.DataBind();
             }
         }
 
@@ -35,12 +59,12 @@ namespace SnitzUI.UserControls
         {
             RepeaterItem item = e.Item;
 
-            SnitzData.Member author = Util.GetAuthor(UserId).SingleOrDefault();
+            AuthorInfo author = Members.GetAuthor(UserId);
             if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
             {
                 if (author != null)
                 {
-                    ProfileCommon prof = ProfileCommon.GetUserProfile(author.Name);
+                    ProfileCommon prof = ProfileCommon.GetUserProfile(author.Username);
                     if (prof.Gravatar)
                     {
                         var avatar = (Literal)item.FindControl("AvatarLabel");
@@ -57,7 +81,7 @@ namespace SnitzUI.UserControls
                     {
                         var avatar = (Literal)item.FindControl("AvatarLabel");
                         var ph = (PlaceHolder)item.FindControl("phAvatar");
-                        avatar.Text = author.Avatar;
+                        avatar.Text = author.AvatarUrl;
                         avatar.Visible = true;
                         ph.Visible = false;
                     }

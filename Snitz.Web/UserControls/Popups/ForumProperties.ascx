@@ -4,9 +4,7 @@
     <asp:HiddenField ID="hdnForumId" runat="server" />
     <asp:Panel ID="pnlMain" runat="server" GroupingText="<%$ Resources: webResources,lblForum %>">
         <asp:Label ID="Label3" runat="server" Text="Category" AssociatedControlID="ddlCat" EnableViewState="False"></asp:Label>
-        <asp:DropDownList 
-            ID="ddlCat" runat="server">
-        </asp:DropDownList>
+        <asp:DropDownList ID="ddlCat" runat="server"></asp:DropDownList>
         <br />
         <asp:Label ID="Label1" runat="server" Text="<%$ Resources: webResources,lblSubject %>" AssociatedControlID="tbxSubject"></asp:Label>
         <asp:TextBox ID="tbxSubject"  runat="server" EnableViewState="False"></asp:TextBox>
@@ -19,6 +17,9 @@
     </asp:Panel>
     
     <asp:Panel ID="pnlOptions" runat="server" GroupingText="<%$ Resources: webResources,lblOptions %>">
+        <asp:Label ID="Label4" runat="server" Text="Forum Order" AssociatedControlID="tbxSubject"></asp:Label>
+        <asp:TextBox ID="tbxOrder" CssClass="testClass" runat="server" Width="20px" EnableViewState="False"></asp:TextBox>
+        <br/>
         <asp:CheckBox ID="cbxAllowPolls" Text="Allow user polls in forum" runat="server" /><br />
         <asp:CheckBox ID="cbxCountPost" CssClass="cbx"  runat="server" Text="Increase user Post Count" />
         <br />
@@ -75,7 +76,7 @@
                 <ItemTemplate>
                     <tr>
                         <td>
-                            <%# Container.DataItem %>
+                            <%# Eval("Name") %>
                         </td>
                     </tr>
                 </ItemTemplate>

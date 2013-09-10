@@ -1,7 +1,26 @@
+/*
+####################################################################################################################
+##
+## SnitzMembership - SnitzMembershipUser
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
 using System.ComponentModel;
-using System.Web;
-using System.Web.Profile;
 using System.Web.Security;
 
 
@@ -19,17 +38,6 @@ public class SnitzMembershipUser : MembershipUser
         get
         {
             return _sig ?? String.Empty;
-            //try
-            //{
-            //    ProfileBase p = new ProfileBase();
-            //    string test = p.UserName;
-
-            //    //Prof _profile = new ProfileCommon().GetProfile(username);
-            //    return HttpContext.Current.Profile.GetPropertyValue("Sig").ToString();
-            //}catch
-            //{
-            //    return String.Empty;
-            //}
         }
         set
         {
@@ -62,17 +70,7 @@ public class SnitzMembershipUser : MembershipUser
     {
         get { return base.UserName; }
     }
-    public override DateTime LastLoginDate
-    {
-        get
-        {
-            return base.LastLoginDate;
-        }
-        set
-        {
-            base.LastLoginDate = value;
-        }
-    }
+
     public SnitzMembershipUser(MembershipUser mu)
     {
         this.mu = mu;
@@ -102,6 +100,7 @@ public class SnitzMembershipUser : MembershipUser
                                   string country,
                                   int posts) : base( providername,username,providerUserKey,email,passwordQuestion,comment,isApproved,isLockedOut,creationDate,lastLoginDate,lastActivityDate,lastPasswordChangedDate,lastLockedOutDate)
     {
+        base.LastActivityDate = lastActivityDate;
         LastPostDate = lastPostDate;
             Posts = posts;
             Country = country;

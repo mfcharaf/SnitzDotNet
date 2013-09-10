@@ -156,6 +156,11 @@
                 AssociatedControlID="rblPageTimer" meta:resourcekey="lblTimerResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblPageTimer" runat="server" /> 
             <br />
+            <asp:Label ID="lblAnnouncement" runat="server" Text="Show Announcement" 
+                AssociatedControlID="rblPageTimer"></asp:Label>
+            <uc1:AdminRadioButton ID="rblAnnouncement" runat="server" /> 
+            <asp:TextBox runat="server" ID="tbxAnnouncement" TextMode="MultiLine" Rows="4" Enabled='<%# rblAnnouncement.SelectedValue == "1" %>'></asp:TextBox>
+            <br />
             <asp:Label ID="lblEmailMode" runat="server" Text="ShowRanking" 
                 AssociatedControlID="ddlShowRank" meta:resourcekey="lblEmailModeResource1"></asp:Label>
             <asp:DropDownList ID="ddlShowRank" runat="server" 

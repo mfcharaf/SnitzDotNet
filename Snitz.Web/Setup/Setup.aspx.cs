@@ -4,10 +4,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Security;
+using Snitz.BLL;
+using Snitz.Entities;
 using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzData;
+
 
 
 namespace SnitzUI.Setup
@@ -310,20 +312,20 @@ namespace SnitzUI.Setup
                 adminUsername + "'";
             dc.ExecuteCommand(newadmin);
 
-            Category cat = new Category();
-            Forum forum = new Forum();
+            CategoryInfo cat = new CategoryInfo();
+            ForumInfo forum = new ForumInfo();
             cat.Id = -1;
             cat.Name = "Default Category";
             cat.Order = 0;
-            cat.Status = Enumerators.PostStatus.Open;
+            cat.Status = (int)Enumerators.PostStatus.Open;
             cat.SubscriptionLevel = 0;
             cat.ModerationLevel = 0;
 
-            int catid = SnitzData.Util.SaveCategory(cat);
+            int catid = Categories.AddCategory(cat);
 
             forum.CatId = catid;
             forum.Id = -1;
-            forum.Status = Enumerators.PostStatus.Open;
+            forum.Status = (int)Enumerators.PostStatus.Open;
             forum.AllowPolls = false;
             forum.Description = "Default forum";
             forum.Subject = "Snitz .Net Forum";
@@ -331,7 +333,7 @@ namespace SnitzUI.Setup
             forum.ModerationLevel = 0;
             forum.Order = 0;
 
-            int forumid = SnitzData.Util.SaveForum(forum);
+            int forumid = Forums.SaveForum(forum);
 
         }
 

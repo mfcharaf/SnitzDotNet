@@ -30,8 +30,8 @@
 
 
 <asp:Content ID="cphead" runat="server" ContentPlaceHolderID="CPHead">
-    <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" href="css/admin.css"/>
-    <link rel="stylesheet" type="text/css" href="css/menu.css"/>
+    <link rel="stylesheet" type="text/css" runat="server" id="pageCSS"/>
+    <link rel="stylesheet" type="text/css" runat="server" id="menuCSS"/>
     <style type="text/css">
         .style1
         {
@@ -62,7 +62,7 @@
             <div class="forumtable">
             <div style="width:100%;text-align:center;height:23px;padding-top:4px;" class="category categorylink">Snitz™ Forums .Net Developers &amp; Contributors</div>
             <div style="width:100%;padding:10px;">
-                <table style="color:Navy;">
+                <table>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 
                         class="style1">Snitz™ Forum Software :</td><td style="width:auto">&copy; Snitz Forums 2000</td></tr>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 

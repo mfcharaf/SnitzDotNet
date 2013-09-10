@@ -10,25 +10,25 @@ fieldset{font-size:0.85em;}
 .ajax__tab_default .ajax__tab_tab {overflow:hidden;text-align:center;display:-moz-inline-box;display:inline-block;}
 
 /* xp theme */
-.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('../../App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
+.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('/App_Themes/Dark/images/tab/tabline.gif') repeat-x 50% bottom;
 }
-.ajax__tab_xp2 .ajax__tab_outer {padding-left:3px;background:url('../../App_Themes/BlueGray/images/tab/tabl.gif') no-repeat left 50%;
+.ajax__tab_xp2 .ajax__tab_outer {padding-left:3px;background:url('/App_Themes/Dark/images/tab/tabl.gif') no-repeat left 50%;
 height:21px;
 }
 .ajax__tab_xp2 .ajax__tab_inner
 {
-    background: url('../../App_Themes/BlueGray/images/tab/tabr.gif') no-repeat right;
+    background: url('/App_Themes/Dark/images/tab/tabr.gif') no-repeat right;
 }
-.ajax__tab_xp2 .ajax__tab_tab {height:13px;padding:4px;margin:0px;margin-right:4px;background:url('../../App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_tab {height:13px;padding:4px;margin:0px;margin-right:4px;background:url('/App_Themes/Dark/images/tab/tab.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-left.gif")%>) no-repeat left;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-right.gif")%>) no-repeat;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover.gif")%>) repeat-x;}
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('../../App_Themes/BlueGray/images/tab/tab-activel.gif') no-repeat left 50%;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/Dark/images/tab/tab-activel.gif') no-repeat left 50%;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('../../App_Themes/BlueGray/images/tab/tab-activer.gif') no-repeat right;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/Dark/images/tab/tab-activer.gif') no-repeat right;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('../../App_Themes/BlueGray/images/tab/tab-active.gif') repeat-x;margin-right:4px;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('/App_Themes/Dark/images/tab/tab-active.gif') repeat-x;margin-right:4px;
 }
 .ajax__tab_xp2 .ajax__tab_disabled { color: #A0A0A0;}
 .ajax__tab_xp2 .ajax__tab_body {border:1px solid #999999;border-top:0;padding:8px;background-color:#ffffff;}

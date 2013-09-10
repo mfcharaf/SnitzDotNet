@@ -13,13 +13,13 @@ namespace SnitzUI {
     public partial class PostPage {
         
         /// <summary>
-        /// markitupCSS control.
+        /// editorCSS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl markitupCSS;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editorCSS;
         
         /// <summary>
         /// postFormTitle control.
@@ -37,7 +37,7 @@ namespace SnitzUI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SnitzUI.UserControls.emoticons emoticons1;
+        protected global::SnitzUI.UserControls.Emoticons emoticons1;
         
         /// <summary>
         /// ForumDiv control.

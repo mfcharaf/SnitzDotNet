@@ -28,7 +28,7 @@
  
  
  %>
- <a href="default.aspx" title="return to home page">Return to forum</a>
+ <a href="/default.aspx" title="return to home page">Return to forum</a>
  </div>
  </body>
  </html>

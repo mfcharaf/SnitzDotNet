@@ -87,15 +87,15 @@
                 <br />
                 <asp:Label ID="lblSort" runat="server" Text="<%$ Resources:webResources, lblSortResults %>"
                     AssociatedControlID="ddlSortBy" EnableViewState="False"></asp:Label>
-                <asp:DropDownList ID="ddlSortBy" runat="server" Enabled="false" 
+                <asp:DropDownList ID="ddlSortBy" runat="server" Enabled="true" 
                     EnableViewState="False">
                     <asp:ListItem Value="Subject">Subject</asp:ListItem>
                     <asp:ListItem Value="Replies">Number of Replies</asp:ListItem>
-                    <asp:ListItem Value="ViewCount">Number of Views</asp:ListItem>
+                    <asp:ListItem Value="Views">Number of Views</asp:ListItem>
                     <asp:ListItem Value="Date">Topic Start Date</asp:ListItem>
                     <asp:ListItem Value="LastPostDate" Selected="True">Last Post Date</asp:ListItem>
                     <asp:ListItem Value="Author">Author</asp:ListItem>
-                    <asp:ListItem Value="Forum.Order">Forum</asp:ListItem>
+                    <asp:ListItem Value="ForumOrder">Forum</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="lblPageSize" runat="server" Text="Results per page" 
                     AssociatedControlID="ddlPageSize" EnableViewState="False"></asp:Label>
@@ -115,10 +115,15 @@
     </asp:Panel>
 </div>
     <br />
-    <asp:GridView ID="SearchResults" runat="server" Visible="false" AutoGenerateColumns="False" AllowPaging="true"
+    <asp:GridView ID="SearchResults" runat="server" Visible="false" 
+        AutoGenerateColumns="False" AllowPaging="true"
         OnRowDataBound="ResultsRowDataBound" CellPadding="3" GridLines="None" EnableViewState="False"
-        CssClass="topicTable noborder" EmptyDataText="<%$ Resources:webResources, ErrNoTopics %>">
+        CssClass="topicTable noborder" 
+        EmptyDataText="<%$ Resources:webResources, ErrNoTopics %>" 
+        AllowSorting="False" onsorting="SearchResults_Sorting" 
+        >
         <Columns>
+            <%--<asp:BoundField DataField="ForumSubject" SortExpression="ForumSubject" Visible="False"/>--%>
             <asp:TemplateField HeaderText=" ">
                 <ItemTemplate>
                 </ItemTemplate>
@@ -128,7 +133,7 @@
                 <ItemTemplate>
                     <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="False"
                         GenerateEmptyAlternateText="true" />
-                    <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>" target='<%# Eval("Author.LinkTarget") %>'
+                    <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>" target='<%# Eval("AuthorProfile") %>'
                         title="<%# Eval("Subject") %>">
                         <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>
                     </a>
@@ -137,7 +142,7 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Name">
                 <ItemTemplate>
-                    <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Name") %>'><%# Eval("Author.Name") %></a>
+                    <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName") %></a>
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" Width="80px" VerticalAlign="Top" />
             </asp:TemplateField>
@@ -147,15 +152,15 @@
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount">
+            <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="Views">
                 <ItemTemplate>
-                    <%# Eval("ViewCount") %>
+                    <%# Eval("Views") %>
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
             </asp:TemplateField>
             <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
                 <ItemTemplate>
-                    <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthor.ProfilePopup") %>'></asp:Literal>&nbsp;<asp:HyperLink
+                    <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink
                         ID="lpLnk" runat="server" CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                         ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
                     <br />

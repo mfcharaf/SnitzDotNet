@@ -19,7 +19,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -49,13 +50,16 @@
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Cryptos">
+      <HintPath>..\Dependency\Cryptos.dll</HintPath>
+    </Reference>
     <Reference Include="CSSFriendly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\CSSFriendly.dll</HintPath>
     </Reference>
     <Reference Include="RealWorld.Grids, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ThridParty\RealWorld.Grids.dll</HintPath>
+      <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -84,13 +88,417 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Activate.aspx" />
+    <Content Include="Admin\ArchiveForums.ascx" />
+    <Content Include="Admin\css\Light\admin.css" />
+    <Content Include="Admin\css\Light\Menu.css" />
+    <Content Include="Admin\css\Dark\admin.css" />
+    <Content Include="Admin\css\Dark\Menu.css" />
+    <Content Include="Admin\ManageCategories.ascx" />
+    <Content Include="Admin\ManageModerators.ascx" />
+    <Content Include="App_Themes\BlueGray\images\cat-bar.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\align_center.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\align_left.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\align_right.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\bold.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\clean.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\code.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\colors.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\email.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\fonts.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\italic.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\link.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\list-item.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\picture.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\preview.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\strike.gif" />
+    <Content Include="App_Themes\BlueGray\images\editor\stroke.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\table-col.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\table-row.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\table.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\textdir.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\underline.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\youtube.png" />
+    <Content Include="App_Themes\BlueGray\images\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\BlueGray\images\information.png" />
+    <Content Include="App_Themes\BlueGray\images\message\folder3.png" />
+    <Content Include="App_Themes\BlueGray\images\message\foldernewposts.png" />
+    <Content Include="App_Themes\BlueGray\images\message\foldernoposts.png" />
+    <Content Include="App_Themes\BlueGray\images\message\folder_locked.png" />
     <Content Include="App_Themes\BlueGray\images\message\weblink.png" />
-    <Content Include="bin\CSSFriendly.dll" />
+    <Content Include="App_Themes\BlueGray\images\nav-bg.gif" />
+    <Content Include="App_Themes\BlueGray\images\page_go.png" />
+    <Content Include="App_Themes\BlueGray\images\top-bar.gif" />
+    <Content Include="App_Themes\BlueGray\jquery.alerts.css" />
+    <Content Include="App_Themes\Dark\base.css" />
+    <Content Include="App_Themes\Dark\dark.css" />
+    <Content Include="App_Themes\Dark\images\activity.gif" />
+    <Content Include="App_Themes\Dark\images\admin\archive.png" />
+    <Content Include="App_Themes\Dark\images\admin\book.png" />
+    <Content Include="App_Themes\Dark\images\admin\calendar.png" />
+    <Content Include="App_Themes\Dark\images\admin\Cancel.png" />
+    <Content Include="App_Themes\Dark\images\admin\day.png" />
+    <Content Include="App_Themes\Dark\images\admin\Discuss.png" />
+    <Content Include="App_Themes\Dark\images\admin\document.png" />
+    <Content Include="App_Themes\Dark\images\admin\Flag.png" />
+    <Content Include="App_Themes\Dark\images\admin\folder.png" />
+    <Content Include="App_Themes\Dark\images\admin\folder2.png" />
+    <Content Include="App_Themes\Dark\images\admin\Lock.png" />
+    <Content Include="App_Themes\Dark\images\admin\markread.png" />
+    <Content Include="App_Themes\Dark\images\admin\newwindow.png" />
+    <Content Include="App_Themes\Dark\images\admin\notarchive.png" />
+    <Content Include="App_Themes\Dark\images\admin\Ok.png" />
+    <Content Include="App_Themes\Dark\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Dark\images\admin\properties.png" />
+    <Content Include="App_Themes\Dark\images\admin\reply.png" />
+    <Content Include="App_Themes\Dark\images\admin\search.png" />
+    <Content Include="App_Themes\Dark\images\admin\stick.png" />
+    <Content Include="App_Themes\Dark\images\admin\subscribe.png" />
+    <Content Include="App_Themes\Dark\images\admin\Topic.png" />
+    <Content Include="App_Themes\Dark\images\admin\Trash.png" />
+    <Content Include="App_Themes\Dark\images\admin\unlock.png" />
+    <Content Include="App_Themes\Dark\images\admin\unmoderated.png" />
+    <Content Include="App_Themes\Dark\images\admin\unmoderatedposts.png" />
+    <Content Include="App_Themes\Dark\images\admin\unstick.png" />
+    <Content Include="App_Themes\Dark\images\admin\unsubscribe.png" />
+    <Content Include="App_Themes\Dark\images\admin\Warning.png" />
+    <Content Include="App_Themes\Dark\images\admin\Write.png" />
+    <Content Include="App_Themes\Dark\images\bg-pattern.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\agree.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\attach.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\button_left.png" />
+    <Content Include="App_Themes\Dark\images\buttons\button_right.png" />
+    <Content Include="App_Themes\Dark\images\buttons\continue.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\finish.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\login.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\logout.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\next.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\prev.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\preview.gif" />
+    <Content Include="App_Themes\Dark\images\buttons\spell.gif" />
+    <Content Include="App_Themes\Dark\images\cat-bar.gif" />
+    <Content Include="App_Themes\Dark\images\close.gif" />
+    <Content Include="App_Themes\Dark\images\close.png" />
+    <Content Include="App_Themes\Dark\images\collapse.png" />
+    <Content Include="App_Themes\Dark\images\editor\align_center.gif" />
+    <Content Include="App_Themes\Dark\images\editor\align_left.gif" />
+    <Content Include="App_Themes\Dark\images\editor\align_right.gif" />
+    <Content Include="App_Themes\Dark\images\editor\code.png" />
+    <Content Include="App_Themes\Dark\images\editor\email.gif" />
+    <Content Include="App_Themes\Dark\images\editor\link.png" />
+    <Content Include="App_Themes\Dark\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\Dark\images\editor\list-item.png" />
+    <Content Include="App_Themes\Dark\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\Dark\images\editor\picture.png" />
+    <Content Include="App_Themes\Dark\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\Dark\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\Dark\images\editor\quotes.png" />
+    <Content Include="App_Themes\Dark\images\editor\table-col.png" />
+    <Content Include="App_Themes\Dark\images\editor\table-row.png" />
+    <Content Include="App_Themes\Dark\images\editor\table.png" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_8ball.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_angry.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_angry2.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_approve.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_big.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_bigeyes.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_blackeye.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_blush.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_boggled.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_clown.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_cool.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_cyclops.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_dead.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_dead_green.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_dissapprove.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_evil.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_kisses.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_mean.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_question.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_sad.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_shock.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_shy.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_sleepy.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_test.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_tongue.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Dark\images\error.png" />
+    <Content Include="App_Themes\Dark\images\expand.png" />
+    <Content Include="App_Themes\Dark\images\flame.png" />
+    <Content Include="App_Themes\Dark\images\gutter.gif" />
+    <Content Include="App_Themes\Dark\images\hotOld.png" />
+    <Content Include="App_Themes\Dark\images\icon_aim.gif" />
+    <Content Include="App_Themes\Dark\images\icon_icq.gif" />
+    <Content Include="App_Themes\Dark\images\icon_lastpost.gif" />
+    <Content Include="App_Themes\Dark\images\icon_msnm.gif" />
+    <Content Include="App_Themes\Dark\images\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Dark\images\icon_profile.gif" />
+    <Content Include="App_Themes\Dark\images\icon_profile_locked.gif" />
+    <Content Include="App_Themes\Dark\images\icon_skype.gif" />
+    <Content Include="App_Themes\Dark\images\icon_yahoo.gif" />
+    <Content Include="App_Themes\Dark\images\information.png" />
+    <Content Include="App_Themes\Dark\images\logo_snitz.png" />
+    <Content Include="App_Themes\Dark\images\menu-expand.gif" />
+    <Content Include="App_Themes\Dark\images\message\Burn.png" />
+    <Content Include="App_Themes\Dark\images\message\doc.png" />
+    <Content Include="App_Themes\Dark\images\message\Document.png" />
+    <Content Include="App_Themes\Dark\images\message\edit.png" />
+    <Content Include="App_Themes\Dark\images\message\Email.png" />
+    <Content Include="App_Themes\Dark\images\message\flame.png" />
+    <Content Include="App_Themes\Dark\images\message\Folder2.png" />
+    <Content Include="App_Themes\Dark\images\message\folder3.png" />
+    <Content Include="App_Themes\Dark\images\message\foldernewposts.png" />
+    <Content Include="App_Themes\Dark\images\message\foldernoposts.png" />
+    <Content Include="App_Themes\Dark\images\message\folder_locked.png" />
+    <Content Include="App_Themes\Dark\images\message\Home.png" />
+    <Content Include="App_Themes\Dark\images\message\IP.png" />
+    <Content Include="App_Themes\Dark\images\message\PM.png" />
+    <Content Include="App_Themes\Dark\images\message\quote.png" />
+    <Content Include="App_Themes\Dark\images\message\SplitTopic.png" />
+    <Content Include="App_Themes\Dark\images\message\stick.png" />
+    <Content Include="App_Themes\Dark\images\message\Trash.png" />
+    <Content Include="App_Themes\Dark\images\message\Up.png" />
+    <Content Include="App_Themes\Dark\images\message\User.png" />
+    <Content Include="App_Themes\Dark\images\message\weblink.png" />
+    <Content Include="App_Themes\Dark\images\nav-bg.gif" />
+    <Content Include="App_Themes\Dark\images\page_go.png" />
+    <Content Include="App_Themes\Dark\images\poll.png" />
+    <Content Include="App_Themes\Dark\images\quote_lt.png" />
+    <Content Include="App_Themes\Dark\images\quote_rt.png" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_blue.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_bronze.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_cyan.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_gold.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_green.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_orange.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_purple.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_red.gif" />
+    <Content Include="App_Themes\Dark\images\ranking\icon_star_silver.gif" />
+    <Content Include="App_Themes\Dark\images\Rss.png" />
+    <Content Include="App_Themes\Dark\images\smallquote_lt.png" />
+    <Content Include="App_Themes\Dark\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Dark\images\sort_ascending.gif" />
+    <Content Include="App_Themes\Dark\images\sort_descending.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tab-active.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tab-activeL.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tab-activeR.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tab.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tabL.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tabline.gif" />
+    <Content Include="App_Themes\Dark\images\Tab\tabR.gif" />
+    <Content Include="App_Themes\Dark\images\top-bar.gif" />
+    <Content Include="App_Themes\Dark\images\Trash.png" />
+    <Content Include="App_Themes\Dark\images\User-offline.png" />
+    <Content Include="App_Themes\Dark\images\User-online.png" />
+    <Content Include="App_Themes\Dark\images\valid-xhtml10.png" />
+    <Content Include="App_Themes\Dark\images\vcss.gif" />
+    <Content Include="App_Themes\Dark\jquery.alerts.css" />
+    <Content Include="App_Themes\Dark\MainModalDialog.css" />
+    <Content Include="App_Themes\Dark\pm\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Dark\pm\icon_pm_new.gif" />
+    <Content Include="App_Themes\Dark\pm\icon_pm_old.gif" />
+    <Content Include="App_Themes\Dark\pm\pmdelete.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmforward.jpg" />
+    <Content Include="App_Themes\Dark\pm\pminbox.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmmemberlist.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmnew.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmoutbox.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmprivpref.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmreceive.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmreply.jpg" />
+    <Content Include="App_Themes\Dark\pm\pmreplyquote.jpg" />
+    <Content Include="App_Themes\Light\base.css" />
+    <Content Include="App_Themes\Light\images\activity.gif" />
+    <Content Include="App_Themes\Light\images\admin\archive.png" />
+    <Content Include="App_Themes\Light\images\admin\book.png" />
+    <Content Include="App_Themes\Light\images\admin\calendar.png" />
+    <Content Include="App_Themes\Light\images\admin\Cancel.png" />
+    <Content Include="App_Themes\Light\images\admin\day.png" />
+    <Content Include="App_Themes\Light\images\admin\Discuss.png" />
+    <Content Include="App_Themes\Light\images\admin\document.png" />
+    <Content Include="App_Themes\Light\images\admin\Flag.png" />
+    <Content Include="App_Themes\Light\images\admin\folder.png" />
+    <Content Include="App_Themes\Light\images\admin\folder2.png" />
+    <Content Include="App_Themes\Light\images\admin\Lock.png" />
+    <Content Include="App_Themes\Light\images\admin\markread.png" />
+    <Content Include="App_Themes\Light\images\admin\newwindow.png" />
+    <Content Include="App_Themes\Light\images\admin\notarchive.png" />
+    <Content Include="App_Themes\Light\images\admin\Ok.png" />
+    <Content Include="App_Themes\Light\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Light\images\admin\properties.png" />
+    <Content Include="App_Themes\Light\images\admin\reply.png" />
+    <Content Include="App_Themes\Light\images\admin\search.png" />
+    <Content Include="App_Themes\Light\images\admin\stick.png" />
+    <Content Include="App_Themes\Light\images\admin\subscribe.png" />
+    <Content Include="App_Themes\Light\images\admin\Text Plus.png" />
+    <Content Include="App_Themes\Light\images\admin\Topic.png" />
+    <Content Include="App_Themes\Light\images\admin\Trash.png" />
+    <Content Include="App_Themes\Light\images\admin\unlock.png" />
+    <Content Include="App_Themes\Light\images\admin\unmoderated.png" />
+    <Content Include="App_Themes\Light\images\admin\unmoderatedposts.png" />
+    <Content Include="App_Themes\Light\images\admin\unstick.png" />
+    <Content Include="App_Themes\Light\images\admin\unsubscribe.png" />
+    <Content Include="App_Themes\Light\images\admin\Warning.png" />
+    <Content Include="App_Themes\Light\images\admin\Write.png" />
+    <Content Include="App_Themes\Light\images\buttons\button_left.png" />
+    <Content Include="App_Themes\Light\images\buttons\button_right.png" />
+    <Content Include="App_Themes\Light\images\close.gif" />
+    <Content Include="App_Themes\Light\images\close.png" />
+    <Content Include="App_Themes\Light\images\collapse.png" />
+    <Content Include="App_Themes\Light\images\editor\align_center.gif" />
+    <Content Include="App_Themes\Light\images\editor\align_left.gif" />
+    <Content Include="App_Themes\Light\images\editor\align_right.gif" />
+    <Content Include="App_Themes\Light\images\editor\bold.png" />
+    <Content Include="App_Themes\Light\images\editor\clean.png" />
+    <Content Include="App_Themes\Light\images\editor\code.png" />
+    <Content Include="App_Themes\Light\images\editor\colors.png" />
+    <Content Include="App_Themes\Light\images\editor\fonts.png" />
+    <Content Include="App_Themes\Light\images\editor\icon_separator.gif" />
+    <Content Include="App_Themes\Light\images\editor\italic.png" />
+    <Content Include="App_Themes\Light\images\editor\link.png" />
+    <Content Include="App_Themes\Light\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\Light\images\editor\list-item.png" />
+    <Content Include="App_Themes\Light\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\Light\images\editor\picture.png" />
+    <Content Include="App_Themes\Light\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\Light\images\editor\preview.png" />
+    <Content Include="App_Themes\Light\images\editor\quotes.png" />
+    <Content Include="App_Themes\Light\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\Light\images\editor\strike.gif" />
+    <Content Include="App_Themes\Light\images\editor\stroke.png" />
+    <Content Include="App_Themes\Light\images\editor\table-col.png" />
+    <Content Include="App_Themes\Light\images\editor\table-row.png" />
+    <Content Include="App_Themes\Light\images\editor\table.png" />
+    <Content Include="App_Themes\Light\images\editor\textdir.png" />
+    <Content Include="App_Themes\Light\images\editor\underline.png" />
+    <Content Include="App_Themes\Light\images\editor\email.gif" />
+    <Content Include="App_Themes\Light\images\email.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_8ball.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_angry.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_angry2.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_approve.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_big.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_bigeyes.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_blackeye.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_blush.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_boggled.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_clown.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_cool.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_cyclops.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_dead.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_dead_green.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_dissapprove.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_evil.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_kisses.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_mean.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_question.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_sad.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_shock.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_shy.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_sleepy.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_test.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_tongue.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Light\images\error.png" />
+    <Content Include="App_Themes\Light\images\expand.png" />
+    <Content Include="App_Themes\Light\images\flame.png" />
+    <Content Include="App_Themes\Light\images\gutter.gif" />
+    <Content Include="App_Themes\Light\images\icon_aim.gif" />
+    <Content Include="App_Themes\Light\images\icon_icq.gif" />
+    <Content Include="App_Themes\Light\images\icon_lastpost.gif" />
+    <Content Include="App_Themes\Light\images\icon_msnm.gif" />
+    <Content Include="App_Themes\Light\images\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Light\images\icon_profile.gif" />
+    <Content Include="App_Themes\Light\images\icon_profile_locked.gif" />
+    <Content Include="App_Themes\Light\images\icon_skype.gif" />
+    <Content Include="App_Themes\Light\images\icon_smile.gif" />
+    <Content Include="App_Themes\Light\images\icon_user_delete.gif" />
+    <Content Include="App_Themes\Light\images\icon_user_edit.gif" />
+    <Content Include="App_Themes\Light\images\icon_user_lock.gif" />
+    <Content Include="App_Themes\Light\images\icon_user_unlock.gif" />
+    <Content Include="App_Themes\Light\images\icon_yahoo.gif" />
+    <Content Include="App_Themes\Light\images\information.png" />
+    <Content Include="App_Themes\Light\images\logo_snitz_forums_net.gif" />
+    <Content Include="App_Themes\Light\images\menu-expand.gif" />
+    <Content Include="App_Themes\Light\images\message\Burn.png" />
+    <Content Include="App_Themes\Light\images\message\doc.png" />
+    <Content Include="App_Themes\Light\images\message\Document.png" />
+    <Content Include="App_Themes\Light\images\message\edit.png" />
+    <Content Include="App_Themes\Light\images\message\Email.png" />
+    <Content Include="App_Themes\Light\images\message\flame.png" />
+    <Content Include="App_Themes\Light\images\message\Folder2.png" />
+    <Content Include="App_Themes\Light\images\message\folder3.png" />
+    <Content Include="App_Themes\Light\images\message\foldernewposts.png" />
+    <Content Include="App_Themes\Light\images\message\foldernoposts.png" />
+    <Content Include="App_Themes\Light\images\message\folder_locked.png" />
+    <Content Include="App_Themes\Light\images\message\Home.png" />
+    <Content Include="App_Themes\Light\images\message\IP.png" />
+    <Content Include="App_Themes\Light\images\message\PM.png" />
+    <Content Include="App_Themes\Light\images\message\quote.png" />
+    <Content Include="App_Themes\Light\images\message\SplitTopic.png" />
+    <Content Include="App_Themes\Light\images\message\stick.png" />
+    <Content Include="App_Themes\Light\images\message\Trash.png" />
+    <Content Include="App_Themes\Light\images\message\Up.png" />
+    <Content Include="App_Themes\Light\images\message\User.png" />
+    <Content Include="App_Themes\Light\images\message\weblink.png" />
+    <Content Include="App_Themes\Light\images\page_go.png" />
+    <Content Include="App_Themes\Light\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\Light\images\poll.png" />
+    <Content Include="App_Themes\Light\images\quote_lt.png" />
+    <Content Include="App_Themes\Light\images\quote_rt.png" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_blue.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_bronze.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_cyan.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_gold.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_green.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_orange.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_purple.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_red.gif" />
+    <Content Include="App_Themes\Light\images\ranking\icon_star_silver.gif" />
+    <Content Include="App_Themes\Light\images\rss.png" />
+    <Content Include="App_Themes\Light\images\smallquote_lt.png" />
+    <Content Include="App_Themes\Light\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Light\images\sort_ascending.gif" />
+    <Content Include="App_Themes\Light\images\sort_descending.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tab-active.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tab-activeL.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tab-activeR.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tab.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tabL.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tabline.gif" />
+    <Content Include="App_Themes\Light\images\Tab\tabR.gif" />
+    <Content Include="App_Themes\Light\images\User-offline.png" />
+    <Content Include="App_Themes\Light\images\User-online.png" />
+    <Content Include="App_Themes\Light\images\valid-xhtml10.png" />
+    <Content Include="App_Themes\Light\images\vcss.gif" />
+    <Content Include="App_Themes\Light\images\editor\youtube.png" />
+    <Content Include="App_Themes\Light\light.css" />
+    <Content Include="App_Themes\Light\jquery.alerts.css" />
+    <Content Include="App_Themes\Light\MainModalDialog.css" />
+    <Content Include="App_Themes\Light\pm\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Light\pm\icon_pm_new.gif" />
+    <Content Include="App_Themes\Light\pm\icon_pm_old.gif" />
+    <Content Include="App_Themes\Light\pm\pmdelete.jpg" />
+    <Content Include="App_Themes\Light\pm\pmforward.jpg" />
+    <Content Include="App_Themes\Light\pm\pminbox.jpg" />
+    <Content Include="App_Themes\Light\pm\pmmemberlist.jpg" />
+    <Content Include="App_Themes\Light\pm\pmnew.jpg" />
+    <Content Include="App_Themes\Light\pm\pmoutbox.jpg" />
+    <Content Include="App_Themes\Light\pm\pmprivpref.jpg" />
+    <Content Include="App_Themes\Light\pm\pmreceive.jpg" />
+    <Content Include="App_Themes\Light\pm\pmreply.jpg" />
+    <Content Include="App_Themes\Light\pm\pmreplyquote.jpg" />
     <Content Include="Content\Forums\active.aspx" />
     <Content Include="Admin\AdminPanel.ascx" />
     <Content Include="Admin\AdminRadioButton.ascx" />
-    <Content Include="Admin\css\admin.css" />
-    <Content Include="Admin\css\Menu.css" />
+    <Content Include="Admin\css\BlueGray\admin.css" />
+    <Content Include="Admin\css\BlueGray\Menu.css" />
     <Content Include="Admin\dateTime.ascx" />
     <Content Include="Admin\default.aspx" />
     <Content Include="Admin\EmoticonAdmin.ascx" />
@@ -98,19 +506,82 @@
     <Content Include="App_Themes\BlueGray\images\quote_rt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_lt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_rt.png" />
-    <Content Include="css\jquery-ui.css" />
-    <Content Include="images\collapse_blue.png" />
-    <Content Include="images\expand_blue.png" />
+    <Content Include="Content\PrivateMessages\PrivateMessageView.aspx" />
+    <Content Include="css\Dark\eventsrtl.css" />
+    <Content Include="css\Dark\faq.css" />
+    <Content Include="css\Dark\faqrtl.css" />
+    <Content Include="css\Dark\HomePage.css" />
+    <Content Include="css\Dark\homepagertl.css" />
+    <Content Include="App_Themes\Dark\images\editor\bold.png" />
+    <Content Include="App_Themes\Dark\images\editor\clean.png" />
+    <Content Include="App_Themes\Dark\images\editor\colors.png" />
+    <Content Include="App_Themes\Dark\images\editor\fonts.png" />
+    <Content Include="App_Themes\Dark\images\icon_smile.gif" />
+    <Content Include="App_Themes\Dark\images\editor\italic.png" />
+    <Content Include="App_Themes\Dark\images\editor\preview.png" />
+    <Content Include="App_Themes\Dark\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\Dark\images\editor\spellchecker_bg.gif" />
+    <Content Include="App_Themes\Dark\images\editor\spellchecker_shadow.png" />
+    <Content Include="App_Themes\Dark\images\editor\strike.gif" />
+    <Content Include="App_Themes\Dark\images\editor\stroke.png" />
+    <Content Include="App_Themes\Dark\images\editor\textdir.png" />
+    <Content Include="App_Themes\Dark\images\editor\underline.png" />
+    <Content Include="App_Themes\Dark\images\editor\youtube.png" />
+    <Content Include="css\Dark\jquery-ui.css" />
+    <Content Include="css\Dark\editor.css" />
+    <Content Include="css\Dark\ProfilePage.css" />
+    <Content Include="css\Dark\profilepagertl.css" />
+    <Content Include="css\Dark\RegWizard.css" />
+    <Content Include="css\Dark\rtl.css" />
+    <Content Include="css\Dark\search.css" />
+    <Content Include="css\Dark\searchrtl.css" />
+    <Content Include="css\BlueGray\jquery-ui.css" />
+    <Content Include="css\Light\eventsrtl.css" />
+    <Content Include="css\Light\faq.css" />
+    <Content Include="css\Light\faqrtl.css" />
+    <Content Include="css\Light\HomePage.css" />
+    <Content Include="css\Light\homepagertl.css" />
+    <Content Include="css\Light\jquery-ui.css" />
+    <Content Include="css\Light\editor.css" />
+    <Content Include="css\Light\ProfilePage.css" />
+    <Content Include="css\Light\profilepagertl.css" />
+    <Content Include="css\Light\RegWizard.css" />
+    <Content Include="css\Light\rtl.css" />
+    <Content Include="css\Light\search.css" />
+    <Content Include="css\Light\searchrtl.css" />
     <Content Include="css\AjaxSessionTimer.css" />
-    <Content Include="images\icon_pmgotmail.gif" />
-    <Content Include="images\logo_snitz_forums_net.gif" />
+    <Content Include="images\bar.JPG" />
+    <Content Include="images\fb-like-button.png" />
+    <Content Include="images\gplus-button.png" />
+    <Content Include="images\in-recommend-button.png" />
     <Content Include="KeepAlive.aspx" />
     <Content Include="Scripts\AjaxSessionTimer.js" />
+    <Content Include="App_Themes\Light\Buttons.skin" />
+    <Content Include="App_Themes\Light\Calendars.skin" />
+    <Content Include="App_Themes\Light\Events.skin" />
+    <Content Include="App_Themes\Light\header.skin" />
+    <Content Include="App_Themes\Light\Hyperlinks.skin" />
+    <Content Include="App_Themes\Light\Login.skin" />
+    <Content Include="App_Themes\Light\MainModalDialog.skin" />
+    <Content Include="App_Themes\Light\PMSkin.skin" />
+    <Content Include="App_Themes\Light\postOptions.skin" />
+    <Content Include="App_Themes\Light\Profile.skin" />
+    <Content Include="App_Themes\Light\SnitzTheme.skin" />
+    <Content Include="App_Themes\Light\StatsPanel.skin" />
     <Content Include="Scripts\bbcode.js" />
+    <Content Include="Scripts\bbcode.min.js" />
+    <Content Include="Scripts\confirmHandler.js" />
+    <Content Include="Scripts\confirmhandler.min.js" />
+    <Content Include="Scripts\Editor.min.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\net.js" />
+    <Content Include="Scripts\net.min.js" />
+    <Content Include="Scripts\postpage.min.js" />
     <Content Include="Scripts\smilies.js" />
+    <Content Include="Scripts\smilies.min.js" />
+    <Content Include="Scripts\topic_print.min.js" />
     <Content Include="Setup\Setup.aspx" />
     <Content Include="Setup\SnitzSetup.dbml">
       <SubType>Designer</SubType>
@@ -118,6 +589,7 @@
       <LastGenOutput>SnitzSetup.designer.cs</LastGenOutput>
     </Content>
     <Content Include="UserControls\AnnounceBox.ascx" />
+    <Content Include="UserControls\CategoryForums.ascx" />
     <Content Include="UserControls\emoticons.ascx" />
     <Content Include="UserControls\GoogleAdCode.ascx" />
     <Content Include="UserControls\Polls\PollEdit.ascx" />
@@ -275,7 +747,6 @@
     </Content>
     <Content Include="App_Themes\BlueGray\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\BlueGray\pm\pmreplyquote.jpg" />
-    <Content Include="bin\WebOptimizer.dll" />
     <Content Include="default.aspx" />
     <Content Include="css\BlueGray\eventsrtl.css" />
     <Content Include="css\BlueGray\faqrtl.css" />
@@ -285,13 +756,6 @@
     <Content Include="css\BlueGray\rtl.css" />
     <Content Include="css\BlueGray\faq.css" />
     <Content Include="css\BlueGray\HomePage.css" />
-    <Content Include="css\BlueGray\images\pictureBrowse.png" />
-    <Content Include="css\BlueGray\images\pictureUp.png" />
-    <Content Include="css\BlueGray\images\table-col.png" />
-    <Content Include="css\BlueGray\images\table-row.png" />
-    <Content Include="css\BlueGray\images\table.png" />
-    <Content Include="css\BlueGray\images\textdir.png" />
-    <Content Include="css\BlueGray\images\youtube.png" />
     <Content Include="css\BlueGray\ProfilePage.css" />
     <Content Include="css\BlueGray\search.css" />
     <Content Include="css\BlueGray\RegWizard.css" />
@@ -330,24 +794,6 @@
     <Content Include="App_Themes\BlueGray\images\buttons\submit.gif" />
     <Content Include="App_Themes\BlueGray\images\buttons\update.gif" />
     <Content Include="App_Themes\BlueGray\images\buttons\upload.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_bold.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_center.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_code.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_email.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_hr.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_image.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_italicize.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_left.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_list.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_quote.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_right.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_smile.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_spellchecker.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_strike.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_textcolor.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_underline.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_editor_url.gif" />
-    <Content Include="App_Themes\BlueGray\images\editor\icon_separator.gif" />
     <Content Include="App_Themes\BlueGray\images\icon_aim.gif" />
     <Content Include="App_Themes\BlueGray\images\icon_icq.gif" />
     <Content Include="App_Themes\BlueGray\images\icon_lastpost.gif" />
@@ -402,9 +848,7 @@
     <Content Include="App_Themes\BlueGray\images\message\edit.png" />
     <Content Include="App_Themes\BlueGray\images\message\Email.png" />
     <Content Include="App_Themes\BlueGray\images\message\flame.png" />
-    <Content Include="App_Themes\BlueGray\images\message\Folder.png" />
     <Content Include="App_Themes\BlueGray\images\message\Folder2.png" />
-    <Content Include="App_Themes\BlueGray\images\message\Folder3.png" />
     <Content Include="App_Themes\BlueGray\images\message\Home.png" />
     <Content Include="App_Themes\BlueGray\images\message\IP.png" />
     <Content Include="App_Themes\BlueGray\images\message\quote.png" />
@@ -423,10 +867,6 @@
     <Content Include="Avatars\default.gif" />
     <Content Include="Content\Gallery\Gallery.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="images\bar.JPG" />
-    <Content Include="images\cat-bar.gif" />
-    <Content Include="images\indicator.gif" />
-    <Content Include="images\information.png" />
     <Content Include="images\lightbox-blank.gif" />
     <Content Include="images\lightbox-btn-close.gif" />
     <Content Include="images\lightbox-btn-next.gif" />
@@ -440,10 +880,7 @@
     <Content Include="App_Themes\notespad.gif" />
     <Content Include="Handlers\GenericErrorPage.aspx" />
     <Content Include="images\ajax-loader.gif" />
-    <Content Include="images\menu-expand.gif" />
-    <Content Include="images\nav-bg.gif" />
-    <Content Include="images\rss.png" />
-    <Content Include="images\top-bar.gif" />
+    <Content Include="App_Themes\BlueGray\images\rss.png" />
     <Content Include="Content\Forums\members.aspx" />
     <Content Include="Content\Forums\Post.aspx" />
     <Content Include="ResourceEditor\images\exclamation.png" />
@@ -451,34 +888,17 @@
     <Content Include="ResourceEditor\images\tick.png" />
     <Content Include="ResourceEditor\Default.aspx" />
     <Content Include="ResourceEditor\ResXEditor.ascx" />
+    <Content Include="UserControls\PrivateMessaging\PMAlert.ascx" />
+    <Content Include="UserControls\PrivateMessaging\pmSend.ascx" />
+    <Content Include="UserControls\PrivateMessaging\pmView.ascx" />
     <Content Include="UserControls\Sidebar\MiniActiveTopics.ascx" />
     <Content Include="UserControls\Polls\Poll.ascx" />
     <Content Include="UserControls\Popups\EmailMember.ascx" />
     <Content Include="Account\Profile.aspx" />
     <Content Include="Account\Register.aspx" />
-    <Content Include="css\BlueGray\images\bold.png" />
-    <Content Include="css\BlueGray\images\clean.png" />
-    <Content Include="css\BlueGray\images\code.png" />
-    <Content Include="css\BlueGray\images\colors.png" />
-    <Content Include="css\BlueGray\images\fonts.png" />
-    <Content Include="css\BlueGray\images\align_center.gif" />
-    <Content Include="css\BlueGray\images\align_left.gif" />
-    <Content Include="css\BlueGray\images\align_right.gif" />
-    <Content Include="css\BlueGray\images\email.gif" />
-    <Content Include="css\BlueGray\images\icon_smile.gif" />
-    <Content Include="css\BlueGray\images\spellcheck.png" />
-    <Content Include="css\BlueGray\images\strike.gif" />
-    <Content Include="css\BlueGray\images\italic.png" />
-    <Content Include="css\BlueGray\images\link.png" />
-    <Content Include="css\BlueGray\images\list-bullet.png" />
-    <Content Include="css\BlueGray\images\list-item.png" />
-    <Content Include="css\BlueGray\images\list-numeric.png" />
-    <Content Include="css\BlueGray\images\picture.png" />
-    <Content Include="css\BlueGray\images\preview.png" />
-    <Content Include="css\BlueGray\images\quotes.png" />
-    <Content Include="css\BlueGray\images\stroke.png" />
-    <Content Include="css\BlueGray\images\underline.png" />
-    <Content Include="Scripts\confirmhandler.min.js" />
+    <Content Include="App_Themes\BlueGray\images\email.gif" />
+    <Content Include="App_Themes\BlueGray\images\icon_smile.gif" />
+    <Content Include="App_Themes\BlueGray\images\quotes.png" />
     <Content Include="Scripts\Editor.js" />
     <Content Include="Scripts\jquery.lightbox-0.5.min.js" />
     <Content Include="Scripts\locale\jquery.timeago.de.js" />
@@ -488,10 +908,23 @@
     <Content Include="MasterTemplates\SingleCol.Master" />
     <Content Include="MasterTemplates\Plain.Master" />
     <Content Include="UserControls\SideColumn.ascx" />
-    <None Include="Properties\PublishProfiles\SnitzDotNet.pubxml" />
+    <Content Include="App_Themes\Dark\Buttons.skin" />
+    <Content Include="App_Themes\Dark\Calendars.skin" />
+    <Content Include="App_Themes\Dark\Events.skin" />
+    <Content Include="App_Themes\Dark\header.skin" />
+    <Content Include="App_Themes\Dark\Hyperlinks.skin" />
+    <Content Include="App_Themes\Dark\Login.skin" />
+    <Content Include="App_Themes\Dark\MainModalDialog.skin" />
+    <Content Include="App_Themes\Dark\PMSkin.skin" />
+    <Content Include="App_Themes\Dark\postOptions.skin" />
+    <Content Include="App_Themes\Dark\SnitzTheme.skin" />
+    <Content Include="App_Themes\Dark\StatsPanel.skin" />
+    <Content Include="App_Themes\BlueGray\postOptions.skin" />
+    <Content Include="App_Themes\BlueGray\StatsPanel.skin" />
+    <None Include="Properties\PublishProfiles\Snitz.pubxml" />
     <Content Include="Scripts\jquery.timeago.min.js" />
     <Content Include="Scripts\jquery.youtube.player.min.js" />
-    <Content Include="css\BlueGray\markitup.css" />
+    <Content Include="css\BlueGray\editor.css" />
     <Content Include="Scripts\locale\jquery.timeago.fa.js" />
     <Content Include="Scripts\locale\jquery.timeago.fr.js" />
     <Content Include="Scripts\locale\jquery.timeago.it.js" />
@@ -544,6 +977,18 @@
     <None Include="Setup\SnitzSetup.dbml.layout">
       <DependentUpon>SnitzSetup.dbml</DependentUpon>
     </None>
+    <None Include="snitz.Debug.config">
+      <DependentUpon>snitz.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="snitz.Release.config">
+      <DependentUpon>snitz.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="snitz.SnitzDotNet.config">
+      <DependentUpon>snitz.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Activate.aspx.cs">
@@ -553,10 +998,59 @@
     <Compile Include="Account\Activate.aspx.designer.cs">
       <DependentUpon>Activate.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\ArchiveForums.ascx.cs">
+      <DependentUpon>ArchiveForums.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ArchiveForums.ascx.designer.cs">
+      <DependentUpon>ArchiveForums.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageCategories.ascx.cs">
+      <DependentUpon>ManageCategories.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageCategories.ascx.designer.cs">
+      <DependentUpon>ManageCategories.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ManageModerators.ascx.cs">
+      <DependentUpon>ManageModerators.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ManageModerators.ascx.designer.cs">
+      <DependentUpon>ManageModerators.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\PrivateMessages\PrivateMessageView.aspx.cs">
+      <DependentUpon>PrivateMessageView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\PrivateMessages\PrivateMessageView.aspx.designer.cs">
+      <DependentUpon>PrivateMessageView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CategoryForums.ascx.cs">
+      <DependentUpon>CategoryForums.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CategoryForums.ascx.designer.cs">
+      <DependentUpon>CategoryForums.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CollapsiblePanelEx.cs" />
+    <Compile Include="App_GlobalResources\extras.fr-FR.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>extras.fr-FR.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Polls.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Polls.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\PrivateMessage.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrivateMessage.resx</DependentUpon>
     </Compile>
     <Compile Include="Content\Forums\active.aspx.cs">
       <DependentUpon>active.aspx</DependentUpon>
@@ -832,9 +1326,6 @@
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="default.aspx.designer.cs">
-      <DependentUpon>default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Content\FAQ\FAQ.aspx.cs">
       <DependentUpon>FAQ.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -997,6 +1488,27 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\CaptchaControl.ascx.designer.cs">
       <DependentUpon>CaptchaControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\PMAlert.ascx.cs">
+      <DependentUpon>PMAlert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\PMAlert.ascx.designer.cs">
+      <DependentUpon>PMAlert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\pmSend.ascx.cs">
+      <DependentUpon>pmSend.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\pmSend.ascx.designer.cs">
+      <DependentUpon>pmSend.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\pmView.ascx.cs">
+      <DependentUpon>pmView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\PrivateMessaging\pmView.ascx.designer.cs">
+      <DependentUpon>pmView.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Sidebar\MiniActiveTopics.ascx.cs">
       <DependentUpon>MiniActiveTopics.ascx</DependentUpon>
@@ -1211,6 +1723,10 @@
       <Project>{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}</Project>
       <Name>Snitz.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Snitz.BLL\Snitz.BusinessLayer.csproj">
+      <Project>{531B229D-52EF-458E-91C8-F7BC64FB38C3}</Project>
+      <Name>Snitz.BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
       <Project>{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}</Project>
       <Name>Snitz.Common</Name>
@@ -1219,22 +1735,27 @@
       <Project>{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}</Project>
       <Name>Snitz.Config</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snitz.DB.MSSQL\Snitz.DB.MSSQL.csproj">
-      <Project>{3D01FE24-B984-476D-A38A-614F0993EC88}</Project>
-      <Name>Snitz.DB.MSSQL</Name>
+    <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
+      <Project>{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}</Project>
+      <Name>Snitz.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Membership.IDal\Snitz.Membership.IDal.csproj">
+      <Project>{a0c1364e-09e1-429f-888f-7f9b26c77527}</Project>
+      <Name>Snitz.Membership.IDal</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Membership\Snitz.Membership.csproj">
       <Project>{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}</Project>
       <Name>Snitz.Membership</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snitz.ThirdParty\Snitz.ThirdParty.csproj">
+    <ProjectReference Include="..\Snitz.ThirdParty\Snitz.Controls.Thirdparty.csproj">
       <Project>{21797d78-2887-460f-9e7e-5360a16c6dce}</Project>
-      <Name>Snitz.ThirdParty</Name>
+      <Name>Snitz.Controls.Thirdparty</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="snitz.config">
       <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1246,7 +1767,6 @@
     <Content Include="App_Data\secure.sitemap" />
     <Content Include="Admin\Web.config" />
     <Content Include="App_Themes\BlueGray\Calendars.skin" />
-    <None Include="App_Themes\BlueGray\images\editor\vssver.scc" />
     <Content Include="App_Themes\BlueGray\Login.skin" />
     <Content Include="App_Themes\BlueGray\Profile.skin" />
     <Content Include="App_Themes\BlueGray\SnitzTheme.skin" />
@@ -1299,10 +1819,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Themes\BlueGray\css\" />
+    <Folder Include="bin\" />
     <Folder Include="Content\Mobile\" />
     <Folder Include="Gallery\" />
-    <Folder Include="UserControls\Events\" />
-    <Folder Include="UserControls\PrivateMessaging\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\emoticons.fa.resx">
@@ -1361,6 +1881,18 @@
       <LastGenOutput>Polls.Designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\extras.fr-FR.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>extras.fr-FR.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\PrivateMessage.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PrivateMessage.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1376,8 +1908,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56932</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:56932/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -1399,6 +1930,11 @@
       CustomCollectFiles;
       $(CopyAllFilesToSingleFolderForPackageDependsOn);
     </CopyAllFilesToSingleFolderForPackageDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Label="SlowCheetah">
+    <SlowCheetah_EnableImportFromNuGet Condition=" '$(SC_EnableImportFromNuGet)'=='' ">true</SlowCheetah_EnableImportFromNuGet>
+    <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.5\tools\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
+    <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
   <Target Name="CustomCollectFiles">
     <ItemGroup>
@@ -1428,4 +1964,5 @@
       </FilesForPackagingFromProject>
     </ItemGroup>
   </Target>
+  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
 </Project>

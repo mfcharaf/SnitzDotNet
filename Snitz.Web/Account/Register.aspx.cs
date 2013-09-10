@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Account - Register.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -10,12 +31,13 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Snitz.BLL;
 using SnitzUI.UserControls;
 using Resources;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
+
 
 namespace SnitzUI
 {
@@ -25,7 +47,7 @@ namespace SnitzUI
         {
             base.OnInit(e);
             Page.Title = SiteMapLocalizations.RegisterPageTitle;
-            pageCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/regwizard.css");
+            pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/regwizard.css");
         }
         
         protected void Page_Load(object sender, EventArgs e)
@@ -131,24 +153,23 @@ namespace SnitzUI
 
         protected void CreateUserWizard1CreatedUser(object sender, EventArgs e)
         {
-            var memberUtil = new RegisterMember();
-            var newMember = memberUtil.GetMember(CreateUserWizard1.UserName);
+            var newMember = Members.GetMember(CreateUserWizard1.UserName);
             string[] fname = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("fullname")).Text.Split(' ');
 
-            newMember.FirstName = fname[0];
-            newMember.LastName = "";
+            newMember.Firstname = fname[0];
+            newMember.Lastname = "";
             if (fname.Length > 1)
             {
                 for (int i = 1; i < fname.Length; i++)
                 {
-                    newMember.LastName += fname[i] + " ";
+                    newMember.Lastname += fname[i] + " ";
                 }
                 
             }
             newMember.City = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("city")).Text;
             newMember.State = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("state")).Text;
             newMember.Country = ((DropDownList)CreateUserWizard1.WizardSteps[1].FindControl("Country")).SelectedValue;
-            newMember.Sex = ((DropDownList)CreateUserWizard1.WizardSteps[1].FindControl("Gender")).SelectedValue;
+            newMember.Gender = ((DropDownList)CreateUserWizard1.WizardSteps[1].FindControl("Gender")).SelectedValue;
             
             var dp = (DatePicker)CreateUserWizard1.WizardSteps[1].FindControl("DatePicker1");
             newMember.DateOfBirth = dp.DOBStr;
@@ -158,19 +179,19 @@ namespace SnitzUI
             newMember.Biography = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("biography")).Text;
             newMember.Hobbies = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("hobbies")).Text;
             newMember.LatestNews = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("lnews")).Text;
-            newMember.Quote = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("quote")).Text;
+            newMember.FavouriteQuote = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("quote")).Text;
 
-            newMember.ViewSig = Int16.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("viewsig")).SelectedValue);
-            newMember.UseSig = Int16.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("usesig")).SelectedValue);
-            newMember.ReceiveEmail = Int16.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("recemail")).SelectedValue);
+            newMember.ViewSignatures = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("viewsig")).SelectedValue);
+            newMember.UseSignature = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("usesig")).SelectedValue);
+            newMember.ReceiveEmails = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("recemail")).SelectedValue);
 
             newMember.Signature = ((TextBox)CreateUserWizard1.WizardSteps[3].FindControl("signature")).Text;
-            newMember.M_IP = Common.GetIPAddress();
-            newMember.M_LAST_IP = newMember.M_IP;
+            newMember.MembersIP = Common.GetIPAddress();
+            newMember.LastIP = newMember.MembersIP;
             // Save the profile - must be done since we explicitly created this profile instance
-            memberUtil.SaveMember(newMember);
+            Members.SaveMember(newMember);
 
-            Membership.GetUser(newMember.Name, true);
+            Membership.GetUser(newMember.UseSignature, true);
         }
 
         protected void CreateUserWizard1CreateUserError(object sender, CreateUserErrorEventArgs e)
@@ -244,7 +265,7 @@ namespace SnitzUI
         private static bool IsNameAllowed(string username)
         {
 
-            if (SnitzCachedLists.GetNameList().Any(name => name.Name == username))
+            if (Filters.GetAllNameFilters().Any(name => name.Name == username))
             {
                 return false;
             }

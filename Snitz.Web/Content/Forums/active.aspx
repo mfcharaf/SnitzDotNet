@@ -22,46 +22,69 @@
     <asp:Literal ID="metadescription" runat="server"></asp:Literal>
 </asp:Content>
 <asp:Content ID="head" ContentPlaceHolderID="CPHead" runat="server">
-    <script src="/scripts/bbcode.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.js" type="text/javascript"></script>
+
+    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
+    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         var RefreshTimer;
         $(document).ready(function () {
             $(".bbcode").each(function () {
-                $(this).html(parseBBCode(parseEmoticon($(this).text())));
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
 
         });
         function setRefresh(interval) {
-            if (RefreshTimer = 'undefined') {
+            if (RefreshTimer == undefined) {
                 RefreshTimer = self.setInterval('RefreshActive()', interval);
             }
         };
         function cancelRefresh() {
-            if (RefreshTimer != 'undefined') {
+            if (RefreshTimer != undefined) {
                 RefreshTimer = self.clearInterval(RefreshTimer);
             }
         };
         function RefreshActive() {
-            __doPostBack('ctl00$CPHR$ddlPageRefresh', '');
+            window.__doPostBack('ctl00$CPHR$ddlPageRefresh', '');
         };
 
     </script>
-    <style type="text/css">
-        .ui-tooltip {
-            background: #0FA1B8;
-            border: 1px solid white;
-            padding: 5px 10px;
-            color: white;
-            border-radius: 10px;
-            font: 11px "Helvetica Neue", Sans-Serif;
-            text-transform: uppercase;
-            box-shadow: 0 0 4px black;
-        }
-    </style>
+
 </asp:Content>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="CPH1" runat="server"></asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="CPH1" runat="server">
+    <script type="text/javascript" language="javascript">
+<!-- 
+
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var postBackElement;
+
+    function CancelAsyncPostBack() {
+        if (prm.get_isInAsyncPostBack()) {
+            prm.abortPostBack();
+        }
+    }
+
+    prm.add_initializeRequest(InitializeRequest);
+    prm.add_endRequest(EndRequest);
+
+    function InitializeRequest(sender, args) {
+        if (prm.get_isInAsyncPostBack()) {
+            args.set_cancel(true);
+        }
+        postBackElement = args.get_postBackElement();
+        if (postBackElement.id == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
+            $get('<%= UpdateProgress1.ClientID %>').style.display = 'block';
+        }
+    }
+    function EndRequest(sender, args) {
+        if (postBackElement.id.search("ucSearch") == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
+            $get('<%= UpdateProgress1.ClientID %>').style.display = 'none';
+        }
+    }
+
+    // -->
+</script>       
+</asp:Content>
 <asp:Content ID="CPHL" ContentPlaceHolderID="CPHL" runat="server">
     <div class="clearfix">
         <asp:DropDownList CssClass="ddTopicSince" ID="ddlTopicsSince" runat="server" AutoPostBack="True"
@@ -98,9 +121,7 @@
 </asp:Content>
 
 <asp:Content ID="content" ContentPlaceHolderID="CPM" runat="server">
-    <asp:ObjectDataSource ID="ActiveTopicODS" runat="server" OldValuesParameterFormatString="original_{0}"
-        SelectMethod="GetActiveTopicsPaged" SelectCountMethod="GetActiveTopicCount" TypeName="SnitzData.PagedObjects"
-        EnablePaging="True" OnSelected="ActiveTopicOdsSelected" OnSelecting="ActiveTopicOdsSelecting">
+    <asp:ObjectDataSource EnablePaging="True" ID="ActiveTopicODS" OldValuesParameterFormatString="original_{0}" OnSelected="ActiveTopicOdsSelected" OnSelecting="ActiveTopicOdsSelecting" runat="server" SelectCountMethod="GetNewTopicCount" SelectMethod="GetNewTopics" TypeName="Snitz.BLL.Topics">
         <SelectParameters>
             <asp:SessionParameter DefaultValue="" Name="lastHereDate" SessionField="_SinceDate"
                 Type="String" />
@@ -108,11 +129,17 @@
             <asp:Parameter Name="maximumRows" Type="Int32" />
         </SelectParameters>
     </asp:ObjectDataSource>
-
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="TopicUpdatePanel" >
+    <ProgressTemplate>
+        <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+            <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+        </div>
+    </ProgressTemplate>
+</asp:UpdateProgress> 
     <asp:UpdatePanel ID="TopicUpdatePanel" runat="server" ChildrenAsTriggers="true">
         <ContentTemplate>
             <script type="text/javascript">
-                Sys.Application.add_load(BindEvents);
+                window.Sys.Application.add_load(BindEvents);
             </script>
             <br class="seperator" />
             <asp:GridView ID="ActiveTable" runat="server"
@@ -151,7 +178,7 @@
                         SortExpression="Author.Name">
                         <ItemTemplate>
                             <asp:Literal ID="profLink" runat="server"
-                                Text='<%# Eval("Author.ProfilePopup") %>' />
+                                Text='<%# Eval("AuthorProfilePopup") %>' />
                         </ItemTemplate>
                         <HeaderStyle Width="80px" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
@@ -167,7 +194,7 @@
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>"
                         SortExpression="ViewCount">
                         <ItemTemplate>
-                            <%# Common.TranslateNumerals(Eval("ViewCount"))%>
+                            <%# Common.TranslateNumerals(Eval("Views"))%>
                         </ItemTemplate>
                         <HeaderStyle Width="60px" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
@@ -177,7 +204,7 @@
                         <ItemTemplate>
                             <span class="smallText">by:&nbsp;<asp:Literal
                                 ID="popuplink" runat="server"
-                                Text='<%# Eval("LastPostAuthor.ProfilePopup") %>'></asp:Literal>&nbsp;<asp:HyperLink
+                                Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink
                                     ID="lpLnk" runat="server" CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>"
                                     Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>

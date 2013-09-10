@@ -8,12 +8,12 @@
       <siteMapNode url="~\admin\default.aspx?action=email" title="Email Configuration" description=""/>
     </siteMapNode>
     <siteMapNode title="Forum Admin" description="Create/Edit Forums and Moderators">
-      <!--<siteMapNode url="~\admin\default.aspx?action=groups" title="Group Categories" description=""/>-->
+      <siteMapNode url="~\admin\default.aspx?action=managecategories" title="Manage Categories" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=counts" title="Update Totals" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=emoticons" title="manage Emoticons" description=""/>
-      <!--<siteMapNode url="~\admin\default.aspx?action=archive" title="Archive Topics" description=""/>-->
+      <siteMapNode url="~\admin\default.aspx?action=archive" title="Archive Topics" description=""/>
       <!--<siteMapNode url="~\admin\default.aspx?action=unarchive" title="UnArchive Topics" description=""/>-->
-      <!--<siteMapNode url="~\admin\default.aspx?action=moderators" title="Moderator Configuration" description=""/>-->
+      <siteMapNode url="~\admin\default.aspx?action=moderators" title="Moderator Configuration" description=""/>
     </siteMapNode>
     <siteMapNode title="Member Admin" description="">
       <siteMapNode url="~\admin\default.aspx?action=validate" title="Pending Members" description=""/>

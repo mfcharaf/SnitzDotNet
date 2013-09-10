@@ -1,6 +1,7 @@
-﻿<%@ Control CodeBehind="pmView.ascx.cs" Inherits="PrivateMessaging.PmView" Language="C#" AutoEventWireup="True" %>
+﻿<%@ Control CodeBehind="pmView.ascx.cs" Inherits="SnitzUI.UserControls.PrivateMessaging.PmView" Language="C#" AutoEventWireup="True" %>
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajax" %>
 <br />
+
 <asp:Panel ID="PMControls" runat="server" Visible="<%# !PmViewMessage.Visible %>" style=" text-align:right" >
     <asp:ImageButton ID="ButtonOutBox" runat="server" CommandArgument="outbox" 
         OnClick="btnOutBox_Click" SkinID="Outbox" AlternateText="Outbox"  />
@@ -30,9 +31,9 @@
         <asp:Panel ID="InBox" runat="server" GroupingText="InBox">
             <asp:GridView ID="grdInBox" runat="server" EmptyDataText="You have no Private Messages in your Inbox"
                 AutoGenerateColumns="False" EnableModelValidation="True" OnRowDataBound="InboxBound"
-                CellPadding="4" ForeColor="#333333" GridLines="None" 
+                CellPadding="4" GridLines="None" 
                 HorizontalAlign="Center" CssClass="forumtable" DataKeyNames="Id">
-                <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                <AlternatingRowStyle CssClass="altrow" />
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
@@ -49,7 +50,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="From">
                         <ItemTemplate>
-                            <asp:Label ID="Label1" runat="server" Text='<%# Bind("FromMembers.Name") %>'></asp:Label>
+                            <asp:Label ID="Label1" runat="server" Text='<%# Bind("FromMemberName") %>'></asp:Label>
                         </ItemTemplate>
                         <HeaderStyle Width="150px" />
                     </asp:TemplateField>
@@ -70,11 +71,11 @@
                     </asp:TemplateField>
                 </Columns>
                 <EditRowStyle BackColor="#999999" />
-                <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                <FooterStyle CssClass="" />
                 <HeaderStyle CssClass="category cattitle" />
-                <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-                <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                <PagerStyle CssClass="" />
+                <RowStyle CssClass="row" />
+                <SelectedRowStyle ForeColor="#333333" />
             </asp:GridView>
             <br />
             <asp:LinkButton ID="btnDelMessage" runat="server" Text="Delete Selected" 
@@ -85,7 +86,7 @@
             <asp:GridView ID="grdOutBox" runat="server" AutoGenerateColumns="False" EmptyDataText="You have no Private Messages in your Sent Items"
                 EnableModelValidation="True" OnRowDataBound="InboxBound" CellPadding="4" ForeColor="#333333"
                 GridLines="None" DataKeyNames="Id" CssClass="forumtable">
-                <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                <AlternatingRowStyle CssClass="altrow" />
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
@@ -103,7 +104,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="To">
                         <ItemTemplate>
-                            <asp:Label ID="Label1" runat="server" Text='<%# Bind("ToMembers.Name") %>'></asp:Label>
+                            <asp:Label ID="Label1" runat="server" Text='<%# Bind("ToMemberName") %>'></asp:Label>
                         </ItemTemplate>
                         <HeaderStyle Width="150px" HorizontalAlign="Left"/>
                     </asp:TemplateField>
@@ -119,12 +120,12 @@
                         <HeaderStyle Width="40px" />
                     </asp:TemplateField>
                 </Columns>
-                <EditRowStyle BackColor="#999999" />
-                <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                <EditRowStyle CssClass="" />
+                <FooterStyle CssClass="" />
                 <HeaderStyle CssClass="category cattitle" />
-                <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
-                <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                <PagerStyle CssClass="" />
+                <RowStyle CssClass="row" />
+                <SelectedRowStyle ForeColor="#333333" />
             </asp:GridView>
             <br />
             <asp:LinkButton ID="btnRemMessage" runat="server" Text="Remove Selected" 
@@ -238,6 +239,13 @@
                     </div>
                 </div>
                 <div class="mainModalContent">
+                        <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel2" >
+                            <ProgressTemplate>
+                                <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+                                    <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+                                </div>
+                            </ProgressTemplate>
+                        </asp:UpdateProgress>                    
                     <div id="Div3" class="clearfix">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="true"> 
                             <ContentTemplate>
@@ -247,8 +255,8 @@
                                         OnItemCommand="Members_ItemCommand" OnItemDataBound="MembersDataBound">
                                         <HeaderTemplate>Member List</HeaderTemplate>
                                         <ItemTemplate>
-                                        <asp:HyperLink Width="200px" ID="lnkMember" runat="server" Target="_blank" NavigateUrl='<%# String.Format("~/Account/profile.aspx?user={0}", Eval("Name")) %>' Text='<%#Eval("Name") %>' ></asp:HyperLink>
-                                        <asp:ImageButton AlternateText="pm" ToolTip='<%# Eval("Name") %>' CommandName="select" Width="16" Height="16" ID="sendpm" runat="server" SkinID="PMSend" CommandArgument='<%# Eval("Name") %>' OnClick="SendPM" /></ItemTemplate>
+                                        <asp:HyperLink Width="200px" ID="lnkMember" runat="server" Target="_blank" NavigateUrl='<%# String.Format("~/Account/profile.aspx?user={0}", Eval("Username")) %>' Text='<%#Eval("Username") %>' ></asp:HyperLink>
+                                        <asp:ImageButton AlternateText="pm" ToolTip='<%# Eval("Username") %>' CommandName="select" Width="16" Height="16" ID="sendpm" runat="server" SkinID="PMSend" CommandArgument='<%# Eval("Username") %>' OnClick="SendPM" /></ItemTemplate>
                                         </asp:DataList>
                                         <br />
                                         <asp:Panel ID="pnlControls" runat="server"> 

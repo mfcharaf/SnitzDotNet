@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
+using System.Collections;
 using System.Web.UI.WebControls;
+using Snitz.Entities;
 using SnitzConfig;
 
 namespace SnitzUI.Admin
@@ -12,7 +10,11 @@ namespace SnitzUI.Admin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            DetailsView1.DataSource = Snitz.BLL.Polls.GetPolls();
+            DetailsView1.DataBind();
 
+            GridView1.DataSource = Snitz.BLL.Polls.GetPollChoices((int) DetailsView1.SelectedValue);
+            GridView1.DataBind();
         }
 
         protected void SetFeaturedPoll(object sender, EventArgs e)
@@ -45,5 +47,34 @@ namespace SnitzUI.Admin
             int idx = e.NewEditIndex;
 
         }
+
+        protected void PollAnswerInsert_ItemInserting(object sender, DetailsViewInsertEventArgs e)
+        {
+            PollChoiceInfo choice = new PollChoiceInfo();
+            choice.PollId = Convert.ToInt32(Request.QueryString["pid"]);
+            TextBox text = (TextBox) PollAnswerInsert.FindControl("NewPollAnswerDisplayText");
+            TextBox order = (TextBox)PollAnswerInsert.FindControl("NewPollAnswerSortOrder");
+            choice.DisplayText = text.Text;
+            choice.Order = Convert.ToInt32(order.Text);
+            Snitz.BLL.Polls.AddChoice(choice);
+
+            Response.Redirect(Request.RawUrl);
+        }
+
+        protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            int choiceid = GridView1.GetNewValue<int>(e.RowIndex, 1);
+            int pollid = Convert.ToInt32(Request.QueryString["pid"]);
+            string displayText = GridView1.GetNewValue<string>(e.RowIndex, 2);
+            int order = GridView1.GetNewValue<int>(e.RowIndex, 3);
+
+            PollChoiceInfo choice = new PollChoiceInfo();
+            choice.Id = choiceid;
+            choice.DisplayText = displayText;
+            choice.PollId = pollid;
+            choice.Order = order;
+            Snitz.BLL.Polls.UpdatePollAnswer(choice);
+        }
+
     }
 }

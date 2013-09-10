@@ -4,11 +4,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="CPMeta" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="CPHead" runat="server">
-<link rel="stylesheet" type="text/css" runat="server" id="markitupCSS" href="/css/BlueGray/markitup.css"/>
+<link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
     <style type="text/css">
-    fieldset{padding:14px;background-color:White;}
+
+    fieldset{padding:14px;background-color:white;}
     textarea.QRMsgArea{
-	border: 1px solid #0FA1B8;
+	border: 1px solid #000;
 	width: 97% !important;
 	width: 90%;
 
@@ -31,7 +32,7 @@ label{
   .mainModalContent{margin:0px;padding:4px;}
   .AspNet-DataList table{width:80%;margin:auto;}
     </style>
-    <script src="/scripts/editor.js" type="text/javascript"></script>
+    <script src="/scripts/editor.min.js" type="text/javascript"></script>
         <script type="text/javascript">
         $(document).ready(function () {
             $(".QRMsgArea").markItUp(mySettings);

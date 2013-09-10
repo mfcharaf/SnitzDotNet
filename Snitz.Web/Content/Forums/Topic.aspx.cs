@@ -1,43 +1,24 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.Forums - Topic.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,17 +31,18 @@ using System.Web.Services;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
 
 
 namespace SnitzUI
 {
     public partial class TopicPage : PageBase, IRoutablePage
     {
-        private Topic _topic;
+        private TopicInfo _topic;
         protected internal GridPager ReplyPager;
         private int RowCount
         {
@@ -84,13 +66,13 @@ namespace SnitzUI
         {
             if (replyFilter.SelectedIndex > -1)
             {
-                var topics = new List<Topic> {_topic};
+                var topics = new List<TopicInfo> {_topic};
                 TopicView.DataSource = topics;
                 TopicView.DataBind();
 
             }
             int pageSize = Config.TopicPageSize;
-            var replies = PagedObjects.GetTopicRepliesPaged(_topic.Id, pageIndex, pageSize);
+            var replies = Topics.GetRepliesForTopic(_topic.Id, pageIndex, pageSize);
             if(replyFilter.SelectedIndex > 0)
             {
                 switch (replyFilter.SelectedValue)
@@ -124,15 +106,15 @@ namespace SnitzUI
         {
             bool result = false;
 
-            if( post is Reply)
+            if( post is ReplyInfo)
             {
-                var reply = (Reply)post;
-                result = (Config.AllowSignatures && reply.Author.ViewSignatures && reply.UseSignatures && !String.IsNullOrEmpty(reply.Author.Signature));
+                var reply = (ReplyInfo)post;
+                result = (Config.AllowSignatures && reply.AuthorViewSig && reply.UseSignatures && !String.IsNullOrEmpty(reply.AuthorSignature));
             }
-            else if (post is Topic)
+            else if (post is TopicInfo)
             {
-                var topic = (Topic)post;
-                result = (Config.AllowSignatures && topic.Author.ViewSignatures && topic.UseSignatures && !String.IsNullOrEmpty(topic.Author.Signature));
+                var topic = (TopicInfo)post;
+                result = (Config.AllowSignatures && topic.AuthorViewSig && topic.UseSignatures && !String.IsNullOrEmpty(topic.AuthorSignature));
 
             }
             
@@ -145,7 +127,7 @@ namespace SnitzUI
             base.OnInit(e);
             if (Session["CurrentProfile"] != null)
                 Session.Remove("CurrentProfile");
-            markitupCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/markitup.css");
+            editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
 
             if (TopicId == null)
                 throw new HttpException(404, "Topic not found");
@@ -164,18 +146,18 @@ namespace SnitzUI
                     {
                         skip = Request.Params["dir"];
                     }
-                    _topic = Util.GetTopic(TopicId.Value);
+                    _topic = Topics.GetTopic(TopicId.Value);
                     if (skip != "")
                     {
-                        _topic = Util.GetTopic(_topic, skip);
+                        _topic = Topics.GetNextPrevTopic(_topic.Id, skip);
                         TopicId = _topic.Id;
                     }
-
+                    _topic.Author = Members.GetAuthor(_topic.AuthorId);
                     //Grid pager setup
                     ReplyPager = (GridPager) LoadControl("~/UserControls/GridPager.ascx");
-                    ReplyPager.PagerStyle = PagerType.Lnkbutton;
+                    ReplyPager.PagerStyle = Enumerators.PagerType.Lnkbutton;
                     ReplyPager.UserControlLinkClick += PagerLinkClick;
-                    RowCount = PagedObjects.GetTopicReplyCount(TopicId.Value);
+                    RowCount = _topic.ReplyCount;
                     ReplyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
 
                     Page.Title = string.Format(webResources.ttlTopicPage, _topic.Subject.CleanForumCodeTags(), Config.ForumTitle);
@@ -197,7 +179,7 @@ namespace SnitzUI
 
             if (User.Identity.IsAuthenticated)
             {
-                if ((Config.ShowQuickReply && _topic.Status != Enumerators.PostStatus.Closed && _topic.Forum.Status != Enumerators.PostStatus.Closed) || IsAdministrator)
+                if ((Config.ShowQuickReply && _topic.Status != (int)Enumerators.PostStatus.Closed && _topic.Forum.Status != (int)Enumerators.PostStatus.Closed) || IsAdministrator)
                 {
                     var qr = (QuickReply)Page.LoadControl("~/UserControls/QuickReply.ascx"); //loading the user control dynamically
                     qr.thisTopic = _topic;
@@ -228,16 +210,16 @@ namespace SnitzUI
             }
             if (!Page.IsPostBack)
             {
-                Topic topic = _topic;
+                TopicInfo topic = _topic;
                 string session = "FORUM" + topic.ForumId;
-                //http://localhost:56932/Content/Forums/topic.aspx?TOPIC=69803
+
                 if (!IsPostBack)
                 {
                     if (IsAuthenticated)
                     {
 
                         //do we have access to this forum
-                        if (!SnitzRoleProvider.IsUserInForumRole(Member.Name, topic.Forum.Id))
+                        if (!Moderators.IsUserInForumRole(Member.Username, topic.Forum.Id))
                         {
                             if (Session[session] == null || Session[session].ToString() != "true")
                             {
@@ -274,7 +256,7 @@ namespace SnitzUI
 
                 }
 
-                Util.UpdateViewCount(_topic.Id);
+                Topics.UpdateViewCount(_topic.Id);
                 if ((Request.Params["whichpage"] != null))
                 {
                     if (Request.Params["whichpage"] == "-1")
@@ -306,14 +288,15 @@ namespace SnitzUI
             if (Request.Params["reply"] != null)
             {
                 string reply = Request.Params["reply"];
-                JumpToReply(reply);
+                if (reply != "0")
+                    JumpToReply(reply);
             }
 
         }
 
         private void JumpToReply(string reply)
         {
-            int replyPage = Util.FindReplyPage(Convert.ToInt32(reply));
+            int replyPage = Replies.FindReplyPage(Convert.ToInt32(reply));
             CurrentPage = replyPage;
             ReplyPager.CurrentIndex = CurrentPage;
         }
@@ -356,12 +339,12 @@ namespace SnitzUI
             {
 
                 case "prev" :
-                    _topic = Util.GetTopic(_topic, "prev");
+                    _topic = Topics.GetNextPrevTopic(_topic.Id, "prev");
                     if (Session["TOPIC"].ToString() != _topic.Id.ToString())
                         Response.Redirect("~/Content/Forums/topic.aspx?TOPIC=" + _topic.Id, true);
                     break;
                 case "next" :
-                    _topic = Util.GetTopic(_topic, "next");
+                    _topic = Topics.GetNextPrevTopic(_topic.Id, "next");
                     if (Session["TOPIC"].ToString() != _topic.Id.ToString())
                         Response.Redirect("~/Content/Forums/topic.aspx?TOPIC=" + _topic.Id, true);
                     break;
@@ -392,7 +375,7 @@ namespace SnitzUI
                 currentNode = SiteMap.CurrentNode.Clone(true);
             }
             SiteMapNode tempNode = currentNode;
-            Topic topic = _topic;
+            TopicInfo topic = _topic;
             tempNode.Title = HttpUtility.HtmlDecode(topic.Subject.CleanForumCodeTags());
             tempNode = tempNode.ParentNode;
             tempNode.Title = HttpUtility.HtmlDecode(topic.Forum.Subject.CleanForumCodeTags());
@@ -401,21 +384,28 @@ namespace SnitzUI
             return currentNode;
 
         }
+        
         protected void RepliesBound(object sender, RepeaterItemEventArgs e)
         {
             RepeaterItem item = e.Item;
-            var reply = (Reply) item.DataItem;
+            var reply = (ReplyInfo) item.DataItem;
+
             if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
             {
-                var mbar = item.FindControl("bbr") as MessageButtonBar;
+                var mbar = item.FindControl(@"bbr") as MessageButtonBar;
                 if (mbar != null) mbar.DeleteClicked += TopicDeleted;
-                var popuplink = item.FindControl("popuplink") as Literal;
+                var popuplink = item.FindControl(@"popuplink") as Literal;
 
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
-                    popuplink.Text = reply.Author != null ? Regex.Replace(reply.Author.ProfilePopup, @"\[!(.*)!]", title) : "";
+                    popuplink.Text = Regex.Replace(reply.AuthorPopup, @"\[!(.*)!]", title);
                 }
+            }
+            var editdiv = item.FindControl(@"editbyDiv");
+            if (editdiv != null)
+            {
+                editdiv.Visible = (reply.LastEditDate.HasValue && reply.LastEditDate.Value != DateTime.MinValue) && Config.ShowEditBy;
             }
         }
 
@@ -426,27 +416,47 @@ namespace SnitzUI
 
         protected void TopicBound(object sender, EventArgs e)
         {
+
             var frm = (FormView)sender;
             if(!Config.ShowTopicNav)
             {
                 frm.HeaderRow.Visible = false;
             }
-            var mbar = frm.FindControl("bbr") as MessageButtonBar;
+            var mbar = frm.FindControl(@"bbr") as MessageButtonBar;
             if (mbar != null)
                 mbar.DeleteClicked += TopicDeleted;
 
-            var ph = frm.FindControl("msgPH") as PlaceHolder; 
+            var ph = frm.FindControl(@"msgPH") as PlaceHolder; 
             
-            var currentTopic = ((Topic) frm.DataItem);
+            var currentTopic = ((TopicInfo) frm.DataItem);
+            currentTopic.PollId = Topics.GetTopicPollId(currentTopic.Id);
             var msgDisplay = new Literal {Text = currentTopic.Message, Mode = LiteralMode.Encode};
 
-            if (currentTopic.PollID > 0)
+            if (currentTopic.PollId > 0)
             {
-                var poll = (Poll)Page.LoadControl("~/UserControls/Polls/Poll.ascx");
-                if (currentTopic.PollID != null) poll.PollId = currentTopic.PollID.Value;
-                if (ph != null) ph.Controls.Add(poll);
+                HtmlControl div = (HtmlControl)frm.FindControl(@"msgContent");
+                if (div != null)
+                {
+                    div.Attributes["class"] = "mContent";
+                }
+                var poll = (Poll)Page.LoadControl(@"~/UserControls/Polls/Poll.ascx");
+                if (currentTopic.PollId != null) poll.PollId = currentTopic.PollId.Value;
+                if (ph != null)
+                {
+                    ph.Controls.Add(poll);
+                }
+                msgDisplay.Mode = LiteralMode.Transform;
+                msgDisplay.Text = msgDisplay.Text.ParseTags();
             }
-            if (ph != null) ph.Controls.Add(msgDisplay);
+            var editdiv = frm.FindControl(@"editbyDiv");
+            if (editdiv != null)
+            {
+                editdiv.Visible = (currentTopic.LastEditDate.HasValue && currentTopic.LastEditDate.Value != DateTime.MinValue) && Config.ShowEditBy;
+            }
+            if (ph != null)
+            {
+                ph.Controls.Add(msgDisplay);
+            }
         }
 
 
@@ -455,17 +465,17 @@ namespace SnitzUI
         public static void Approval(string topicid, string replyid)
         {
             if (!String.IsNullOrEmpty(topicid))
-                Util.SetTopicStatus(Convert.ToInt32(topicid), Enumerators.PostStatus.Open);
+                Topics.SetTopicStatus(Convert.ToInt32(topicid), (int)Enumerators.PostStatus.Open);
             if (!String.IsNullOrEmpty(replyid))
-                Util.SetReplyStatus(Convert.ToInt32(replyid), Enumerators.PostStatus.Open);
+                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.Open);
         }
         [WebMethod]
         public static void PutOnHold(string topicid, string replyid)
         {
             if (!String.IsNullOrEmpty(topicid))
-                Util.SetTopicStatus(Convert.ToInt32(topicid), Enumerators.PostStatus.OnHold);
+                Topics.SetTopicStatus(Convert.ToInt32(topicid), (int)Enumerators.PostStatus.OnHold);
             if (!String.IsNullOrEmpty(replyid))
-                Util.SetReplyStatus(Convert.ToInt32(replyid), Enumerators.PostStatus.OnHold);
+                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.OnHold);
         }
 
         [WebMethod]
@@ -527,52 +537,49 @@ namespace SnitzUI
             if (String.IsNullOrEmpty(subject))
                 return "No subject supplied";
 
-            Topic oldtopic = Util.GetTopic(topicid);
-            Forum forum = Util.GetForum(forumId);
+            TopicInfo oldtopic = Topics.GetTopic(topicid);
+            ForumInfo forum = Forums.GetForum(forumId);
 
             if (replyIDs.Count == 0)
                 return "No replies selected";
             int lastreplyid = sort == "desc" ? replyIDs[replyIDs.Count - 1] : replyIDs[0];
-            Reply lastreply = Util.GetReply(lastreplyid);
+            ReplyInfo lastreply = Replies.GetReply(lastreplyid);
 
             //get the reply details
-            var topic = new Topic
+            var topic = new TopicInfo
             {
                 Subject = subject,
                 Message = lastreply.Message,
                 Date = lastreply.Date,
                 UseSignatures = lastreply.UseSignatures,
                 IsSticky = false,
-                PostersIP = lastreply.PostersIP,
-                ViewCount = 0,
+                PosterIp = lastreply.PosterIp,
+                Views = 0,
                 ReplyCount = replyIDs.Count - 1,
-                Status = Enumerators.PostStatus.Open,
+                Status = (int)Enumerators.PostStatus.Open,
+                UnModeratedReplies = 0,
                 ForumId = forumId,
+                AuthorId = lastreply.AuthorId,
                 CatId = forum.CatId
             };
 
-            bool isModeratedForum = topic.Forum.ModerationLevel != Enumerators.Moderation.UnModerated;
+            bool isModeratedForum = forum.ModerationLevel != (int)Enumerators.Moderation.UnModerated;
             if (isModeratedForum)
             {
-                if (forum.ModerationLevel == Enumerators.Moderation.AllPosts ||
-                    forum.ModerationLevel == Enumerators.Moderation.Topics)
-                    topic.Status = Enumerators.PostStatus.UnModerated;
+                if (forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||
+                    forum.ModerationLevel == (int)Enumerators.Moderation.Topics)
+                    topic.Status = (int)Enumerators.PostStatus.UnModerated;
             }
 
-            int newtopicid = Util.AddTopic(topic, Util.GetMember(lastreply.Author.Name));
+            int newtopicid = Topics.Add(topic);
             //delete the reply used as topic
-            Util.DeleteReply(lastreplyid);
+            Replies.DeleteReply(lastreplyid);
             //move the other replies to this topic
-            Util.MoveReplies(newtopicid, replyIDs);
+            Replies.MoveReplies(newtopicid, replyIDs);
             //update the original topic count/dates
-            Util.UpdateTopic(oldtopic.Id);
+            Topics.Update(oldtopic.Id);
 
-            //do we need to update the forum?
-            if (oldtopic.ForumId != Util.GetTopic(newtopicid).Id)
-            {
-                //update original forum count/dates
-                Util.UpdateForum(oldtopic.ForumId);
-            }
+            Snitz.BLL.Admin.UpdateForumCounts();
 
             return "Selected replies were moved to a new topic";
         }

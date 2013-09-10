@@ -11,6 +11,7 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master"
     AutoEventWireup="true" Culture="auto" UICulture="auto" CodeBehind="Topic.aspx.cs" MaintainScrollPositionOnPostback="true"
     Inherits="SnitzUI.TopicPage" %>
+<%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzConfig" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
@@ -23,33 +24,40 @@
     <asp:Literal ID="metadescription" runat="server"></asp:Literal>
 </asp:Content>
 <asp:Content runat="server" ID="scripthead" ContentPlaceHolderID="CPHead">
-    <link rel="stylesheet" type="text/css" runat="server" id="markitupCSS"/>
+    <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
     <script type="text/javascript" src="/scripts/jquery.youtube.player.min.js"></script>
-    <script src="/scripts/editor.js" type="text/javascript"></script>
-    <script src="/scripts/bbcode.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.js" type="text/javascript"></script>
+    <script src="/scripts/editor.min.js" type="text/javascript"></script>
+    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
+    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <script src="/scripts/postpage.js" type="text/javascript"></script>
-    <script src="/Scripts/topic_print.js" type="text/javascript"></script>
+    <script src="/Scripts/topic_print.min.js" type="text/javascript"></script>
     <script type="text/javascript">
+        function pagebind() {
+            $(document).ready(function () {
+                $(".bbcode").each(function () {
+                    $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+                });
+                $('#ctl00_CPF1_ctl00_emoticons1_DataList1 a').click(function () {
+                    var emoticon = $(this).attr("title");
+                    $.markItUp({ replaceWith: emoticon });
+                    return false;
+                });
+                $('a.video').player({
+                    width: 380,
+                    chromeless: 0,
+                    showTime: 0,
+                    showPlaylist: 0,
+                    showTitleOverlay: 0
+                });
+            });
+        };
 
-        $(document).ready(function () {
-            $(".bbcode").each(function () {
-                $(this).html(parseBBCode(parseEmoticon($(this).text())));
-            });
-            $('#ctl00_CPF1_ctl00_emoticons1_DataList1 a').click(function () {
-                emoticon = $(this).attr("title");
-                $.markItUp({ replaceWith: emoticon });
-                return false;
-            });
-            $('a.video').player({
-                width: 380,
-                chromeless: 0,
-                showTime: 0,
-                showPlaylist: 0,
-                showTitleOverlay: 0
-            });
-        });
+        pagebind();
+        function pollloaded() { alert("poll loaded");
+            pagebind();
+        }
+        
         $.fn.serializeNoViewState = function () {
             return this.find("input,select,hidden,textarea")
                 .not("[type=hidden][name^=__]")
@@ -110,7 +118,7 @@
             if (contentType.length > 0) {
                 text += ", '" + contentType + "'";
             }
-            addToClientTable(args.get_fileName(), text);
+            window.addToClientTable(args.get_fileName(), text);
 
         }
 
@@ -178,7 +186,7 @@
             min-height: 140px !important;
         }
         #emoticons img{border:0px;margin:2px;}
-
+        .AspNet-FormView-Data{ padding: 0px;}
     </style>
 </asp:Content>
 <asp:Content ID="ContentMain" ContentPlaceHolderID="CPM" runat="server">
@@ -187,7 +195,7 @@
     </div>
     <div id="MessageList" style="width: 100%;">
         <asp:FormView ID="TopicView" runat="server" Width="100%" CellPadding="0" EnableViewState="False"
-            OnItemCommand="TopicViewItemCommand" OnDataBound="TopicBound" CssClass="forumtable">
+            OnItemCommand="TopicViewItemCommand" OnDataBound="TopicBound" style="padding: 0px;">
             <HeaderTemplate>
                 <div class="topicHeader clearfix">
                     <div class="topicPrev">
@@ -208,20 +216,20 @@
                 <input type="hidden" id="TopicSubject" value='<%# Eval("Subject") %>' />
                 <div class="TopicDiv clearfix">
                     <div class="leftColumn">
-                        <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Name") %>'><%# Eval("Author.Name") %></a>
-                        <topic:MessageProfile runat="server" ID="TopicAuthor" Author='<%# DataBinder.Eval(Container.DataItem, "Author")%>' />
+                        <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Username") %>'><%# Eval("Author.Username") %></a>
+                        <topic:MessageProfile runat="server" ID="TopicAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
                     </div>
                     <div class="MessageDIV">
                         <div class="buttonbar">
                             <topic:MessageButtonBar ID="bbT" runat="server" Post='<%# Container.DataItem %>' DeleteClick="MessageDeleted" />
                         </div>
-                        <div class="mContent bbcode">
+                        <div id="msgContent" class="mContent bbcode" runat="server">
                             <asp:PlaceHolder ID="msgPH" runat="server"></asp:PlaceHolder>
                         </div>
                         <br />
-                        <div id="Div1" runat="server" class="editedDIV" visible='<%# Eval("LastEditDate") != null && Config.ShowEditBy %>'>
-                            <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("LastEditBy.Name")) %>'></asp:Label>
-                            <asp:Literal ID="litDate1" runat="server" Text='<%# Eval("LastEditTimeAgo")%>' />
+                        <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
+                            <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
+                            <asp:Literal ID="litDate1" runat="server" Text='<%# Topics.LastEditTimeAgo(Container.DataItem)%>' />
                         </div>
                         <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
                             <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>
@@ -240,6 +248,7 @@
             </asp:DropDownList>
         </div>
         <asp:Panel ID="MessagePanel" runat="server">
+            
             <asp:UpdatePanel ID="upd" runat="server" ChildrenAsTriggers="true">
                 <ContentTemplate>
                     <script type="text/javascript">
@@ -280,20 +289,20 @@
                             <div class="ReplyDiv clearfix">
                                 <div class="leftColumn">
                                     <asp:HiddenField ID="hdnAuthor" runat="server" />
-                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Author.ProfilePopup")%>'></asp:Literal>
-                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" Author='<%# DataBinder.Eval(Container.DataItem, "Author")%>' />
+                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "AuthorPopup")%>'></asp:Literal>
+                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
                                 </div>
                                 <div class="MessageDIV">
                                     <div class="buttonbar">
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
                                     <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>'></asp:Literal>
+                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>' Mode="Encode"></asp:Literal>
                                     </div>
                                     <br />
-                                    <div id="Div1" runat="server" class="editedDIV" visible='<%# Eval("LastEditDate") != null && Config.ShowEditBy %>'>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("LastEditBy.Name")) %>'></asp:Label>
-                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Eval("LastEditTimeAgo")%>' />
+                                    <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
+                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
                                     </div>
                                     <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
                                         <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>
@@ -305,9 +314,9 @@
                         <AlternatingItemTemplate>
                             <div class="AltReplyDiv clearfix">
                                 <div class="leftColumn">
-                                    <asp:HiddenField ID="hdnAuthor" runat="server" Value='<%# DataBinder.Eval(Container.DataItem, "Author.Name")%>' />
-                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "Author.ProfilePopup")%>'></asp:Literal>
-                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" Author='<%# DataBinder.Eval(Container.DataItem, "Author")%>' />
+                                    <asp:HiddenField ID="hdnAuthor" runat="server" Value='<%# DataBinder.Eval(Container.DataItem, "AuthorName")%>' />
+                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "AuthorPopup")%>'></asp:Literal>
+                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
                                 </div>
                                 <div class="MessageDIV">
                                     <div class="buttonbar">
@@ -316,12 +325,12 @@
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
                                     <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>'></asp:Literal>
+                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>' Mode="Encode"></asp:Literal>
                                     </div>
                                     <br />
-                                    <div id="Div1" runat="server" class="editedDIV" visible='<%# Eval("LastEditDate") != null && Config.ShowEditBy %>'>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("LastEditBy.Name")) %>'></asp:Label>
-                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Eval("LastEditTimeAgo")%>' />
+                                    <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
+                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
                                     </div>
                                     <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
                                         <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>

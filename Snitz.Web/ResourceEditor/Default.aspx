@@ -36,12 +36,9 @@
         
         <asp:UpdateProgress ID="UpdateProgress" runat="server" DisplayAfter="300" AssociatedUpdatePanelID="UpdatePanel">
             <ProgressTemplate>
-                <asp:Panel ID="progressPanel" runat="server" CssClass="UpdateProgressFooter">
-                    <asp:Image ID="imgLoading" runat="server" SkinID="LoadingImage" />
-					<span class="LoadingMessage" style="padding-left: 8px;">
-						<asp:Literal ID="Literal1" runat="server">Please wait...</asp:Literal>
-					</span>
-                </asp:Panel>
+                <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+                    <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+                </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
     </div>

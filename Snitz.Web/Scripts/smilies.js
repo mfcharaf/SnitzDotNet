@@ -4,7 +4,7 @@
 var emtagname_re = /^\/?(?:b|i|u|pre)$/;
 
 // aceptable BBcode tags, optionally prefixed with a slash
-var smilefmt_re = /\/?(?:\[([a-z\^\*:;\(\)]{1,16})\])|(\[\/noparse])/ig;
+var smilefmt_re = /\/?(?:\[([a-z0-9?}/!~|\^\*:;\(\)]{1,16})\])|(\[\/noparse])/ig;
 
 // stack frame object
 function emoticon(name, code, image) {
@@ -45,7 +45,7 @@ function emoticonToImage(mstr, m1, m2, offset, string) {
                 return "[noparse]";
             }
             //opentags.push(new taginfo_t(m1, "/>"));
-            var test = "<img alt=\"" + em1[0].name + "\" class=\"emoticon\" src=\"/app_themes/bluegray/images/emoticons/" + em1[0].image + "\"/>";
+            var test = "<img alt=\"" + em1[0].name + "\" class=\"emoticon\" src=\"/app_themes/" + this.pageTheme + "/images/emoticons/" + em1[0].image + "\"/>";
             return test;
         }
 
@@ -106,10 +106,11 @@ function fillEmoticons() {
     emoticons.push(new emoticon("lock", "lock", "lock.gif"));
 }
 
-function parseEmoticon(post) {
+function parseEmoticon(post, pagetheme) {
     
     var result, endtags, tag;
-    
+    this.pageTheme = pagetheme;
+
     //create array of emoticons
     if (emoticons == null || emoticons.length) {
         emoticons = new Array(0);
@@ -140,7 +141,7 @@ function parseEmoticon(post) {
         while (opentags.length)
             endtags += opentags.pop().etag;
     }
-
+    
     return endtags ? result + endtags : result;
 
 }

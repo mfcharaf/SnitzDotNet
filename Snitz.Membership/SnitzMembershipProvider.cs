@@ -1,4 +1,24 @@
-﻿
+﻿/*
+####################################################################################################################
+##
+## SnitzMembership - SnitzMembershipProvider
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,9 +29,11 @@ using System.Security.Cryptography;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Text;
-using SnitzCommon;
+using Snitz.Entities;
+using Snitz.Membership.Helpers;
+using Snitz.Membership.IDal;
 using SnitzConfig;
-using SnitzMembership;
+
 
 
 namespace Snitz.Providers
@@ -49,7 +71,7 @@ namespace Snitz.Providers
         private TimeSpan _userIsOnlineTimeWindow;
         public TimeSpan UserIsOnlineTimeWindow
         {
-            get { return new TimeSpan(0,Membership.UserIsOnlineTimeWindow,0); }
+            get { return new TimeSpan(0,System.Web.Security.Membership.UserIsOnlineTimeWindow,0); }
         }
 
 
@@ -150,46 +172,30 @@ namespace Snitz.Providers
                 //    password = password + salt;
                 //}
 
-                var m = new Member {Username = username, Password = EncodePassword(password), Email = email};
+                var m = new MemberInfo {Username = username, Password = EncodePassword(password), Email = email};
 
                 // Set the password retrieval question and answer if they are required
                 if (RequiresQuestionAndAnswer)
                 {
-                    m.PasswordQuestion = passwordQuestion;
-                    m.PasswordAnswer = EncodePassword(passwordAnswer);
+                    m.PasswordChangeKey = passwordQuestion;
+                    m.ValidationKey = EncodePassword(passwordAnswer);
                 }
 
-                m.IsApproved = isApproved;
-                m.IsLockedOut = true;
-                m.M_LEVEL = 1;
-                m.ReceiveEmails = 0;
+                m.IsValid = isApproved;
+                m.Status = 0;
+                m.ReceiveEmails =false;
                 m.TimeOffset = 0;
-                m.CreatedDate = createdDate.ToString("yyyyMMddHHmmss");
-                m.LastLoginDate = createdDate.ToString("yyyyMMddHHmmss");
-                m.LastActivityDate = createdDate.ToString("yyyyMMddHHmmss");
+                m.MemberSince = createdDate;
+                m.LastVisitDate = createdDate;
+                m.LastPostDate = null;
 
 
                 try
                 {
-                    using (var db = new MembershipDataDataContext())
-                    {
-                        // Add the new user to the database
-                        db.Members.InsertOnSubmit(m);
-
-                        // Add the user to a the signup group
-                        Role r = (from roles in db.Roles
-                                   where roles.LoweredRoleName == "all"
-                                   select roles).Single();
-
-                        if (r != null)
-                        {
-                            var mr = new MembersInRole {Role = r, Member = m};
-                            db.MembersInRoles.InsertOnSubmit(mr);
-                        }
-
-                        // Save changes
-                        db.SubmitChanges();
-                    }
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    dal.Add(m);
+                    IRoles roleDal = Factory<IRoles>.Create("Role");
+                    roleDal.AddUsersToRoles(new[] {m.Username},new[] {"all"});
 
                     // User creation was a success
                     status = MembershipCreateStatus.Success;
@@ -222,17 +228,15 @@ namespace Snitz.Providers
         /// <param name="user">MembershipUser object to modify</param>
         public override void UpdateUser(MembershipUser user)
         {
-            using (var db = new MembershipDataDataContext())
+            Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+            MemberInfo m = dal.GetByName(user.UserName).SingleOrDefault();
+            if (m != null)
             {
-                Member m = (from members in db.Members
-                            where members.Username == user.UserName
-                            select members).Single();
-
                 m.Email = user.Email;
-                m.IsApproved = user.IsApproved;
-                m.LastLoginDate = DateTime.UtcNow.ToForumDateStr();
-                db.SubmitChanges();
+                m.IsValid = user.IsApproved;
+                m.LastVisitDate = DateTime.UtcNow;                
             }
+            dal.Update(m);
         }
 
         /// <summary>
@@ -246,18 +250,10 @@ namespace Snitz.Providers
             bool ret;
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == userName
-                                select members).Single();
-
-                    m.IsLockedOut = false;
-
-                    // Save changes in the database
-                    db.SubmitChanges();
-                }
-
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(userName).SingleOrDefault();
+                    m.Status = 0;
+                    dal.Update(m);
                 // A user was found and nothing was thrown
                 ret = true;
             }
@@ -282,30 +278,18 @@ namespace Snitz.Providers
 
             try
             {
-                using (var db = new MembershipDataDataContext())
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                MemberInfo m = dal.GetByName(username).SingleOrDefault();
+                dal.Delete(m);
+
+                IRoles roleDal = Factory<IRoles>.Create("Role");
+                roleDal.RemoveUsersFromRoles(new[] {username}, roleDal.GetRolesForUser(username));
+
+                    
+                if (deleteAllRelatedData)
                 {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
-
-                    db.Members.DeleteOnSubmit(m);
-
-                    if (deleteAllRelatedData)
-                    {
-                        List<MembersInRole> g = (from mg in db.MembersInRoles
-                                                  where mg.Member.Username == username
-                                                  select mg).ToList();
-
-                        List<MemberProfile> mc = (from mp in db.MemberProfiles
-                                                           where mp.Member.Username == username
-                                                           select mp).ToList();
-
-                        db.MembersInRoles.DeleteAllOnSubmit(g);
-                        db.MemberProfiles.DeleteAllOnSubmit(mc);
-                    }
-
-                    // Save changes in the database
-                    db.SubmitChanges();
+                    IMember membershipDal = Factory<IMember>.Create("Member");
+                    membershipDal.DeleteProfile(m);
                 }
                 // Nothing was thrown, so go ahead and return true
                 ret = true;
@@ -336,17 +320,14 @@ namespace Snitz.Providers
 
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(username).SingleOrDefault();
 
                     // We found a user by the username
                     if (m != null)
                     {
                         // A user cannot login if not approved or locked out
-                        if ((!m.IsApproved) || m.IsLockedOut)
+                        if ((!m.IsValid) || m.Status == 0)
                         {
                         }
                         else
@@ -357,10 +338,10 @@ namespace Snitz.Providers
                             // Check the given password and the one stored (and salt, if it exists)
                             if (CheckPassword(password, m.Password, ""))
                             {
-                                m.LastLoginDate = dt.ToString("yyyyMMddHHmmss"); 
-                                m.LastActivityDate = dt.ToString("yyyyMMddHHmmss");
+                                m.LastVisitDate = dt; 
+                                m.LastUpdateDate = dt;
                                 // Save changes
-                                db.SubmitChanges();
+                                dal.Update(m);
                                 // Reset past failures
                                 //ResetAuthenticationFailures(ref m, dt);
 
@@ -371,7 +352,6 @@ namespace Snitz.Providers
 
 
                     }
-                }
             }
             catch (Exception)
             {
@@ -397,18 +377,6 @@ namespace Snitz.Providers
             {
                 throw new ProviderException("Hashed passwords cannot be retrieved. They must be reset.");
             }
-            try
-            {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
-
-                    password = UnEncodePassword(m.Password);
-                }
-            }
-            catch { }
             return password;
         }
 
@@ -425,11 +393,8 @@ namespace Snitz.Providers
 
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(username).SingleOrDefault();
 
                     // We found a user by that name
                     if (m != null)
@@ -437,7 +402,7 @@ namespace Snitz.Providers
                         // Check if the returned password answer matches
                         if (_requiresQuestionAndAnswer)
                         {
-                            if (EncodePassword(answer) == m.PasswordAnswer)
+                            if (EncodePassword(answer) == m.ValidationKey)
                             {
                                 // Create a new password with the minimum number of characters
                                 pass = GeneratePassword(MinRequiredPasswordLength);
@@ -448,6 +413,7 @@ namespace Snitz.Providers
                                     //string salt = GenerateSalt();
                                     //pass = pass + salt;
                                     m.Password = SHA256Hash(pass);
+                                    dal.Update(m);
                                 }
 
                                 //m.Password = EncodePassword(pass);
@@ -456,7 +422,7 @@ namespace Snitz.Providers
                                 // Reset everyting
                                 //ResetAuthenticationFailures(ref m, DateTime.UtcNow);
 
-                                db.SubmitChanges();
+                                
                             }
                         }else
                         {
@@ -466,11 +432,10 @@ namespace Snitz.Providers
                                 //pass = pass + salt;
                                 pass = GeneratePassword(MinRequiredPasswordLength);
                                 m.Password = SHA256Hash(pass);
-                                db.SubmitChanges();
+                                dal.Update(m);
                             }
                         }
                     }
-                }
             }
             catch
             {
@@ -503,11 +468,8 @@ namespace Snitz.Providers
             bool ret;
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(username).SingleOrDefault();
 
                     if (PasswordFormat == MembershipPasswordFormat.Hashed)
                     {
@@ -516,14 +478,7 @@ namespace Snitz.Providers
                         m.Password = SHA256Hash(newPassword);
                     }
 
-                    //m.Password = EncodePassword(newPassword);
-                    //m.PasswordSalt = salt;
-
-                    // Reset everything
-                    //ResetAuthenticationFailures(ref m, DateTime.UtcNow);
-
-                    db.SubmitChanges();
-                }
+                    dal.Update(m);
                 ret = true;
             }
             catch
@@ -552,17 +507,13 @@ namespace Snitz.Providers
             bool ret;
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(username).SingleOrDefault();
 
-                    m.PasswordQuestion = newPasswordQuestion;
-                    m.PasswordAnswer = EncodePassword(newPasswordAnswer);
+                    m.PasswordChangeKey = newPasswordQuestion;
+                    m.ValidationKey = EncodePassword(newPasswordAnswer);
 
-                    db.SubmitChanges();
-                }
+                    dal.Update(m);
                 ret = true;
             }
             catch
@@ -586,12 +537,8 @@ namespace Snitz.Providers
 
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    username = (from members in db.Members
-                                where members.Email == email
-                                select members.Username).Single();
-                }
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                MemberInfo m = dal.GetByEmail(email);
             }
             catch
             {
@@ -607,20 +554,17 @@ namespace Snitz.Providers
             SnitzMembershipUser u = null;
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.UserId == Convert.ToInt32(providerUserKey)
-                                select members).Single();
-                    if(userIsOnline)
-                    {
-                        m.LastActivityDate = DateTime.UtcNow.ToForumDateStr();
-                        db.SubmitChanges();
-                    }
-                    if (m != null)
-                        u = GetUserFromMember(m);
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                MemberInfo m = dal.GetById(Convert.ToInt32(providerUserKey));
 
+                if (userIsOnline)
+                {
+
+                    m.LastUpdateDate = DateTime.UtcNow;
+                    dal.Update(m);
                 }
+                if (m != null)
+                    u = GetUserFromMember(m);
             }
             catch
             { }
@@ -637,19 +581,16 @@ namespace Snitz.Providers
 
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == username
-                                select members).Single();
+                    Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                    MemberInfo m = dal.GetByName(username).SingleOrDefault();
+
                     if (userIsOnline)
                     {
-                        m.LastActivityDate = DateTime.UtcNow.ToForumDateStr();
-                        db.SubmitChanges();
+                        m.LastUpdateDate = DateTime.UtcNow;
+                        dal.Update(m);
                     }
                     if (m != null)
                         u = GetUserFromMember(m);
-                }
             }
             catch
             { }
@@ -674,20 +615,16 @@ namespace Snitz.Providers
             {
                 int start = pageSize * pageIndex;
                 
-                using (var db = new MembershipDataDataContext())
+                totalRecords = GetMemberCount();
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                List<MemberInfo> mlist = new List<MemberInfo>(dal.GetMembers(pageIndex, pageSize, null, null));
+
+                foreach (MemberInfo m in mlist)
                 {
-                    totalRecords = (from members in db.Members
-                                    select members).Count();
-
-                    List<Member> mlist = (from members in db.Members orderby members.Posts descending 
-                                          select members).Skip(start).Take(pageSize).ToList();
-
-                    foreach (Member m in mlist)
-                    {
-                        SnitzMembershipUser mu = GetUserFromMember(m);
-                        users.Add(mu);
-                    }
+                    SnitzMembershipUser mu = GetUserFromMember(m);
+                    users.Add(mu);
                 }
+
             }
             catch
             {
@@ -705,12 +642,9 @@ namespace Snitz.Providers
             int c;
             try
             {
-                using (var db = new MembershipDataDataContext())
-                {
-                    c = (from members in db.Members
-                         where members.LastActivityDate.CompareTo(DateTime.UtcNow.Add(-UserIsOnlineTimeWindow).ToForumDateStr()) > 0
-                         select members).Count();
-                }
+                IMember membershipDal = Factory<IMember>.Create("Member");
+
+                c = membershipDal.OnlineUsers(UserIsOnlineTimeWindow).Count();
             }finally
             {
             }
@@ -733,25 +667,7 @@ namespace Snitz.Providers
             var users = new MembershipUserCollection();
             totalRecords = 0;
 
-            try
-            {
-                int start = pageSize * pageIndex;
 
-                using (var db = new MembershipDataDataContext())
-                {
-                    totalRecords = (from members in db.Members
-                                    where members.Email.Contains(emailToMatch)
-                                    select members).Count();
-
-                    List<Member> mlist = (from members in db.Members
-                                          where members.Email.Contains(emailToMatch)
-                                          select members).Skip(start).Take(pageSize).ToList();
-
-                    foreach (Member m in mlist)
-                        users.Add(GetUserFromMember(m));
-                }
-            }
-            catch { }
 
             return users;
         }
@@ -773,19 +689,11 @@ namespace Snitz.Providers
             try
             {
                 int start = pageSize * pageIndex;
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                List<MemberInfo> mlist = new List<MemberInfo>(dal.GetByName(usernameToMatch));
 
-                using (var db = new MembershipDataDataContext())
-                {
-                    totalRecords = (from members in db.Members
-                                    select members).Count();
-
-                    List<Member> mlist = (from members in db.Members
-                                          where members.Username.Contains(usernameToMatch)
-                                          select members).Skip(start).Take(pageSize).ToList();
-
-                    foreach (Member m in mlist)
+                foreach (MemberInfo m in mlist)
                         users.Add(GetUserFromMember(m));
-                }
             }
             catch { }
 
@@ -1021,25 +929,25 @@ namespace Snitz.Providers
         /// <summary>
         /// Converts a Member object into a MembershipUser object using its assigned settings
         /// </summary>
-        private SnitzMembershipUser GetUserFromMember(Member m)
+        private SnitzMembershipUser GetUserFromMember(MemberInfo m)
         {
             var smu = new SnitzMembershipUser(this.ProviderName,
                         m.Username,
-                        m.UserId,
+                        m.Id,
                         m.Email,
-                        m.PasswordQuestion,
+                        m.PasswordChangeKey,
                         "",
-                        m.IsApproved,
-                        m.IsLockedOut,
-                        m.CreatedDate.ToDateTime().Value,
-                        m.LastLoginDate.ToDateTime().Value,
-                        m.LastActivityDate.ToDateTime().Value,
+                        m.IsValid,
+                        m.Status == 0,
+                        m.MemberSince,
+                        m.LastVisitDate == null ? DateTime.MinValue : m.LastVisitDate.Value,
+                        m.LastUpdateDate == null ? DateTime.MinValue : m.LastUpdateDate.Value,
                         DateTime.MinValue,
                         DateTime.MinValue,
-                        m.LastPostDate.ToDateTime().Value,
+                        m.LastPostDate,
                         m.Title,
                         m.Country,
-                        m.Posts);
+                        m.PostCount);
             return smu;
         }
 
@@ -1049,46 +957,13 @@ namespace Snitz.Providers
 
         public static bool ActivateUser(string username)
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                Member m = (from members in db.Members
-                            where members.Username == username
-                            select members).Single();
-                
-                if (m != null) m.IsApproved = true;
-                db.SubmitChanges();
-                return true;
-            }
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.ActivateUser(username);
         }
         public static bool ChangeEmail(MembershipUser user, bool valid, string email)
         {
-            int result = 0;
-            if (!valid)
-            {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == user.UserName
-                                select members).Single();
-
-                    if (m != null) m.NewEmail = (ConfigurationManager.AppSettings["boolEncrypt"] == "1") ? Cryptos.CryptosUtilities.Encrypt(email) : email;
-                    db.SubmitChanges();
-
-                }                
-
-            }
-            else
-            {
-                using (var db = new MembershipDataDataContext())
-                {
-                    Member m = (from members in db.Members
-                                where members.Username == user.UserName
-                                select members).Single();
-                    if (m != null) m.Email = m.NewEmail;
-                    db.SubmitChanges();
-                }
-            }
-            return (result == 1);
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.ChangeEmail(user.UserName, valid, email);
         }
         public static string CreateValidationCode(MembershipUser user)
         {
@@ -1112,29 +987,21 @@ namespace Snitz.Providers
 
         public static int GetUnApprovedMemberCount()
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                return (from m in db.Members where !m.IsApproved select m).Count();
-            }
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.UnApprovedMemberCount();
         }
 
         public static int GetMemberCount()
         {
-            using (var db = new MembershipDataDataContext())
-            {
-                return db.Members.Count();
-            }
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.MemberCount();
+
         }
 
         public string[] GetOnlineUsers()
         {
-            using (var db = new MembershipDataDataContext())
-            {
-              var  c = (from members in db.Members
-                        where members.LastActivityDate.CompareTo(DateTime.UtcNow.Add(-UserIsOnlineTimeWindow).ToForumDateStr()) > 0
-                     select members.Username);
-                return c.ToArray();
-            }
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.OnlineUsers(UserIsOnlineTimeWindow);
         }
     }
 }

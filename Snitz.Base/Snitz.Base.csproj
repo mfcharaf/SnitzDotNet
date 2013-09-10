@@ -92,6 +92,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Snitz.BLL\Snitz.BusinessLayer.csproj">
+      <Project>{531B229D-52EF-458E-91C8-F7BC64FB38C3}</Project>
+      <Name>Snitz.BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
       <Project>{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}</Project>
       <Name>Snitz.Common</Name>
@@ -100,17 +104,17 @@
       <Project>{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}</Project>
       <Name>Snitz.Config</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snitz.DB.MSSQL\Snitz.DB.MSSQL.csproj">
-      <Project>{3d01fe24-b984-476d-a38a-614f0993ec88}</Project>
-      <Name>Snitz.DB.MSSQL</Name>
+    <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
+      <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
+      <Name>Snitz.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Membership\Snitz.Membership.csproj">
       <Project>{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}</Project>
       <Name>Snitz.Membership</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snitz.ThirdParty\Snitz.ThirdParty.csproj">
+    <ProjectReference Include="..\Snitz.ThirdParty\Snitz.Controls.Thirdparty.csproj">
       <Project>{21797d78-2887-460f-9e7e-5360a16c6dce}</Project>
-      <Name>Snitz.ThirdParty</Name>
+      <Name>Snitz.Controls.Thirdparty</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzCommon - Common
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Threading;
 using System.Web;
 
@@ -78,11 +99,11 @@ namespace SnitzCommon
         /// <param name="authenticated">Is the user logged in</param>
         /// <param name="timediff">Users time zone difference</param>
         /// <returns></returns>
-        public static string TimeAgoTag(DateTime date, bool authenticated, int timediff)
+        public static string TimeAgoTag(DateTime? date, bool authenticated, int timediff)
         {
-            if (date == DateTime.MinValue)
+            if (date == DateTime.MinValue || date == null)
                 return "";
-            string timeago = string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>", date.ToISO8601Date(authenticated, timediff), date.ToForumDateDisplay(" ", true, authenticated, timediff));
+            string timeago = string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>", date.Value.ToISO8601Date(authenticated, timediff), date.Value.ToForumDateDisplay(" ", true, authenticated, timediff));
             return timeago;
         }
 
@@ -119,26 +140,6 @@ namespace SnitzCommon
                 input = input.Replace(i.ToString(), arabicDigits[i]);
             }
             return input;
-            //StringBuilder sTranslated = new StringBuilder();
-            //char[] aChars = sIn.ToString().ToCharArray();
-
-            //foreach (char c in aChars)
-            //{
-            //    if (Char.IsDigit(c))
-            //    {
-            //        int idx = (int)Char.GetNumericValue(c);
-            //        if (idx >= 0)
-            //        {
-            //            sTranslated.Append(Thread.CurrentThread.CurrentCulture.NumberFormat.NativeDigits[idx]);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        sTranslated.Append(c);
-            //    }
-            //}
-            //return sTranslated.ToString();
-
         }
     }
 }

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## SnitzConfig - Config
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -129,17 +150,33 @@ namespace SnitzConfig
             get { return ConfigurationManager.AppSettings["defaultTheme"] ?? "BlueGray"; }
             set { UpdateConfig("defaultTheme", value); }
         }
-
+        [Description("User Theme")]
+        public static string UserTheme
+        {
+            get
+            {
+                HttpCookie themecookie = HttpContext.Current.Request.Cookies.Get("theme");
+                if (themecookie != null)
+                {
+                    return themecookie.Value;
+                }
+                return DefaultTheme;
+            }
+            set
+            {
+                HttpCookie themecookie = HttpContext.Current.Request.Cookies.Get("theme") ?? new HttpCookie("theme");
+                themecookie.Value = value;
+                themecookie.Path = "/";
+                themecookie.Expires = DateTime.Now.AddYears(1);
+                HttpContext.Current.Response.Cookies.Add(themecookie);
+            }
+        }
         [Description("imageDirectory")]
         public static string ImageDirectory
         {
             get
             {
-                string theme = DefaultTheme;
-                if (HttpContext.Current.Session != null)
-                    theme = HttpContext.Current.Session["_theme"] != null ? HttpContext.Current.Session["_theme"].ToString() : DefaultTheme;
-
-                return String.Format("~/App_Themes/{0}/Images/", theme);
+                return String.Format("~/App_Themes/{0}/Images/", UserTheme);
             }
         }
 
@@ -376,11 +413,11 @@ namespace SnitzConfig
         }
 
         [Description("intPagerType")]
-        public static PagerType PagerStyle
+        public static Enumerators.PagerType PagerStyle
         {
             get
             {
-                return (PagerType)Int32.Parse(ConfigurationManager.AppSettings["intPagerType"]);
+                return (Enumerators.PagerType)Int32.Parse(ConfigurationManager.AppSettings["intPagerType"]);
             }
             set
             {
@@ -421,7 +458,7 @@ namespace SnitzConfig
             get
             {
 
-                return ((ShowRankType == RankType.StarsOnly) || (ShowRankType == RankType.Both));
+                return ((ShowRankType == Enumerators.RankType.StarsOnly) || (ShowRankType == Enumerators.RankType.Both));
             }
         }
 
@@ -430,7 +467,7 @@ namespace SnitzConfig
         {
             get
             {
-                return ((ShowRankType == RankType.RankOnly) || (ShowRankType == RankType.Both));
+                return ((ShowRankType == Enumerators.RankType.RankOnly) || (ShowRankType == Enumerators.RankType.Both));
             }
         }
 
@@ -448,9 +485,9 @@ namespace SnitzConfig
         }
 
         [Description("intShowRank")]
-        public static RankType ShowRankType
+        public static Enumerators.RankType ShowRankType
         {
-            get { return ConfigurationManager.AppSettings["intShowRank"] == null ? RankType.Both : (RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRank"]); }
+            get { return ConfigurationManager.AppSettings["intShowRank"] == null ? Enumerators.RankType.Both : (Enumerators.RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRank"]); }
             set { UpdateConfig("intShowRank", ((int)value).ToString()); }
         }
 
@@ -775,9 +812,9 @@ namespace SnitzConfig
         }
 
         [Description("intSubscription")]
-        public static SubscriptionLevel SubscriptionLevel
+        public static Enumerators.SubscriptionLevel SubscriptionLevel
         {
-            get { return ConfigurationManager.AppSettings["intSubscription"] == null ? 0 : (SubscriptionLevel)Convert.ToInt32(ConfigurationManager.AppSettings["intSubscription"]); }
+            get { return ConfigurationManager.AppSettings["intSubscription"] == null ? 0 : (Enumerators.SubscriptionLevel)Convert.ToInt32(ConfigurationManager.AppSettings["intSubscription"]); }
             set { UpdateConfig("intSubscription", ((int)value).ToString()); }
         }
 
@@ -891,6 +928,12 @@ namespace SnitzConfig
             }
         }
 
+        [Description("intAdminUserId")]
+        public static int AdminUserId
+        {
+            get { return ConfigurationManager.AppSettings["intAdminUserId"] == null ? 1 : Convert.ToInt32(ConfigurationManager.AppSettings["intAdminUserId"]); }
+            set { UpdateConfig("intAdminUserId", value.ToString()); }
+        }
         #endregion
 
         #region Config Methods

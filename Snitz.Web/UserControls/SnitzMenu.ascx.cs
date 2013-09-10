@@ -1,7 +1,29 @@
+/*
+####################################################################################################################
+##
+## SnitzUI.UserControls - SnitzMenu.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using System;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
 using SnitzCommon;
 using Snitz.Providers;
 
@@ -94,23 +116,24 @@ public partial class SnitzMenu : UserControl
             // Create an object array consisting of the parameters to the method.
             // Make sure you get the types right or the underlying
             // InvokeMember will not find the right method
-            Object[] args = { ((PageBase)Page).Member.Id };
-
-            Object result = DynaInvoke.InvokeMethod(Context.Server.MapPath("~/bin/PrivateMessaging.Data.dll"), "Util", "GetPMCount", args);
+            //Object[] args = { ((PageBase)Page).Member.Id };
+            //Object result = DynaInvoke.InvokeMethod(Context.Server.MapPath("~/bin/PrivateMessaging.Data.dll"), "Util", "GetPMCount", args);
             //int unreadcount = PMData.Util.GetPMCount(((PageBase) Page).Member.Id);
-            int unreadcount = (int) result;
+
+            int unreadcount = PrivateMessages.GetUnreadPMCount(((PageBase)Page).Member.Id);
             if (unreadcount > 0)
             {
-                e.Item.Text += @" (" + unreadcount + @")";
+                e.Item.Text += string.Format(" ({0})", unreadcount);
             }
 
         }
         if (e.Item.NavigateUrl.Contains("active.aspx"))
         {
+            PageBase page = (PageBase) this.Page;
             MembershipUser mu = Membership.GetUser(false);
             if(mu != null)
             {
-                int unreadcount = SnitzData.PagedObjects.GetActiveTopicCount(mu.LastLoginDate.ToForumDateStr(),0,0);
+                int unreadcount = Topics.GetNewTopicCount(page.LastVisitDateTime.ToForumDateStr(), 0, 100);
                 if (unreadcount > 0)
                 {
                     e.Item.Text += @" (" + unreadcount + @")";

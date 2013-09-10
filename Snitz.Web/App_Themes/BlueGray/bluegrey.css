@@ -155,13 +155,18 @@ td.category, .row td.categorylink{background-color: #0FA1B8; height: 24px;paddin
 	padding:5px;
 	overflow:hidden;
 }
-
+.categorybuttons {
+    float: right;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 5px;
+}
 .statsPanelHeader{
 	width:100%;
 	color:#FFF;
 	height:30px;
 	font-weight:bold;
-	background-image:url(/images/cat-bar.gif);
+	background-image:url(images/cat-bar.gif);
 	vertical-align:text-bottom;
 	overflow:hidden;
 }
@@ -530,7 +535,10 @@ span.moderation{font-weight:bolder; color:Red;}
 	table-layout:fixed;
 	width:100%;
     border-top-style: none;
+    line-height: 1em;
 }
+.sideBox h3 { 	padding-top: 6px;
+	padding-bottom: 3px;}
 .forumtable {
 	background-color: white;
 	border: 1px solid #0FA1B8;
@@ -694,8 +702,15 @@ a.Snitzbutton:hover span{
 	/* For IE 5.5 - 7 */
 	/*filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');*/
  }
+.PostForm
+{
+    background-color:White;
+    margin: 0 auto;
+            
+}
  .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none;}
  .announceBox{text-align:center;width:80%;margin:auto;border:3px ridge #EFEFEF; background-color:#efefef;}
 .hidden{ display: none;visibility: hidden;}
+
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

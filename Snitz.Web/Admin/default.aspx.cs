@@ -7,6 +7,8 @@ public partial class AdminHome : PageBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        pageCSS.Attributes.Add("href", "css/" + Page.Theme + "/admin.css");
+        menuCSS.Attributes.Add("href", "css/" + Page.Theme + "/menu.css");
         string action = "";
 
         if (Request.Params["action"] != null)
@@ -49,18 +51,14 @@ public partial class AdminHome : PageBase
                     poll.PollId = Convert.ToInt32(Request.Params["pid"]);
                     CP1.Controls.Add(poll);
                     break;
-                //case "managecategories":
-                //    Admin_ManageCategories AdminManageCategories = (Admin_ManageCategories)Page.LoadControl("ManageCategories.ascx");
-                //    CP1.Controls.Add(AdminManageCategories);
-                //    break;
-                //case "manageforums" :
-                //    Admin_ManageForums AdminForums = (Admin_ManageForums)Page.LoadControl("ManageForums.ascx");
-                //    CP1.Controls.Add(AdminForums);
-                //    break;
-                //case "forumroles" :
-                //    Admin_ForumPermissions AdminForumRoles = (Admin_ForumPermissions)Page.LoadControl("ForumPermissions.ascx");
-                //    CP1.Controls.Add(AdminForumRoles);
-                //    break;));
+                case "managecategories":
+                    Admin_ManageCategories AdminManageCategories = (Admin_ManageCategories)Page.LoadControl("ManageCategories.ascx");
+                    CP1.Controls.Add(AdminManageCategories);
+                    break;
+                case "moderators":
+                    Admin_ManageModerators AdminManageModerators = (Admin_ManageModerators)Page.LoadControl("ManageModerators.ascx");
+                    CP1.Controls.Add(AdminManageModerators);
+                    break;
                 case "managesubscriptions":
                     var adminManageSubscriptions = (Admin_Subscriptions)Page.LoadControl("Subscriptions.ascx");
                     CP1.Controls.Add(adminManageSubscriptions);
@@ -78,10 +76,10 @@ public partial class AdminHome : PageBase
                     var adminUpdateCounts = (Admin_UpdateCounts)Page.LoadControl("UpdateCounts.ascx");
                     CP1.Controls.Add(adminUpdateCounts);
                     break;
-                //case "archive":
-                //    Admin_ArchiveForums AdminArchiveForums = (Admin_ArchiveForums)Page.LoadControl("ArchiveForums.ascx");
-                //    CP1.Controls.Add(AdminArchiveForums);
-                //    break;
+                case "archive":
+                    Admin_ArchiveForums adminArchiveForums = (Admin_ArchiveForums)Page.LoadControl("ArchiveForums.ascx");
+                    CP1.Controls.Add(adminArchiveForums);
+                    break;
                 //case "unarchive":
                 //    Admin_UnArchiveForums AdminUnArchiveForums = (Admin_UnArchiveForums)Page.LoadControl("UnArchiveForums.ascx");
                 //    CP1.Controls.Add(AdminUnArchiveForums);

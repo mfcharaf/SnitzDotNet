@@ -5,7 +5,7 @@
 	width:450px;
 	width:auto !important;
 	max-width:800px;
-	background-color:#ffffff;
+	background-color:#111;
 	padding:0px;
     max-height: 90%;
     line-height: 1em;
@@ -14,10 +14,10 @@
 .mainModalPopup fieldset{ font-size: inherit;}
 .mainModalBorder
 {
-	border-left: 1px solid #ECE9D8; 
-	border-right: 1px solid #716F64; 
-	border-top: 1px solid #ECE9D8;
-	border-bottom: 1px solid #716F64;
+	border-left: 1px solid #111; 
+	border-right: 1px solid #000; 
+	border-top: 1px solid #111;
+	border-bottom: 1px solid #000;
 }
 .mainModalInnerDiv
 {
@@ -26,10 +26,10 @@
 }
 .mainModalInnerBorder
 {
-	border-left: 1px solid #FFFFFF; 
-	border-right: 1px solid #ACA899; 
-	border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #ACA899;
+	border-left: 1px solid #111; 
+	border-right: 1px solid #000; 
+	border-top: 1px solid #111;
+    border-bottom: 1px solid #000;
 }
 .mainModalDraggablePanelDiv
 {
@@ -58,7 +58,7 @@
 .mainModalContent
 {
 
-	background-color:#FFFFFF;
+	background-color:#333;
 	margin:4px;
 }
 .modalBackground {

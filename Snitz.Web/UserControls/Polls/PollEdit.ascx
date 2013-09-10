@@ -1,42 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PollEdit.ascx.cs" Inherits="SnitzUI.Admin.EditPoll" %>
-    <asp:SqlDataSource ID="PollDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ForumConnectionString %>"
-        SelectCommand="SELECT * FROM [FORUM_Polls] WHERE ([PollID] = @PollID)" UpdateCommand="UPDATE FORUM_Polls SET DisplayText = @DisplayText,TopicId = @TopicId WHERE PollID = @PollID">
-        <SelectParameters>
-            <asp:QueryStringParameter Name="PollID" QueryStringField="pid" Type="Int32" />
-        </SelectParameters>
-        <UpdateParameters>
-            <asp:Parameter Name="DisplayText" />
-            <asp:Parameter Name="PollID" />
-            <asp:Parameter Name="TopicId" />
-        </UpdateParameters>
-    </asp:SqlDataSource>
+<%@ Register TagPrefix="cc1" Namespace="Snitz.ThirdParty" Assembly="Snitz.Controls" %>
 <asp:Panel ID="Panel1" runat="server" CssClass="pollForm">
   
-    <asp:SqlDataSource ID="PollAnswersDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ForumConnectionString %>"
-        DeleteCommand="DELETE FROM [FORUM_PollAnswers] WHERE [PollAnswerID] = @PollAnswerID"
-        InsertCommand="INSERT INTO [FORUM_PollAnswers] ([PollID], [DisplayText], [SortOrder]) VALUES (@PollID, @DisplayText, @SortOrder)"
-        SelectCommand="SELECT * FROM [FORUM_PollAnswers] WHERE ([PollID] = @PollID) ORDER BY [SortOrder]"
-        UpdateCommand="UPDATE [FORUM_PollAnswers] SET [DisplayText] = @DisplayText, [SortOrder] = @SortOrder WHERE [PollAnswerID] = @PollAnswerID">
-        <DeleteParameters>
-            <asp:Parameter Name="PollAnswerID" Type="Int32" />
-        </DeleteParameters>
-        <UpdateParameters>
-            <asp:Parameter Name="DisplayText" Type="String" />
-            <asp:Parameter Name="SortOrder" Type="Int32" />
-            <asp:Parameter Name="PollAnswerID" Type="Int32" />
-        </UpdateParameters>
-        <SelectParameters>
-            <asp:QueryStringParameter Name="PollID" QueryStringField="pid" Type="Int32" />
-        </SelectParameters>
-        <InsertParameters>
-            <asp:QueryStringParameter Name="PollID" QueryStringField="pid" Type="Int32" />
-            <asp:Parameter Name="DisplayText" Type="String" />
-            <asp:Parameter Name="SortOrder" Type="Int32" />
-        </InsertParameters>
-    </asp:SqlDataSource>
     <asp:Panel ID="Panel2" runat="server" GroupingText="Question">
-        <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="PollID"
-            DataSourceID="PollDataSource" DefaultMode="Edit" OnDataBound="PollDatabound"
+        <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="Id"
+            DefaultMode="Edit" OnDataBound="PollDatabound"
             EnableModelValidation="True">
             <Fields>
                 <asp:TemplateField HeaderText="Poll Question">
@@ -73,8 +41,9 @@
     </asp:Panel>
     <asp:Panel ID="Panel3" runat="server" GroupingText="Add Answer">
         <asp:DetailsView ID="PollAnswerInsert" runat="server" AutoGenerateRows="False" DataKeyNames="PollAnswerID"
-            DataSourceID="PollAnswersDataSource" DefaultMode="Insert"
-            EnableModelValidation="True">
+            DefaultMode="Insert"
+            EnableModelValidation="True" 
+            oniteminserting="PollAnswerInsert_ItemInserting">
             <Fields>
                 <asp:TemplateField HeaderText="Answer" SortExpression="DisplayText">
                     <InsertItemTemplate>
@@ -99,10 +68,12 @@
     </asp:Panel>
 
     <p>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="PollAnswerID"
-            DataSourceID="PollAnswersDataSource" CellPadding="4" CssClass="forumtable" 
+        <cc1:BulkEditGridViewEx ID="GridView1" runat="server" 
+            AutoGenerateColumns="False" DataKeyNames="Id"
+            CellPadding="4" CssClass="forumtable" 
             GridLines="None" EnableModelValidation="True" HorizontalAlign="Center" 
-            onrowediting="GridView1_RowEditing">
+            onrowediting="GridView1_RowEditing" onrowupdating="GridView1_RowUpdating" 
+            BulkEdit="False" EnableInsert="False" InsertRowCount="1" SaveButtonID="">
             <Columns>
                 <asp:TemplateField ShowHeader="False">
                     <EditItemTemplate>
@@ -121,31 +92,17 @@
                     </ItemTemplate>
                     <HeaderStyle Width="50px" />
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="Display Text" SortExpression="DisplayText" HeaderStyle-HorizontalAlign="Left">
-                    <EditItemTemplate>
-                        <asp:TextBox ID="EditPollAnswerDisplayText" runat="server" Columns="75" Text='<%# Bind("DisplayText") %>' ValidationGroup="EditAnswer"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="EditPollAnswerDisplayText"
-                            Display="Dynamic" ErrorMessage="You must enter text for the poll answer<br />"></asp:RequiredFieldValidator>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label1" runat="server" Text='<%# Bind("DisplayText") %>'></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Sort Order" SortExpression="SortOrder">
-                    <EditItemTemplate>
-                        <asp:TextBox ID="EditPollAnswerSortOrder" runat="server" Columns="3" Text='<%# Bind("SortOrder") %>' ValidationGroup="EditAnswer"></asp:TextBox>
-                        <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="EditPollAnswerSortOrder"
-                            Display="Dynamic" ErrorMessage="You must enter an integer greater than or equal to zero.<br />"
-                            Operator="GreaterThanEqual" Type="Integer" ValueToCompare="0"></asp:CompareValidator>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="EditPollAnswerSortOrder"
-                            Display="Dynamic" ErrorMessage="You must enter a sort order value." ValidationGroup="EditAnswer"></asp:RequiredFieldValidator>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label ID="Label2" runat="server" Text='<%# Bind("SortOrder") %>'></asp:Label>
-                    </ItemTemplate>
-                    <ItemStyle HorizontalAlign="Center" />
-                    <HeaderStyle Width="100px" />
-                </asp:TemplateField>
+                <asp:BoundField DataField="Id" ShowHeader="False" ReadOnly="True" >
+                <ControlStyle Width="25px" />
+                <HeaderStyle Width="30px" />
+                </asp:BoundField>
+                <asp:BoundField DataField="DisplayText" HeaderText="Display Text" 
+                    HeaderStyle-HorizontalAlign="Left">
+                <HeaderStyle HorizontalAlign="Left" Wrap="False" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Order" HeaderText="Sort Order" >
+                <HeaderStyle Width="100px" />
+                </asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#999999" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
@@ -154,7 +111,7 @@
             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
             <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-        </asp:GridView>
+        </cc1:BulkEditGridViewEx>
     </p>
 
 </asp:Panel> 

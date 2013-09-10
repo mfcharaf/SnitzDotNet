@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_ManageAvatars" Codebehind="ManageAvatars.ascx.cs" %>
 <asp:Label ID="Label2" runat="server" Text="Click on an Avatar to select it then use the delete button to remove the Avatar."></asp:Label><br />
-<asp:DataList ID="Avatars" runat="server" RepeatColumns="6" RepeatDirection="Horizontal" OnItemCommand="Avatars_ItemCommand" CssClass="forumtable">
+<asp:DataList ID="dlAvatars" runat="server" RepeatColumns="6" RepeatDirection="Horizontal" OnItemCommand="Avatars_ItemCommand" CssClass="forumtable">
     <ItemTemplate>
         <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl='<%# Eval("Path") %>' CommandName="select" CommandArgument='<%# Eval("Name") %>' />
         <br />

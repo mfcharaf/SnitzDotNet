@@ -9,65 +9,28 @@
 ##############################################################################################################
 --%>
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="true"
-    CodeBehind="Post.aspx.cs" Inherits="SnitzUI.PostPage" %>
+    CodeBehind="Post.aspx.cs" Inherits="SnitzUI.PostPage" validateRequest="false" %>
 <%@ Import Namespace="SnitzConfig" %>
 
 <%@ Register TagPrefix="uc1" Src="~/UserControls/popups/BrowseImage.ascx" TagName="imageBrowse" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Register src="~/UserControls/emoticons.ascx" tagname="emoticons" tagprefix="uc2" %>
 <asp:Content ID="head" ContentPlaceHolderID="CPHead" runat="server">
-    <link rel="stylesheet" type="text/css" runat="server" id="markitupCSS" href="" />
-
+    <link rel="stylesheet" type="text/css" runat="server" id="editorCSS" href="" />
     <style type="text/css">
-        .PostForm
-        {
-            background-color:White;
-            margin: 0 auto;
-            
-        }
-        
-        #postheader
-        {
-            padding: 5px 10px;
-        }
-        
-        .rcol
-        {
-            width: auto;
-            margin-left: 140px;
-            padding: 10px;
-        }
-        
-        #leftcol
-        {
-            float: left;
-            width: 120px;
-            padding: 10px;
-        }
-        #postfooter
-        {
-            clear: both;
-            padding: 5px 10px;
-            text-align: right;
-            height:10px;
-        }
-        #postfooter p
-        {
-            margin: 0;
-        }
-        * html #postfooter
-        {
-            height: 1px;
-        }
+        #postheader{padding: 5px 10px;}
+        .rcol{width: auto;margin-left: 140px;padding: 10px;}
+        #leftcol{float: left;width: 120px;padding: 10px;}
+        #postfooter{clear: both;padding: 5px 10px;text-align: right;height:10px;}
+        #postfooter p{margin: 0;}
+        * html #postfooter{height: 1px;}
         .mainModalContent{white-space:normal;}
         #emoticons img{border:0px;margin:2px;}
-
     </style>
 </asp:Content>
 <asp:Content ID="Classifieds" ContentPlaceHolderID="CPAd" runat="server"></asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPH1" runat="server">
     <script src="/scripts/editor.js" type="text/javascript"></script>
-
     <script type="text/javascript" src="/Scripts/postpage.js"></script>
     <script type="text/javascript">
         var messageId = '<%= Message.ClientID %>';
@@ -129,7 +92,7 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="CPM" runat="server">
     <div id="postForm" class="PostForm">
         <div id="postheader" class="category cattitle">
-        <asp:Label ID="postFormTitle" runat="server" Text="<%$ Resources:webresources,ttlPostMessage %>"></asp:Label>
+        <asp:Label ID="postFormTitle" runat="server" Text="<%$ Resources:webResources,ttlPostMessage %>"></asp:Label>
         <input type="hidden" id="caretP" />
         </div>
         <div id="leftcol">
@@ -140,7 +103,7 @@
             <asp:Panel ID="ForumDiv" runat="server">
                 <asp:Label ID="lblForum" runat="server" AssociatedControlID="ForumDropDown" Width="80px"
                     Text="<%$ Resources:webResources, lblForum %>"></asp:Label>
-                <asp:DropDownList ID="ForumDropDown" runat="server" DataTextField="Subject" DataValueField="Id"
+                <asp:DropDownList ID="ForumDropDown" runat="server" DataTextField="Value" DataValueField="Key"
                     EnableViewState="False">
                 </asp:DropDownList>
             </asp:Panel>

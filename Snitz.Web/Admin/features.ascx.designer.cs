@@ -606,6 +606,33 @@ public partial class Admin_features {
     protected global::SnitzUI.Admin.AdminRadioButton rblPageTimer;
     
     /// <summary>
+    /// lblAnnouncement control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblAnnouncement;
+    
+    /// <summary>
+    /// rblAnnouncement control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblAnnouncement;
+    
+    /// <summary>
+    /// tbxAnnouncement control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox tbxAnnouncement;
+    
+    /// <summary>
     /// lblEmailMode control.
     /// </summary>
     /// <remarks>

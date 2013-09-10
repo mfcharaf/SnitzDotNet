@@ -68,18 +68,21 @@
   <ItemGroup>
     <Compile Include="Captcha\CaptchaImage.cs" />
     <Compile Include="Captcha\CaptchaImageHandler.cs" />
+    <Compile Include="Controls\GridViewGroup.cs" />
+    <Compile Include="Controls\GridViewGroupList.cs" />
+    <Compile Include="Controls\GridViewHelper.cs" />
+    <Compile Include="Controls\GridViewSummary.cs" />
+    <Compile Include="Controls\GridViewSummaryList.cs" />
     <Compile Include="PopupForm Handler\Command.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="PopupForm Handler\ContentsResponse.cs" />
     <Compile Include="DynamicInvoke.cs" />
-    <Compile Include="Enumerators.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GalleryFunctions.cs" />
     <Compile Include="Controls\GroupedDropDownList.cs" />
     <Compile Include="Controls\HyperLinkControlAdapter.cs" />
     <Compile Include="PopupForm Handler\Pages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SnitzLink.cs" />
     <Compile Include="PopupForm Handler\TemplatePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

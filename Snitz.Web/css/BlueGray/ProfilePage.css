@@ -2,7 +2,11 @@
 #pProfile{width:100%;height:auto;}
 #pMain{padding-right: 5px;  z-index: 101; float: left; width: 49%;position: relative; height: auto}
 fieldset{font-size:0.85em;}
-
+fieldset li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
  
  /* default layout */
  div.ajax__tab_xp2{margin:auto;}
@@ -12,23 +16,23 @@ fieldset{font-size:0.85em;}
 .ajax__tab_default .ajax__tab_tab {overflow:hidden;text-align:center;display:-moz-inline-box;display:inline-block}
 
 /* xp theme */
-.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('../../App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
+.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('/App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
 }
-.ajax__tab_xp2 .ajax__tab_outer {padding-right:4px;padding-top:0px;background:url('../../App_Themes/BlueGray/images/tab/tabr.gif') no-repeat right 50%;
+.ajax__tab_xp2 .ajax__tab_outer {padding-right:4px;padding-top:0px;background:url('/App_Themes/BlueGray/images/tab/tabr.gif') no-repeat right 50%;
 height:21px;
 }
-.ajax__tab_xp2 .ajax__tab_inner {padding-left:3px;background:url('../../App_Themes/BlueGray/images/tab/tabl.gif') no-repeat;
+.ajax__tab_xp2 .ajax__tab_inner {padding-left:3px;background:url('/App_Themes/BlueGray/images/tab/tabl.gif') no-repeat;
 }
-.ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('../../App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('/App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-right.gif")%>) no-repeat right;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-left.gif")%>) no-repeat;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover.gif")%>) repeat-x;}
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('../../App_Themes/BlueGray/images/tab/tab-activer.gif') no-repeat right 50%;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/BlueGray/images/tab/tab-activer.gif') no-repeat right 50%;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('../../App_Themes/BlueGray/images/tab/tab-activel.gif') no-repeat;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/BlueGray/images/tab/tab-activel.gif') no-repeat;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('../../App_Themes/BlueGray/images/tab/tab-active.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('/App_Themes/BlueGray/images/tab/tab-active.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_disabled { color: #A0A0A0;}
 .ajax__tab_xp2 .ajax__tab_body {border:1px solid #999999;border-top:0;padding:8px;background-color:#ffffff;}

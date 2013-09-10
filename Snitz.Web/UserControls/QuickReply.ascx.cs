@@ -1,67 +1,51 @@
-#region copyright
-/*'
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2006-07 Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## All rights reserved.
-## http://forum.snitz.com
+/*
+####################################################################################################################
 ##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## SnitzUI.UserControls - QuickReply.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.IO;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using AjaxControlToolkit;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzData;
+
 
 public partial class QuickReply : UserControl
 {
     private PageBase page;
-    public Topic thisTopic { get; set; }
+    public TopicInfo thisTopic { get; set; }
 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
 
         page = (PageBase)this.Page;
-        cbxSig.Checked = (page.Member.UseSig == 1);
+        cbxSig.Checked = page.Member.UseSignature;
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        Visible = (Roles.IsUserInRole("Member") && thisTopic.Status==Enumerators.PostStatus.Open) || page.IsAdministrator;
+        Visible = (Roles.IsUserInRole("Member") && thisTopic.Status==(int)Enumerators.PostStatus.Open) || page.IsAdministrator;
         AsyncFileUpload1.UploaderStyle = AsyncFileUpload.UploaderStyleEnum.Modern;
         AsyncFileUpload1.UploadedComplete += AsyncFileUpload1UploadedComplete;
         AsyncFileUpload1.UploadedFileError += AsyncFileUpload1UploadedFileError;
@@ -92,19 +76,20 @@ public partial class QuickReply : UserControl
         if ((MemberIP == "") || (MemberIP == "unknown") || (MemberIP == null))
             MemberIP = Request.ServerVariables["REMOTE_ADDR"];
         
-        Reply reply = new Reply
+        ReplyInfo reply = new ReplyInfo
                           {
                               TopicId = thisTopic.Id,
                               ForumId = thisTopic.ForumId,
                               CatId = thisTopic.CatId,
                               UseSignatures = cbxSig.Checked,
                               Message = qrMessage.Text,
-                              PostersIP = MemberIP,
+                              PosterIp = MemberIP,
                               Status = thisTopic.Status,
+                              AuthorId = page.Member.Id,
                               Date = newdate
                           };
 
-        int replyid = Util.AddReply(reply, page.Member);
+        int replyid = Replies.AddReply(reply);
         if (Session["LastPostMade"] == null)
         {
             Session.Add("LastPostMade", newdate.ToForumDateStr());
@@ -122,7 +107,7 @@ public partial class QuickReply : UserControl
 
     private void AsyncFileUpload1UploadedFileError(object sender, AsyncFileUploadEventArgs e)
     {
-        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';", true);
+        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';});", true);
     }
 
     private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
@@ -151,14 +136,14 @@ public partial class QuickReply : UserControl
             string thumbPath = Page.MapPath(String.Format("~/Gallery/{0}/thumbnail/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")));
             if (File.Exists(savePath))
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
                 AsyncFileUpload1.FailedValidation = true;
                 return;
             }
 
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
             if (e.FileName != null)
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';});", true);
 
             if (!Directory.Exists(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name))))
             {

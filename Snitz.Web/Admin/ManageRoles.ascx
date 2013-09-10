@@ -197,11 +197,11 @@
             <td colspan="2">
                 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetAllRolesFull"
                     TypeName="Snitz.Providers.SnitzRoleProvider"></asp:ObjectDataSource>
-                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="RoleId"
+                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="Id"
                     CssClass="TopicsTable" Width="100%" AllowPaging="True" EnableViewState="False"
                     OnRowCommand="GridView1_RowCommand" DataSourceID="ObjectDataSource1" EnableModelValidation="True">
                     <Columns>
-                        <asp:BoundField DataField="RoleId" HeaderText="Role ID" HeaderStyle-HorizontalAlign="Center"
+                        <asp:BoundField DataField="Id" HeaderText="Role ID" HeaderStyle-HorizontalAlign="Center"
                             ShowHeader="true">
                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                         </asp:BoundField>
@@ -216,7 +216,7 @@
                         <asp:TemplateField>
                             <ItemTemplate>
                                 <asp:ImageButton ID="editBtn" ImageUrl="~/Admin/images/Write.png" runat="server"
-                                    AlternateText="Edit Role" CommandName="EditClick" CommandArgument='<%#Eval("RoleId") %>'
+                                    AlternateText="Edit Role" CommandName="EditClick" CommandArgument='<%#Eval("Id") %>'
                                     ImageAlign="AbsMiddle" CausesValidation="false" />
                             </ItemTemplate>
                             <ItemStyle Width="20px" />

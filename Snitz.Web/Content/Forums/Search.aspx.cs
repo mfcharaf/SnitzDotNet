@@ -1,51 +1,34 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.Forums - Search.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzData;
+
 using Image = System.Web.UI.WebControls.Image;
 
 namespace SnitzUI
@@ -75,21 +58,22 @@ namespace SnitzUI
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            CurrentPage = 0;
             if (Session["CurrentProfile"] != null)
                 Session.Remove("CurrentProfile");
             Page.Title = string.Format(webResources.ttlSearchPage, Config.ForumTitle);
             if (webResources.TextDirection == "rtl")
-                pageCSS.Attributes.Add("href","/css/" + Page.StyleSheetTheme + "/searchrtl.css");
+                pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/searchrtl.css");
             else
-                pageCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/search.css");
+                pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/search.css");
             tbxDateCalendarExtender.Format = Config.DateFormat;
-            ddlForum.DataSource = SnitzCachedLists.GetForumListItems();
+            ddlForum.DataSource = SnitzCachedLists.GetCachedForumList();
             ddlForum.DataTextField = "Name";
             ddlForum.DataValueField = "Id";
             ddlForum.DataBind();
             //Grid pager setup
             _replyPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
-            _replyPager.PagerStyle = PagerType.Lnkbutton;
+            _replyPager.PagerStyle = Enumerators.PagerType.Lnkbutton;
             _replyPager.UserControlLinkClick += PagerLinkClick;
 
         }
@@ -131,19 +115,20 @@ namespace SnitzUI
             }
             if(HttpContext.Current.Items["Subject"] != null)
             {
-                int rowcount = 0;
                 CurrentPage = 0;
-                var searchResults = Util.FindTopics(HttpContext.Current.Items["Subject"].ToString());
-                RowCount = rowcount;
+                var searchResults = Topics.GetTopicsBySubject(HttpContext.Current.Items["Subject"].ToString());
+                RowCount = 0;
 
                 SearchResults.DataSource = searchResults;
-                //GroupByCategoryForum();
                 SearchResults.PageSize = 10;
                 SearchResults.DataBind();
                 if (SearchResults.BottomPagerRow != null)
                     SearchResults.BottomPagerRow.Visible = true;
                 SearchResults.Visible = true;
             }
+            //GridViewHelper helper = new GridViewHelper(this.SearchResults);
+            //helper.RegisterGroup("ForumSubject", true, true);
+            //helper.ApplyGroupSort();
         }
 
         protected void SearchForums(object sender, EventArgs eventArgs)
@@ -153,7 +138,9 @@ namespace SnitzUI
 
         private void FindPosts()
         {
-            var sparams = new SearchParams
+            string orderby = ddlSortBy.SelectedValue;
+
+            var sparams = new SearchParamInfo
                                        {
                                            ForumId = Convert.ToInt32(ddlForum.SelectedValue),
                                            Match = ddlMatch.SelectedValue,
@@ -173,7 +160,7 @@ namespace SnitzUI
             }
             int rowcount = 0;
             CurrentPage = _replyPager.CurrentIndex;
-            var searchResults = SnitzData.Search.FindTopics(sparams, CurrentPage, ref rowcount);
+            var searchResults = Topics.FindTopics(sparams, CurrentPage, orderby, ref rowcount);
             RowCount = rowcount;
 
             SearchResults.DataSource = searchResults;
@@ -232,17 +219,17 @@ namespace SnitzUI
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var topic = (Topic)e.Row.DataItem;
+                var topic = (TopicInfo)e.Row.DataItem;
                 var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
 
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
-                    popuplink.Text = topic.LastPostAuthor != null ? Regex.Replace(topic.LastPostAuthor.ProfilePopup, @"\[!(.*)!]", title) : "";
+                    popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
                 int replyCount = topic.ReplyCount;
 
-                e.Row.Cells[0].Controls.Add(GetRecentTopicIcon(topic.Status, replyCount));
+                e.Row.Cells[0].Controls.Add(GetRecentTopicIcon((Enumerators.PostStatus)topic.Status, replyCount));
 
                 if (HttpContext.Current.User.Identity.Name == "")
                 {
@@ -288,6 +275,11 @@ namespace SnitzUI
                     CurrentPage = _replyPager.PageCount - 1;
             }
             _replyPager.CurrentIndex = CurrentPage;
+        }
+
+        protected void SearchResults_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            SearchResults.DataBind();
         }
     }
 }

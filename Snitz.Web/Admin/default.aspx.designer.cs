@@ -21,6 +21,15 @@ public partial class AdminHome {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl pageCSS;
     
     /// <summary>
+    /// menuCSS control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl menuCSS;
+    
+    /// <summary>
     /// Menu control.
     /// </summary>
     /// <remarks>

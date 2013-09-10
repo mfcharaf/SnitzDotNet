@@ -30,15 +30,6 @@ public partial class MembersPage {
     protected global::System.Web.UI.UpdateProgress UpdateProgress1;
     
     /// <summary>
-    /// UpdateProgress1_AlwaysVisibleControlExtender control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::AjaxControlToolkit.AlwaysVisibleControlExtender UpdateProgress1_AlwaysVisibleControlExtender;
-    
-    /// <summary>
     /// upd control.
     /// </summary>
     /// <remarks>

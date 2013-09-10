@@ -13,13 +13,13 @@ namespace SnitzUI {
     public partial class ProfilePage {
         
         /// <summary>
-        /// markitupCSS control.
+        /// editorCSS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl markitupCSS;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editorCSS;
         
         /// <summary>
         /// pageCSS control.

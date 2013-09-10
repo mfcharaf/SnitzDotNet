@@ -1,56 +1,40 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.Forums - active.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Resources;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
-using SnitzData;
-using Image = System.Web.UI.WebControls.Image;
 
-    public partial class ActiveTopicPage : PageBase
+using Image = System.Web.UI.WebControls.Image;
+using Polls = Resources.Polls;
+
+public partial class ActiveTopicPage : PageBase
     {
         bool _bGetSelectCount;
         private GridPager _replyPager;
@@ -170,7 +154,7 @@ using Image = System.Web.UI.WebControls.Image;
             }
             else if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var topic = (Topic)e.Row.DataItem;
+                var topic = (TopicInfo)e.Row.DataItem;
                 var lockIcon = e.Row.Cells[6].FindControl("TopicLock") as ImageButton;
                 var unlockIcon = e.Row.Cells[6].FindControl("TopicUnLock") as ImageButton;
                 var delIcon = e.Row.Cells[6].FindControl("TopicDelete") as ImageButton;
@@ -185,15 +169,15 @@ using Image = System.Web.UI.WebControls.Image;
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
-                    popuplink.Text = topic.LastPostAuthor != null ? Regex.Replace(topic.LastPostAuthor.ProfilePopup, @"\[!(.*)!]", title) : "";
+                    popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
 
                 int replyCount = topic.ReplyCount;
                 int topicId = topic.Id;
                 int forumId = topic.ForumId;
                 int catId = topic.CatId;
-                string authorName = topic.Author.Name;
-                bool inModeratedList = new SnitzRoleProvider().IsUserForumModerator(_currentUser, forumId);
+                string authorName = topic.AuthorName;
+                bool inModeratedList = Moderators.IsUserForumModerator(_currentUser, forumId);
 
                 if (lockIcon != null)
                 {
@@ -216,6 +200,10 @@ using Image = System.Web.UI.WebControls.Image;
                 if (subscribe != null)
                 {
                     subscribe.Visible = IsAuthenticated;
+                    if (IsAuthenticated)
+                    {
+                        topic.Forum = Forums.GetForum(topic.ForumId);
+                    }
                     subscribe.Visible = subscribe.Visible && topic.AllowSubscriptions;
                     subscribe.OnClientClick =
                         "mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to be notified when someone posts a reply?'); " +
@@ -227,7 +215,7 @@ using Image = System.Web.UI.WebControls.Image;
                     unsubscribe.Visible = false;
                     if (subscribe != null && subscribe.Visible)
                     {
-                        if (Member.IsSubscribedToTopic(topic.Id))
+                        if (Members.IsSubscribedToTopic(topic.Id,Member.Id))
                         {
                             subscribe.Visible = false;
                             unsubscribe.Visible = true;
@@ -244,11 +232,11 @@ using Image = System.Web.UI.WebControls.Image;
                 if (newIcon != null) newIcon.Visible = false;
                 if (lockIcon != null)
                 {
-                    lockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status != Enumerators.PostStatus.Closed));
+                    lockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status != (int)Enumerators.PostStatus.Closed));
                 }
                 if (unlockIcon != null)
                 {
-                    unlockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status == Enumerators.PostStatus.Closed));
+                    unlockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status == (int)Enumerators.PostStatus.Closed));
                     unlockIcon.OnClientClick =
                         "mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the topic?'); " +
                         "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'UnLock Topic ?'},'confirmHandlers.BeginRecieve'); " +
@@ -257,7 +245,7 @@ using Image = System.Web.UI.WebControls.Image;
 
                 if (replyIcon != null)
                     replyIcon.NavigateUrl = string.Format("/Content/Forums/post.aspx?method=reply&TOPIC={0}&FORUM={1}&CAT={2}", topicId, forumId, catId);
-                if (topic.Status == Enumerators.PostStatus.Closed || !IsAuthenticated)
+                if (topic.Status == (int)Enumerators.PostStatus.Closed || !IsAuthenticated)
                     if (replyIcon != null) replyIcon.Visible = false;
                 if (IsAdministrator || inModeratedList)
                     if (replyIcon != null) replyIcon.Visible = true;
@@ -443,7 +431,7 @@ using Image = System.Web.UI.WebControls.Image;
                 
                 if (lastCat.CompareTo(currentCat) != 0)
                 {
-                    Category category = Util.GetCategory(Convert.ToInt32(currentCat));
+                    CategoryInfo category = Categories.GetCategory(Convert.ToInt32(currentCat));
                     string catLink = String.Format("<a href=\"/default.aspx?CAT={0}\" title=\"{1}\">{1}</a>", category.Id,
                                                    category.Name);
                     
@@ -467,7 +455,7 @@ using Image = System.Web.UI.WebControls.Image;
                 }
                 if (lastForum.CompareTo(currentForum) != 0)
                 {
-                    Forum forum = Util.GetForum(Convert.ToInt32(currentForum));
+                    ForumInfo forum = Forums.GetForum(Convert.ToInt32(currentForum));
                     string forumLink = String.Format("<a class=\"bbcode\" href=\"/Content/Forums/forum.aspx?FORUM={0}\" title=\"{1}\">{2}</a>", forum.Id,
                                                     forum.Subject, forum.Subject);
                     // there's been a change in value in the forum column                
@@ -513,11 +501,11 @@ using Image = System.Web.UI.WebControls.Image;
             }
         }
 
-        private Image GetRecentTopicIcon(Topic topic, int tReplies)
+        private Image GetRecentTopicIcon(TopicInfo topic, int tReplies)
         {
             var image = new Image { ID = "postIcon", EnableViewState = false};
 
-            switch (topic.Status)
+            switch ((Enumerators.PostStatus)topic.Status)
             {
                 case Enumerators.PostStatus.Closed:
                     image.SkinID = "FolderNewLocked";
@@ -537,7 +525,7 @@ using Image = System.Web.UI.WebControls.Image;
                         image.SkinID = "FolderNewHot";
                     break;
             }
-            if(topic.PollID > 0)
+            if(topic.PollId > 0)
             {
                 image.SkinID = "Poll";
                 image.ToolTip = Polls.lblPoll;
@@ -604,21 +592,21 @@ using Image = System.Web.UI.WebControls.Image;
         protected void DeleteTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.DeleteTopic(Convert.ToInt32(btn.CommandArgument));
+            Topics.Delete(Convert.ToInt32(btn.CommandArgument));
             Response.Redirect(Request.RawUrl);
         }
 
         protected void LockTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Closed);
+            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Closed);
             Response.Redirect(Request.RawUrl);
         }
 
         protected void UnLockTopic(object sender, ImageClickEventArgs e)
         {
             var btn = (ImageButton)sender;
-            Util.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), Enumerators.PostStatus.Open);
+            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Open);
             Response.Redirect(Request.RawUrl);
         }
 
@@ -629,10 +617,10 @@ using Image = System.Web.UI.WebControls.Image;
             switch (btn.CommandName)
             {
                 case "sub":
-                    Util.AddTopicSubscription(Member.Id, topicid);
+                    Subscriptions.AddTopicSubscription(Member.Id, topicid);
                     break;
                 case "unsub":
-                    Util.RemoveTopicSubscription(Member.Id, topicid);
+                    Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
                     break;
             }
 

@@ -1,45 +1,30 @@
-/*'
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2006-07 Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## All rights reserved.
-## http://forum.snitz.com
+/*
+####################################################################################################################
 ##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## SnitzUI.UserControls - MemberSearch.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
+
 using System;
 using System.Text;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
 using SnitzCommon;
 using SnitzConfig;
 
@@ -51,6 +36,8 @@ public partial class User_Controls_MemberSearch : UserControl
         CreateHyperlinks();
     }
     public event EventHandler InitialLinkClick;
+    public event EventHandler SearchClick;
+
     private void CreateHyperlinks()
     {
         PageBase page = (PageBase) Page;
@@ -100,13 +87,13 @@ public partial class User_Controls_MemberSearch : UserControl
 
         if (cbxCountry.Checked)
         {
-            SearchFilter.Append(String.Format("Country.Contains(\"{0}\" )", tbxSearchFor.Text));
+            SearchFilter.Append(String.Format("Country,{0}", tbxSearchFor.Text));
         }
         if (cbxEmail.Checked)
         {
             SearchFilter.Append(Config.Encrypt
-                                    ? String.Format("Email.Contains(\"{0}\")", SnitzData.Util.Encrypt(tbxSearchFor.Text))
-                                    : String.Format("Email.Contains(\"{0}\")", tbxSearchFor.Text));
+                                    ? String.Format("Email,{0}", Admin.Encrypt(tbxSearchFor.Text))
+                                    : String.Format("Email,{0}", tbxSearchFor.Text));
         }
         else
         {
@@ -114,24 +101,27 @@ public partial class User_Controls_MemberSearch : UserControl
             if (cbxUserName.Checked)
             {
                 if (cbxCountry.Checked)
-                    SearchFilter.Append(" or ");
-                SearchFilter.Append(String.Format("Name.Contains(\"{0}\")", tbxSearchFor.Text));
+                    SearchFilter.Append(" OR ");
+                SearchFilter.Append(String.Format("Name,{0}", tbxSearchFor.Text));
             }
             if (cbxFirstName.Checked)
             {
                 if (cbxUserName.Checked || cbxCountry.Checked)
-                    SearchFilter.Append(" or ");
-                SearchFilter.Append(String.Format("FirstName.Contains(\"{0}\")", tbxSearchFor.Text));
+                    SearchFilter.Append(" OR ");
+                SearchFilter.Append(String.Format("FirstName,{0}", tbxSearchFor.Text));
             }
             if (cbxLastName.Checked)
             {
                 if (cbxUserName.Checked || cbxFirstName.Checked || cbxCountry.Checked)
-                    SearchFilter.Append(" or ");
-                SearchFilter.Append(String.Format("LastName.Contains(\"{0}\")", tbxSearchFor.Text));
+                    SearchFilter.Append(" OR ");
+                SearchFilter.Append(String.Format("LastName,{0}", tbxSearchFor.Text));
             }
         }
 
         Session.Add("SearchFilter", SearchFilter.ToString());
-
+        if (this.SearchClick != null)
+        {
+            this.SearchClick(sender, e);
+        }
     }
 }

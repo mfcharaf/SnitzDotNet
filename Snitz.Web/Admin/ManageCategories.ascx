@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ManageCategories.ascx.cs" Inherits="Admin_ManageCategories" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_ManageCategories" Codebehind="ManageCategories.ascx.cs" %>
 
 <asp:Panel ID="Panel2" runat="server" CssClass="clearfix">
         <table border="0" cellpadding="2" cellspacing="0" style="width: 100%;" class="forumtable white">
@@ -24,9 +24,14 @@
                     </asp:DropDownList></td>
             </tr> 
             <tr>
+                <td style="width: 35%;text-align:right" valign="top">
+                    <asp:Label runat="server" ID="nameLbl" Text="Category Name:&nbsp;"></asp:Label></td><td style="text-align:left">
+                    <asp:TextBox ID="txtName" runat="server" Rows="1" Width="95%"></asp:TextBox></td>
+            </tr> 
+            <tr>
                 <td style="width: 35%;text-align:right;">
                 <asp:Label runat="server" ID="modLable" Text="Category Moderation Level:&nbsp;"></asp:Label></td><td style="text-align:left">
-                <asp:DropDownList runat="server" ID="catMod" Enabled="False">
+                <asp:DropDownList runat="server" ID="catMod" Enabled="true">
                 <asp:ListItem  Value="0" Selected="True" Text="Moderation not Allowed for this Category: "></asp:ListItem>
                 <asp:ListItem Value="1" Text="Moderation Allowed for this Category: "></asp:ListItem>
                 </asp:DropDownList></td>
@@ -34,18 +39,13 @@
              <tr>
                 <td style="width: 35%;text-align:right;">
                 <asp:Label runat="server" ID="subLabel" Text="Category Subscription Level:&nbsp;"></asp:Label></td><td style="text-align:left">
-                <asp:DropDownList runat="server" ID="catSub" Enabled="False">
+                <asp:DropDownList runat="server" ID="catSub" Enabled="True">
                 <asp:ListItem  Value="0" Selected="True" Text="No Subscriptions Allowed"></asp:ListItem>
                 <asp:ListItem Value="1" Text="Category Subscriptions Allowed"></asp:ListItem>
                 <asp:ListItem Value="2" Text="Forum Subscriptions Allowed"></asp:ListItem>
                 <asp:ListItem Value="3" Text="Topic Subscriptions Allowed"></asp:ListItem>
                 </asp:DropDownList></td>
-            </tr>
-            <tr>
-                <td style="width: 35%;text-align:right" valign="top">
-                    <asp:Label runat="server" ID="nameLbl" Text="Category Name:&nbsp;"></asp:Label></td><td style="text-align:left">
-                    <asp:TextBox ID="txtName" runat="server" Rows="1" Width="95%"></asp:TextBox></td>
-            </tr>                    
+            </tr>                   
             <tr>
                 <td style="width: 35%;text-align:right" valign="top">
                     <asp:Label runat="server" ID="orderLbl" Text="Category Order:&nbsp;"></asp:Label></td><td style="text-align:left">
@@ -84,36 +84,39 @@
             <tr>
                 <td colspan="2">
 
-                    <asp:GridView ID="GridView1"  runat="server" AutoGenerateColumns="False" DataKeyNames="CAT_ID" DataSourceID="dsCats" CssClass="TopicsTable"  Width="100%" AllowPaging="True" EnableViewState="False" OnRowCommand="GridView1_RowCommand">
+                    <asp:GridView ID="GridView1" ShowFooter="True"  runat="server" AutoGenerateColumns="False" DataKeyNames="Id" DataSourceID="dsCats" CssClass="TopicsTable"  Width="100%" AllowPaging="True" EnableViewState="False" OnRowCommand="GridView1_RowCommand">
                         <Columns>
-                             <asp:BoundField DataField="CAT_NAME" HeaderText="Name">
+                             <asp:BoundField DataField="Name" HeaderText="Name">
                                 <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                                  <HeaderStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField DataField="CAT_ORDER" HeaderText="Order">
+                            <asp:BoundField DataField="Order" HeaderText="Order">
                                 <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                                 <HeaderStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                             <asp:TemplateField>
                             <ItemTemplate>
-                            <asp:ImageButton ID="editBtn" ImageUrl="~/images/icon_pencil.gif" runat="server" AlternateText="Edit Category" CommandName="EditClick"
-                            CommandArgument='<%#Eval("CAT_ID") %>' ImageAlign="AbsMiddle" />
+                            <asp:ImageButton ID="editBtn" SkinID="Edit" runat="server" AlternateText="Edit Category" CommandName="EditClick"
+                            CommandArgument='<%#Eval("Id") %>' ImageAlign="AbsMiddle" />
                             </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                              <ItemTemplate>
-                              <asp:ImageButton  ID="lockBtn" ImageUrl="~/images/icon_lock.gif" runat="server" AlternateText="Lock Category" CommandName="LockClick"
-                               CommandArgument='<%#Eval("CAT_ID") %>'  Visible='<%# (Eval("CAT_STATUS").ToString() == "1") %>' ImageAlign="AbsMiddle" /> 
+                              <asp:ImageButton  ID="lockBtn" SkinID="LockTopic" runat="server" AlternateText="Lock Category" CommandName="LockClick"
+                               CommandArgument='<%#Eval("Id") %>'  Visible='<%# (Eval("Status").ToString() == "1") %>' ImageAlign="AbsMiddle" /> 
                               
-                            <asp:ImageButton  ID="unlockBtn" ImageUrl="~/images/icon_unlock.gif" runat="server" AlternateText="Unlock Category" CommandName="UnlockClick"
-                            CommandArgument='<%#Eval("CAT_ID") %>'  Visible='<%# (Eval("CAT_STATUS").ToString() != "1") %>' ImageAlign="AbsMiddle" />
+                            <asp:ImageButton  ID="unlockBtn" SkinID="UnLockTopic" runat="server" AlternateText="Unlock Category" CommandName="UnlockClick"
+                            CommandArgument='<%#Eval("Id") %>'  Visible='<%# (Eval("Status").ToString() != "1") %>' ImageAlign="AbsMiddle" />
                             </ItemTemplate>
                             </asp:TemplateField>
                                    <asp:TemplateField>
                             <ItemTemplate>
-                            <asp:ImageButton ID="delBtn" ImageUrl="~/images/icon_trashcan.gif" runat="server" AlternateText="Delete Category" CommandName="DeleteClick"
-                            CommandArgument='<%#Eval("CAT_ID") %>' ImageAlign=AbsMiddle />
+                            <asp:ImageButton ID="delBtn" SkinID="DeleteMessage" runat="server" AlternateText="Delete Category" CommandName="DeleteClick"
+                            CommandArgument='<%#Eval("Id") %>' ImageAlign=AbsMiddle />
                             </ItemTemplate>
+                                                            <FooterTemplate>
+                         <asp:Button id="btnButton1" runat="server" Text="Add Category" CommandName="NewClick" CommandArgument="id" />
+                     </FooterTemplate>
                             </asp:TemplateField>
                             </Columns>
                         <HeaderStyle CssClass="category" />
@@ -124,7 +127,7 @@
                         <PagerSettings Mode="NumericFirstLast" />
                         <PagerStyle CssClass="NoBorder" />
                     </asp:GridView>
-                    <asp:ObjectDataSource ID="dsCats" runat="server"  SelectMethod="GetAllCatsInfoForCatManagement" TypeName="Snitz.DataBaseLayer.ForumDatasource">
+                    <asp:ObjectDataSource ID="dsCats" runat="server"  SelectMethod="GetCategories" TypeName="Snitz.BLL.Categories">
                     </asp:ObjectDataSource>
 
                 </td>

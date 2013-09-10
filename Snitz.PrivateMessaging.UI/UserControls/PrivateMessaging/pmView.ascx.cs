@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## PrivateMessaging.UserControls.PrivateMessaging - pmView.ascx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,9 +28,9 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
-using PrivateMessaging.Data;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzCommon;
-using SnitzData;
 
 namespace PrivateMessaging
 {
@@ -40,7 +61,7 @@ namespace PrivateMessaging
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
-        int totalmembers = Data.Util.GetMemberCount(tbxFind.Text);
+        int totalmembers = PrivateMessages.GetMemberCount(tbxFind.Text);
         _pages = Common.CalculateNumberOfPages(totalmembers, 15);
         for (int i = 1; i < _pages; i++)
         {
@@ -60,6 +81,7 @@ namespace PrivateMessaging
 
     protected void Page_Load(object sender, EventArgs e)
     {
+ 
         ClientScriptManager cs = this.Page.ClientScript;
         const string csname1 = "chkBoxScript";
         Type cstype = this.GetType();
@@ -92,7 +114,7 @@ namespace PrivateMessaging
         var currentUser = Membership.GetUser(username);
         if (currentUser == null)
             throw new SecurityException("Access Denied");
-        var profile = Data.Util.GetPreferences((int)currentUser.ProviderUserKey);
+        var profile = PrivateMessages.GetPreferences(currentUser.UserName);
         _layout = profile == null ? "double" : profile.PMLayout;
 
         if (String.IsNullOrEmpty(_layout))
@@ -121,9 +143,9 @@ namespace PrivateMessaging
 
     private void BindMemberList(string searchfor)
     {
-        Members.DataSource = Data.Util.GetMemberListPaged(CurrentPage - 1, searchfor);
+        Members.DataSource = PrivateMessages.GetMemberListPaged(CurrentPage - 1, searchfor);
         Members.DataBind();
-        int totalmembers = Data.Util.GetMemberCount(searchfor);
+        int totalmembers = PrivateMessages.GetMemberCount(searchfor);
         _pages = Common.CalculateNumberOfPages(totalmembers, 15);
 
         numPages.Text = _pages.ToString();
@@ -151,7 +173,7 @@ namespace PrivateMessaging
     {
         MembershipUser currentUser = Membership.GetUser(username);
         if (currentUser != null && currentUser.ProviderUserKey != null)
-            grdOutBox.DataSource = Data.Util.GetSentMessages((int)currentUser.ProviderUserKey);
+            grdOutBox.DataSource = PrivateMessages.GetSentMessages((int)currentUser.ProviderUserKey);
         grdOutBox.DataBind();
     }
 
@@ -159,7 +181,7 @@ namespace PrivateMessaging
     {
         MembershipUser currentUser = Membership.GetUser(username);
         if (currentUser != null && currentUser.ProviderUserKey != null)
-            grdInBox.DataSource = Data.Util.GetMessages((int)currentUser.ProviderUserKey);
+            grdInBox.DataSource = PrivateMessages.GetMessages((int)currentUser.ProviderUserKey);
         grdInBox.DataBind();
     }
 
@@ -168,7 +190,7 @@ namespace PrivateMessaging
         MembershipUser currentUser = Membership.GetUser(username);
         string layout = rblLayout.SelectedValue;
         if (currentUser != null)
-            Data.Util.SavePreferences(currentUser.ProviderUserKey, rblEnabled.SelectedValue, rblNotify.SelectedValue, layout);
+            PrivateMessages.SavePreferences(username, rblEnabled.SelectedValue, rblNotify.SelectedValue, layout);
 
         lblResult.Text = Resources.PrivateMessage.PmOptionsSaved;
 
@@ -181,7 +203,7 @@ namespace PrivateMessaging
         MembershipUser currentUser = Membership.GetUser(username);
         if (currentUser != null)
         {
-            ProfileData userprefs = Data.Util.GetPreferences(currentUser.ProviderUserKey);
+            var userprefs = PrivateMessages.GetPreferences(currentUser.UserName);
             PMViews.ActiveViewIndex = 3;
             rblLayout.SelectedValue = _layout;
             if (userprefs != null)
@@ -230,7 +252,7 @@ namespace PrivateMessaging
         {
             Image imgRead = e.Row.Cells[0].FindControl("pmImgRead") as Image;
             Image imgUnread = e.Row.Cells[0].FindControl("pmImgUnRead") as Image;
-            var pm = (PrivateMessage)e.Row.DataItem;
+            var pm = (PrivateMessageInfo)e.Row.DataItem;
             if (pm.Read == 1)
             {
                 if (imgRead != null) imgRead.Visible = true;
@@ -270,7 +292,7 @@ namespace PrivateMessaging
         string[] toMembers = Regex.Split(tbxRecipient.Text, ";");
         foreach (string member in toMembers)
         {
-            var pm = new PrivateMessage
+            var pm = new PrivateMessageInfo
                          {
                              FromMemberId = (int) currentUser.ProviderUserKey,
                              Read = 0,
@@ -281,7 +303,7 @@ namespace PrivateMessaging
                              ToMemberId = (int) Membership.GetUser(member, false).ProviderUserKey
                          };
 
-            Data.Util.SendPrivateMessage(pm);
+            PrivateMessages.SendPrivateMessage(pm);
 
         }
         //TODO: Send notify if required
@@ -294,7 +316,7 @@ namespace PrivateMessaging
     {
 
         LinkButton lnk = (LinkButton)sender;
-        PrivateMessage pm = Data.Util.GetMessage(lnk.CommandArgument);
+        PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
         DisplayMessage(pm);
         ButtonReply.CommandArgument = lnk.CommandArgument;
         ButtonReplyQuote.CommandArgument = lnk.CommandArgument;
@@ -306,28 +328,30 @@ namespace PrivateMessaging
     protected void ViewSentMessage(object sender, EventArgs e)
     {
         var lnk = (LinkButton)sender;
-        PrivateMessage pm = Data.Util.GetSentMessage(lnk.CommandArgument);
-        if (pm.ToMembers.ProfileDatas != null && pm.ToMembers.ProfileDatas.Gravatar == 1)
-        {
-            string avatar = String.Format("{0}/Avatars/{1}", Common.GetSiteRoot(), String.IsNullOrEmpty(pm.ToMembers.Avatar) ? "default.gif" : pm.ToMembers.Avatar);
+        PrivateMessageInfo pm =PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+        pm.ToMember = Snitz.BLL.Members.GetMember(pm.ToMemberId);
 
-            var gravatar = new Gravatar { Email = pm.ToMembers.Email };
+        if (pm.ToMember.ProfileData != null && pm.ToMember.ProfileData.Gravatar == 1)
+        {
+            string avatar = String.Format("{0}/Avatars/{1}", Common.GetSiteRoot(), String.IsNullOrEmpty(pm.ToMember.Avatar) ? "default.gif" : pm.ToMember.Avatar);
+
+            var gravatar = new Gravatar { Email = pm.ToMember.Email };
             if (avatar != "")
                 gravatar.DefaultImage = avatar;
             phAvatar.Controls.Add(gravatar);
         }
         else
         {
-            var avatar = new Literal { Text = pm.ToMembers.Avatar };
+            var avatar = new Literal { Text = pm.ToMember.AvatarUrl };
             phAvatar.Controls.Add(avatar);
         }
         PMViews.ActiveViewIndex = 2;
 
-        pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.ToMembers.Name);
-        pmTitle.Text = pm.ToMembers.Title;
-        pmCountry.Text = pm.ToMembers.Country;
-        pmPostcount.Text = pm.ToMembers.Posts.ToString();
-        pmDate.Text = pm.Sent.ToString();
+        pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.ToMemberName);
+        pmTitle.Text = pm.ToMember.Title;
+        pmCountry.Text = pm.ToMember.Country;
+        pmPostcount.Text = pm.ToMember.PostCount.ToString();
+        pmDate.Text = pm.SentDate.ToString();
         pmSubject.Text = pm.Subject;
         pmBody.Text = pm.Message.ParseTags();
         SetButtonDisplay();
@@ -347,7 +371,7 @@ namespace PrivateMessaging
                 if (cb.Checked)
                 {
                     var currentPmId = grdInBox.DataKeys[row.RowIndex].Value;
-                    Data.Util.DeletePrivateMessage((int)currentPmId);
+                    PrivateMessages.DeletePrivateMessage((int)currentPmId);
 
                 }
         }
@@ -365,13 +389,14 @@ namespace PrivateMessaging
                 if (cb.Checked)
                 {
                     var currentPMId = grdOutBox.DataKeys[row.RowIndex].Value;
-                    Data.Util.RemoveFromOutBox((int)currentPMId);
+                    PrivateMessages.RemoveFromOutBox((int)currentPMId);
 
                 }
         }
         pmSuccess.Text = Resources.PrivateMessage.PmMessageRemoved;
         ScriptManager.RegisterStartupScript(this, GetType(), "Startup", _redirectionScript, true);
     }
+    
     private void SetButtonDisplay()
     {
         ButtonOptions.Visible = !PmViewMessage.Visible;
@@ -389,9 +414,9 @@ namespace PrivateMessaging
         ButtonDelete.Visible = PmViewMessage.Visible;
     }
 
-    private void DisplayMessage(PrivateMessage pm)
+    private void DisplayMessage(PrivateMessageInfo pm)
     {
-        Member member = SnitzData.Util.GetMember(username);
+        MemberInfo member = Snitz.BLL.Members.GetMember(username);
         SnitzMembership.ProfileCommon prof = SnitzMembership.ProfileCommon.GetUserProfile(username);
         if (prof.Gravatar)
         {
@@ -404,11 +429,11 @@ namespace PrivateMessaging
         else
         {
 
-            Literal avatar = new Literal { Text = member.Avatar };
+            Literal avatar = new Literal { Text = member.AvatarUrl };
             phAvatar.Controls.Add(avatar);
         }
 
-        pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.ToMembers.Name);
+        pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.FromMemberName);
 
         pmTitle.Text = member.Title;
         pmCountry.Text = member.Country;
@@ -425,9 +450,9 @@ namespace PrivateMessaging
         PmMessage.Visible = true;
 
         ImageButton lnk = (ImageButton)sender;
-        var pm = Data.Util.GetMessage(lnk.CommandArgument);
+        var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
         DisplayMessage(pm);
-        tbxRecipient.Text = pm.FromMembers.Name;
+        tbxRecipient.Text = pm.FromMember.Username;
         tbxRecipient.Visible = false;
         lblRecipient.Visible = false;
         lblMultiple.Visible = false;
@@ -436,14 +461,15 @@ namespace PrivateMessaging
         lblSubject.Visible = false;
         PMControls.Visible = false;
     }
+    
     protected void ButtonReplyQuote_Click(object sender, ImageClickEventArgs e)
     {
         PmMessage.Visible = true;
 
         ImageButton lnk = (ImageButton)sender;
-        var pm = Data.Util.GetMessage(lnk.CommandArgument);
+        var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
         DisplayMessage(pm);
-        tbxRecipient.Text = pm.FromMembers.Name;
+        tbxRecipient.Text = pm.FromMember.Username;
         tbxRecipient.Visible = false;
         lblRecipient.Visible = false;
         lblMultiple.Visible = false;
@@ -456,7 +482,7 @@ namespace PrivateMessaging
     protected void ButtonDelete_Click(object sender, ImageClickEventArgs e)
     {
         ImageButton lnk = (ImageButton)sender;
-        Data.Util.DeletePrivateMessage(Convert.ToInt32(lnk.CommandArgument));
+        PrivateMessages.DeletePrivateMessage(Convert.ToInt32(lnk.CommandArgument));
         ScriptManager.RegisterStartupScript(this, GetType(), "Startup", _redirectionScript, true);
     }
 
@@ -465,7 +491,7 @@ namespace PrivateMessaging
         PmMessage.Visible = true;
 
         ImageButton lnk = (ImageButton)sender;
-        PrivateMessage pm = Data.Util.GetMessage(lnk.CommandArgument);
+        PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
         DisplayMessage(pm);
         qrMessage.Text = Resources.PrivateMessage.PmForwardedMessage + Environment.NewLine + pm.Message;
         tbxSubject.Text = Resources.PrivateMessage.PmViewFwd + pm.Subject;

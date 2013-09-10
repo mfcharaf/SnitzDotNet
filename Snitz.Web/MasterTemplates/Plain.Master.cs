@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.MasterTemplates - Plain.Master
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
 using SnitzConfig;
 
 namespace SnitzUI.MasterTemplates
@@ -36,7 +48,7 @@ namespace SnitzUI.MasterTemplates
             if (Resources.webResources.TextDirection == "rtl")
             {
                 //lets add the rtl css file
-                rtlCss.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.StyleSheetTheme + @"/rtl.css' />";
+                rtlCss.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/rtl.css' />";
             }
             //if (HttpContext.Current.User.Identity.Name == "")
             //{

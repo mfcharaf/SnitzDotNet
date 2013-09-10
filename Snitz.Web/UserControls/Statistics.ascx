@@ -9,8 +9,7 @@
 ###########################################################################################
 --%>
 
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="Statistics" Codebehind="Statistics.ascx.cs" EnableTheming="true" EnableViewState="False" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="ucStatistics" Codebehind="Statistics.ascx.cs" EnableTheming="true" EnableViewState="False" %>
 <div id="statsControl" class="forumtable">
     <asp:Panel ID="Stats_HeaderPanel" runat="server" CssClass="statsPanelHeader clearfix" style="cursor: pointer;" EnableViewState="False">
             <asp:Image ID="statsExpand" runat="server" GenerateEmptyAlternateText="true" EnableViewState="False" ImageAlign="Middle" />
@@ -26,7 +25,8 @@
         <asp:Label ID="lblArchiveStats" runat="server" CssClass="smallText" EnableViewState="False"></asp:Label><br />
         <asp:Label ID="lblNewestMember" runat="server" CssClass="smallText" EnableViewState="False"></asp:Label><br />
     </asp:Panel>
-    <asp:CollapsiblePanelExtender ID="Stats_Panel_CollapsiblePanelExtender" 
-        runat="server" Enabled="True" TargetControlID="Stats_Panel">
+    <asp:CollapsiblePanelExtender ID="Stats_Panel_CollapsiblePanelExtender" SuppressPostBack="true" SkinID="StatsSkin"
+        CollapseControlID="Stats_HeaderPanel" ExpandControlID="Stats_HeaderPanel" Collapsed="true"
+        runat="server" Enabled="True" TargetControlID="Stats_Panel"  EnableViewState="true">
     </asp:CollapsiblePanelExtender>
 </div>

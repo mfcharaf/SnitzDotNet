@@ -1,9 +1,32 @@
-﻿using System;
+﻿/*
+####################################################################################################################
+##
+## ASP - rss.ashx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
+## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## Created:		29/07/2013
+## 
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
+##
+## You must not remove this notice, or any other, from this software.  
+##
+#################################################################################################################### 
+*/
+
+using System;
 using System.Linq;
 using System.Web;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzConfig;
 using SnitzCommon;
-using SnitzData;
+
 
 namespace SnitzUI
 {
@@ -45,7 +68,7 @@ namespace SnitzUI
         {
             if (forumId == null)
                 return "";
-            Forum forum = Util.GetForum(Convert.ToInt32(forumId));
+            ForumInfo forum = Forums.GetForum(Convert.ToInt32(forumId));
             string sTitle = Config.ForumTitle;
             string sSiteUrl = Config.ForumUrl;
             string sDescription = forum.Description;
@@ -84,29 +107,29 @@ namespace SnitzUI
             return oBuilder.ToString();
         }
         
-        public void AppendItems(System.Text.StringBuilder oBuilder, Forum forum)
+        public void AppendItems(System.Text.StringBuilder oBuilder, ForumInfo forum)
         {
-            
-            foreach (Topic row in forum.Topics.OrderByDescending(t=>t.LastPostDate).Take(10))
+
+            foreach (TopicInfo row in Forums.GetForumTopics(forum.Id,0,10).OrderByDescending(t => t.LastPostDate))
             {
                 int topicId = row.Id;
-                Topic topic = Util.GetTopic(topicId);
+                TopicInfo topic = Topics.GetTopic(topicId);
                 string sTitle = topic.Subject;
                 string sGuid = string.Format("{0}/Content/Forums/topic.aspx?TOPIC={1}", Config.ForumUrl, topicId);
                 string sLink = string.Format("{0}/Content/Forums/topic.aspx?TOPIC={1}&amp;whichpage=-1", Config.ForumUrl, topicId);
                 if (topic.LastReplyId > 0)
                     sLink += "#" + topic.LastReplyId;
 
-                string sDescription = topic.Message.Length > 512 ? topic.Message.Substring(0, 512) + " ... " : topic.Message;
-                string sPubDate = topic.LastPostDate.ToISO8601Date(false, 0);
-                string author = topic.Author.Name;
+                string sDescription = topic.Message; //topic.Message.Length > 512 ? topic.Message.Substring(0, 512) + " ... " : topic.Message;
+                string sPubDate = topic.LastPostDate.Value.ToISO8601Date(false,0);
+                string author = topic.AuthorName;
                 if (topic.LastReplyId > 0)
                 {
                     if (topic.LastReplyId != null)
                     {
-                        Reply rep = Util.GetReply((int) topic.LastReplyId);
-                        author = rep.Author.Name;
-                        sDescription = rep.Message.Length > 256 ? rep.Message.Substring(0, 256) + " ... " : rep.Message;
+                        ReplyInfo rep = Replies.GetReply((int) topic.LastReplyId);
+                        author = rep.AuthorName;
+                        sDescription = rep.Message;  //rep.Message.Length > 256 ? rep.Message.Substring(0, 256) + " ... " : rep.Message;
                     }
                 }
 
@@ -127,7 +150,7 @@ namespace SnitzUI
                 oBuilder.Append(sGuid);
                 oBuilder.Append("</guid>");
                 oBuilder.Append("<description><![CDATA[ ");
-                oBuilder.Append(sDescription);
+                oBuilder.Append(sDescription.ParseTags());
                 oBuilder.Append(" ]]> </description>");
                 oBuilder.Append("<pubDate>");
                 oBuilder.Append(sPubDate);

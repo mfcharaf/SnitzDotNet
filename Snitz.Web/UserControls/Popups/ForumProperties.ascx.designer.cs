@@ -130,6 +130,24 @@ namespace SnitzUI.UserControls.Popups {
         protected global::System.Web.UI.WebControls.Panel pnlOptions;
         
         /// <summary>
+        /// Label4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
+        /// tbxOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbxOrder;
+        
+        /// <summary>
         /// cbxAllowPolls control.
         /// </summary>
         /// <remarks>

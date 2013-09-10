@@ -1,59 +1,42 @@
-﻿#region Copyright Notice
-/*
-#################################################################################
-## Snitz Forums .net
-#################################################################################
-## Copyright (C) 2012 Huw Reddick
-## All rights reserved.
+﻿/*
+####################################################################################################################
+##
+## SnitzUI.Content.FAQ - FAQ.aspx
+##   
+## Author:		Huw Reddick
+## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## http://forum.snitz.com
-##
-## Redistribution and use in source and binary forms, with or without
-## modification, are permitted provided that the following conditions
-## are met:
+## Created:		29/07/2013
 ## 
-## - Redistributions of source code and any outputted HTML must retain the above copyright
-## notice, this list of conditions and the following disclaimer.
-## 
-## - The "powered by" text/logo with a link back to http://forum.snitz.com in the footer of the 
-## pages MUST remain visible when the pages are viewed on the internet or intranet.
+## The use and distribution terms for this software are covered by the 
+## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
+## which can be found in the file Eclipse.txt at the root of this distribution.
+## By using this software in any fashion, you are agreeing to be bound by 
+## the terms of this license.
 ##
-## - Neither Snitz nor the names of its contributors/copyright holders may be used to endorse 
-## or promote products derived from this software without specific prior written permission. 
-## 
+## You must not remove this notice, or any other, from this software.  
 ##
-## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-## FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-## COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-## INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING,
-## BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-## LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-## CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-## ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-## POSSIBILITY OF SUCH DAMAGE.
-##
-#################################################################################
+#################################################################################################################### 
 */
-#endregion
+
 using System;
 using System.Globalization;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
+using Snitz.Entities;
 using SnitzUI.UserControls;
 using Resources;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzData;
+
 
 namespace SnitzUI
 {
     public partial class FAQPage : PageBase
     {
-        private FaqUtil _faqUtil;
+
         public string Filter
         {
             get
@@ -80,17 +63,16 @@ namespace SnitzUI
         {
             base.OnInit(e);
             Page.Title = SiteMapLocalizations.FAQPageTitle;
-            markitupCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/markitup.css");
+            editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
             if (webResources.TextDirection == "rtl")
             {
-                faqCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/faqrtl.css");
+                faqCSS.Attributes.Add("href", "/css/" + Page.Theme + "/faqrtl.css");
             }
             else
             {
-                faqCSS.Attributes.Add("href", "/css/" + Page.StyleSheetTheme + "/faq.css");
+                faqCSS.Attributes.Add("href", "/css/" + Page.Theme + "/faq.css");
             }
 
-            _faqUtil = new FaqUtil();
             if (IsPostBack)
             {
                 if (!String.IsNullOrEmpty(Request.Form[customPostBack.UniqueID]))
@@ -122,6 +104,11 @@ namespace SnitzUI
                     }
                     else if (CtrlID.EndsWith("manageCats"))
                     {
+                        pnlRead.Visible = false;
+                        pnlEdit.Visible = false;
+                        Category.Visible = true;
+                        ddlCategoryEdit.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+                        ddlCategoryEdit.DataBind();
                         LinkButton submit = new LinkButton { ID = "newCat" };
                         submit.Click += AddNewCategory;
                         submit.Text = Resources.webResources.btnSubmit;
@@ -129,19 +116,19 @@ namespace SnitzUI
                         MainMaster m = (MainMaster)Master;
                         if (m != null)
                             m.rootScriptManager.RegisterAsyncPostBackControl(submit);
-                        phSubmit.Controls.Add(submit);
+                        PlaceHolder1.Controls.Add(submit);
 
                     }
                 }
             }
-            ddlCategory.DataSource = _faqUtil.GetCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            ddlCategory.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             ddlCategory.DataBind();
         }
 
         private void BindFaqNav()
         {
-            
-            FaqNav.DataSource = _faqUtil.GetCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+
+            FaqNav.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             FaqNav.DataBind();
 
         }
@@ -164,7 +151,7 @@ namespace SnitzUI
                     Repeater fqr = ((Repeater)e.Item.FindControl("FaqQuestions"));
                     if(fqr != null)
                     {
-                        fqr.DataSource = _faqUtil.GetFaqQuestions(id, Filter, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+                        fqr.DataSource = SnitzFaq.GetQuestions(id, Filter, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
                         fqr.DataBind();
                     }
                 }
@@ -177,9 +164,9 @@ namespace SnitzUI
             pnlEdit.Visible = false;
             int question =  Convert.ToInt32(e.CommandArgument);
             faqId.Value = question.ToString();
-            FaqInfo faq = _faqUtil.GetAnswer(question, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            faqQuestion.Text = faq.Question;
-            faqAnswer.Text = faq.Answer.ParseTags();
+            FaqInfo faq = SnitzFaq.GetFaqQuestion(question, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            faqQuestion.Text = faq.LinkTitle;
+            faqAnswer.Text = faq.LinkBody.ParseTags();
             btnEdit.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
             btnDelete.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
 
@@ -197,31 +184,31 @@ namespace SnitzUI
 
             pnlRead.Visible = false;
             pnlEdit.Visible = true;
-            FaqInfo faq = _faqUtil.GetAnswer(id, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            FaqInfo faq = SnitzFaq.GetFaqQuestion(id, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             faqId.Value = id.ToString();
-            tbxQuestion.Text = faq.Question;
-            tbxAnswer.Text = faq.Answer;
+            tbxQuestion.Text = faq.LinkTitle;
+            tbxAnswer.Text = faq.LinkBody;
         }
 
         private void SaveFAQ(object sender, EventArgs eventArgs)
         {
             int id = Convert.ToInt32(faqId.Value);
 
-            _faqUtil.SaveFaq(id, tbxQuestion.Text, tbxAnswer.Text,CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            SnitzFaq.UpdateFaqQuestion(id, tbxQuestion.Text, tbxAnswer.Text, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
 
             pnlRead.Visible = true;
             pnlEdit.Visible = false;
-            
-            FaqInfo faq = _faqUtil.GetAnswer(id, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            faqQuestion.Text = faq.Question;
-            faqAnswer.Text = faq.Answer.ParseTags();
+
+            FaqInfo faq = SnitzFaq.GetFaqQuestion(id, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            faqQuestion.Text = faq.LinkTitle;
+            faqAnswer.Text = faq.LinkBody.ParseTags();
 
         }
 
         protected void DeleteFaq(object sender, ImageClickEventArgs e)
         {
             int question = Convert.ToInt32(faqId.Value);
-            _faqUtil.Delete(question);
+            SnitzFaq.DeleteFaqQuestion(question);
             BindFaqNav();
         }
 
@@ -246,34 +233,42 @@ namespace SnitzUI
                               {
                                   CatId = Convert.ToInt32(category),
                                   Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
-                                  Question = question,
-                                  Answer = answer,
+                                  LinkTitle = question,
+                                  LinkBody = answer,
                                   Order = 99
                               };
-            _faqUtil.AddFaq(faq);
+            SnitzFaq.AddFaqQuestion(faq);
+            UpdatePanel1.Update();
         }
 
         protected void ManageCategories(object sender, EventArgs e)
         {
-            pnlRead.Visible = false;
-            pnlEdit.Visible = false;
-            Category.Visible = true;
-            DropDownList1.DataSource = _faqUtil.GetCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            DropDownList1.DataBind();
 
-            LinkButton submit = new LinkButton { ID = "newCat" };
-            submit.Click += AddNewCategory;
-            submit.Text = Resources.webResources.btnSubmit;
-
-            MainMaster m = (MainMaster)Master;
-            if (m != null)
-                m.rootScriptManager.RegisterAsyncPostBackControl(submit);
-            PlaceHolder1.Controls.Add(submit);
         }
 
         private void AddNewCategory(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            FaqCategoryInfo cat;
+
+            cat = SnitzFaq.GetCategory(catDescription.Text);
+            if(cat == null)
+                cat = new FaqCategoryInfo();
+            cat.Description = catDescription.Text;
+            cat.Order = Convert.ToInt32(catOrder.Text);
+
+            cat.Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            SnitzFaq.AddFaqCategory(cat);
+        }
+
+        protected void SelectCategory(object sender, EventArgs e)
+        {
+            FaqCategoryInfo cat = SnitzFaq.GetCategory(ddlCategoryEdit.SelectedItem.Text);
+            if (cat != null)
+            {
+                catDescription.Text = cat.Description;
+                catLang.Text = cat.Language;
+                catOrder.Text = cat.Order.ToString();
+            }
         }
     }
 }

@@ -1,24 +1,15 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PollAdmin.ascx.cs" Inherits="SnitzUI.Admin.PollAdmin" %>
-    <asp:SqlDataSource ID="PollDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:ForumConnectionString %>"
-        SelectCommand="SELECT * FROM [FORUM_Polls]" DeleteCommand="DELETE FROM FORUM_Polls WHERE PollID = @PollID" InsertCommand="INSERT INTO FORUM_Polls (DisplayText,TopicId) VALUES (@DisplayText,@TopicId)">
-        <DeleteParameters>
-            <asp:Parameter Name="PollID" />
-        </DeleteParameters>
-        <InsertParameters>
-            <asp:Parameter Name="DisplayText" />
-            <asp:Parameter Name="TopicId" />
-        </InsertParameters>
-    </asp:SqlDataSource>
+
 <asp:Panel ID="Panel1" runat="server" CssClass="pollForm">
     <h2 class="category">Poll Configuraton</h2>
     <fieldset>
     <legend>Add Poll</legend>
-        <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="PollID"
-            DataSourceID="PollDataSource" DefaultMode="Insert" 
+        <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="Id"
+            DefaultMode="Insert" 
             EnableModelValidation="True">
             <Fields>
-                <asp:BoundField DataField="PollID" HeaderText="PollID" InsertVisible="False" ReadOnly="True"
-                    SortExpression="PollID" />
+                <asp:BoundField DataField="Id" HeaderText="Id" InsertVisible="False" ReadOnly="True"
+                    SortExpression="Id" />
                 <asp:TemplateField HeaderText="Poll Question: ">
                     <InsertItemTemplate>
                         <asp:TextBox ID="NewPollQuestion" runat="server" Columns="75" Text='<%# Bind("DisplayText") %>'></asp:TextBox>
@@ -32,14 +23,14 @@
         </asp:DetailsView>
     </fieldset>
     <p>
-        <asp:GridView ID="PollGridView" runat="server" AutoGenerateColumns="False" DataKeyNames="PollID"
-            DataSourceID="PollDataSource" CellPadding="4" ForeColor="#333333" CssClass="pollForm"
+        <asp:GridView ID="PollGridView" runat="server" AutoGenerateColumns="False" DataKeyNames="Id"
+            CellPadding="4" ForeColor="#333333" CssClass="pollForm"
             GridLines="None" EnableModelValidation="True" HorizontalAlign="Center">
             <Columns>
                 <asp:TemplateField>
                     <ItemTemplate>
                         <asp:HyperLink ID="HyperLink1" runat="server" SkinID="EditPost"
-                            NavigateUrl='<%# Eval("PollID", "/Admin/default.aspx?action=editpoll&pid={0}") %>' 
+                            NavigateUrl='<%# Eval("Id", "/Admin/default.aspx?action=editpoll&pid={0}") %>' 
                             Text="Edit"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
@@ -51,8 +42,8 @@
                             SkinID="DeleteMessage" Text="Delete" />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="PollID" HeaderText="Poll ID" InsertVisible="False" 
-                    ReadOnly="True" SortExpression="PollID">
+                <asp:BoundField DataField="Id" HeaderText="Poll ID" InsertVisible="False" 
+                    ReadOnly="True" SortExpression="Id">
                 <ItemStyle HorizontalAlign="Center" />
                 </asp:BoundField>
                 <asp:TemplateField HeaderText="Display Text" SortExpression="DisplayText">
@@ -69,7 +60,7 @@
                 </asp:TemplateField>
                 <asp:BoundField DataField="TopicId" HeaderText="Topic Id" 
                     NullDisplayText="(NULL)" />
-                <asp:HyperLinkField DataNavigateUrlFields="PollID" DataNavigateUrlFormatString="/admin/default.aspx?action=pollresults&amp;pid={0}"
+                <asp:HyperLinkField DataNavigateUrlFields="Id" DataNavigateUrlFormatString="/admin/default.aspx?action=pollresults&amp;pid={0}"
                     Text="View Results" />
             </Columns>
             <EditRowStyle BackColor="#999999" />

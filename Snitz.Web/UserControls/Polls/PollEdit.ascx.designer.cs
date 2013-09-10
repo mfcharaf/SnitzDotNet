@@ -13,15 +13,6 @@ namespace SnitzUI.Admin {
     public partial class EditPoll {
         
         /// <summary>
-        /// PollDataSource control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource PollDataSource;
-        
-        /// <summary>
         /// Panel1 control.
         /// </summary>
         /// <remarks>
@@ -29,15 +20,6 @@ namespace SnitzUI.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel1;
-        
-        /// <summary>
-        /// PollAnswersDataSource control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource PollAnswersDataSource;
         
         /// <summary>
         /// Panel2 control.
@@ -82,6 +64,6 @@ namespace SnitzUI.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::Snitz.ThirdParty.BulkEditGridViewEx GridView1;
     }
 }
