@@ -20,18 +20,14 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.MobileControls;
 using System.Web.UI.WebControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
-using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
 using Image = System.Web.UI.WebControls.Image;
@@ -183,7 +179,7 @@ namespace SnitzUI.UserControls
                 }
                 if (archive != null)
                 {
-                    archive.Visible = archive.Visible && (forum.Type != 1);
+                    archive.Visible = archive.Visible && (forum.Type != 1) && Config.Archive;
                     archive.ImageUrl = imagedir + "/admin/archive.png";
                     archive.OnClientClick =
                          "setArgAndPostBack('Do you want to archive posts in this Forum?','ForumArchive'," + forum.Id + ");return false;";
@@ -220,7 +216,7 @@ namespace SnitzUI.UserControls
                     if (newIcon != null)
                     {
                         newIcon.Visible = IsAuthenticated;
-                        newIcon.ImageUrl = imagedir + "/message/document.png";
+                        newIcon.ImageUrl = imagedir + "/admin/folder2.png";
                         newIcon.Visible = newIcon.Visible && forum.Status != (int)Enumerators.PostStatus.Closed;
                         newIcon.Visible = newIcon.Visible || (IsAdministrator || isForumModerator);
                         newIcon.NavigateUrl = string.Format("~/Content/Forums/post.aspx?method=topic&FORUM={0}&CAT={1}",
@@ -260,7 +256,7 @@ namespace SnitzUI.UserControls
                     }
                     if (empty != null)
                     {
-                        empty.ImageUrl = imagedir + "/admin/folder.png";
+                        empty.ImageUrl = imagedir + "/admin/folderX.png";
                         empty.Visible = empty.Visible && (forum.Type != 1);
                         empty.OnClientClick =
                             "setArgAndPostBack('Do you want to delete all the posts in the Forum?','ForumEmpty'," + forum.Id + ");return false;";

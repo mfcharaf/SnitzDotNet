@@ -204,6 +204,7 @@
                                     <br />
                                     <asp:Label ID="lblTheme" AssociatedControlID="ddlTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
                                         EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlTheme" runat="server">
+                                            <asp:ListItem Value="ClassicSnitz" Text="Classic Snitz" />
                                             <asp:ListItem Value="BlueGray" Text="BlueGray" />
                                             <asp:ListItem Value="Dark" Text="Dark" />
                                             <asp:ListItem Value="Light" Text="Light" />
@@ -278,7 +279,7 @@
                             </asp:Panel>
                         </ContentTemplate>
                     </asp:TabPanel>
-                    <asp:TabPanel ID="LinksPanel" runat="server" HeaderText="<%$ Resources:webResources, lblLinks %>">
+                    <asp:TabPanel ID="TabLinksPanel" runat="server" HeaderText="<%$ Resources:webResources, lblLinks %>">
                         <ContentTemplate>
                             <asp:Panel runat="server" ID="pnlLinks" GroupingText="<%$ Resources:webResources, lblLinks %>"
                                 Style="width: 100%; height: auto; margin-bottom: 5px;">
@@ -346,7 +347,7 @@
                             </asp:Panel>
                         </ContentTemplate>
                     </asp:TabPanel>
-                    <asp:TabPanel ID="Bookmarks" runat="server" HeaderText="BookMarks">
+                    <asp:TabPanel ID="TabBookmarks" runat="server" HeaderText="BookMarks">
                         <ContentTemplate>
                             <asp:Panel ID="Panel1" runat="server" GroupingText="Bookmarks">
                                 <asp:Repeater ID="repBookMarks" runat="server">
@@ -359,7 +360,7 @@
                             </asp:Panel>
                         </ContentTemplate>
                     </asp:TabPanel>
-                    <asp:TabPanel ID="Gallery" runat="server" HeaderText="Images">
+                    <asp:TabPanel ID="TabGallery" runat="server" HeaderText="Images">
                         <ContentTemplate>
                             <asp:CheckBox ID="cbxPublic" runat="server" Text="Public Gallery" /><br />
                             <asp:Repeater ID="dlImages" runat="server">

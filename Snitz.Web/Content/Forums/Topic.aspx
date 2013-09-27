@@ -13,6 +13,7 @@
     Inherits="SnitzUI.TopicPage" %>
 <%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzConfig" %>
+<%@ Import Namespace="Snitz.Entities" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
 <%@ Reference Control="~/UserControls/Polls/Poll.ascx" %>
@@ -297,7 +298,7 @@
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
                                     <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>' Mode="Encode"></asp:Literal>
+                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Eval("Message").ToString().ReplaceNoParseTags().ParseVideoTags().ParseWebUrls() %>' Mode="Encode"></asp:Literal>
                                     </div>
                                     <br />
                                     <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
@@ -325,7 +326,7 @@
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
                                     <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Bind("Message") %>' Mode="Encode"></asp:Literal>
+                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Eval("Message").ToString().ReplaceNoParseTags().ParseVideoTags().ParseWebUrls() %>' Mode="Encode"></asp:Literal>
                                     </div>
                                     <br />
                                     <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>

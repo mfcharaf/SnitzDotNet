@@ -1,7 +1,8 @@
 
 <asp:ImageButton SkinID="Folder" CssClass="msgIcons" ImageUrl="Images/admin/folder2.png" runat="server" />
 <asp:ImageButton SkinID="Profile" Tooltip="View Profile" runat="server" ImageUrl="Images/message/user.png"/>
-<asp:ImageButton SkinID="DeleteMessage" runat="server" ImageUrl="Images/message/trash.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="DeletePost" runat="server" ImageUrl="Images/message/trash.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="DeleteMessage" runat="server" ImageUrl="Images/admin/trash.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Document" CssClass="msgIcons" ImageUrl="Images/message/document.png" runat="server" />
 <asp:ImageButton SkinID="Edit" runat="server" ImageUrl="Images/message/edit.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Properties" runat="server" ImageUrl="Images/admin/properties.png" CssClass="msgIcons"/>
@@ -19,6 +20,7 @@
 <asp:ImageButton SkinID="approve" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/ok.png"/>
 <asp:ImageButton SkinID="Cancel" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/cancel.png"/>
 <asp:ImageButton SkinID="NewUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/message/weblink.png"/>
+<asp:ImageButton SkinID="ForumUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/weblink.png"/>
 <asp:ImageButton SkinID="NoArchiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/notarchive.png"/>
 <asp:ImageButton SkinID="archiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/archive.png"/>
 

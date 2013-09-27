@@ -21,9 +21,9 @@ public partial class Admin_ManageModerators : UserControl
             {
                 int memberId;
 
-                ModeratorList.DataSource = srp.GetUsersInRole("Moderator");
-                //ModeratorList.DataTextField = "UserName";
-                //ModeratorList.DataValueField = "UserId";
+                ModeratorList.DataSource = Moderators.GetAll();
+                ModeratorList.DataTextField = "Name";
+                ModeratorList.DataValueField = "MemberId";
 
                 ModeratorList.DataBind();
 
@@ -31,7 +31,7 @@ public partial class Admin_ManageModerators : UserControl
                 if (ModeratorList.SelectedItem == null)
                     ModeratorList.SelectedIndex = 0;
                 if (ModeratorList.Items.Count > 0)
-                    memberId = Members.GetMember(ModeratorList.SelectedValue).Id; 
+                    memberId = Convert.ToInt32(ModeratorList.SelectedValue); 
                 else
                 {
                     SaveBtn.Enabled = false; 
@@ -65,8 +65,8 @@ public partial class Admin_ManageModerators : UserControl
 
                 List<MemberInfo> avList = Moderators.GetAvailableModerators(forumId);
                 AvModsList.DataSource = avList;
-                AvModsList.DataTextField = "M_NAME";
-                AvModsList.DataValueField = "MEMBER_ID";
+                AvModsList.DataTextField = "Username";
+                AvModsList.DataValueField = "Id";
 
                 CurModsList.DataSource = Forums.GetForumModerators(forumId);
                 CurModsList.DataTextField = "Value";

@@ -5,12 +5,12 @@
       <siteMapNode url="~\Content\Forums\topic.aspx" title="" description="" param="id" />
       <siteMapNode url="~\Content\Forums\post.aspx" title="" description="" param="id" />
       <siteMapNode url="~/Topic" title="Topic" description="" param="TopicId" />
-      <siteMapNode url="~\Content\Forums\search.aspx" title="" description=""/>
+      <siteMapNode url="~\Search" title="" description=""/>
     </siteMapNode>
     <siteMapNode url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,Profile" description="$resources:SiteMapLocalizations,ProfilePageDescription"/>
-    <siteMapNode url="~\Content\Forums\active.aspx" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription"/>
-    <siteMapNode url="~\Content\Forums\members.aspx" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription"/>
-    <siteMapNode url="~\Content\Faq\faq.aspx" title="$resources:SiteMapLocalizations,FaqPageTitle,Frequently asked Questions" description="$resources:SiteMapLocalizations,FaqPageDescription"/>
+    <siteMapNode url="~\ActiveTopics" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription"/>
+    <siteMapNode url="~\Members" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription"/>
+    <siteMapNode url="~\help" title="$resources:SiteMapLocalizations,FaqPageTitle,Frequently asked Questions" description="$resources:SiteMapLocalizations,FaqPageDescription"/>
     <siteMapNode url="~\Account\register.aspx" title="$resources:SiteMapLocalizations,RegisterPageTitle,Registration" description="$resources:SiteMapLocalizations,RegisterPageDescription"/>
     <siteMapNode url="~\admin\default.aspx" title="Admin Home">
       <siteMapNode url="~\admin\features.aspx" title="Feature Configuration" description="" />

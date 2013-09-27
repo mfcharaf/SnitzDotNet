@@ -57,6 +57,7 @@ namespace SnitzUI
         }
 
         public delegate void PopulateObject(int myInt);
+        
         private void PopulateData(int currentPage)
         {
             FetchData(currentPage);
@@ -219,7 +220,7 @@ namespace SnitzUI
                     {
 
                         //do we have access to this forum
-                        if (!Moderators.IsUserInForumRole(Member.Username, topic.Forum.Id))
+                        if (!Forums.IsUserInForumRole(Member.Username, topic.Forum.Id))
                         {
                             if (Session[session] == null || Session[session].ToString() != "true")
                             {
@@ -430,7 +431,7 @@ namespace SnitzUI
             
             var currentTopic = ((TopicInfo) frm.DataItem);
             currentTopic.PollId = Topics.GetTopicPollId(currentTopic.Id);
-            var msgDisplay = new Literal {Text = currentTopic.Message, Mode = LiteralMode.Encode};
+            var msgDisplay = new Literal { Text = currentTopic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls(), Mode = LiteralMode.Encode };
 
             if (currentTopic.PollId > 0)
             {
@@ -459,8 +460,6 @@ namespace SnitzUI
             }
         }
 
-
-
         [WebMethod]
         public static void Approval(string topicid, string replyid)
         {
@@ -469,6 +468,7 @@ namespace SnitzUI
             if (!String.IsNullOrEmpty(replyid))
                 Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.Open);
         }
+
         [WebMethod]
         public static void PutOnHold(string topicid, string replyid)
         {

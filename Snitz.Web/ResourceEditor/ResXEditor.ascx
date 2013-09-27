@@ -1,43 +1,10 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ResXEditor.ascx.cs" Inherits="ResxWebEditor.Editor.ResXEditor" %>
-<%@ Register TagPrefix="resx" Namespace="Snitz.ThirdParty" Assembly="Snitz.ThirdParty" %>
-<script type="text/javascript">
-    (function ($) {
-        var tooltip = $.fn.tooltip,
-            slice = Array.prototype.slice;
+﻿<%@ Control Language="C#" AutoEventWireup="True"  CodeBehind="ResXEditor.ascx.cs" Inherits="ResxWebEditor.Editor.ResXEditor" %>
+<%@ Register TagPrefix="resx" Namespace="Snitz.ThirdParty" Assembly="Snitz.Controls" %>
 
-        function removeTooltip($elements) {
-            
-            $elements.each(function () {
-                var $element = $(this),
-                    api = $element.data("tooltip"),
-                    tip = api.getTip(),
-                    trigger = api.getTrigger();
-                api.hide();
-                if (tip) {
-                    tip.remove();
-                }
-                trigger.unbind('mouseenter mouseleave');
-            });
-        }
 
-        $.fn.tooltip = function(p) {
-            if (p === 'remove') {
-                removeTooltip(this);
-                return this;
-            } else {
-                return tooltip.apply(this, slice.call(arguments, 0));
-            }
-        };
-    })(jQuery);
-    
-    $(document).ready(function() {
-        $(".EditorPanel").tooltip('remove');
-    });
-
-</script>
 <div style="margin: auto;">
     <div class="EditorHeader" style="width: auto;">
-        <asp:Literal ID="Literal2" runat="server" meta:resourcekey="Literal2Resource1" EnableViewState="False">Resource Translation</asp:Literal>
+        <asp:Literal ID="Literal2" runat="server" EnableViewState="False">Resource Translation</asp:Literal>
     </div>
     <div id="EditorPanel" class=" forumtable">
         <asp:Panel ID="Panel1" runat="server" CssClass="forumtable clearfix">

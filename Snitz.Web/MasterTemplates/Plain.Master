@@ -34,7 +34,7 @@
             </div>
             <div id="TitleDIV">
                 <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
-                    <snitz:AdRotate runat="server" ID="AdRotator"/>
+                    <snitz:AdRotate runat="server" ID="AdRotator" Visible="<%# Config.ShowHeaderAds %>"/>
                 </asp:ContentPlaceHolder>
             </div>
         </div>

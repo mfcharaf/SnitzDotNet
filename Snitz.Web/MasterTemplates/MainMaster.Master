@@ -15,15 +15,11 @@
     <asp:ContentPlaceHolder ID="CPMeta" runat="server"></asp:ContentPlaceHolder>
 
     <asp:Literal ID="jqUi" runat="server"></asp:Literal>
-    <link rel="stylesheet" type="text/css" href="/css/ajaxsessiontimer.css" />
     <link rel="canonical" href="http://snitzdemo.reddiweb.com" />
-
     <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
-    <%--<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>--%>
     <script type="text/javascript" src="/scripts/net.min.js"></script> 
-    <%--<script type="text/javascript" src="/scripts/AjaxSessionTimer.js"></script>--%>
     <script type="text/javascript" src="/scripts/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/scripts/jquery.timeago.min.js"></script>
     <script type="text/javascript" src="/scripts/confirmHandler.min.js"></script>
     <asp:ContentPlaceHolder ID="CPhead" runat="server"></asp:ContentPlaceHolder>
@@ -94,7 +90,7 @@
 
             <div id="TitleDIV">
                 <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
-                    <snitz:AdRotate runat="server" ID="AdRotator" Height="40"/>
+                    <snitz:AdRotate runat="server" ID="AdRotator" Height="40" Visible="<%# Config.ShowHeaderAds %>"/>
                 </asp:ContentPlaceHolder>
             </div>
         </div>

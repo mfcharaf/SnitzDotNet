@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="SnitzUI.ResourceEditor.ResEditor" ValidateRequest="false" Culture="auto" UICulture="auto" %>
-
 <%@ Register TagName="ResXEditor" TagPrefix="resxEditor" Src="~/ResourceEditor/ResXEditor.ascx" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="CPMeta" runat="server">
 </asp:Content>
@@ -36,7 +34,7 @@
         
         <asp:UpdateProgress ID="UpdateProgress" runat="server" DisplayAfter="300" AssociatedUpdatePanelID="UpdatePanel">
             <ProgressTemplate>
-                <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
+                <div style="position:fixed;top:0;left:0; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;"  >
                     <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
                 </div>
             </ProgressTemplate>

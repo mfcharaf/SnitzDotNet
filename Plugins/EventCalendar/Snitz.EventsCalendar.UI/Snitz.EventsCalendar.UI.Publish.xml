@@ -1,17 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="C:\LocalIIS\Snitz.Net" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/Snitz.BLL.dll" publishTime="07/31/2013 15:19:56" />
-    <file relUrl="bin/EventsCalendar.UI.pdb" publishTime="07/31/2013 15:19:57" />
-    <file relUrl="bin/Snitz.BLL.pdb" publishTime="07/31/2013 15:19:55" />
-    <file relUrl="UserControls/Events/ExtendedCalendar.ascx" publishTime="10/27/2012 21:27:06" />
-    <file relUrl="Content/Events/Events.aspx" publishTime="10/29/2012 19:46:40" />
-    <file relUrl="bin/Snitz.Entities.pdb" publishTime="07/31/2013 15:17:23" />
-    <file relUrl="UserControls/Popups/ViewEvent.ascx" publishTime="10/27/2012 21:32:12" />
-    <file relUrl="UserControls/Events/EventCalendar.ascx" publishTime="10/27/2012 23:36:24" />
-    <file relUrl="bin/Snitz.Entities.dll" publishTime="07/31/2013 15:17:23" />
-    <file relUrl="UserControls/Events/UpcomingEvents.ascx" publishTime="10/30/2012 09:10:32" />
-    <file relUrl="App_GlobalResources/webResources.resx" publishTime="10/27/2012 20:59:32" />
-    <file relUrl="bin/EventsCalendar.UI.dll" publishTime="07/31/2013 15:19:57" />
+  <publishProfile publishUrl="C:\Temp\SnitzIIS" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="web.config" publishTime="09/27/2013 13:14:24" />
+    <file relUrl="UserControls/Popups/ViewEvent.ascx" publishTime="09/24/2013 09:23:35" />
+    <file relUrl="UserControls/Events/UpcomingEvents.ascx" publishTime="09/24/2013 09:23:35" />
+    <file relUrl="bin/Snitz.EventsCalendar.BLL.dll" publishTime="09/27/2013 11:55:23" />
+    <file relUrl="bin/Snitz.EventsCalendar.BLL.pdb" publishTime="09/27/2013 11:55:23" />
+    <file relUrl="bin/Snitz.EventsCalendar.Enitities.pdb" publishTime="09/27/2013 11:55:17" />
+    <file relUrl="bin/Snitz.EventsCalendar.UI.dll" publishTime="09/27/2013 11:55:28" />
+    <file relUrl="bin/Snitz.EventsCalendar.IDAL.dll" publishTime="09/27/2013 11:55:22" />
+    <file relUrl="App_GlobalResources/webResources.resx" publishTime="09/24/2013 09:23:27" />
+    <file relUrl="bin/Snitz.EventsCalendar.Enitities.dll" publishTime="09/27/2013 11:55:17" />
+    <file relUrl="bin/Snitz.Entities.dll" publishTime="09/27/2013 11:55:15" />
+    <file relUrl="bin/Snitz.EventsCalendar.IDAL.pdb" publishTime="09/27/2013 11:55:21" />
+    <file relUrl="UserControls/Events/EventCalendar.ascx" publishTime="09/24/2013 09:23:35" />
+    <file relUrl="bin/Snitz.EventsCalendar.UI.pdb" publishTime="09/27/2013 11:55:27" />
+    <file relUrl="bin/Snitz.Entities.pdb" publishTime="09/27/2013 11:55:15" />
+    <file relUrl="UserControls/Events/ExtendedCalendar.ascx" publishTime="09/24/2013 09:23:35" />
+    <file relUrl="bin/Snitz.BLL.pdb" publishTime="09/27/2013 11:55:22" />
+    <file relUrl="bin/Snitz.BLL.dll" publishTime="09/27/2013 11:55:22" />
+    <file relUrl="bin/AjaxControlToolkit.dll" publishTime="09/24/2013 09:23:29" />
+    <file relUrl="Content/Events/Events.aspx" publishTime="09/24/2013 09:23:31" />
   </publishProfile>
 </publishData>

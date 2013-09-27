@@ -24,6 +24,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using ModConfig;
+using Snitz.Entities;
 using SnitzConfig;
 
 
@@ -35,50 +36,6 @@ namespace Snitz.BLL
     public static class PostExtensions
     {
         private const RegexOptions matchOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline;
-
-        public static string ReplaceNoParseTags(this string text)
-        {
-            if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
-                return text;
-
-            string[] strArray;
-
-            const string oTag = "[noparse]";
-            const string cTag = "[/noparse]";
-
-            string strResultString = "";
-            string strTempString = text;
-
-            int oTagPos = strTempString.IndexOf(oTag, 0, StringComparison.CurrentCultureIgnoreCase);
-            int cTagPos = strTempString.IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase);
-
-            if ((oTagPos >= 0) && (cTagPos > 0))
-            {
-                strArray = Regex.Split(strTempString, Regex.Escape(oTag), matchOptions);
-
-                for (int counter2 = 0; counter2 < strArray.Length; counter2++)
-                {
-                    if (Regex.Match(strArray[counter2], Regex.Escape(cTag), matchOptions).Index > 0)
-                    {
-                        string[] strArray2 = Regex.Split(strArray[counter2], Regex.Escape(cTag), matchOptions);
-                        string strCodeText = strArray2[0].Trim();
-                        //replace all forumcode [] tags to their hex equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"\]", "&#93;", matchOptions); // ## replace by entity equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"\[", "&#91;", matchOptions); // ## replace by entity equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"\.", "&#46;", matchOptions); // ## replace by entity equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"\/", "&#47;", matchOptions); // ## replace by entity equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"\:", "&#58;", matchOptions); // ## replace by entity equivalent
-                        strCodeText = Regex.Replace(strCodeText, @"http", "&#104;&#116;&#116;&#112;"); // ## replace by entity equivalent
-                        //done replacing
-                        strResultString = strResultString + strCodeText + strArray2[1];
-                    }
-                    else
-                        strResultString = strResultString + strArray[counter2];
-                }
-                strTempString = strResultString;
-            }
-            return strTempString;
-        }
 
         public static string ReplaceSmileTags(this string text)
         {
@@ -121,17 +78,7 @@ namespace Snitz.BLL
             }
             return "";
         }
-        
-        public static string ReplaceVideoTag(this string text)
-        {
-            if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
-                return text;
-
-            //<a class="video" href="http://www.youtube.com/watch?v=fvoKjukoaEI">The All Seeing I - Beat Goes On HQ</a>
-            return Regex.Replace(text, @"\[video=\x22(.+)\x22](.+)\[/video]", "<a class=\"video\" href=\"http://www.youtube.com/watch?v=$1\">$2</a>")
-            ;
-        }
-        
+             
         public static string ReplaceURLs(this string text)
         {
             if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
@@ -376,6 +323,8 @@ namespace Snitz.BLL
                 return text;
 
             text = Regex.Replace(text, @"\[pencil\]", GetImage("admin/write.png", "edit icon", "align='middle'"), matchOptions);
+            text = Regex.Replace(text, @"\[subscribe\]", GetImage("admin/subscribe.png", "subscribe icon", "align='middle'"), matchOptions);
+            text = Regex.Replace(text, @"\[unsubscribe\]", GetImage("admin/unsubscribe.png", "unsubscribe icon", "align='middle'"), matchOptions);
             text = Regex.Replace(text, @"\[edit\]", GetImage("message/edit.png", "edit icon", "align='middle'"), matchOptions);
             text = Regex.Replace(text, @"\[lock\]", GetImage("admin/lock.png", "edit icon", "align='middle'"), matchOptions);
             text = Regex.Replace(text, @"\[delete\]", GetImage("admin/trash.png", "trash icon", "align='middle'"), matchOptions);
@@ -430,7 +379,7 @@ namespace Snitz.BLL
 
         public static string ParseTags(this string text)
         {
-            return text.ReplaceNoParseTags().ReplaceBadWords().ReplaceSmileTags().ReplaceImageTags().ReplaceURLs().ReplaceVideoTag().ReplaceTableTags()
+            return text.ReplaceNoParseTags().ReplaceBadWords().ReplaceSmileTags().ReplaceImageTags().ReplaceURLs().ReplaceTableTags()
                 .ReplaceFileTags().ReplaceCodeTags().ReplaceTags();
         }
 

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Snitz.BLL;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace SnitzUI
 {
@@ -36,6 +37,8 @@ namespace SnitzUI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(!Config.ShowGallery)
+                throw new NotSupportedException("Gallery module is not enabled");
 
             if (Request.Params["u"] != null)
             {

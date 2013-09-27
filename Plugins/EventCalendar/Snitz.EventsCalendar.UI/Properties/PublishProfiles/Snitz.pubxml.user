@@ -24,22 +24,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/28/2007 07:58:12</publishTime>
     </File>
     <File Include="bin/Snitz.BLL.dll">
-      <publishTime>09/07/2013 14:15:57</publishTime>
+      <publishTime>09/12/2013 12:17:24</publishTime>
     </File>
     <File Include="bin/Snitz.Entities.dll">
-      <publishTime>06/09/2013 17:20:45</publishTime>
+      <publishTime>09/12/2013 12:17:21</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.BLL.dll">
-      <publishTime>09/07/2013 14:15:56</publishTime>
+      <publishTime>09/12/2013 12:17:24</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.Common.dll">
-      <publishTime>09/06/2013 17:20:46</publishTime>
+      <publishTime>09/12/2013 12:17:22</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.IDAL.dll">
-      <publishTime>09/07/2013 14:15:55</publishTime>
+      <publishTime>09/12/2013 12:17:23</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.UI.dll">
-      <publishTime>09/07/2013 14:15:58</publishTime>
+      <publishTime>09/12/2013 12:17:27</publishTime>
     </File>
     <File Include="bin/Snitz.ThirdParty.dll">
       <publishTime>06/28/2013 21:53:39</publishTime>
@@ -60,7 +60,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/21/2013 13:02:15</publishTime>
     </File>
     <File Include="Content/Events/Events.aspx">
-      <publishTime>09/01/2013 15:55:52</publishTime>
+      <publishTime>01/09/2013 15:55:52</publishTime>
     </File>
     <File Include="UserControls/Events/EventCalendar.ascx">
       <publishTime>08/23/2013 17:04:38</publishTime>

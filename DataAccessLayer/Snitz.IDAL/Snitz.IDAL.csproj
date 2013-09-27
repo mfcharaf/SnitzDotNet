@@ -57,6 +57,7 @@
     <Compile Include="IReply.cs" />
     <Compile Include="IBaseObject.cs" />
     <Compile Include="IForumStats.cs" />
+    <Compile Include="ISetup.cs" />
     <Compile Include="ISubscription.cs" />
     <Compile Include="ITopic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

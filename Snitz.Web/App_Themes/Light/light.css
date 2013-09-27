@@ -313,22 +313,18 @@ tr.rowsticky{border-bottom:1px solid #777;}
 
  blockquote.quoteMessage {
    font-size:smaller;
-   font-style: italic;
-   background-color: #f4f4f4;
    border-top: 1px solid #efefef;
    border-bottom: 1px solid silver;
    margin:1.5em 1em;padding:.5em 1em;
-   background-image: url(images/smallquote_lt.png);
-   background-position: top left;
-   background-repeat: no-repeat;
-   text-indent: 23px;
+    background-color: #f4f4f4;
    }
    blockquote.quoteMessage span {
-      display: block;
-      background-image: url(images/smallquote_rt.png);
-      background-repeat: no-repeat;
-      background-position: bottom right;
+        display: block;
+        font-style: normal;
     }
+    blockquote.quoteMessage em:before { content: url(images/smallquote_lt.png);}
+    blockquote.quoteMessage span:last-child:after {content: url(images/smallquote_rt.png);display: block;float: right;}
+
  /*code window*/
 .codebox
 {
@@ -341,8 +337,8 @@ tr.rowsticky{border-bottom:1px solid #777;}
     line-height: 1em;
     font: 0.8em Monospace;
     color: black;
-    overflow: hidden;
-    width: 80% !important;
+    overflow: auto;
+    width: 90% !important;
     min-height: 100px;
     min-width: 200px;
     max-height: 250px;
@@ -373,7 +369,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 	display: block;
 	margin: 0px;
 	color: black;
-	overflow: auto;
+	
 	min-width:500px;
     width:auto !important;
 	width: 700px;
@@ -384,7 +380,6 @@ tr.rowsticky{border-bottom:1px solid #777;}
 .scrollcode ol
 {
     background: #E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;
-    overflow: auto;
     margin: 0;
     padding: 0.7em 0 0.7em 2.8em;
     color: #fff;

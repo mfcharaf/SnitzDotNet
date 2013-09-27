@@ -37,6 +37,11 @@ namespace EventsCalendar
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Config.ShowEventsCalendar)
+            {
+                throw new NotSupportedException("Events Calendar not enabled");
+                Response.End();
+            }
             if(!IsPostBack)
             {
                 if (Request.QueryString["month"] != null)

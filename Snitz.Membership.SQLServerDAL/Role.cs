@@ -15,12 +15,14 @@ namespace Snitz.Membership.SQLServerDAL
         {
             if (!RoleExists(role.RoleName))
             {
-                const string strSql = "INSERT INTO aspnet_Roles (RoleName, LoweredRoleName,Description) VALUES (@Name,@LoweredName,@Description)";
+                const string strSql = "INSERT INTO aspnet_Roles (ApplicationId,RoleName, LoweredRoleName,Description,RoleId) VALUES (@AppId,@Name,@LoweredName,@Description,@RoleId)";
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
+                        new SqlParameter("@AppId", SqlDbType.VarChar){Value= new Guid().ToString()},
                         new SqlParameter("@Name", SqlDbType.VarChar){Value=role.RoleName},
                         new SqlParameter("@LoweredName", SqlDbType.VarChar){Value=role.LoweredRolename},
-                        new SqlParameter("@Description", SqlDbType.VarChar){Value=role.Description}
+                        new SqlParameter("@Description", SqlDbType.VarChar){Value=role.Description},
+                        new SqlParameter("@RoleId", SqlDbType.Int){Value=role.Id}
                     };
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray());
 
@@ -159,7 +161,7 @@ namespace Snitz.Membership.SQLServerDAL
                       "WHERE LoweredRoleName=@LoweredRole";
             List<SqlParameter> parms = new List<SqlParameter>
                                        {
-                                           new SqlParameter("@LoweredRole", SqlDbType.Int)
+                                           new SqlParameter("@LoweredRole", SqlDbType.VarChar)
                                            {
                                                Value = roleName.ToLower()
                                            }

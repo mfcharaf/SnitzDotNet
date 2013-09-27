@@ -831,16 +831,16 @@ namespace SnitzConfig
             }
         }
 
-        [Description("boolPublicGalleries")]
-        public static bool PublicGallery
+        [Description("boolUserGalleries")]
+        public static bool UserGallery
         {
             get
             {
-                return (ConfigurationManager.AppSettings["boolPublicGalleries"] == "1");
+                return (ConfigurationManager.AppSettings["boolUserGalleries"] == "1");
             }
             set
             {
-                UpdateConfig("boolPublicGalleries", value ? "1" : "0");
+                UpdateConfig("boolUserGalleries", value ? "1" : "0");
             }
         }
 
@@ -920,6 +920,7 @@ namespace SnitzConfig
             set { UpdateConfig("strGoogleAdCode", value); }
         }
 
+        [Description("boolDebugMode")]
         public static bool DebugMode
         {
             get
@@ -934,6 +935,28 @@ namespace SnitzConfig
             get { return ConfigurationManager.AppSettings["intAdminUserId"] == null ? 1 : Convert.ToInt32(ConfigurationManager.AppSettings["intAdminUserId"]); }
             set { UpdateConfig("intAdminUserId", value.ToString()); }
         }
+
+        [Description("boolShowEvents")]
+        public static bool ShowEventsCalendar
+        {
+            get { return ConfigurationManager.AppSettings["boolShowEvents"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolShowEvents"]) == 1; }
+            set { UpdateConfig("boolShowEvents", value ? "1" : "0"); }
+        }
+
+        [Description("boolPrivateMessaging")]
+        public static bool PrivateMessaging
+        {
+            get { return ConfigurationManager.AppSettings["boolPrivateMessaging"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolPrivateMessaging"]) == 1; }
+            set { UpdateConfig("boolPrivateMessaging", value ? "1" : "0"); }
+        }
+
+        [Description("boolArchiveState")]
+        public static bool Archive
+        {
+            get { return ConfigurationManager.AppSettings["boolArchiveState"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolArchiveState"]) == 1; }
+            set { UpdateConfig("boolArchiveState", value ? "1" : "0"); }            
+        }
+
         #endregion
 
         #region Config Methods

@@ -115,7 +115,7 @@ namespace SnitzUI.UserControls.Popups
 
             if (forum.Id > 0)
             {
-                string[] roleList = SnitzRoleProvider.GetForumRoles(forum.Id);
+                string[] roleList = Forums.GetForumRoles(forum.Id);
                 ListView2.DataSource = roleList;
                 ListView2.DataBind();
                 hdnRoleList.Value = String.Join(",",roleList);

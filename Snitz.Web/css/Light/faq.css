@@ -34,6 +34,7 @@
             padding: 10px;
             border-left: 1px solid #0FA1B8;
             border-collapse: collapse;
+            background-color: white;
         }
         
         #sidebar
@@ -63,6 +64,7 @@
         }
         .faqQuestion{background: #FFFFFF; padding: 4px;}
         .category{padding: 3px;}
+        .codebox{ max-height: 2000px;}
         
 
 

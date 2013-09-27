@@ -97,5 +97,7 @@ namespace Snitz.Entities
 
         public DateTime? LastArchived { get; set; }
         public int? ArchiveFrequency { get; set; }
+
+        public int PrivateForum { get; set; }
     }
 }

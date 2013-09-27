@@ -50,9 +50,9 @@
       <Project>{769b1fc3-dfa1-4c8c-b720-33d9375543e7}</Project>
       <Name>Snitz.SQLServerDAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Common.csproj">
+    <ProjectReference Include="..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Entities.csproj">
       <Project>{9a4fcf60-fc99-46f3-a405-8b8751d46df2}</Project>
-      <Name>Snitz.EventsCalendar.Common</Name>
+      <Name>Snitz.EventsCalendar.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.EventsCalendar.IDAL\Snitz.EventsCalendar.IDAL.csproj">
       <Project>{38f151d1-752f-4e52-a448-7457d68c394e}</Project>

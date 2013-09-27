@@ -33,5 +33,6 @@ namespace Snitz.IDAL
         IEnumerable<MemberInfo> GetMembers(int startRecord, int maxRecords, string sortExpression, object filter);
 
         MemberInfo GetByEmail(string email);
+        string[] ForumAdministrators();
     }
 }

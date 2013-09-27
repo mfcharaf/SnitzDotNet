@@ -34,7 +34,6 @@ using Snitz.BLL;
 using Snitz.Entities;
 using SnitzUI.MasterTemplates;
 using SnitzCommon;
-using Snitz.Providers;
 using SnitzConfig;
 
 
@@ -53,7 +52,6 @@ namespace SnitzUI
 
         /// <summary>  
         /// since asp.net is stingy with the Themes, we have to do our own check to map the Theme directory 
-
         /// </summary>  
         private string PageThemeDirectory
         {
@@ -272,108 +270,123 @@ namespace SnitzUI
                     switch (_type)
                     {
                         case "reply" :
-                            Replies.UpdateReply(_recId, Message.Text, Member, IsAdministrator, cbxSig.Checked);
-                            
-                            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
-                            if (_inModeratedList || IsAdministrator)
-                                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
-                            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + _recId);
+                            EditReply();
                             break;
                         case "topics":
-                            #region check for changes to poll
-
-                            var pollregex = new Regex(@"(?<poll>\[poll=\x22(?<question>.+?)\x22](?<answers>.+?)\[\/poll])", RegexOptions.Singleline);
-
-                            if (pollregex.IsMatch(Message.Text))
-                            {
-                                string topicPoll = pollregex.Match(Message.Text).Value;
-                                if (topicPoll == "" || topicPoll == "remove")
-                                {
-                                    Polls.DeleteTopicPoll(_thisTopic.PollId.Value);
-                                }
-                                else if(_thisTopic.Forum.AllowPolls)
-                                {
-                                    var answers = new Regex(@"\[\*=(?<sort>[0-9]+)](?<answer>.+?)\[/\*]",
-                                                              RegexOptions.Singleline | RegexOptions.ExplicitCapture);
-                                    string question = "";
-                                    var choices = new SortedList<int, string>();
-
-                                    MatchCollection mc = pollregex.Matches(topicPoll);
-                                    if (mc.Count > 0)
-                                    {
-                                        foreach (Match m in mc)
-                                        {
-                                            question = m.Groups["question"].Value;
-                                            string answer = m.Groups["answers"].Value;
-
-                                            MatchCollection ans = answers.Matches(answer);
-                                            foreach (Match match in ans)
-                                            {
-                                                choices.Add(Convert.ToInt32(match.Groups["sort"].Value), match.Groups["answer"].Value);
-                                            }
-                                        }
-                                        if(_thisTopic.PollId.HasValue)
-                                            Polls.UpdateTopicPoll(_thisTopic.PollId.Value, question, choices);
-                                    }
-                                }
-                                Message.Text = pollregex.Replace(Message.Text, "");
-                            }
-
-                            #endregion
-
-                            int oldforumId = _thisTopic.ForumId;
-                            Topics.Update(_thisTopic.Id, Message.Text, tbxSubject.Text, Member, IsAdministrator, cbxSig.Checked);
-                            if (ForumDropDown.SelectedValue != oldforumId.ToString())
-                            {
-                                //move the topic
-                                int forumid = Convert.ToInt32(ForumDropDown.SelectedValue);
-                                Topics.ChangeTopicForum(_thisTopic.Id, forumid);
-                                Snitz.BLL.Admin.UpdateForumCounts();
-                                object obj = -1;
-                                Cache["RefreshKey"] = obj;
-                                _thisTopic.Author = Members.GetAuthor(_thisTopic.AuthorId);
-
-                                if(Config.MoveNotify && _thisTopic.Author.Status != 0)
-                                {
-                                    _forum = Forums.GetForum(forumid);
-                                    string mailFile = Server.MapPath("~/App_Data/TopicMove.txt");
-                                    string strSubject = "Sent From " + Config.ForumTitle + ": Topic move notification";
-
-                                    var builder = new UriBuilder("http",
-                                                                        Request.Url.DnsSafeHost,
-                                                                        Request.Url.Port, Page.ResolveUrl("~/Content/Forums/forum.aspx"), string.Format("?FORUM={0}", _forum.Id));
-
-                                    var file = new StreamReader(mailFile);
-                                    string msgBody = file.ReadToEnd();
-                                    msgBody = msgBody.Replace("<%UserName%>", _thisTopic.AuthorName);
-                                    msgBody = msgBody.Replace("<%ForumUrl%>", Config.ForumTitle);
-                                    msgBody = msgBody.Replace("<%TopicSubject%>", _thisTopic.Subject);
-                                    msgBody = msgBody.Replace("<%MovedTo%>", _forum.Subject);
-                                    msgBody = msgBody.Replace("<%URL%>", builder.Uri.AbsoluteUri);
-
-                                    var mailsender = new snitzEmail
-                                    {
-                                        toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.AuthorName),
-                                        fromUser = "Forum Administrator",
-                                        subject = strSubject,
-                                        msgBody = msgBody
-                                    };
-                                    mailsender.send();
-                                }
-                            }
-                            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
-                            if (_inModeratedList || IsAdministrator)
-                                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
-                            
-                            if (pingSiteMap) { Ping(""); }
-                            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id);
+                            EditTopic();
                             break;
                     }
                     break;
             }
 
+        }
+
+        private void EditReply()
+        {
+            Replies.UpdateReply(_recId, Message.Text, Member, IsAdministrator, cbxSig.Checked);
+
+            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
+                Topics.SetTopicStatus(_thisTopic.Id, (int) Enumerators.PostStatus.Closed);
+            if (_inModeratedList || IsAdministrator)
+                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
+            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + _recId);
+        }
+
+        private void EditTopic()
+        {
+            #region check for changes to poll
+
+            var pollregex = new Regex(@"(?<poll>\[poll=\x22(?<question>.+?)\x22](?<answers>.+?)\[\/poll])",
+                RegexOptions.Singleline);
+
+            if (pollregex.IsMatch(Message.Text))
+            {
+                string topicPoll = pollregex.Match(Message.Text).Value;
+                if (topicPoll == "" || topicPoll == "remove")
+                {
+                    if (_thisTopic.PollId.HasValue) Polls.DeleteTopicPoll(_thisTopic.PollId.Value);
+                }
+                else if (_thisTopic.Forum.AllowPolls)
+                {
+                    var answers = new Regex(@"\[\*=(?<sort>[0-9]+)](?<answer>.+?)\[/\*]",
+                        RegexOptions.Singleline | RegexOptions.ExplicitCapture);
+                    string question = "";
+                    var choices = new SortedList<int, string>();
+
+                    MatchCollection mc = pollregex.Matches(topicPoll);
+                    if (mc.Count > 0)
+                    {
+                        foreach (Match m in mc)
+                        {
+                            question = m.Groups["question"].Value;
+                            string answer = m.Groups["answers"].Value;
+
+                            MatchCollection ans = answers.Matches(answer);
+                            foreach (Match match in ans)
+                            {
+                                choices.Add(Convert.ToInt32(match.Groups["sort"].Value), match.Groups["answer"].Value);
+                            }
+                        }
+                        if (_thisTopic.PollId.HasValue)
+                            Polls.UpdateTopicPoll(_thisTopic.PollId.Value, question, choices);
+                    }
+                }
+                Message.Text = pollregex.Replace(Message.Text, "");
+            }
+
+            #endregion
+
+            int oldforumId = _thisTopic.ForumId;
+            Topics.Update(_thisTopic.Id, Message.Text, tbxSubject.Text, Member, IsAdministrator, cbxSig.Checked);
+            if (ForumDropDown.SelectedValue != oldforumId.ToString())
+            {
+                //move the topic
+                int forumid = Convert.ToInt32(ForumDropDown.SelectedValue);
+                Topics.ChangeTopicForum(_thisTopic.Id, forumid);
+                Snitz.BLL.Admin.UpdateForumCounts();
+                object obj = -1;
+                Cache["RefreshKey"] = obj;
+                _thisTopic.Author = Members.GetAuthor(_thisTopic.AuthorId);
+
+                if (Config.MoveNotify && _thisTopic.Author.Status != 0)
+                {
+                    _forum = Forums.GetForum(forumid);
+                    string mailFile = Server.MapPath("~/App_Data/TopicMove.txt");
+                    string strSubject = "Sent From " + Config.ForumTitle + ": Topic move notification";
+
+                    var builder = new UriBuilder("http",
+                        Request.Url.DnsSafeHost,
+                        Request.Url.Port, Page.ResolveUrl("~/Content/Forums/forum.aspx"), string.Format("?FORUM={0}", _forum.Id));
+
+                    var file = new StreamReader(mailFile);
+                    string msgBody = file.ReadToEnd();
+                    msgBody = msgBody.Replace("<%UserName%>", _thisTopic.AuthorName);
+                    msgBody = msgBody.Replace("<%ForumUrl%>", Config.ForumTitle);
+                    msgBody = msgBody.Replace("<%TopicSubject%>", _thisTopic.Subject);
+                    msgBody = msgBody.Replace("<%MovedTo%>", _forum.Subject);
+                    msgBody = msgBody.Replace("<%URL%>", builder.Uri.AbsoluteUri);
+
+                    var mailsender = new snitzEmail
+                    {
+                        toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.AuthorName),
+                        fromUser = "Forum Administrator",
+                        subject = strSubject,
+                        msgBody = msgBody
+                    };
+                    mailsender.send();
+                }
+            }
+            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
+                Topics.SetTopicStatus(_thisTopic.Id, (int) Enumerators.PostStatus.Closed);
+            if (_inModeratedList || IsAdministrator)
+                Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
+
+            if (pingSiteMap)
+            {
+                Ping("");
+            }
+            InvalidateForumCache();
+            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id);
         }
 
         private void PostNewTopic()
@@ -425,6 +438,7 @@ namespace SnitzUI
 
             if (topicPoll != String.Empty && topic.Forum.AllowPolls)
                 CreatePoll(topicPoll, topic.Id);
+            InvalidateForumCache();
             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + topic.Id);
         }
 
@@ -493,7 +507,14 @@ namespace SnitzUI
             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
                 Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
             if (pingSiteMap) { Ping(""); }
+            InvalidateForumCache();
             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + reply.Id);
+        }
+
+        private void InvalidateForumCache()
+        {
+            object obj = -1;
+            Cache["RefreshKey"] = obj;
         }
 
         protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
@@ -638,7 +659,7 @@ namespace SnitzUI
             }
         }
 
-        #region Page methods for Ajax Name and Email checks
+        #region Page methods 
 
         /// <summary>
         /// Called Asynchronously by the Preview window to parse [bb] tags

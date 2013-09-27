@@ -22,6 +22,7 @@
 using System;
 using System.Security;
 using SnitzCommon;
+using SnitzConfig;
 using SnitzUI.UserControls.PrivateMessaging;
 
 namespace SnitzUI.Content.PrivateMessages
@@ -34,6 +35,10 @@ namespace SnitzUI.Content.PrivateMessages
             if (!IsAuthenticated)
             {
                 throw new SecurityException("You must be a logged in member to view private messages");
+            }
+            if (!Config.PrivateMessaging)
+            {
+                throw new NotSupportedException("Private Messaging not enabled");
             }
             editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
         }

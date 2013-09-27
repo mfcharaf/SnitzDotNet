@@ -1,5 +1,5 @@
 ﻿var emoticons; //emoticon definitions
-
+var userTheme = "BlueGray";
 // aceptable BBcode tags, optionally prefixed with a slash
 var emtagname_re = /^\/?(?:b|i|u|pre)$/;
 
@@ -45,7 +45,7 @@ function emoticonToImage(mstr, m1, m2, offset, string) {
                 return "[noparse]";
             }
             //opentags.push(new taginfo_t(m1, "/>"));
-            var test = "<img alt=\"" + em1[0].name + "\" class=\"emoticon\" src=\"/app_themes/" + this.pageTheme + "/images/emoticons/" + em1[0].image + "\"/>";
+            var test = "<img alt=\"" + em1[0].name + "\" class=\"emoticon\" src=\"/app_themes/" + userTheme + "/images/emoticons/" + em1[0].image + "\"/>";
             return test;
         }
 
@@ -107,9 +107,9 @@ function fillEmoticons() {
 }
 
 function parseEmoticon(post, pagetheme) {
-    
+
     var result, endtags, tag;
-    this.pageTheme = pagetheme;
+    userTheme = pagetheme;
 
     //create array of emoticons
     if (emoticons == null || emoticons.length) {

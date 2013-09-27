@@ -1,0 +1,78 @@
+﻿    .policy{padding:6px;}
+    .regBox input{margin-bottom:6px;margin-right:6px;}
+    .formLayout
+    {
+        padding: 10px;
+        width: 400px;
+        margin:auto;
+    }
+    
+    .formLayout label, .formLayout input
+    {
+        display: block;
+        width: 120px;
+        float: left;
+        margin-bottom: 10px;
+    }
+    
+    .formLayout input, .formLayout select{ border:1px solid Silver;}
+    .formLayout select {max-width:200px;}
+    .formLayout label
+    {
+        text-align: right;
+        padding-right: 20px;
+    }
+    .formLayout span
+    {
+        padding-right: 2px;
+    }
+    .formLayout img
+    {
+        margin-left:4px;
+        vertical-align:text-bottom;
+    }
+
+    .formLayout br
+    {
+        clear: left;
+    }
+
+    .checkboxLayout
+    {
+        padding: 10px;
+        width: 400px;
+        margin:auto;
+    }
+    
+    .checkboxLayout label
+    {
+        text-align:left;
+    }
+    
+    .checkboxLayout select{ border:1px solid Silver;}
+    .checkboxLayout span
+    {
+        display:block;
+        padding: 2px;
+        width:50px;
+    }
+
+.label_mandatory {
+	margin: 0 8px 0 0;
+	padding-right:4px;
+	border-right: solid 4px #0FA1B8;
+	white-space: nowrap;
+}
+.label_not_mandatory {
+	margin: 0 12px 0 0;
+	white-space: nowrap;
+}
+.validationGood, span.validationGood
+{
+    text-align:left;float:left;color:green;border:1px solid green;width:350px;padding:10px;display:inline;
+}
+.validationGood, span.validationBad
+{
+    text-align:left;float:left;color:Red;border:1px solid red;width:350px;padding:10px;display:inline;
+}
+span.usercheck{text-align:left;float:left;color:Red;border:1px solid red;width:300px;padding:10px;display:none;}

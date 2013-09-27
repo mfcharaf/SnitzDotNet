@@ -61,7 +61,9 @@ namespace Snitz.SQLServerDAL
             }
 
             stats.LastPost = GetLastPost();
-            stats.LastPostAuthor = GetLastPostAuthor(stats.LastPost.LastPostAuthorId.Value);
+            if (stats.LastPost != null)
+                if (stats.LastPost.LastPostAuthorId != null)
+                    stats.LastPostAuthor = GetLastPostAuthor(stats.LastPost.LastPostAuthorId.Value);
             stats.NewestMember = GetNewestMember();
 
             return stats;

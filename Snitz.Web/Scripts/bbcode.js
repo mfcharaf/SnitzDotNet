@@ -204,8 +204,8 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
             case "quote":
                 if(m3 && m3.length)
                 m3 = m3.replace(/\"/g, "");
-                opentags.push(new taginfo_t(m2, "</blockquote>"));
-                return m3 && m3.length && uri_re.test(m3) ? "<blockquote class=\"quoteMessage\" cite=\"" + m3 + "\">" : "<blockquote>";
+                opentags.push(new taginfo_t(m2, "</span></blockquote>"));
+                return m3 && m3.length && uri_re.test(m3) ? "<blockquote class=\"quoteMessage\" ><em>Originally posted by " + m3 + "</em></br><span>" : "<blockquote class=\"quoteMessage\"><span>";
             case "table":
                 opentags.push(new taginfo_t(m2, "</table>"));
                 if (!m3) {

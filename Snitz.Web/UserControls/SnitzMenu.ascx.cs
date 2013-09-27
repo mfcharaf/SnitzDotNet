@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using Snitz.BLL;
 using SnitzCommon;
 using Snitz.Providers;
+using SnitzConfig;
 
 
 /// <summary>
@@ -73,8 +74,6 @@ public partial class SnitzMenu : UserControl
             case SiteMapMenus.Restricted:
                 dsMenu.SiteMapProvider = "SecureSiteMap"; //"RestrictedSiteMap";
                 break;
-            default:
-                break;
         }
 
     }
@@ -90,9 +89,8 @@ public partial class SnitzMenu : UserControl
 
     protected void MenuItemDataBound(object sender, MenuEventArgs e)
     {
-        if (e.Item.NavigateUrl.Contains("action=validate") || e.Item.NavigateUrl.Contains("pendingmembers.aspx"))
+        if (e.Item.NavigateUrl.ToLower().Contains("action=validate") || e.Item.NavigateUrl.ToLower().Contains("pendingmembers.aspx"))
         {
-            SnitzMembershipProvider mp = new SnitzMembershipProvider();
             int pCount = SnitzMembershipProvider.GetUnApprovedMemberCount();
             e.Item.Enabled = false;
             if (pCount > 0)
@@ -102,34 +100,39 @@ public partial class SnitzMenu : UserControl
             }
 
         }
+        if (e.Item.NavigateUrl.ToLower().Contains("events"))
+        {
+            if (!Config.ShowEventsCalendar)
+            {
+                e.Item.Text = "";
+                e.Item.Enabled = false;
+            }            
+        }
         if(e.Item.NavigateUrl.Contains("gallery.aspx"))
         {
-            if (!SnitzConfig.Config.ShowGallery)
+            if (!Config.ShowGallery)
             {
                 e.Item.Text = "";
                 e.Item.Enabled = false;
             }
                 
         }
-        if (e.Item.NavigateUrl.Contains("privatemessageview.aspx"))
+        if (e.Item.NavigateUrl.ToLower().Contains("privatemessage"))
         {
-            // Create an object array consisting of the parameters to the method.
-            // Make sure you get the types right or the underlying
-            // InvokeMember will not find the right method
-            //Object[] args = { ((PageBase)Page).Member.Id };
-            //Object result = DynaInvoke.InvokeMethod(Context.Server.MapPath("~/bin/PrivateMessaging.Data.dll"), "Util", "GetPMCount", args);
-            //int unreadcount = PMData.Util.GetPMCount(((PageBase) Page).Member.Id);
-
             int unreadcount = PrivateMessages.GetUnreadPMCount(((PageBase)Page).Member.Id);
             if (unreadcount > 0)
             {
                 e.Item.Text += string.Format(" ({0})", unreadcount);
             }
-
+            if (!Config.PrivateMessaging)
+            {
+                e.Item.Text = "";
+                e.Item.Enabled = false;
+            }
         }
-        if (e.Item.NavigateUrl.Contains("active.aspx"))
+        if (e.Item.NavigateUrl.ToLower().Contains("active"))
         {
-            PageBase page = (PageBase) this.Page;
+            PageBase page = (PageBase) Page;
             MembershipUser mu = Membership.GetUser(false);
             if(mu != null)
             {

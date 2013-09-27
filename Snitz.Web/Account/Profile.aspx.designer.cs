@@ -778,13 +778,13 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.PlaceHolder phHobby;
         
         /// <summary>
-        /// LinksPanel control.
+        /// TabLinksPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.TabPanel LinksPanel;
+        protected global::AjaxControlToolkit.TabPanel TabLinksPanel;
         
         /// <summary>
         /// pnlLinks control.
@@ -931,13 +931,13 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.GridView rptRecentTopics;
         
         /// <summary>
-        /// Bookmarks control.
+        /// TabBookmarks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.TabPanel Bookmarks;
+        protected global::AjaxControlToolkit.TabPanel TabBookmarks;
         
         /// <summary>
         /// Panel1 control.
@@ -958,13 +958,13 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.Repeater repBookMarks;
         
         /// <summary>
-        /// Gallery control.
+        /// TabGallery control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.TabPanel Gallery;
+        protected global::AjaxControlToolkit.TabPanel TabGallery;
         
         /// <summary>
         /// cbxPublic control.

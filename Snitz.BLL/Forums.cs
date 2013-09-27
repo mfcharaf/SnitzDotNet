@@ -26,6 +26,7 @@ using System.Web.Caching;
 using System.Web.Security;
 using Snitz.Entities;
 using Snitz.IDAL;
+using SnitzMembership.Helpers;
 
 namespace Snitz.BLL
 {
@@ -236,7 +237,28 @@ namespace Snitz.BLL
         public static List<ForumModeratorInfo> GetAvailableModerators(int forumId)
         {
             IForumModerator dal = Factory<IForumModerator>.Create("ForumModerator");
-            return new List<ForumModeratorInfo>(dal.GetAll());
+            return new List<ForumModeratorInfo>(dal.GetAvailableModerators(forumId));
+        }
+
+        public static string[] GetForumRoles(int id)
+        {
+            IForum dal = Factory<IForum>.Create("Forum");
+            return dal.GetForumRoles(id);
+        }
+
+        public static bool IsUserInForumRole(string username, int forumid)
+        {
+            IForum dal = Factory<IForum>.Create("Forum");
+            string[] userroles = BusinessUtil.GetRolesForUser(username);
+
+            string[] forumroles = dal.GetForumRoles(forumid);
+
+            foreach (string forumrole in forumroles)
+            {
+                if (userroles.Contains(forumrole))
+                    return true;
+            }
+            return false;
         }
 
     }

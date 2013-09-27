@@ -33,7 +33,13 @@ namespace Snitz.SQLServerDAL
             
             return null;
         }
+        public static int SafeGetInt16(this SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetInt16(colIndex);
 
+            return 0;
+        }
         /// <summary>
         /// Fetches Snitz date strings from a DataReader and converts to a system DateTime?
         /// </summary>

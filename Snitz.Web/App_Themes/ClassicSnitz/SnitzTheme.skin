@@ -1,0 +1,62 @@
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+--%>
+
+<asp:Image SkinID="XHTML" runat="server" ImageUrl="images/valid-xhtml10.png" AlternateText="Valid XHTML 1.0 Transitional" ToolTip="Valid XHTML 1.0 Transitional" Width=88 Height=31 />
+<asp:Image SkinID="CSS" runat="server" ImageUrl="images/vcss.gif" AlternateText="Valid CSS!" ToolTip="Valid CSS!" Width=88 Height=31 />
+<asp:Image SkinID="LoadingImage" runat="server" ImageUrl="images/activity.gif"/>
+
+<asp:Image SkinID="WebLink" ImageUrl="Images/message/weblink.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="Folder" ImageUrl="Images/message/foldernoposts.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderHot" ImageUrl="Images/hotold.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderLocked" ImageUrl="Images/message/folder_locked.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderNew" ImageUrl="Images/message/foldernewposts.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderNewLocked" ImageUrl="Images/message/folder_locked.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="FolderSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderHotSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderNewSticky" ImageUrl="Images/icon_folder_new_sticky.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderNewStickyLocked" ImageUrl="Images/icon_folder_new_sticky_locked.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderStickyLocked" ImageUrl="Images/admin/lock.png" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="FolderArchive" ImageUrl="Images/icon_folder_archive.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderArchived" ImageUrl="Images/icon_folder_archived.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderClosed" ImageUrl="Images/icon_folder_closed.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderClosedTopic" ImageUrl="Images/icon_folder_closed_topic.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderDelete" ImageUrl="Images/icon_folder_delete.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderHold" ImageUrl="Images/icon_folder_hold.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderModerate" ImageUrl="Images/icon_folder_moderate.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderNewHot" ImageUrl="Images/flame.png" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderNewTopic" ImageUrl="Images/icon_folder_new_topic.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderOpen" ImageUrl="Images/icon_folder_open.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderOpenTopic" ImageUrl="Images/icon_folder_open_topic.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderPencil" ImageUrl="Images/icon_folder_pencil.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderUnlocked" ImageUrl="Images/icon_folder_unlocked.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="FolderUnmoderated" ImageUrl="Images/icon_folder_unmoderated.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="UnModerated" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unmoderated.png" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="UnModeratedPosts" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/warning.png" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="OnHold" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/onhold.png" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="approve" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/ok.png" GenerateEmptyAlternateText="true"/>
+
+<asp:Image SkinID="PosticonSmall" ImageUrl="Images/message/doc.png" runat="server" Width="12" Height="12" />
+<asp:Image SkinID="Posticon" ImageUrl="Images/message/document.png" runat="server" Width="16" Height="16" />
+<asp:Image SkinID="Lastpost" ImageUrl="Images/page_go.png" runat="server" Width="14" Height="14" />
+<asp:Image SkinID="Bar" ImageUrl="Images/icon_bar.gif" runat="server" Width=15 Height=15 />
+
+<asp:Image SkinID="Profile" ImageUrl="Images/icon_profile.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="ProfileLocked" ImageUrl="Images/icon_profile_locked.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="Trashcan" ImageUrl="Images/icon_trashcan.gif" runat="server" Width=16 Height=16 />
+
+<asp:Image SkinID="SortAsc" ImageUrl="Images/sort_ascending.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="SortDesc" ImageUrl="Images/sort_descending.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="Error" ImageUrl="Images/error.png" runat="server" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="Poll" ImageUrl="Images/poll.png" runat="server" GenerateEmptyAlternateText="true"/>

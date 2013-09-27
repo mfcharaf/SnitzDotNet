@@ -23,6 +23,7 @@ using System;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace EventsCalendar.UserControls.Popups
 {
@@ -32,6 +33,9 @@ namespace EventsCalendar.UserControls.Popups
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Config.ShowEventsCalendar)
+                return;
+
             if (Data != null)
             {
                 eventid = (int) Data;

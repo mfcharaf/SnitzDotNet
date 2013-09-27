@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Configuration;
 using System.Reflection;
 using System.Web;
 using System.Web.Routing;
@@ -44,8 +45,8 @@ namespace SnitzUI
             routes.Add(new Route("Find", new WebFormRouteHandler("~/Content/Forums/Search.aspx")));
             routes.Add(new Route("Active", new WebFormRouteHandler("~/Content/Forums/Active.aspx")));
             routes.Add(new Route("ActiveTopics", new WebFormRouteHandler("~/Content/Forums/Active.aspx")));
-            routes.Add(new Route("Help", new WebFormRouteHandler("~/Content/Faq/Faq.aspx")));
-            routes.Add(new Route("Faq", new WebFormRouteHandler("~/Content/Faq/Faq.aspx")));
+            routes.Add(new Route("Help", new WebFormRouteHandler("~/Content/Faq/help.aspx")));
+            routes.Add(new Route("Faq", new WebFormRouteHandler("~/Content/Faq/help.aspx")));
             routes.Add(new Route("PrivateMessages", new WebFormRouteHandler("~/Content/PrivateMessages/PrivateMessageView.aspx")));
             //'Member/NewMail
 
@@ -83,7 +84,11 @@ namespace SnitzUI
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-
+            if (ConfigurationManager.AppSettings["RunSetup"] == "true")
+            {
+                if (!(HttpContext.Current.Request.FilePath.Contains("Setup.aspx") || HttpContext.Current.Request.FilePath.Contains("Process.aspx") || HttpContext.Current.Request.FilePath.Contains("App_Themes")))
+                    Response.Redirect("~/Setup/Setup.aspx", true);
+            }
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

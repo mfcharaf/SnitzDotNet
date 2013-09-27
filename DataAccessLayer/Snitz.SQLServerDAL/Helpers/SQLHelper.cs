@@ -255,5 +255,55 @@ namespace Snitz.SQLServerDAL.Helpers
                         cmd.Parameters.Add(parm);
             }
         }
+
+        public static bool TableExists(string connString, string table)
+        {
+            bool functionReturnValue = false;
+            //// Open connection to the database
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                //// Specify restriction to get table definition schema
+                //// For reference on GetSchema see:
+                //// http://msdn2.microsoft.com/en-us/library/ms254934(VS.80).aspx
+
+                string[] restrictions = new string[4];
+                restrictions[2] = table;
+                DataTable dbTbl = conn.GetSchema("Tables", restrictions);
+
+                functionReturnValue = dbTbl.Rows.Count != 0;
+
+                dbTbl.Dispose();
+            }
+            return functionReturnValue;
+        }
+
+        public static bool FieldExists(string connString, string tblName, string fldName)
+        {
+            bool functionReturnValue = false;
+
+            //// Open connection to the database
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                DataTable dbTbl = new DataTable();
+
+                // Get the table definition loaded in a table adapter
+                string strSql = "Select TOP 1 * from " + tblName;
+                SqlDataAdapter dbAdapater = new SqlDataAdapter(strSql, conn);
+                dbAdapater.Fill(dbTbl);
+
+                // Get the index of the field name
+                int i = dbTbl.Columns.IndexOf(fldName);
+
+                functionReturnValue = i != -1;
+
+                dbTbl.Dispose();
+                conn.Close();
+            }
+            return functionReturnValue;
+        }
     }
 }

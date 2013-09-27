@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SnitzUI.Setup
+﻿namespace SnitzUI.Setup
 {
-    public partial class Setup
+    public partial class Process
     {
         private string[] _basecreateStrings = new string[] { 
-            ForumArchiveReply, ForumArchiveTopic, ForumBadwords,
-            ForumCategory, ForumForum, ForumGroupNames, ForumGroups,
-            ForumMembers, ForumModerators, ForumNameFilter, ForumReply,
-            ForumSubscription, ForumTopics, ForumTotals
+            FORUM_A_REPLY, FORUM_A_TOPIC, FORUM_BADWORDS,
+            FORUM_CATEGORY, FORUM_FORUM, FORUM_GROUP_NAMES, FORUM_GROUPS,
+            FORUM_MEMBERS, FORUM_MODERATOR, FORUM_NAMEFILTER, FORUM_REPLY,
+            FORUM_SUBSCRIPTIONS, FORUM_TOPICS, FORUM_TOTALS
         };
 
-        const string  ForumArchiveReply = "CREATE TABLE [dbo].[FORUM_A_REPLY]( " +
+        const string  FORUM_A_REPLY = "CREATE TABLE [dbo].[FORUM_A_REPLY]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -31,7 +26,7 @@ namespace SnitzUI.Setup
         ") ON [PRIMARY];";
 
 
-        const string ForumArchiveTopic = "CREATE TABLE [dbo].[FORUM_A_TOPICS]( " +
+        const string FORUM_A_TOPIC = "CREATE TABLE [dbo].[FORUM_A_TOPICS]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -55,17 +50,16 @@ namespace SnitzUI.Setup
         "	[T_SIG] [smallint] NULL " +
         ") ON [PRIMARY];";
 
-        const string ForumBadwords = "CREATE TABLE [dbo].[FORUM_BADWORDS]( " +
+        const string FORUM_BADWORDS = "CREATE TABLE [dbo].[FORUM_BADWORDS]( " +
         "	[B_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[B_BADWORD] [nvarchar](50) NULL, " +
         "	[B_REPLACE] [nvarchar](50) NULL, " +
         " CONSTRAINT [PK_FORUM_BADWORDS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[B_ID] ASC " +
+        "( [B_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumCategory = "CREATE TABLE [dbo].[FORUM_CATEGORY]( " +
+        const string FORUM_CATEGORY = "CREATE TABLE [dbo].[FORUM_CATEGORY]( " +
         "	[CAT_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[CAT_STATUS] [smallint] NULL, " +
         "	[CAT_NAME] [nvarchar](100) NULL, " +
@@ -73,13 +67,12 @@ namespace SnitzUI.Setup
         "	[CAT_SUBSCRIPTION] [int] NULL, " +
         "	[CAT_ORDER] [int] NULL, " +
         " CONSTRAINT [PK_FORUM_CATEGORY] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[CAT_ID] ASC " +
+        "( [CAT_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
 
-        const string ForumForum = "CREATE TABLE [dbo].[FORUM_FORUM]( " +
+        const string FORUM_FORUM = "CREATE TABLE [dbo].[FORUM_FORUM]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[F_STATUS] [smallint] NULL, " +
@@ -104,41 +97,38 @@ namespace SnitzUI.Setup
         "	[F_ORDER] [int] NOT NULL, " +
         "	[F_DEFAULTDAYS] [int] NULL, " +
         "	[F_COUNT_M_POSTS] [smallint] NULL, " +
-        "	[F_L_ARCHIVE] [nvarchar](14) NOT NULL DEFAULT '', " +
+        "	[F_L_ARCHIVE] [nvarchar](14) NULL , " +
         "	[F_ARCHIVE_SCHED] [int] NOT NULL DEFAULT 30, " +
-        "	[F_L_DELETE] [nvarchar](14) NOT NULL DEFAULT '', " +
+        "	[F_L_DELETE] [nvarchar](14) NULL, " +
         "	[F_DELETE_SCHED] [int] NOT NULL DEFAULT 365, " +
         " CONSTRAINT [PK_FORUM_FORUM] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[FORUM_ID] ASC " +
+        "( [FORUM_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumGroupNames = "CREATE TABLE [dbo].[FORUM_GROUP_NAMES]( " +
+        const string FORUM_GROUP_NAMES = "CREATE TABLE [dbo].[FORUM_GROUP_NAMES]( " +
         "	[GROUP_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[GROUP_NAME] [nvarchar](50) NULL, " +
         "	[GROUP_DESCRIPTION] [nvarchar](255) NULL, " +
         "	[GROUP_ICON] [nvarchar](255) NULL, " +
         "	[GROUP_IMAGE] [nvarchar](255) NULL, " +
         " CONSTRAINT [PK_FORUM_GROUP_NAMES] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[GROUP_ID] ASC " +
+        "( [GROUP_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
 
-        const string ForumGroups = "CREATE TABLE [dbo].[FORUM_GROUPS]( " +
+        const string FORUM_GROUPS = "CREATE TABLE [dbo].[FORUM_GROUPS]( " +
         "	[GROUP_KEY] [int] IDENTITY(1,1) NOT NULL, " +
         "	[GROUP_ID] [int] NULL, " +
         "	[GROUP_CATID] [int] NULL, " +
         " CONSTRAINT [PK_FORUM_GROUPS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[GROUP_KEY] ASC " +
+        "( [GROUP_KEY] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
 
-        const string ForumMembers = "CREATE TABLE [dbo].[FORUM_MEMBERS]( " +
+        const string FORUM_MEMBERS = "CREATE TABLE [dbo].[FORUM_MEMBERS]( " +
         "	[MEMBER_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[M_STATUS] [smallint] NULL, " +
         "	[M_NAME] [nvarchar](75) NULL, " +
@@ -188,23 +178,21 @@ namespace SnitzUI.Setup
         "	[M_SHA256] [smallint] NULL, " +
         "	[M_ALLOWEMAIL] [smallint] NULL, " +
         " CONSTRAINT [PK_FORUM_MEMBERS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[MEMBER_ID] ASC " +
+        "( [MEMBER_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumModerators = "CREATE TABLE [dbo].[FORUM_MODERATOR]( " +
+        const string FORUM_MODERATOR = "CREATE TABLE [dbo].[FORUM_MODERATOR]( " +
         "	[MOD_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[FORUM_ID] [int] NULL, " +
         "	[MEMBER_ID] [int] NULL, " +
         "	[MOD_TYPE] [smallint] NULL, " +
         " CONSTRAINT [PK_FORUM_MODERATOR] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[MOD_ID] ASC " +
+        "( [MOD_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumNameFilter = "CREATE TABLE [dbo].[FORUM_NAMEFILTER]( " +
+        const string FORUM_NAMEFILTER = "CREATE TABLE [dbo].[FORUM_NAMEFILTER]( " +
         "	[N_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[N_NAME] [nvarchar](75) NULL, " +
         " CONSTRAINT [PK_FORUM_NAMEFILTER] PRIMARY KEY CLUSTERED  " +
@@ -213,7 +201,7 @@ namespace SnitzUI.Setup
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumReply = "CREATE TABLE [dbo].[FORUM_REPLY]( " +
+        const string FORUM_REPLY = "CREATE TABLE [dbo].[FORUM_REPLY]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -228,24 +216,22 @@ namespace SnitzUI.Setup
         "	[R_LAST_EDITBY] [int] NULL, " +
         "	[R_SIG] [smallint] NULL, " +
         " CONSTRAINT [PK_FORUM_REPLY] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[REPLY_ID] ASC " +
+        "( [REPLY_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumSubscription = "CREATE TABLE [dbo].[FORUM_SUBSCRIPTIONS]( " +
+        const string FORUM_SUBSCRIPTIONS = "CREATE TABLE [dbo].[FORUM_SUBSCRIPTIONS]( " +
         "	[SUBSCRIPTION_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[MEMBER_ID] [int] NOT NULL, " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         " CONSTRAINT [PK_FORUM_SUBSCRIPTIONS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[SUBSCRIPTION_ID] ASC " +
+        "( [SUBSCRIPTION_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumTopics = "CREATE TABLE [dbo].[FORUM_TOPICS]( " +
+        const string FORUM_TOPICS = "CREATE TABLE [dbo].[FORUM_TOPICS]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] IDENTITY(1,1) NOT NULL, " +
@@ -269,12 +255,11 @@ namespace SnitzUI.Setup
         "	[T_STICKY] [smallint] NULL, " +
         "	[T_SIG] [smallint] NULL, " +
         " CONSTRAINT [PK_FORUM_TOPICS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[TOPIC_ID] ASC " +
+        "( [TOPIC_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string ForumTotals = "CREATE TABLE [dbo].[FORUM_TOTALS]( " +
+        const string FORUM_TOTALS = "CREATE TABLE [dbo].[FORUM_TOTALS]( " +
         "	[COUNT_ID] [smallint] IDENTITY(1,1) NOT NULL, " +
         "	[P_COUNT] [int] NULL, " +
         "	[P_A_COUNT] [int] NULL, " +
@@ -282,8 +267,7 @@ namespace SnitzUI.Setup
         "	[T_A_COUNT] [int] NULL, " +
         "	[U_COUNT] [int] NULL, " +
         " CONSTRAINT [PK_FORUM_TOTALS] PRIMARY KEY CLUSTERED  " +
-        "( " +
-        "	[COUNT_ID] ASC " +
+        "( [COUNT_ID] ASC " +
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
     }

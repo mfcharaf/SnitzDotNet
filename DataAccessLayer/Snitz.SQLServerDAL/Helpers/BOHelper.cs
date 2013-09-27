@@ -88,19 +88,19 @@ namespace Snitz.SQLServerDAL.Helpers
                                             LastVisitDate = rdr.GetSnitzDate(15),
                                             LastPostDate = rdr.GetSnitzDate(16),
                                             Title = rdr.SafeGetString(17), //MemberTitle(rdr.SafeGetString(17)),
-                                            AllowSubscriptions = (rdr["M_SUBSCRIPTION"] as int?) == 1,
-                                            HideEmail = (rdr["M_HIDE_EMAIL"] as int?) == 1,
-                                            ReceiveEmails = (rdr["M_RECEIVE_EMAIL"] as int?) == 1,
+                                            AllowSubscriptions = rdr.SafeGetInt16(18) == 1,
+                                            HideEmail = rdr.SafeGetInt16(19) == 1,
+                                            ReceiveEmails = rdr.SafeGetInt16(20) == 1,
                                             MembersIP = rdr.SafeGetString(21),
-                                            ViewSignatures = (rdr["M_VIEW_SIG"] as int?) == 1,
-                                            UseSignature = (rdr["M_SIG_DEFAULT"] as int?) == 1,
-                                            Voted = (rdr["M_VOTED"] as int?) == 1,
-                                            AllowEmail = (rdr["M_ALLOWEMAIL"] as int?) == 1,
+                                            ViewSignatures = rdr.SafeGetInt16(22) == 1,
+                                            UseSignature = rdr.SafeGetInt16(23) == 1,
+                                            Voted = rdr.SafeGetInt16(24) == 1,
+                                            AllowEmail = rdr.SafeGetInt16(25) == 1,
                                             Avatar = rdr.SafeGetString(26),
                                             Theme = rdr.SafeGetString(27),
                                             TimeOffset = rdr.GetInt32(28),
                                             DateOfBirth = rdr.SafeGetString(29),
-                                            Age = rdr.GetString(30),
+                                            Age = rdr.SafeGetString(30),
                                             Password = rdr.GetString(31),
                                             ValidationKey = rdr.SafeGetString(32),
                                             IsValid = rdr.GetInt16(33) == 1,
@@ -158,12 +158,10 @@ namespace Snitz.SQLServerDAL.Helpers
                     UseSignatures = rdr.GetInt16(15) == 1,
                     LastReplyId = rdr.SafeGetInt32(16),
                     UnModeratedReplies = rdr.GetInt32(17),
-                    Message = rdr.SafeGetString(18).ParseWebUrls()
+                    Message = rdr.SafeGetString(18)
 
                 };
-                //" T.TOPIC_ID,T.CAT_ID,T.FORUM_ID,T.T_STATUS,T.T_SUBJECT,T.T_AUTHOR,T.T_REPLIES,T.T_VIEW_COUNT,T.T_LAST_POST" +
-                //",T.T_DATE,T.T_IP,T.T_LAST_POST_AUTHOR,T.T_STICKY,T.T_LAST_EDIT,T.T_LAST_EDITBY,T.T_SIG,T.T_LAST_POST_REPLY_ID" +
-                //",T.T_UREPLIES,T.T_MESSAGE,A.M_NAME AS Author, LPA.M_NAME AS LastPostAuthor, EM.M_NAME AS Editor,A.M_VIEW_SIG, A.M_SIG ";
+
                 if (rdr.FieldCount > 19)
                 {
                     topic.AuthorName = rdr.SafeGetString(19);
@@ -201,8 +199,9 @@ namespace Snitz.SQLServerDAL.Helpers
                                       LastEditDate = rdr.GetSnitzDate(8),
                                       LastEditedById = rdr.SafeGetInt32(9),
                                       UseSignatures = rdr.GetInt16(10) == 1,
-                                      Message = rdr.SafeGetString(11).ParseWebUrls()
+                                      Message = rdr.SafeGetString(11)
                                   };
+
             if (rdr.FieldCount > 12)
             {
                 reply.AuthorName = rdr.SafeGetString(12);

@@ -246,10 +246,6 @@ namespace Snitz.Providers
          * Forum Specific Methods
          *************************************************************************/
 
-        public static string[] GetForumRoles(int forumId)
-        {
-            return BusinessUtil.GetForumRoles(forumId);
-        }
 
         public Dictionary<int,string> ListAllRolesForUser(string username)
         {

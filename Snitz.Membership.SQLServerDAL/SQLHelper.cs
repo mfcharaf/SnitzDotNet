@@ -58,6 +58,7 @@ namespace Snitz.Membership.SQLServerDAL
             }
             catch (Exception)
             {
+                throw;
                 return -1;
 
             }

@@ -296,9 +296,19 @@ namespace SnitzUI
 
             repFavLinks.DataSource = _weblinks;
             repFavLinks.DataBind();
+            if (Config.UserGallery)
+            {
+                TabGallery.Visible = true;
+                TabGallery.HeaderText = "Images";
+                dlImages.DataSource = GalleryFunctions.GetImages(_userProfile);
+                dlImages.DataBind();
+            }
+            else
+            {
+                TabGallery.Visible = false;
+                TabGallery.HeaderText = "Images";                
+            }
 
-            dlImages.DataSource = GalleryFunctions.GetImages(_userProfile);
-            dlImages.DataBind();
         }
         
         protected void CancelClick(object sender, EventArgs eventArgs)
@@ -319,7 +329,7 @@ namespace SnitzUI
             
             _profile.HideAge = cbxHideAge.Checked;
             _profile.Skype = tbxSkype.Text;
-            _profile.PublicGallery = cbxPublic.Checked;
+            _profile.PublicGallery = cbxPublic.Checked && Config.ShowGallery;
             _profile.LinkTarget = ddlTarget.SelectedValue;
             _profile.TimeOffset = Convert.ToInt32(ddlTimeZone.SelectedValue);
             _profile.Save();
@@ -327,7 +337,7 @@ namespace SnitzUI
             string folderPath = "/gallery/";
             folderPath += _userProfile + "/public.txt";
             string path = Server.MapPath("~" + folderPath);
-            if(_profile.PublicGallery)
+            if (_profile.PublicGallery && Config.ShowGallery)
             {
                 if (!File.Exists(path))
                 {
@@ -419,7 +429,7 @@ namespace SnitzUI
             ddlTheme.SelectedValue = Config.UserTheme;
             if (_profile.Gravatar)
             {
-                var grav = new Gravatar()
+                var grav = new Gravatar
                 {
                     ID = "imgAvatar",
                     Email = _user.Email,
@@ -464,7 +474,6 @@ namespace SnitzUI
             lblVisit.Text += @" : " + Members.LastVisitTimeAgo(_user);
 
             cbxPublic.Checked = _profile.PublicGallery;
-            TabSubscriptions.Visible = _isMyProfile;
             grdSubs.DataSource = Subscriptions.GetMemberSubscriptions(_user.Id);
             grdSubs.DataBind();
 
@@ -531,9 +540,11 @@ namespace SnitzUI
             btnChangeEmail.Visible = _editmode;
             btnAvatar.Visible = _editmode;
             repFavLinks.Visible = _editmode;
-            Bookmarks.Visible = _isMyProfile || IsAdministrator;
+            TabBookmarks.Visible = _isMyProfile || IsAdministrator;
             pnlPassword.Visible = _isMyProfile;
-            Gallery.Visible = _isMyProfile || IsAdministrator || _profile.PublicGallery;
+            TabGallery.Visible = (_isMyProfile && Config.UserGallery) || IsAdministrator || (_profile.PublicGallery && Config.ShowGallery && Config.UserGallery);
+            cbxPublic.Visible = Config.ShowGallery;
+            TabSubscriptions.Visible = (Config.SubscriptionLevel != Enumerators.SubscriptionLevel.None);
         }
         
         private Image GetTopicIcon(TopicInfo topic)
@@ -715,7 +726,7 @@ namespace SnitzUI
 
         private void AsyncFileUpload1UploadedFileError(object sender, AsyncFileUploadEventArgs e)
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "error", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';});", true);
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), "error", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Error: " + e.StatusMessage + "';});", true);
         }
 
         private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
@@ -746,7 +757,7 @@ namespace SnitzUI
                 throw ex;
             }
             string savePath = Page.MapPath(String.Format("~/Avatars/{0}", Path.GetFileName(filename).Replace(" ", "+")));
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
 
             AsyncFileUpload1.SaveAs(savePath);
             _user.Avatar = Path.GetFileName(filename).Replace(" ", "+");

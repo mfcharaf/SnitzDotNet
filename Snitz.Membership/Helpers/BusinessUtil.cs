@@ -62,12 +62,6 @@ namespace SnitzMembership.Helpers
             dal.AddRolesToForum(forumId, newroles);
         }
 
-        public static string[] GetForumRoles(int forumid)
-        {
-            IRoles dal = Snitz.Membership.Helpers.Factory<IRoles>.Create("Role");
-            return dal.GetForumRoles(forumid);
-        }
-
         public static Dictionary<int, string> GetRoleListForUser(string username)
         {
             IRoles dal = Snitz.Membership.Helpers.Factory<IRoles>.Create("Role");

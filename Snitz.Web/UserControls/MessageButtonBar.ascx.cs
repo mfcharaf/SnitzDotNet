@@ -78,7 +78,6 @@ public partial class MessageButtonBar : UserControl
 
         TopicApprove.Visible = false;
         //TopicHold.Visible = false;
-        hReply.Visible = false;
         hReplyQuote.Visible = false;
         hEdit.Visible = false;
         ViewIP.Visible = false;
@@ -163,6 +162,7 @@ public partial class MessageButtonBar : UserControl
 
             imgPosticon.CommandName = "reply";
             TopicDelete.CommandName = "reply";
+            TopicDelete.AlternateText = webResources.lblDelPost;
             SplitTopic.CommandArgument = ThisId.ToString();
             hEdit.ToolTip = webResources.lblEditReply;
             hEdit.Text = webResources.lblEditReply;
@@ -193,10 +193,8 @@ public partial class MessageButtonBar : UserControl
         hEdit.Visible = hEdit.Visible && !(_isTopicLocked || _forum.Status == (int)Enumerators.PostStatus.Closed);    // but not if it is locked
         hEdit.Visible = hEdit.Visible || _isForumModerator || _isadmin;      //override for admins/moderator
 
-        hReply.NavigateUrl = String.Format("~/Content/Forums/post.aspx?method=reply&TOPIC={0}", _topicid);
-        hReply.Visible = page.IsAuthenticated && !(_isTopicLocked || _forum.Status == (int)Enumerators.PostStatus.Closed);
-        hReply.Visible = hReply.Visible || (_isForumModerator || _isadmin);
-        hReplyQuote.Visible = hReply.Visible;
+        hReplyQuote.Visible = page.IsAuthenticated && !(_isTopicLocked || _forum.Status == (int)Enumerators.PostStatus.Closed);
+        hReplyQuote.Visible = hReplyQuote.Visible || (_isForumModerator || _isadmin);
         hReplyQuote.NavigateUrl = String.Format("~/Content/Forums/post.aspx?method=quote&type={0}&id={1}&TOPIC={2}", _posttype, ThisId, _topicid);
         
     }
@@ -212,11 +210,13 @@ public partial class MessageButtonBar : UserControl
                 {
                     this.DeleteClicked(this, EventArgs.Empty);
                 }
+                InvalidateForumCache();
                 break;
             case "topic" :
                 TopicInfo t = Topics.GetTopic(Convert.ToInt32(btn.CommandArgument));
                 int forumid = t.ForumId;
                 Topics.Delete(t);
+                InvalidateForumCache();
                 Response.Redirect("~/Content/Forums/Forum.aspx?FORUM=" + forumid);
                 break;
         }
@@ -246,5 +246,11 @@ public partial class MessageButtonBar : UserControl
                 page.Profile.Save();
                 break;
         }
+    }
+
+    private void InvalidateForumCache()
+    {
+        object obj = -1;
+        Cache["RefreshKey"] = obj;
     }
 }

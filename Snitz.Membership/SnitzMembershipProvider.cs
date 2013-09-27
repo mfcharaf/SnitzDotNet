@@ -162,7 +162,8 @@ namespace Snitz.Providers
             }
 
             // If no user with this name already exists
-            if (GetUser(username, false) == null)
+            MembershipUser mu = GetUser(username, false);
+            if (mu == null || mu.UserName.ToLower() == "guest")
             {
                 DateTime createdDate = DateTime.UtcNow;
 

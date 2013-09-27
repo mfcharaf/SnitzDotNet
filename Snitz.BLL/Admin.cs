@@ -60,5 +60,41 @@ namespace Snitz.BLL
                 return dal.GetMemberCount(HttpContext.Current.Session["SearchFilter"]);
             }
         }
+
+        public static string ExecuteScript(string script)
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            return dal.ExecuteScript(script);
+        }
+
+        public static bool DoesTableExist(string table)
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            return dal.TableExists(table);
+        }
+
+        public static void CheckDBOwner()
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            dal.ChangeDbOwner();
+        }
+
+        public static bool DatabaseExists()
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            return dal.DatabaseExists();
+        }
+
+        public static IEnumerable<ForumInfo> PrivateForums()
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            return dal.PrivateForums();
+        }
+
+        public static string[] AllowedMembers(int forumid)
+        {
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            return dal.AllowedMembers(forumid);
+        }
     }
 }

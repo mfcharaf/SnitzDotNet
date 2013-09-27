@@ -1,0 +1,35 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+
+<asp:ImageButton SkinID="Outbox" runat="server" AlternateText="OutBox" ImageUrl="pm/pmoutbox.jpg" />
+<asp:ImageButton SkinID="Inbox" runat="server" AlternateText="InBox" ImageUrl="pm/pminbox.jpg"/>
+<asp:ImageButton SkinID="PMNew" runat="server" AlternateText="New PM" ImageUrl="pm/pmnew.jpg" />
+<asp:ImageButton SkinID="PMReceive" runat="server" AlternateText="Check Messages" ImageUrl="pm/pmreceive.jpg"/>
+<asp:ImageButton SkinID="PMMembers" runat="server" AlternateText="Member List" ImageUrl="pm/pmmemberlist.jpg"/>
+<asp:ImageButton SkinID="PMOptions" runat="server" AlternateText="Preferences" ImageUrl="pm/pmprivpref.jpg"/>
+
+<asp:ImageButton SkinID="PMReply" runat="server" AlternateText="Check Messages" ImageUrl="pm/pmreply.jpg"/>
+<asp:ImageButton SkinID="PMReplyQuote" runat="server" AlternateText="Check Messages" ImageUrl="pm/pmreplyquote.jpg"/>
+<asp:ImageButton SkinID="PMForward" runat="server" AlternateText="Member List" ImageUrl="pm/pmforward.jpg"/>
+<asp:ImageButton SkinID="PMDelete" runat="server" AlternateText="Preferences" ImageUrl="pm/pmdelete.jpg"/>
+<asp:ImageButton SkinID="PMSend" runat="server" AlternateText="Preferences" ImageUrl="images/message/pm.png"/>
+
+
+
+<asp:Image SkinID="pmRead" runat="server" ImageUrl="pm/icon_pm_old.gif"/>
+<asp:Image SkinID="pmUnread" runat="server" ImageUrl="pm/icon_pm_new.gif"/>
+
+

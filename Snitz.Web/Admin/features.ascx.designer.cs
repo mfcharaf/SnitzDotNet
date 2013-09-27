@@ -183,13 +183,13 @@ public partial class Admin_features {
     protected global::System.Web.UI.WebControls.Label Label1;
     
     /// <summary>
-    /// rblPublicGallery control.
+    /// rblUserGallery control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblPublicGallery;
+    protected global::SnitzUI.Admin.AdminRadioButton rblUserGallery;
     
     /// <summary>
     /// Panel3 control.
@@ -649,6 +649,42 @@ public partial class Admin_features {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlShowRank;
+    
+    /// <summary>
+    /// lblCalendar control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblCalendar;
+    
+    /// <summary>
+    /// rblShowEvents control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblShowEvents;
+    
+    /// <summary>
+    /// lblPrivateMessages control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblPrivateMessages;
+    
+    /// <summary>
+    /// rblPrivateMessages control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblPrivateMessages;
     
     /// <summary>
     /// Panel8 control.

@@ -71,6 +71,9 @@ namespace Snitz.BLL
 
         public static MemberInfo GetMember(string username)
         {
+            if (String.IsNullOrEmpty(username))
+                return null;
+
             List<int> roleList = new List<int> { 0 };
             roleList.AddRange(SnitzCachedLists.UserRoles().Select(role => role.Key));
             

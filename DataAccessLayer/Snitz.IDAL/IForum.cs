@@ -37,5 +37,6 @@ namespace Snitz.IDAL
         void UpdateLastForumPost(object post);
         void SetForumStatus(int forumid, int status);
         void EmptyForum(int forumid);
+        string[] GetForumRoles(int id);
     }
 }

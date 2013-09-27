@@ -22,6 +22,33 @@ namespace SnitzUI.Setup {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// lblForumTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblForumTitle;
+        
+        /// <summary>
+        /// homeLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink homeLink;
+        
+        /// <summary>
+        /// MainSM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ToolkitScriptManager MainSM;
+        
+        /// <summary>
         /// AdminUserRequired control.
         /// </summary>
         /// <remarks>
@@ -85,15 +112,6 @@ namespace SnitzUI.Setup {
         protected global::System.Web.UI.WebControls.TextBox adminEmail;
         
         /// <summary>
-        /// UpdateDB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UpdateDB;
-        
-        /// <summary>
         /// updateType control.
         /// </summary>
         /// <remarks>
@@ -103,21 +121,30 @@ namespace SnitzUI.Setup {
         protected global::System.Web.UI.WebControls.HiddenField updateType;
         
         /// <summary>
-        /// litSetupResult control.
+        /// lnkR control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litSetupResult;
+        protected global::System.Web.UI.WebControls.HyperLink lnkR;
         
         /// <summary>
-        /// lnkReturn control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkReturn;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
+        /// UpdateProgress1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgress1;
     }
 }

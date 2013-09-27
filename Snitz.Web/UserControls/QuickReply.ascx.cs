@@ -98,11 +98,15 @@ public partial class QuickReply : UserControl
         {
             Session["LastPostMade"] = newdate.ToForumDateStr();
         }
-
+        InvalidateForumCache();
         Page.Response.Redirect(string.Format("/Content/Forums/topic.aspx?whichpage=-1&TOPIC_ID={0}&#{1}", thisTopic.Id, replyid));
 
     }
-
+    private void InvalidateForumCache()
+    {
+        object obj = -1;
+        Cache["RefreshKey"] = obj;
+    }
     #region async file upload
 
     private void AsyncFileUpload1UploadedFileError(object sender, AsyncFileUploadEventArgs e)

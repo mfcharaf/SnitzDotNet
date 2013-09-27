@@ -129,32 +129,6 @@ public partial class Homepage : PageBase
             smp.Visible = false;
 	}
 
-    private void WriteJavascript()
-    {
-        //writes the javascript to collapse categories
-        //var sScript = new StringBuilder();
-        //sScript.AppendLine("function _getRowIndex(col) {");
-        //sScript.AppendLine("var row = col.parentNode;");
-        //sScript.AppendLine("var obj = row;");
-        //sScript.AppendLine("var rtrn = row.rowIndex || 0;");
-        //sScript.AppendLine("if (rtrn == 0) {");
-        //sScript.AppendLine("do{");
-        //sScript.AppendLine("if (row.nodeType == 1) rtrn++;");
-        //sScript.AppendLine("row = row.previousSibling;");
-        //sScript.AppendLine("} while (row);");
-        //sScript.AppendLine("--rtrn;");
-        //sScript.AppendLine("}");
-        //sScript.AppendLine("if(obj.parentNode.parentNode.rows[rtrn+1].style.display == 'none'){");
-        //sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display = obj.parentNode.parentNode.rows[rtrn].style.display;");
-        //sScript.AppendLine("obj.cells[0].className = 'CategoryExpanded';");
-        //sScript.AppendLine("}else{");
-        //sScript.AppendLine("obj.parentNode.parentNode.rows[rtrn+1].style.display= 'none';");
-        //sScript.AppendLine("obj.cells[0].className = 'CategoryCollapsed';");
-        //sScript.AppendLine("}");
-        //sScript.AppendLine("}");
-        //ClientScript.RegisterClientScriptBlock(GetType(), "collapse_cat", sScript.ToString(), true);
-    }
-
     protected void CategoryDataListItemDataBound(object sender, RepeaterItemEventArgs e)
     {
 	    RepeaterItem item = e.Item;

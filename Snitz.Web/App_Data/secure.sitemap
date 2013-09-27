@@ -4,20 +4,20 @@
     <siteMapNode url="~\default.aspx" title="$resources:SiteMapLocalizations,HomePageTitle,Home" description="$resources:SiteMapLocalizations,HomePageDescription,Home"/>
     <siteMapNode title="Account" description="Member only links" roles="*">
         <siteMapNode url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,Profile" description="$resources:SiteMapLocalizations,ProfilePageDescription,Profile"/>
-        <siteMapNode  url="~\Content\PrivateMessages\privatemessageview.aspx" title="Private Messages" description="Private Message Inbox"/>
+        <siteMapNode  url="~\PrivateMessages" title="Private Messages" description="Private Message Inbox"/>
         <siteMapNode  url="~\mygallery.aspx" title="Gallery" description="My Gallery" />
     </siteMapNode>
-    <siteMapNode  url="~\Content\Forums\active.aspx" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription,Active"/>
-    <siteMapNode url="~\Content\Forums\members.aspx" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription,Members"/>
-    <siteMapNode url="~\Content\Forums\search.aspx" title="$resources:SiteMapLocalizations,SearchPageTitle,Search" description="$resources:SiteMapLocalizations,SearchPageDescription,Search"/>
-    <siteMapNode url="~\Content\Events\events.aspx" title="Events" description="Events"/>
+    <siteMapNode  url="~\ActiveTopics" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription,Active"/>
+    <siteMapNode url="~\Members" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription,Members"/>
+    <siteMapNode url="~\Search" title="$resources:SiteMapLocalizations,SearchPageTitle,Search" description="$resources:SiteMapLocalizations,SearchPageDescription,Search"/>
+    <siteMapNode url="~\Events" title="Events" description="Events"/>
     <siteMapNode url="~\Content\Gallery\gallery.aspx" title="Galleries" description="Member Galleries"/>
     <siteMapNode roles="*" title="Admin" >
         <siteMapNode url="~\admin\default.aspx" title="Forum Settings" description="$resources:SiteMapLocalizations,AdminPageDescription,Admin"/>
         <siteMapNode url="~\admin\resXEditor.aspx" title="Language Translation" description="Forum string translation"/>
         <siteMapNode url="~\admin\pendingmembers.aspx" title="Pending Members" description="Pending Members" enabled="true" />
     </siteMapNode>
-    <siteMapNode url="~\Content\Faq\faq.aspx" title="$resources:SiteMapLocalizations,FAQPageTitle,Help" description="$resources:SiteMapLocalizations,FAQPageDescription,Help"/>
+    <siteMapNode url="~\help" title="$resources:SiteMapLocalizations,FAQPageTitle,Help" description="$resources:SiteMapLocalizations,FAQPageDescription,Help"/>
 
   </siteMapNode>
 </siteMap>

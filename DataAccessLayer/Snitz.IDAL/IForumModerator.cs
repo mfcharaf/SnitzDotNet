@@ -34,7 +34,9 @@ namespace Snitz.IDAL
         IEnumerable<ForumModeratorInfo> GetByParent(int forumid);
         List<ForumInfo> GetUnModeratedForums(int memberId);
         List<ForumInfo> GetModeratedForums(int memberId);
-        string[] GetForumRoles(int forumid);
         bool IsUserForumModerator(int id, int forumId);
+        List<ForumModeratorInfo> GetAvailableModerators(int forumId);
+        void SetForumModerators(int forumId, int[] userList);
+        void SetUserAsModeratorForForums(int memberId, int[] forumList);
     }
 }

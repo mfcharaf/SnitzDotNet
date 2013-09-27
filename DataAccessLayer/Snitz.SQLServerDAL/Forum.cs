@@ -191,6 +191,23 @@ namespace Snitz.SQLServerDAL
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "UPDATE FORUM_FORUM SET F_LAST_POST_AUTHOR=NULL,F_LAST_POST=NULL,F_LAST_POST_TOPIC_ID=NULL,F_LAST_POST_REPLY_ID=NULL WHERE FORUM_ID=@ForumId", forum);
         }
 
+        public string[] GetForumRoles(int forumid)
+        {
+            const string strSql = "SELECT AR.LoweredRoleName FROM FORUM_ROLES FR LEFT OUTER JOIN aspnet_Roles AR ON FR.Role_Id = AR.RoleId WHERE FORUM_ID=@ForumId";
+            List<string> forums = new List<string>();
+
+            SqlParameter parm = new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumid };
+
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parm))
+            {
+                while (rdr.Read())
+                {
+                    forums.Add(rdr.GetString(0));
+                }
+            }
+            return forums.ToArray();
+        }
+
         #endregion
 
         #region IBaseObject<ForumInfo> Members

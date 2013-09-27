@@ -151,7 +151,7 @@ namespace SnitzCommon
 	    }
 	    
 		public event SiteMapResolveEventHandler SiteMapResolve;
-
+        
         protected override void OnPreInit(EventArgs e)
         {
             //DO we need to run the Database setup
@@ -300,22 +300,22 @@ namespace SnitzCommon
                 master.PageTimer = string.Format(Resources.webResources.lblTimer, ((float)stopWatch.ElapsedMilliseconds / 1000));
         }
 
-        //public void Page_Error(object sender, EventArgs e)
-        //{
-        //    Exception objErr = Server.GetLastError().GetBaseException();
-        //    string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
-        //                 "<br/><b>Error in: </b>" + Request.Url.ToString() +
-        //                 "<br/><b>Error Message: </b>" + objErr.Message.ToString();
-        //    if (IsAdministrator || Config.DebugMode)
-        //            err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
-        //    Response.Write("<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
-        //    Response.Write(err);
-        //    Response.Write("<br/></div>");
-        //    Response.Write("<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
-        //    Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
-        //    Response.Write("</div>");
-        //    Server.ClearError();
-        //}
+        public void Page_Error(object sender, EventArgs e)
+        {
+            Exception objErr = Server.GetLastError().GetBaseException();
+            string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
+                         "<br/><b>Error in: </b>" + Request.Url.ToString() +
+                         "<br/><b>Error Message: </b>" + objErr.Message.ToString();
+            if (IsAdministrator || Config.DebugMode)
+                err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
+            Response.Write("<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
+            Response.Write(err);
+            Response.Write("<br/></div>");
+            Response.Write("<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
+            Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
+            Response.Write("</div>");
+            Server.ClearError();
+        }
 
 
 

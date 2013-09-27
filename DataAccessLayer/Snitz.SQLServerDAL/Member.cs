@@ -60,17 +60,158 @@ namespace Snitz.SQLServerDAL
             return members;
         }
 
-        public int Add(MemberInfo obj)
+        public int Add(MemberInfo member)
         {
-            //Member object added through membership providor
-            return -1;
+            List<SqlParameter> memberparms;
+
+            const string strSql = "INSERT INTO FORUM_MEMBERS " +
+                                  "(M_NAME,M_STATUS,M_LEVEL,M_TITLE,M_EMAIL,M_PASSWORD,M_VALID,M_KEY,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION" +
+                                  ",M_SEX,M_AGE,M_DOB,M_MARSTATUS,M_CITY,M_STATE,M_COUNTRY,M_HOMEPAGE,M_SIG" +
+                                  ",M_HIDE_EMAIL,M_RECEIVE_EMAIL,M_VIEW_SIG,M_SIG_DEFAULT,M_HOBBIES,M_LNEWS" +
+                                  ",M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_AIM,M_YAHOO,M_ICQ,M_MSN,M_LAST_IP,M_LASTUPDATED" +
+                                  ",M_LASTHEREDATE,M_AVATAR,M_THEME,M_TIMEOFFSET,M_DATE)" +
+                                  " VALUES " +
+                                  "(@Username,@Status,@Mlev,@Title,@Email,@Password,@IsValid,@ValidationKey,@Firstname,@Lastname" +
+                                  ",@Occupation,@Gender,@Age,@Dob,@Maritalstatus,@City,@State,@Country" +
+                                  ",@Homepage,@Signature,@Hidemail,@Receivemails,@Viewsignatures,@Usesignature" +
+                                  ",@Hobbies,@Latestnews,@Favquote,@Bio,@Link1,@Link2,@Aim,@Yahoo,@Icq,@Msn" +
+                                  ",@LastIP,@Lastupdated,@LastVisit,@Avatar,@Theme,@Timeoffset,@Created); " +
+                                  "SELECT SCOPE_IDENTITY();";
+            try
+            {
+                memberparms = new List<SqlParameter>
+                {
+                    new SqlParameter("@Username", SqlDbType.NVarChar) {Value = member.Username},
+                    new SqlParameter("@Status", SqlDbType.SmallInt) {Value = member.Status},
+                    new SqlParameter("@Created", SqlDbType.VarChar) {Value = member.MemberSince.ToString("yyyyMMddHHmmss")},
+                    new SqlParameter("@Mlev", SqlDbType.SmallInt) {Value = member.MemberLevel},
+                    new SqlParameter("@Title", SqlDbType.NVarChar) {Value = member.Title.ConvertDBNull(),IsNullable = true},
+                    new SqlParameter("@Password", SqlDbType.NVarChar) {Value = member.Password},
+                    new SqlParameter("@IsValid", SqlDbType.Int) {Value = member.IsValid},
+                    new SqlParameter("@ValidationKey", SqlDbType.NVarChar) {Value = member.ValidationKey.ConvertDBNull(),IsNullable = true},
+                    new SqlParameter("@Email", SqlDbType.NVarChar) {Value = member.Email},
+                    new SqlParameter("@Firstname", SqlDbType.NVarChar)
+                    {
+                        Value = member.Firstname.ConvertDBNull(),
+                        IsNullable = true
+                    },
+                    new SqlParameter("@Lastname", SqlDbType.NVarChar)
+                    {
+                        Value = member.Lastname.ConvertDBNull(),
+                        IsNullable = true
+                    },
+                    new SqlParameter("@Occupation", SqlDbType.NVarChar)
+                    {
+                        Value = member.Occupation.ConvertDBNull(),
+                        IsNullable = true
+                    },
+                    new SqlParameter("@Gender", SqlDbType.NVarChar)
+                    {
+                        Value = member.Gender.ConvertDBNull(),
+                        IsNullable = true
+                    }
+
+                };
+                memberparms.Add(new SqlParameter("@Age", SqlDbType.NVarChar) { Value = member.Age.ConvertDBNull(), IsNullable = true });
+                memberparms.Add(new SqlParameter("@Dob", SqlDbType.NVarChar)
+                    {
+                        Value = member.DateOfBirth.ConvertDBNull(),
+                        IsNullable = true
+                    });
+                memberparms.Add(new SqlParameter("@Maritalstatus", SqlDbType.NVarChar)
+                {
+                    Value = member.MaritalStatus.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@City", SqlDbType.NVarChar) {Value = member.City.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@State", SqlDbType.NVarChar) {Value = member.State.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@Country", SqlDbType.NVarChar)
+                {
+                    Value = member.Country.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Homepage", SqlDbType.NVarChar)
+                {
+                    Value = member.HomePage.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Signature", SqlDbType.NVarChar)
+                {
+                    Value = member.Signature.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Hidemail", SqlDbType.Int) {Value = member.HideEmail});
+                memberparms.Add(new SqlParameter("@Receivemails", SqlDbType.Int) {Value = member.ReceiveEmails});
+                memberparms.Add(new SqlParameter("@Viewsignatures", SqlDbType.Int) {Value = member.ViewSignatures});
+                memberparms.Add(new SqlParameter("@Usesignature", SqlDbType.Int) {Value = member.UseSignature});
+                memberparms.Add(new SqlParameter("@Hobbies", SqlDbType.NVarChar)
+                {
+                    Value = member.Hobbies.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Latestnews", SqlDbType.NVarChar)
+                {
+                    Value = member.LatestNews.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Favquote", SqlDbType.NVarChar)
+                {
+                    Value = member.FavouriteQuote.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Bio", SqlDbType.NVarChar)
+                {
+                    Value = member.Biography.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Link1", SqlDbType.NVarChar)
+                {
+                    Value = member.FavLink1.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Link2", SqlDbType.NVarChar)
+                {
+                    Value = member.FavLink2.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Aim", SqlDbType.NVarChar) {Value = member.AIM.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@Yahoo", SqlDbType.NVarChar) {Value = member.Yahoo.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@Icq", SqlDbType.NVarChar) {Value = member.ICQ.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@Msn", SqlDbType.NVarChar) {Value = member.ICQ.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@LastIP", SqlDbType.NVarChar) {Value = Common.GetIPAddress()});
+                memberparms.Add(new SqlParameter("@Lastupdated", SqlDbType.NVarChar)
+                {
+                    Value = DateTime.UtcNow.ToString("yyyyMMddHHmmss")
+                });
+                memberparms.Add(new SqlParameter("@Lastvisit", SqlDbType.NVarChar)
+                {
+                    Value = DateTime.UtcNow.ToString("yyyyMMddHHmmss")
+                });
+                memberparms.Add(new SqlParameter("@Avatar", SqlDbType.NVarChar)
+                {
+                    Value = member.Avatar.ConvertDBNull(),
+                    IsNullable = true
+                });
+                memberparms.Add(new SqlParameter("@Theme", SqlDbType.NVarChar) {Value = member.Theme.ConvertDBNull(), IsNullable = true});
+                memberparms.Add(new SqlParameter("@Timeoffset", SqlDbType.Int) { Value = member.TimeOffset });
+
+            
+            }
+            catch (Exception)
+            {
+                return 0;
+                throw;
+            }
+
+            int res = Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql, memberparms.ToArray()));
+            return res;
         }
 
         public void Update(MemberInfo member)
         {
             if (member.Username.ToLower() == "guest")
                 return;
-            const string strSql = "UPDATE dbo.FORUM_MEMBERS SET " +
+            const string strSql = "UPDATE FORUM_MEMBERS SET " +
                                   "M_TITLE=@Title" +
                                   ",M_EMAIL=@Email" +
                                   ",M_PASSWORD=@Password" +
@@ -134,7 +275,7 @@ namespace Snitz.SQLServerDAL
                     Value = member.Gender.ConvertDBNull(),
                     IsNullable = true
                 },
-                new SqlParameter("@Age", SqlDbType.Int) {Value = member.Age},
+                new SqlParameter("@Age", SqlDbType.VarChar) {Value = member.Age},
                 new SqlParameter("@Dob", SqlDbType.NVarChar)
                 {
                     Value = member.DateOfBirth.ConvertDBNull(),
@@ -512,10 +653,25 @@ namespace Snitz.SQLServerDAL
             return member;
         }
 
+        public string[] ForumAdministrators()
+        {
+            List<string> members = new List<string>();
+            const string strSql = "SELECT M_NAME FROM FORUM_MEMBERS WHERE M_LEVEL=3 AND M_STATUS=1";
+
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
+            {
+                while (rdr.Read())
+                {
+                    members.Add(rdr.GetString(0));
+                }
+            }
+            return members.ToArray();
+        }
+
         public void UpdateLastMemberPost(object post)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            const string updateMemberSql = "UPDATE FORUM_MEMBERS SET M_POSTS=M_POSTS+1, M_LASTPOSTDATE = @PostDate WHERE MEMBER_ID=@MemberId ";
+            const string updateMemberSql = "UPDATE FORUM_MEMBERS SET M_POSTS=COALESCE(M_POSTS,0)+1, M_LASTPOSTDATE = @PostDate WHERE MEMBER_ID=@MemberId ";
             
             SqlParameter memberid = new SqlParameter("@MemberId", SqlDbType.Int);
             SqlParameter postdate = new SqlParameter("@PostDate", SqlDbType.VarChar);

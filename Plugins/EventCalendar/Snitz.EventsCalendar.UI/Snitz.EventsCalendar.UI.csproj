@@ -139,9 +139,9 @@
       <Project>{ebfe276b-4913-4e1d-a19e-c917c4f97a95}</Project>
       <Name>Snitz.EventsCalendar.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Common.csproj">
+    <ProjectReference Include="..\..\..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Entities.csproj">
       <Project>{9a4fcf60-fc99-46f3-a405-8b8751d46df2}</Project>
-      <Name>Snitz.EventsCalendar.Common</Name>
+      <Name>Snitz.EventsCalendar.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

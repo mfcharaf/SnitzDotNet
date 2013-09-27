@@ -31,7 +31,6 @@ using AjaxControlToolkit;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
-using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
 using Polls = Resources.Polls;
@@ -120,7 +119,7 @@ namespace SnitzUI
                     {
 
                         //do we have access to this forum
-                        if (!Moderators.IsUserInForumRole(Member.Username, ForumId.Value))
+                        if (!Forums.IsUserInForumRole(Member.Username, ForumId.Value))
                         {
                             if (Session[session] == null || Session[session].ToString() != ForumId.ToString())
                             {
@@ -154,7 +153,7 @@ namespace SnitzUI
                     }
 
                 }
-                _currentForum.Roles = SnitzRoleProvider.GetForumRoles(_currentForum.Id).ToList();
+                _currentForum.Roles = Forums.GetForumRoles(_currentForum.Id).ToList();
                 if (!IsAuthenticated && (_currentForum.Roles.Count > 0 && !_currentForum.Roles.Contains("All")))
                 {
                     if (Session[session] == null || Session[session].ToString() != ForumId.ToString())

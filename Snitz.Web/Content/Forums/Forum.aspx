@@ -128,18 +128,18 @@
     <asp:DropDownList CssClass="ddActiveRefresh" runat="server" ID="ddlShowTopicDays"
         AutoPostBack="True" OnSelectedIndexChanged="NumberOfDaysSelectedIndexChanged"
         EnableViewState="False" Style="float: right;">
-        <asp:ListItem Value="" meta:resourcekey="ddlShowTopicsSelect">[Select Topics to display]</asp:ListItem>
-        <asp:ListItem Value="-1" meta:resourcekey="ddlShowTopicsItem1">Show all topics</asp:ListItem>
-        <asp:ListItem Value="0" meta:resourcekey="ddlShowTopicsItem2">Show all open topics</asp:ListItem>
-        <asp:ListItem Value="1" meta:resourcekey="ddlShowTopicsItem3">Show topics from last day</asp:ListItem>
-        <asp:ListItem Value="2" meta:resourcekey="ddlShowTopicsItem4">Show topics from last 2 days</asp:ListItem>
-        <asp:ListItem Value="5" meta:resourcekey="ddlShowTopicsItem5">Show topics from last 5 days</asp:ListItem>
-        <asp:ListItem Value="7" meta:resourcekey="ddlShowTopicsItem6">Show topics from last 7 days</asp:ListItem>
-        <asp:ListItem Value="14" meta:resourcekey="ddlShowTopicsItem7">Show topics from last 14 days</asp:ListItem>
-        <asp:ListItem Value="30" meta:resourcekey="ddlShowTopicsItem8">Show topics from last month</asp:ListItem>
-        <asp:ListItem Value="60" meta:resourcekey="ddlShowTopicsItem9">Show topics from last 2 months</asp:ListItem>
-        <asp:ListItem Value="183" meta:resourcekey="ddlShowTopicsItem10">Show topics from last 6 months</asp:ListItem>
-        <asp:ListItem Value="365" meta:resourcekey="ddlShowTopicsItem11">Show topics from the last year</asp:ListItem>
+        <asp:ListItem Value="">[Select Topics to display]</asp:ListItem>
+        <asp:ListItem Value="-1">Show all topics</asp:ListItem>
+        <asp:ListItem Value="0" >Show all open topics</asp:ListItem>
+        <asp:ListItem Value="1" >Show topics from last day</asp:ListItem>
+        <asp:ListItem Value="2" >Show topics from last 2 days</asp:ListItem>
+        <asp:ListItem Value="5" >Show topics from last 5 days</asp:ListItem>
+        <asp:ListItem Value="7" >Show topics from last 7 days</asp:ListItem>
+        <asp:ListItem Value="14">Show topics from last 14 days</asp:ListItem>
+        <asp:ListItem Value="30">Show topics from last month</asp:ListItem>
+        <asp:ListItem Value="60" >Show topics from last 2 months</asp:ListItem>
+        <asp:ListItem Value="183" >Show topics from last 6 months</asp:ListItem>
+        <asp:ListItem Value="365" >Show topics from the last year</asp:ListItem>
     </asp:DropDownList><br />
 </asp:Content>
 <asp:Content runat="server" ID="Cphl" ContentPlaceHolderID="CPHL">

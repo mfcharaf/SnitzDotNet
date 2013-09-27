@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
@@ -90,7 +91,7 @@ namespace Snitz.SQLServerDAL
         {
             List<ForumModeratorInfo> moderators = new List<ForumModeratorInfo>();
             const string sqlStr =
-                "SELECT M.MEMBER_ID,M.M_NAME FROM FORUM_MEMBERS M WHERE M.M_LEVEL=2 ";
+                "SELECT M.MEMBER_ID,M.M_NAME FROM FORUM_MEMBERS M WHERE M.M_LEVEL=2 AND M_STATUS=1";
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, null))
             {
@@ -106,13 +107,13 @@ namespace Snitz.SQLServerDAL
         {
             List<ForumModeratorInfo> moderators = new List<ForumModeratorInfo>();
             const string sqlStr =
-                "SELECT M.MEMBER_ID,M.M_NAME FROM FORUM_MODERATOR FM LEFT OUTER JOIN  FORUM_MEMBERS AS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE M.M_LEVEL=2 AND FM.FORUM_ID=@ForumId";
+                "SELECT FM.MOD_ID, M.MEMBER_ID,M.M_NAME FROM FORUM_MODERATOR FM LEFT OUTER JOIN  FORUM_MEMBERS AS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE M.M_LEVEL=2 AND FM.FORUM_ID=@ForumId";
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, new SqlParameter("@ForumId",SqlDbType.Int){Value = forumid}))
             {
                 while (rdr.Read())
                 {
-                    moderators.Add(new ForumModeratorInfo { MemberId = rdr.GetInt32(0), Name = rdr.SafeGetString(1) });
+                    moderators.Add(new ForumModeratorInfo { MemberId = rdr.GetInt32(1), Name = rdr.SafeGetString(2),Id=rdr.GetInt32(0),ForumId = forumid});
                 }
             }
             return moderators;
@@ -170,21 +171,55 @@ namespace Snitz.SQLServerDAL
             return forums;
         }
 
-        public string[] GetForumRoles(int forumid)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsUserForumModerator(int memberid, int forumid)
         {
             const string strSql = "SELECT MOD_ID FROM FORUM_MODERATOR WHERE FORUM_ID=@ForumId AND MEMBER_ID=@MemberId";
-            List<SqlParameter> parms = new List<SqlParameter>();
-
-            parms.Add(new SqlParameter("@MemberId", SqlDbType.Int) { Value = memberid });
-            parms.Add(new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumid });
+            List<SqlParameter> parms = new List<SqlParameter>
+                                       {
+                                           new SqlParameter("@MemberId", SqlDbType.Int)
+                                           {
+                                               Value
+                                                   =
+                                                   memberid
+                                           },
+                                           new SqlParameter("@ForumId", SqlDbType.Int)
+                                           {
+                                               Value
+                                                   =
+                                                   forumid
+                                           }
+                                       };
 
             var res = SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray());
             return res != null;
+        }
+
+        public List<ForumModeratorInfo> GetAvailableModerators(int forumId)
+        {
+            var forummoderators = GetByParent(forumId);
+            //peopleList2.Where(p => !peopleList1.Any(p2 => p2.ID == p.ID));
+            var moderators = GetAll().Where(m=> !forummoderators.Any(fm=>fm.MemberId == m.MemberId));
+            return new List<ForumModeratorInfo>(moderators);
+        }
+
+        public void SetForumModerators(int forumId, int[] userList)
+        {
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "DELETE FROM FORUM_MODERATOR WHERE FORUM_ID=@ForumId", new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumId});
+            foreach (int user in userList)
+            {
+                ForumModeratorInfo mod = new ForumModeratorInfo {ForumId = forumId, MemberId = user};
+                Add(mod);
+            }
+        }
+
+        public void SetUserAsModeratorForForums(int memberId, int[] forumList)
+        {
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "DELETE FROM FORUM_MODERATOR WHERE MEMBER_ID=@MemberId", new SqlParameter("@MemberId", SqlDbType.Int) { Value = memberId });
+            foreach (int forum in forumList)
+            {
+                ForumModeratorInfo mod = new ForumModeratorInfo { ForumId = forum, MemberId = memberId };
+                Add(mod);
+            }
         }
     }
 }

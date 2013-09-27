@@ -1,0 +1,353 @@
+/* -------------------------------------------------------------------
+// markItUp! Universal MarkUp Engine, JQuery plugin
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// ------------------------------------------------------------------*/
+.markItUp * {
+	margin:0px; padding:0px;
+	outline:none;
+}
+.markItUp a:link,
+.markItUp a:visited {
+	color:#000;
+	text-decoration:none;
+}
+.markItUp  {
+	width:auto;
+	margin:5px Auto 5px Auto;
+	border:5px solid transparent;	
+}
+.markItUpContainer  {
+	border:1px solid #3C769D;	
+	background:silver;
+	padding:5px 5px 2px 5px;
+}
+.markItUpEditor {
+	font:12px 'Courier New', Courier, monospace;
+	padding:5px 5px 5px 5px;
+	border:3px solid #3C769D;
+	width:auto;
+	min-height:220px;
+	line-height:18px;
+	overflow:auto;
+}
+.markItUpPreviewFrame	{
+	overflow:auto;
+	background-color:#FFFFFF;
+	border:1px solid #3C769D;
+	width:99.9%;
+	height:300px;
+	margin:5px 0;
+}
+.markItUpFooter {
+	width:100%;
+	cursor:n-resize;
+}
+.markItUpResizeHandle {
+	overflow:hidden;
+	width:22px; height:5px;
+	margin-left:auto;
+	margin-right:auto;
+	cursor:n-resize;
+}
+/***************************************************************************************/
+/* first row of buttons */
+.markItUpHeader ul li	{
+	list-style:none;
+	float:left;
+	position:relative;
+}
+.markItUpHeader ul li ul{
+	display:none;
+}
+.markItUpHeader ul li:hover > ul{
+	display:block;
+}
+.markItUpHeader ul .markItUpDropMenu {
+	/*background:transparent url(images/menu.png) no-repeat 115% 50%;*/
+	margin-right:5px;
+}
+.markItUpHeader ul .markItUpDropMenu li {
+	margin-right:0px;
+}
+.markItUpHeader ul .markItUpSeparator
+{
+    margin: 0 2px 0 2px;
+    width: 1px;
+    height: 18px;
+    overflow: hidden;
+    color: #808080;
+    background-color: #808080;
+}
+.markItUpHeader ul ul .markItUpSeparator {
+	width:auto; height:1px;
+	margin:0px;
+}
+/* next rows of buttons */
+.markItUpHeader ul ul {
+	display:none;
+	position:absolute;
+	top:18px; left:0px;	
+	background:#F5F5F5;
+	border:1px solid #3C769D;
+	height:inherit;
+}
+.markItUpHeader ul ul li {
+	float:none;
+	border-bottom:1px solid #3C769D;
+}
+.markItUpHeader ul ul .markItUpDropMenu {
+	/* background:#F5F5F5 url(images/submenu.png) no-repeat 100% 50%; */
+}
+/* next rows of buttons */
+.markItUpHeader ul ul ul {
+	position:absolute;
+	top:-1px; left:150px;
+}
+.markItUpHeader ul ul ul li {
+	float:none;
+}
+.markItUpHeader ul a {
+	display:block;
+	width:16px; height:16px;
+	text-indent:-10000px;
+	background-repeat:no-repeat;
+	padding:3px;
+	margin:0px;
+}
+.markItUpHeader ul ul a {
+	display:block;
+	padding-left:0px;
+	text-indent:0;
+	width:120px; 
+	padding:5px 5px 5px 25px;
+	background-position:2px 50%;
+}
+.markItUpHeader ul ul a:hover  {
+	color:#FFF;
+	background-color:#3C769D;
+}
+
+/* BBcode CSS */
+.markItUp .markItUpButton1 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/fonts.png);
+}
+.markItUp .markItUpButton2 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/bold.png);
+}
+.markItUp .markItUpButton3 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/italic.png);
+}
+.markItUp .markItUpButton4 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/underline.png);
+}
+.markItUp .markItUpButton5 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/strike.gif);
+}
+.markItUp .markItUpButton6 a {
+	background-image:url(/App_themes/BlueGray/images/editor/colors.png);
+}
+	.markItUp .colors ul {
+		width:108px;
+		padding:1px;	
+	}
+	.markItUp .colors  li {
+		border:1px solid white;
+		width:25px;	height:25px;
+		overflow:hidden;
+		padding:0px; margin:0px;
+		float:left;
+	}
+	.markItUp .colors ul a {
+		width:25px;	height:25px;
+	}
+	.markItUp .colors ul a:hover {
+		background-color:transparent;
+	}
+	
+	.markItUp .colors .col1-1 a {
+		background:yellow;
+	}
+	.markItUp .colors .col1-2 a {
+		background:orange;
+	}
+		.markItUp .colors .col1-3 a {
+		background:gold;
+	}
+	.markItUp .colors .col1-4 a {
+		background:red;
+	}
+	
+	.markItUp .colors .col2-1 a {
+		background:purple;
+	}
+	.markItUp .colors .col2-2 a {
+		background:green;
+	}
+	
+	.markItUp .colors .col2-3 a {
+		background:white;
+	}
+	.markItUp .colors .col2-4 a {
+		background:gray;
+	}
+	.markItUp .colors .col3-1 a {
+		background:black;
+	}
+	
+		.markItUp .colors .col3-2 a {
+		background:navy;
+	}
+		.markItUp .colors .col3-3 a {
+		background:blue;
+	}
+
+	.markItUp .colors .col3-4 a {
+		background:pink;
+	}
+.markItUp .markItUpButton7 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/align_left.gif);
+}
+.markItUp .markItUpButton8 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/align_center.gif);
+}
+.markItUp .markItUpButton9 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/align_right.gif);
+}
+.markItUp .markItUpButton11 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/list-bullet.png);
+}
+.markItUp .markItUpButton12 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/list-numeric.png);
+}
+.markItUp .markItUpButton13 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/list-item.png);
+}
+
+.markItUp .markItUpButton14 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/picture.png);
+}
+.markItUp .upload a
+{
+    background-image:url(/App_themes/BlueGray/images/editor/pictureUp.png);
+}
+.markItUp .browse a
+{
+    background-image:url(/App_themes/BlueGray/images/editor/pictureBrowse.png);
+}
+.markItUp .markItUpButton18 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/link.png);
+}
+.markItUp .markItUpButton19 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/email.gif);
+}
+
+
+.markItUp .markItUpButton20 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/quotes.png);
+}
+.markItUp .markItUpButton21 a	{
+	background-image:url(/App_themes/BlueGray/images/editor/code.png);
+}
+.markItUp .markItUpButton22 a {
+	background-image:url(/App_themes/BlueGray/images/editor/table.png);
+}
+
+.markItUp .markItUpButton22-1 a {
+	background-image:url(/App_themes/BlueGray/images/editor/table-row.png);
+}
+.markItUp .markItUpButton22-2 a {
+	background-image:url(/App_themes/BlueGray/images/editor/table-col.png);
+}	
+.markItUp .youtube a
+{
+    background-image:url(/App_themes/BlueGray/images/editor/youtube.png);
+}
+.markItUp .textdir a
+{
+    background-image:url(/App_themes/BlueGray/images/editor/textdir.png);
+}
+.markItUp .clean a {
+	background-image:url(/App_themes/BlueGray/images/editor/clean.png);
+}
+.markItUp .preview a {
+	background-image:url(/App_themes/BlueGray/images/editor/preview.png);
+}
+
+.markItUp .spellcheck a         
+{
+    background-image:url(/App_themes/BlueGray/images/editor/spellcheck.png);
+    }
+    
+/* spellcheck */
+
+#spellcheck-suggestbox {
+	position: absolute;
+	display: none;
+	z-index: 9999;
+	overflow: auto;
+	padding: 0px 9px 9px 0px;
+	background: transparent url(/App_themes/BlueGray/images/editor/spellchecker_shadow.png) no-repeat scroll right bottom;
+	font: normal 13px arial;
+}
+#spellcheck-suggestbox em {
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	padding: 3px 6px 3px 6px;
+	display: block;
+	margin: 0px;
+	text-decoration: none;
+	color: #333;
+	font-style: italic;
+}
+#spellcheck-suggestbox a, #spellcheck-suggestbox a:visited {
+	border-left: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	padding: 3px 6px 3px 6px;
+	display: block;
+	margin: 0px;
+	text-decoration: none;
+	color: #333;
+	outline: none;
+}
+#spellcheck-suggestbox a.first, #spellcheck-suggestbox a.first:visited {
+	border-top: 1px solid #ccc;
+}
+#spellcheck-suggestbox a:hover {
+	color: #000;
+	background: #ddd;
+}
+#spellcheck-suggestbox-words {
+	background: #fff;
+}
+#spellcheck-suggestbox-foot {
+	border-top: 1px solid #ddd;
+	background: #fff;
+}
+#spellcheck-suggestbox-foot a, .spellcheck-suggestbox-foot a:visited {
+	outline: none;
+} 
+#spellcheck-focus-helper {
+	position: absolute;
+	top: -2000px;
+	z-index: 0;
+}
+#spellcheck-word-highlight {
+	color: #d70303;
+	text-decoration: none;
+	background: url(/App_themes/BlueGray/images/editor/spellchecker_bg.gif) repeat-x 100% 100%;
+	cursor: pointer;
+}
+#spellcheck-badwords {
+	margin-bottom: 2em;
+	margin-top: -0.5em;
+	font-size: 12px;
+	border: 1px solid #bbb;
+	padding: 4px 6px;
+}
+#spellcheck-sep {
+	padding-right: 0.5em;
+}
+#spellcheck-sep-last {
+	display: none;
+}

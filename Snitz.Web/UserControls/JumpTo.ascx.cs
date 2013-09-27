@@ -59,7 +59,7 @@ public partial class WebUserControl : UserControl
 
         foreach (ForumJumpto fo in SnitzCachedLists.GetCachedForumList())
         {
-            fo.Roles = SnitzRoleProvider.GetForumRoles(fo.Id).ToList();
+            fo.Roles = Forums.GetForumRoles(fo.Id).ToList();
             if (rolelist.Length == 0)
                 if (fo.Roles.Count == 0)
                     result.Add(fo);

@@ -1,0 +1,65 @@
+﻿
+.topicTable{width:100%;margin:auto;}
+
+#ctl00_CPM_pnlSearch label 
+{
+ display:inline-block;
+ text-align:right;
+ width:160px;
+ float:left;}
+ #ctl00_CPM_pnlSearch input{
+ border:solid 1px #aacfe4;
+ width:150px;
+ margin:0px 0 10px 10px;
+ }
+ #ctl00_CPM_pnlSearch select{
+ border:solid 1px #aacfe4;
+ min-width:60px;
+ width:60px;
+ width:auto !important;
+ margin:0px 0 10px 10px;
+ }
+ 
+ #ctl00_CPM_extendedSearch label
+ {
+    text-align:right;
+    width:180px;
+    float:left;
+ }
+  #ctl00_CPM_extendedSearch input{
+ border:solid 1px #aacfe4;
+ width:150px;
+ margin:0px 0 10px 10px;
+ }
+ #ctl00_CPM_extendedSearch select{
+ border:solid 1px #aacfe4;
+ min-width:60px;
+ width:60px;
+ width:auto !important;
+ margin:0px 0 10px 10px;
+ }
+#ctl00_CPM_extendedSearch input[type="checkbox"]
+ {
+ clear:both;
+ width:12px;
+ height:12px;
+ border:0px;
+ } 
+ #ctl00_CPM_Options label
+ {
+    text-align:right;
+    width:180px;
+    float:left;
+ }
+  #ctl00_CPM_Options input{
+ border:solid 1px #aacfe4;
+ width:150px;
+ margin:0px 0 10px 10px;
+ }
+ #ctl00_CPM_Options select{
+ border:solid 1px #aacfe4;
+ min-width:60px;
+ width:60px;
+ width:auto !important;
+ margin:0px 0 10px 10px;
+ }   

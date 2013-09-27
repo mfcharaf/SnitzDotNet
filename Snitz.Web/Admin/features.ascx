@@ -1,8 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_features" Codebehind="features.ascx.cs" %>
     <%@ Register src="AdminRadioButton.ascx" tagname="AdminRadioButton" tagprefix="uc1" %>
     <asp:Panel ID="Panel1" runat="server" CssClass="clearfix forumtable" 
-    DefaultButton="btnSubmit"  
-    meta:resourcekey="Panel1Resource1">
+    DefaultButton="btnSubmit">
     <h2 class="category">Feature Configuration</h2>
         <asp:Panel ID="Panel2" runat="server" GroupingText="General Features" 
             CssClass="featuresform" meta:resourcekey="Panel2Resource1">
@@ -13,8 +12,7 @@
             <asp:Label ID="lblFlood" runat="server" Text="Flood Control" 
                 AssociatedControlID="rblFlood" meta:resourcekey="lblFloodResource1"></asp:Label>  
             <uc1:AdminRadioButton ID="rblFlood" runat="server" />             
-            <asp:DropDownList ID="ddlFlood" runat="server" 
-                meta:resourcekey="ddlFloodResource1">
+            <asp:DropDownList ID="ddlFlood" runat="server" >
                 <asp:ListItem Value="30" meta:resourcekey="ListItemResource5">30 seconds</asp:ListItem>
                 <asp:ListItem Value="60" meta:resourcekey="ListItemResource6">60 seconds</asp:ListItem>
                 <asp:ListItem Value="90" meta:resourcekey="ListItemResource7">90 seconds</asp:ListItem>
@@ -27,8 +25,7 @@
             <asp:Label ID="lblSubscription" runat="server" 
                 Text="Highest level of Subscription" AssociatedControlID="ddlSubs" 
                 meta:resourcekey="lblSubscriptionResource1"></asp:Label>
-            <asp:DropDownList ID="ddlSubs" runat="server" 
-                meta:resourcekey="ddlSubsResource1">
+            <asp:DropDownList ID="ddlSubs" runat="server">
                 <asp:ListItem Value="0" Text="" meta:resourcekey="ListItemResource11">No subscriptions</asp:ListItem>
                 <asp:ListItem Value="1" Text="" meta:resourcekey="ListItemResource12">Subscribe to Whole Board</asp:ListItem>
                 <asp:ListItem Value="2" meta:resourcekey="ListItemResource13">Subscribe by Category</asp:ListItem>
@@ -48,8 +45,8 @@
                 AssociatedControlID="rblShowGallery" meta:resourcekey="Label2Resource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblShowGallery" runat="server" /> <br />
             <asp:Label ID="Label1" runat="server" Text="Allow User Galleries" 
-                AssociatedControlID="rblPublicGallery" meta:resourcekey="Label1Resource1"></asp:Label>
-            <uc1:AdminRadioButton ID="rblPublicGallery" runat="server" /> <br />
+                AssociatedControlID="rblUserGallery" meta:resourcekey="Label1Resource1"></asp:Label>
+            <uc1:AdminRadioButton ID="rblUserGallery" runat="server" /> <br />
         </asp:Panel>
         <asp:Panel ID="Panel3" runat="server" GroupingText="Moderation Features" 
             CssClass="featuresform" meta:resourcekey="Panel3Resource1">
@@ -75,10 +72,10 @@
         </asp:Panel>
         <asp:Panel ID="Panel4" runat="server" GroupingText="Forum Features" 
             CssClass="featuresform" meta:resourcekey="Panel4Resource1">
-            <asp:Label ID="lblArchive" runat="server" Enabled="False" 
+            <asp:Label ID="lblArchive" runat="server" 
                 Text="Archive Functions" AssociatedControlID="rblArchive" 
                 meta:resourcekey="lblArchiveResource1"></asp:Label>
-            <uc1:AdminRadioButton ID="rblArchive" runat="server" Enabled="False"/> 
+            <uc1:AdminRadioButton ID="rblArchive" runat="server"/> 
             <br />
             <asp:Label ID="lblStatistics" runat="server" Text="Show Detailed Statistics" 
                 AssociatedControlID="rblStats" meta:resourcekey="lblStatisticsResource1"></asp:Label>
@@ -152,26 +149,33 @@
         </asp:Panel>
         <asp:Panel ID="Panel7" runat="server" GroupingText="Misc Features" 
             CssClass="featuresform" meta:resourcekey="Panel7Resource1">
-            <asp:Label ID="lblTimer" runat="server" Text="Show Timer" 
+            <asp:Label ID="lblTimer" runat="server" Text="Show Page Timer" 
                 AssociatedControlID="rblPageTimer" meta:resourcekey="lblTimerResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblPageTimer" runat="server" /> 
             <br />
             <asp:Label ID="lblAnnouncement" runat="server" Text="Show Announcement" 
                 AssociatedControlID="rblPageTimer"></asp:Label>
-            <uc1:AdminRadioButton ID="rblAnnouncement" runat="server" /> 
-            <asp:TextBox runat="server" ID="tbxAnnouncement" TextMode="MultiLine" Rows="4" Enabled='<%# rblAnnouncement.SelectedValue == "1" %>'></asp:TextBox>
+            <uc1:AdminRadioButton ID="rblAnnouncement" runat="server" /> <br />
+            <asp:TextBox runat="server" ID="tbxAnnouncement" TextMode="MultiLine" Rows="4" ReadOnly='<%# rblAnnouncement.SelectedValue == "1" %>'></asp:TextBox>
             <br />
-            <asp:Label ID="lblEmailMode" runat="server" Text="ShowRanking" 
+            <asp:Label ID="lblEmailMode" runat="server" Text="Show Ranking" 
                 AssociatedControlID="ddlShowRank" meta:resourcekey="lblEmailModeResource1"></asp:Label>
-            <asp:DropDownList ID="ddlShowRank" runat="server" 
-                meta:resourcekey="ddlShowRankResource1">
+            <asp:DropDownList ID="ddlShowRank" runat="server">
                 <asp:ListItem Value="0" Text="" meta:resourcekey="ListItemResource60">None</asp:ListItem>
                 <asp:ListItem Value="1" Text="" meta:resourcekey="ListItemResource61">Rank Only</asp:ListItem>
                 <asp:ListItem Value="2" meta:resourcekey="ListItemResource62">Stars Only</asp:ListItem>
                 <asp:ListItem Value="3" meta:resourcekey="ListItemResource63">Rank and Stars</asp:ListItem>
             </asp:DropDownList>
+            <br />
+            <asp:Label ID="lblCalendar" runat="server" Text="Show Events Calendar" 
+                AssociatedControlID="rblShowEvents"></asp:Label>
+            <uc1:AdminRadioButton ID="rblShowEvents" runat="server" /> 
+            <br />
+            <asp:Label ID="lblPrivateMessages" runat="server" Text="Allow Private messages" 
+                AssociatedControlID="rblPrivateMessages"></asp:Label>
+            <uc1:AdminRadioButton ID="rblPrivateMessages" runat="server" /> 
         </asp:Panel>
-        <asp:Panel ID="Panel8" runat="server" meta:resourcekey="Panel8Resource1">
+        <asp:Panel ID="Panel8" runat="server" >
             <asp:LinkButton ID="btnSubmit" runat="server" Text="Submit" 
                 OnClick="btnSubmit_Click" meta:resourcekey="btnSubmitResource1" />&nbsp;
 

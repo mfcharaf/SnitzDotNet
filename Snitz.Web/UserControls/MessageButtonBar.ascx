@@ -12,15 +12,13 @@
 <div class="buttonbarImg">
     <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Approve Post"
         CausesValidation="False" EnableViewState="False" CommandArgument='<%# ThisId %>' />
-    <asp:HyperLink ID="hReply" rel="nofollow" SkinID="ReplyTopic" runat="server" EnableViewState="False"
-        Text="<%$ Resources:webResources, lblReply %>" ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
     <asp:HyperLink ID="hReplyQuote" rel="nofollow" SkinID="ReplyQuote" runat="server"
         EnableViewState="False" Text="<%$ Resources:webResources, lblReplyQuote %>" ToolTip="<%$ Resources:webResources, lblReplyQuote %>"></asp:HyperLink>
     <asp:HyperLink ID="hEdit" rel="nofollow" SkinID="EditPost" runat="server" EnableViewState="False"
         Visible="False"></asp:HyperLink>
     <asp:ImageButton ID="ViewIP" SkinID="ShowIP" runat="server" OnClientClick="" CausesValidation="False"
         EnableViewState="False" ToolTip="<%$ Resources:webResources, lblShowIP %>" />
-    <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" CommandArgument='<%# ThisId %>'
+    <asp:ImageButton ID="TopicDelete" SkinID="DeletePost" CommandArgument='<%# ThisId %>'
         ToolTip="<%$ Resources:webResources, lblDelPost %>" runat="server" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete?'); 
         mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': '[MESSAGE]'},'confirmHandlers.BeginRecieve');
         return false;" CausesValidation="False" EnableViewState="False" OnClick="DeletePost" />

@@ -26,7 +26,7 @@
 
 <asp:Content ID="head" runat="server" ContentPlaceHolderID="CPHead">
     <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.js" type="text/javascript"></script>
+    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" />
 
     <script type="text/javascript">
@@ -254,7 +254,7 @@
              <span class="categorybuttons">
                     <asp:ImageButton ID="NewForum" SkinID="Folder" runat="server" Visible='<%# IsAdministrator %>' Text='<%$ Resources:webResources, lblNewForum %>'
                         ToolTip='<%$ Resources:webResources, lblNewForum %>' EnableViewState="False"></asp:ImageButton>
-                    <asp:ImageButton ID="NewUrl" SkinID="NewUrl" runat="server" Visible='<%# IsAdministrator %>' Text='<% $ Resources:webResources, lblNewUrl  %>'
+                    <asp:ImageButton ID="NewUrl" SkinID="ForumUrl" runat="server" Visible='<%# IsAdministrator %>' Text='<% $ Resources:webResources, lblNewUrl  %>'
                         ToolTip='<%$ Resources:webResources, lblNewUrl  %>' EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                             runat="server" ToolTip="<%$ Resources:webResources, lbllockCat %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />

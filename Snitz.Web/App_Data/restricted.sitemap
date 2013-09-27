@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<siteMap enableLocalization="true">
-  <siteMapNode>
-  <siteMapNode url="~\default.aspx" title="$resources:SiteMapLocalizations,HomePageTitle,Home" description="$resources:SiteMapLocalizations,HomePageDescription,Home"/>
-  <siteMapNode url="~\active.aspx" title="$resources:SiteMapLocalizations,ActivePageTitle,Active Topics" description="$resources:SiteMapLocalizations,ActivePageDescription,Active"/>
-  <siteMapNode url="~\search.aspx" title="$resources:SiteMapLocalizations,SearchPageTitle,Search" description="$resources:SiteMapLocalizations,SearchPageDescription,Search"/>
-  <siteMapNode url="~\faq.aspx" title="$resources:SiteMapLocalizations,FAQPageTitle,Help" description="$resources:SiteMapLocalizations,FAQPageDescription,Help"/>
-</siteMapNode>
-</siteMap>

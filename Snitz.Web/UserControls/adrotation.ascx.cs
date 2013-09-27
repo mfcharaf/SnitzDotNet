@@ -40,9 +40,13 @@ namespace SnitzUI.UserControls
         {
             if (Config.ShowHeaderAds)
             {
-                GoogleAd.Visible = Config.ShowGoogleAds;
-                if(!Config.ShowGoogleAds)
+                GoogleAd.Visible = Config.ShowGoogleAds && Config.GoogleAdCode != "";
+                if (!Config.ShowGoogleAds)
                     Literal1.Text = String.Format(Iframe, Width, Height, Filter);
+            }
+            else
+            {
+                GoogleAd.Visible = false;
             }
         }
     }
