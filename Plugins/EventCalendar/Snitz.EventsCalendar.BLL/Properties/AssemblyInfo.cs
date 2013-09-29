@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Snitz.IDAL")]
+[assembly: AssemblyTitle("Snitz.EventsCalendar.BLL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Snitz.IDAL")]
+[assembly: AssemblyProduct("Snitz.EventsCalendar.BLL")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("206dbe42-0273-4a6f-9ada-8e16ab906339")]
+[assembly: Guid("c3a56bf4-80a8-4297-b1cc-41caf100f92e")]
 
 // Version information for an assembly consists of the following four values:
 //

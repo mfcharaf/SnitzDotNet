@@ -1,12 +1,12 @@
 ﻿/*
 ####################################################################################################################
 ##
-## Snitz.IDAL - ICategory
+## Snitz.IDAL - IForumEvent
 ##   
 ## Author:		Huw Reddick
 ## Copyright:	Huw Reddick
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
-## Created:		29/07/2013
+## Created:		30/07/2013
 ## 
 ## The use and distribution terms for this software are covered by the 
 ## Eclipse License 1.0 (http://opensource.org/licenses/eclipse-1.0)
@@ -19,16 +19,15 @@
 #################################################################################################################### 
 */
 
+using System;
 using System.Collections.Generic;
 using Snitz.Entities;
+using Snitz.IDAL;
 
-namespace Snitz.IDAL
+namespace Snitz.EventsCalendar.IDAL
 {
-    public interface ICategory : IBaseObject<CategoryInfo>
+    public interface IForumEvent : IBaseObject<EventInfo>
     {
-        IEnumerable<CategoryInfo> GetAll();
-        IEnumerable<CategoryInfo> GetByParent(int groupid);
-        void SetStatus(int catid, int status);
-        bool HasPosts(int catid);
+        IEnumerable<EventInfo> GetEvents(string startdate, string enddate);
     }
 }

@@ -43,6 +43,22 @@
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\..\..\..\SnitzDotNet\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
+    <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\Snitz.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\SnitzBase.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\SnitzCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\SnitzConfig.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.DynamicData" />
@@ -112,34 +128,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Snitz.BLL\Snitz.BusinessLayer.csproj">
-      <Project>{531B229D-52EF-458E-91C8-F7BC64FB38C3}</Project>
-      <Name>Snitz.BusinessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.Entities\Snitz.Entities.csproj">
-      <Project>{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}</Project>
-      <Name>Snitz.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.Base\Snitz.Base.csproj">
-      <Project>{0cbdec20-f26f-49ba-bc77-bcf0234cdc4a}</Project>
-      <Name>Snitz.Base</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.Common\Snitz.Common.csproj">
-      <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
-      <Name>Snitz.Common</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.Config\Snitz.Config.csproj">
-      <Project>{eaac5b1e-e704-4233-97ce-9fd309cebd9f}</Project>
-      <Name>Snitz.Config</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.EventsCalendar.BLL\Snitz.EventsCalendar.BLL.csproj">
+    <ProjectReference Include="..\Snitz.EventsCalendar.BLL\Snitz.EventsCalendar.BLL.csproj">
       <Project>{ebfe276b-4913-4e1d-a19e-c917c4f97a95}</Project>
       <Name>Snitz.EventsCalendar.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Entities.csproj">
+    <ProjectReference Include="..\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Entities.csproj">
       <Project>{9a4fcf60-fc99-46f3-a405-8b8751d46df2}</Project>
       <Name>Snitz.EventsCalendar.Entities</Name>
     </ProjectReference>

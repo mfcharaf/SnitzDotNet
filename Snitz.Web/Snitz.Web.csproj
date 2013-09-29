@@ -57,9 +57,41 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\CSSFriendly.dll</HintPath>
     </Reference>
+    <Reference Include="jquery.spellchecker">
+      <HintPath>..\Dependency\jquery.spellchecker.dll</HintPath>
+    </Reference>
     <Reference Include="RealWorld.Grids, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.BLL">
+      <HintPath>..\Dependency\Snitz.BLL.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.Entities">
+      <HintPath>..\Dependency\Snitz.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.Membership.IDal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependency\Snitz.Membership.IDal.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.ThirdParty">
+      <HintPath>..\Dependency\Snitz.ThirdParty.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.Utility">
+      <HintPath>..\Dependency\Snitz.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzBase">
+      <HintPath>..\Dependency\SnitzBase.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzCommon">
+      <HintPath>..\Dependency\SnitzCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzConfig">
+      <HintPath>..\Dependency\SnitzConfig.dll</HintPath>
+    </Reference>
+    <Reference Include="SnitzMembership, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependency\SnitzMembership.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -1920,44 +1952,6 @@
     <Compile Include="UserControls\Popups\UserProfile.ascx.designer.cs">
       <DependentUpon>UserProfile.ascx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\jquery.spellchecker\jquery.spellchecker.csproj">
-      <Project>{5C790F5D-25FB-48E3-8564-D8C618F3F89B}</Project>
-      <Name>jquery.spellchecker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Base\Snitz.Base.csproj">
-      <Project>{0CBDEC20-F26F-49BA-BC77-BCF0234CDC4A}</Project>
-      <Name>Snitz.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.BLL\Snitz.BusinessLayer.csproj">
-      <Project>{531B229D-52EF-458E-91C8-F7BC64FB38C3}</Project>
-      <Name>Snitz.BusinessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
-      <Project>{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}</Project>
-      <Name>Snitz.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Config\Snitz.Config.csproj">
-      <Project>{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}</Project>
-      <Name>Snitz.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
-      <Project>{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}</Project>
-      <Name>Snitz.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Membership.IDal\Snitz.Membership.IDal.csproj">
-      <Project>{a0c1364e-09e1-429f-888f-7f9b26c77527}</Project>
-      <Name>Snitz.Membership.IDal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.Membership\Snitz.Membership.csproj">
-      <Project>{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}</Project>
-      <Name>Snitz.Membership</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snitz.ThirdParty\Snitz.Controls.Thirdparty.csproj">
-      <Project>{21797d78-2887-460f-9e7e-5360a16c6dce}</Project>
-      <Name>Snitz.Controls.Thirdparty</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="snitz.config">
