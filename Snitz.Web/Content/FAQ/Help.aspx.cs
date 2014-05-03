@@ -224,6 +224,7 @@ namespace SnitzUI.Content.FAQ
             {
                 CatId = Convert.ToInt32(category),
                 Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
+                Link = String.Empty,
                 LinkTitle = question,
                 LinkBody = answer,
                 Order = 99

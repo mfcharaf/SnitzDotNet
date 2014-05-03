@@ -9,7 +9,7 @@
             FORUM_SUBSCRIPTIONS, FORUM_TOPICS, FORUM_TOTALS
         };
 
-        const string  FORUM_A_REPLY = "CREATE TABLE [dbo].[FORUM_A_REPLY]( " +
+        const string  FORUM_A_REPLY = "CREATE TABLE [FORUM_A_REPLY]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -26,7 +26,7 @@
         ") ON [PRIMARY];";
 
 
-        const string FORUM_A_TOPIC = "CREATE TABLE [dbo].[FORUM_A_TOPICS]( " +
+        const string FORUM_A_TOPIC = "CREATE TABLE [FORUM_A_TOPICS]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -50,7 +50,7 @@
         "	[T_SIG] [smallint] NULL " +
         ") ON [PRIMARY];";
 
-        const string FORUM_BADWORDS = "CREATE TABLE [dbo].[FORUM_BADWORDS]( " +
+        const string FORUM_BADWORDS = "CREATE TABLE [FORUM_BADWORDS]( " +
         "	[B_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[B_BADWORD] [nvarchar](50) NULL, " +
         "	[B_REPLACE] [nvarchar](50) NULL, " +
@@ -59,7 +59,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_CATEGORY = "CREATE TABLE [dbo].[FORUM_CATEGORY]( " +
+        const string FORUM_CATEGORY = "CREATE TABLE [FORUM_CATEGORY]( " +
         "	[CAT_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[CAT_STATUS] [smallint] NULL, " +
         "	[CAT_NAME] [nvarchar](100) NULL, " +
@@ -72,7 +72,7 @@
         ") ON [PRIMARY];";
 
 
-        const string FORUM_FORUM = "CREATE TABLE [dbo].[FORUM_FORUM]( " +
+        const string FORUM_FORUM = "CREATE TABLE [FORUM_FORUM]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[F_STATUS] [smallint] NULL, " +
@@ -106,7 +106,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_GROUP_NAMES = "CREATE TABLE [dbo].[FORUM_GROUP_NAMES]( " +
+        const string FORUM_GROUP_NAMES = "CREATE TABLE [FORUM_GROUP_NAMES]( " +
         "	[GROUP_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[GROUP_NAME] [nvarchar](50) NULL, " +
         "	[GROUP_DESCRIPTION] [nvarchar](255) NULL, " +
@@ -118,7 +118,7 @@
         ") ON [PRIMARY];";
 
 
-        const string FORUM_GROUPS = "CREATE TABLE [dbo].[FORUM_GROUPS]( " +
+        const string FORUM_GROUPS = "CREATE TABLE [FORUM_GROUPS]( " +
         "	[GROUP_KEY] [int] IDENTITY(1,1) NOT NULL, " +
         "	[GROUP_ID] [int] NULL, " +
         "	[GROUP_CATID] [int] NULL, " +
@@ -128,7 +128,7 @@
         ") ON [PRIMARY];";
 
 
-        const string FORUM_MEMBERS = "CREATE TABLE [dbo].[FORUM_MEMBERS]( " +
+        const string FORUM_MEMBERS = "CREATE TABLE [FORUM_MEMBERS]( " +
         "	[MEMBER_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[M_STATUS] [smallint] NULL, " +
         "	[M_NAME] [nvarchar](75) NULL, " +
@@ -182,7 +182,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_MODERATOR = "CREATE TABLE [dbo].[FORUM_MODERATOR]( " +
+        const string FORUM_MODERATOR = "CREATE TABLE [FORUM_MODERATOR]( " +
         "	[MOD_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[FORUM_ID] [int] NULL, " +
         "	[MEMBER_ID] [int] NULL, " +
@@ -192,7 +192,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_NAMEFILTER = "CREATE TABLE [dbo].[FORUM_NAMEFILTER]( " +
+        const string FORUM_NAMEFILTER = "CREATE TABLE [FORUM_NAMEFILTER]( " +
         "	[N_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[N_NAME] [nvarchar](75) NULL, " +
         " CONSTRAINT [PK_FORUM_NAMEFILTER] PRIMARY KEY CLUSTERED  " +
@@ -201,7 +201,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_REPLY = "CREATE TABLE [dbo].[FORUM_REPLY]( " +
+        const string FORUM_REPLY = "CREATE TABLE [FORUM_REPLY]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] NOT NULL, " +
@@ -220,7 +220,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_SUBSCRIPTIONS = "CREATE TABLE [dbo].[FORUM_SUBSCRIPTIONS]( " +
+        const string FORUM_SUBSCRIPTIONS = "CREATE TABLE [FORUM_SUBSCRIPTIONS]( " +
         "	[SUBSCRIPTION_ID] [int] IDENTITY(1,1) NOT NULL, " +
         "	[MEMBER_ID] [int] NOT NULL, " +
         "	[CAT_ID] [int] NOT NULL, " +
@@ -231,7 +231,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_TOPICS = "CREATE TABLE [dbo].[FORUM_TOPICS]( " +
+        const string FORUM_TOPICS = "CREATE TABLE [FORUM_TOPICS]( " +
         "	[CAT_ID] [int] NOT NULL, " +
         "	[FORUM_ID] [int] NOT NULL, " +
         "	[TOPIC_ID] [int] IDENTITY(1,1) NOT NULL, " +
@@ -259,7 +259,7 @@
         ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
         ") ON [PRIMARY];";
 
-        const string FORUM_TOTALS = "CREATE TABLE [dbo].[FORUM_TOTALS]( " +
+        const string FORUM_TOTALS = "CREATE TABLE [FORUM_TOTALS]( " +
         "	[COUNT_ID] [smallint] IDENTITY(1,1) NOT NULL, " +
         "	[P_COUNT] [int] NULL, " +
         "	[P_A_COUNT] [int] NULL, " +

@@ -111,9 +111,7 @@ img.captchaImage
 
 .category{background-color: silver; height: 24px;}
 div.category {
-    border-style: solid;
-    border-width: 1px 0px 1px 0px;
-    border-color: #777;
+
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -284,8 +282,8 @@ tr.rowsticky{border-bottom:1px solid #777;}
 
 .editedDIV{color:#990033;font-size:0.8em;}
 .editedDIV span {}
-.sigDIV p{height:auto;margin-bottom:0;vertical-align:baseline;font-size:smaller;}
-.sigDIV{font-size:x-small;}
+.sigDIV {position: absolute;bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
+
 
  
 .modalPopup

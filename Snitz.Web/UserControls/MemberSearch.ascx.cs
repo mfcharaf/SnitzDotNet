@@ -42,7 +42,7 @@ public partial class User_Controls_MemberSearch : UserControl
     {
         PageBase page = (PageBase) Page;
 
-        string[] letters = new string[] { "", "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
+        string[] letters = { "", "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
         int id = 1;
         foreach (string letter in letters)
         {
@@ -72,9 +72,9 @@ public partial class User_Controls_MemberSearch : UserControl
 
     private void InitialClick(object sender, EventArgs e)
     {
-        if (this.InitialLinkClick != null)
+        if (InitialLinkClick != null)
         {
-            this.InitialLinkClick(sender, e);
+            InitialLinkClick(sender, e);
         }
     }
 
@@ -119,9 +119,9 @@ public partial class User_Controls_MemberSearch : UserControl
         }
 
         Session.Add("SearchFilter", SearchFilter.ToString());
-        if (this.SearchClick != null)
+        if (SearchClick != null)
         {
-            this.SearchClick(sender, e);
+            SearchClick(sender, e);
         }
     }
 }

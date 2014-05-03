@@ -96,5 +96,16 @@ namespace Snitz.BLL
             ISetup dal = Factory<ISetup>.Create("SnitzSetup");
             return dal.AllowedMembers(forumid);
         }
+
+        public static int GetPendingMemberCount()
+        {
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.GetPendingMemberCount();
+        }
+        public static IEnumerable<MemberInfo> GetPendingMembers(int startrecord, int maxrecords)
+        {
+            IMember dal = Factory<IMember>.Create("Member");
+            return dal.GetPendingMembers(startrecord, maxrecords);
+        }
     }
 }

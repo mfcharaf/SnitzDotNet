@@ -9,10 +9,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_GlobalResources/webResources.resx">
-      <publishTime>08/31/2013 08:58:56</publishTime>
+      <publishTime>09/30/2013 09:13:34</publishTime>
     </File>
     <File Include="bin/AjaxControlToolkit.dll">
-      <publishTime>11/16/2011 14:26:04</publishTime>
+      <publishTime>09/30/2013 09:13:34</publishTime>
+    </File>
+    <File Include="bin/Cryptos.dll">
+      <publishTime>09/30/2013 09:13:34</publishTime>
     </File>
     <File Include="bin/EventsCalendar.Data.dll">
       <publishTime>07/21/2013 13:02:13</publishTime>
@@ -21,61 +24,70 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/21/2013 22:12:31</publishTime>
     </File>
     <File Include="bin/RealWorld.Grids.dll">
-      <publishTime>08/28/2007 07:58:12</publishTime>
+      <publishTime>09/30/2013 09:13:34</publishTime>
     </File>
     <File Include="bin/Snitz.BLL.dll">
-      <publishTime>09/12/2013 12:17:24</publishTime>
+      <publishTime>10/01/2013 21:14:39</publishTime>
     </File>
     <File Include="bin/Snitz.Entities.dll">
-      <publishTime>09/12/2013 12:17:21</publishTime>
+      <publishTime>10/01/2013 21:14:37</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.BLL.dll">
-      <publishTime>09/12/2013 12:17:24</publishTime>
+      <publishTime>10/01/2013 21:16:37</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.Common.dll">
       <publishTime>09/12/2013 12:17:22</publishTime>
     </File>
+    <File Include="bin/Snitz.EventsCalendar.Enitities.dll">
+      <publishTime>10/01/2013 21:16:35</publishTime>
+    </File>
     <File Include="bin/Snitz.EventsCalendar.IDAL.dll">
-      <publishTime>09/12/2013 12:17:23</publishTime>
+      <publishTime>10/01/2013 21:16:37</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.UI.dll">
-      <publishTime>09/12/2013 12:17:27</publishTime>
+      <publishTime>10/01/2013 21:16:38</publishTime>
+    </File>
+    <File Include="bin/Snitz.IDAL.dll">
+      <publishTime>10/01/2013 21:14:38</publishTime>
+    </File>
+    <File Include="bin/Snitz.Membership.IDal.dll">
+      <publishTime>10/01/2013 21:15:11</publishTime>
     </File>
     <File Include="bin/Snitz.ThirdParty.dll">
-      <publishTime>06/28/2013 21:53:39</publishTime>
+      <publishTime>10/01/2013 21:14:35</publishTime>
     </File>
     <File Include="bin/SnitzBase.dll">
-      <publishTime>07/21/2013 13:02:16</publishTime>
+      <publishTime>10/01/2013 21:14:40</publishTime>
     </File>
     <File Include="bin/SnitzCommon.dll">
-      <publishTime>07/21/2013 13:02:12</publishTime>
+      <publishTime>10/01/2013 21:14:36</publishTime>
     </File>
     <File Include="bin/SnitzConfig.dll">
-      <publishTime>07/21/2013 13:02:11</publishTime>
+      <publishTime>10/01/2013 21:14:36</publishTime>
     </File>
     <File Include="bin/SnitzMembership.dll">
-      <publishTime>07/21/2013 13:02:14</publishTime>
+      <publishTime>10/01/2013 21:15:12</publishTime>
     </File>
     <File Include="bin/SnitzSQLData.dll">
       <publishTime>07/21/2013 13:02:15</publishTime>
     </File>
     <File Include="Content/Events/Events.aspx">
-      <publishTime>01/09/2013 15:55:52</publishTime>
+      <publishTime>09/30/2013 09:13:34</publishTime>
     </File>
     <File Include="UserControls/Events/EventCalendar.ascx">
-      <publishTime>08/23/2013 17:04:38</publishTime>
+      <publishTime>09/30/2013 09:13:36</publishTime>
     </File>
     <File Include="UserControls/Events/ExtendedCalendar.ascx">
-      <publishTime>08/23/2013 17:04:38</publishTime>
+      <publishTime>09/30/2013 09:13:36</publishTime>
     </File>
     <File Include="UserControls/Events/UpcomingEvents.ascx">
-      <publishTime>08/23/2013 17:04:39</publishTime>
+      <publishTime>09/30/2013 09:13:36</publishTime>
     </File>
     <File Include="UserControls/Popups/ViewEvent.ascx">
-      <publishTime>08/23/2013 17:04:39</publishTime>
+      <publishTime>09/30/2013 09:13:36</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>08/31/2013 23:37:02</publishTime>
+      <publishTime>09/30/2013 20:01:17</publishTime>
     </File>
   </ItemGroup>
 </Project>

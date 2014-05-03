@@ -9,21 +9,21 @@
 --%>
 <%@ Page Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="true" Inherits="AdminHome" Title="Untitled Page" Codebehind="default.aspx.cs" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
 <%@ MasterType TypeName="BaseMasterPage" %>
-<%@ Register Src="AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
-<%@ Register Src="Statistics.ascx" TagName="Admin_Statistics" TagPrefix="uc8" %>
-<%@ Reference Control="features.ascx" %>
-<%@ Reference Control="system.ascx" %>
-<%@ Reference Control="ManageRoles.ascx" %>
-<%@ Reference Control="email.ascx" %>
-<%@ Reference Control="dateTime.ascx" %>
-<%@ Reference Control="filters.ascx" %>
-<%@ Reference Control="membership.ascx" %>
-<%@ Reference Control="Pendingmembers.ascx" %>
-<%@ Reference Control="NewMember.ascx" %>
-<%@ Reference Control="ManageAvatars.ascx" %>
-<%@ Reference Control="ManageProfile.ascx" %>
-<%@ Reference Control="Subscriptions.ascx" %>
-<%@ Reference Control="EmoticonAdmin.ascx" %>
+<%@ Register Src="UserControls/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
+<%@ Register Src="UserControls/Statistics.ascx" TagName="Admin_Statistics" TagPrefix="uc8" %>
+<%@ Reference Control="UserControls/features.ascx" %>
+<%@ Reference Control="UserControls/system.ascx" %>
+<%@ Reference Control="UserControls/ManageRoles.ascx" %>
+<%@ Reference Control="UserControls/email.ascx" %>
+<%@ Reference Control="UserControls/dateTime.ascx" %>
+<%@ Reference Control="UserControls/filters.ascx" %>
+<%@ Reference Control="UserControls/membership.ascx" %>
+<%@ Reference Control="UserControls/Pendingmembers.ascx" %>
+<%@ Reference Control="UserControls/NewMember.ascx" %>
+<%@ Reference Control="UserControls/ManageAvatars.ascx" %>
+<%@ Reference Control="UserControls/ManageProfile.ascx" %>
+<%@ Reference Control="UserControls/Subscriptions.ascx" %>
+<%@ Reference Control="UserControls/EmoticonAdmin.ascx" %>
 <%@ Reference Control="~/UserControls/Polls/PollAdmin.ascx" %>
 <%@ Reference Control="~/UserControls/Polls/PollEdit.ascx" %>
 <%@ Reference Control="~/UserControls/Polls/Poll.ascx" %>
@@ -41,13 +41,13 @@
 </asp:Content>
 <asp:Content ID="adOverride" runat="server" contentplaceholderid="CPAd">
 </asp:Content>
-<asp:Content ID="C3" runat="server" ContentPlaceHolderID="CPF1">
+<asp:Content ID="C3" runat="server" ContentPlaceHolderID="CPM">
     <div style="width:95%;margin:auto" class="clearfix">
-        <div style="float:left;width:25%; left: 0px; top: 0px;">
+        <div style="float:left;width:25%; left: 0; top: 0;">
             <uc1:AdminPanel ID="Menu" runat="server" />
         </div>
             
-        <div style="width:70%;margin:auto;height:auto;vertical-align:top;float:left;">
+        <div style="width:70%;margin:auto;height:auto;vertical-align:top;float:left;border-radius:5px;">
             <asp:Panel ID="Panel1" runat="server" Width="100%"  
                 meta:resourcekey="Panel1Resource1">
             <div class="forumtable">

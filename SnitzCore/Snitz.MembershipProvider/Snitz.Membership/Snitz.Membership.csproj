@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SnitzMembership</RootNamespace>
+    <AssemblyName>SnitzMembership</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Nonshipping>true</Nonshipping>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Dependency\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\SnitzSVN\bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cryptos">
+      <HintPath>..\..\..\Dependency\Cryptos.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\BusinessUtil.cs" />
+    <Compile Include="Helpers\Factory.cs" />
+    <Compile Include="ProfileCommon.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnitzMembershipProvider.cs" />
+    <Compile Include="SnitzMembershipUser.cs" />
+    <Compile Include="SnitzRoleProvider.cs" />
+    <Compile Include="SnitzProfileProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Snitz.Common\Snitz.Common.csproj">
+      <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
+      <Name>Snitz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Snitz.Config\Snitz.Config.csproj">
+      <Project>{eaac5b1e-e704-4233-97ce-9fd309cebd9f}</Project>
+      <Name>Snitz.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Snitz.Entities\Snitz.Entities.csproj">
+      <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
+      <Name>Snitz.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Snitz.IDAL\Snitz.IDAL.csproj">
+      <Project>{bfd397a4-42a3-4c42-9563-569b3d0b6b9a}</Project>
+      <Name>Snitz.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.Membership.IDal\Snitz.Membership.IDal.csproj">
+      <Project>{a0c1364e-09e1-429f-888f-7f9b26c77527}</Project>
+      <Name>Snitz.Membership.IDal</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

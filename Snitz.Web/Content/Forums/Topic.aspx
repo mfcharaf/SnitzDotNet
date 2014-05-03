@@ -31,8 +31,9 @@
     <script src="/scripts/editor.min.js" type="text/javascript"></script>
     <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
     <script src="/scripts/smilies.min.js" type="text/javascript"></script>
-    <script src="/scripts/postpage.js" type="text/javascript"></script>
+    <script src="/scripts/postpage.min.js" type="text/javascript"></script>
     <script src="/Scripts/topic_print.min.js" type="text/javascript"></script>
+    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
     <script type="text/javascript">
         function pagebind() {
             $(document).ready(function () {
@@ -40,8 +41,8 @@
                     $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
                 });
                 $('#ctl00_CPF1_ctl00_emoticons1_DataList1 a').click(function () {
-                    var emoticon = $(this).attr("title");
-                    $.markItUp({ replaceWith: emoticon });
+                    //var emoticon = $(this).attr("title");
+                    //$.markItUp({ replaceWith: emoticon });
                     return false;
                 });
                 $('a.video').player({
@@ -51,7 +52,9 @@
                     showPlaylist: 0,
                     showTitleOverlay: 0
                 });
+
             });
+            
         };
 
         pagebind();
@@ -205,7 +208,7 @@
                             Text="Prev Topic"></asp:HyperLink>
                     </div>
                     <div class="topicNext">
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=next", Eval("Id")) %>'
+                        <asp:HyperLink ID="nextTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=next", Eval("Id")) %>'
                             Text="Next Topic"></asp:HyperLink>
                         &raquo;</div>
                 </div>
@@ -233,7 +236,7 @@
                             <asp:Literal ID="litDate1" runat="server" Text='<%# Topics.LastEditTimeAgo(Container.DataItem)%>' />
                         </div>
                         <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                            <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>
+                            <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
                         </div>
                     </div>
                 </div>
@@ -256,7 +259,10 @@
                         var prm = Sys.WebForms.PageRequestManager.getInstance();
                         var confirmHandlers = {};
 
-                        prm.add_endRequest(function () {
+                        prm.add_endRequest(
+
+                            function () {
+
                             jQuery("abbr.timeago").timeago();
 
                         });
@@ -306,7 +312,7 @@
                                         <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
                                     </div>
                                     <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                                        <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>
+                                        <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +328,7 @@
                                 <div class="MessageDIV">
                                     <div class="buttonbar">
                                         <asp:HyperLink ID="hypGoUp" rel="nofollow" SkinID="GotoTop" runat="server" EnableViewState="False"
-                                            NavigateUrl="#top"></asp:HyperLink>
+                                            NavigateUrl="#top" style="margin-left:5px;"></asp:HyperLink>
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
                                     <div class="mContent bbcode">
@@ -334,7 +340,7 @@
                                         <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
                                     </div>
                                     <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                                        <%# DataBinder.Eval(Container.DataItem, "Author.Signature")%>
+                                        <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
                                     </div>
                                 </div>
                             </div>

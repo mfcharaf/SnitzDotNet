@@ -110,7 +110,7 @@ namespace SnitzUI
 
                         }
                     }
-                    //ReplyPager.CurrentIndex = CurrentPage;
+
                 }
             }
             if(HttpContext.Current.Items["Subject"] != null)
@@ -126,9 +126,15 @@ namespace SnitzUI
                     SearchResults.BottomPagerRow.Visible = true;
                 SearchResults.Visible = true;
             }
-            //GridViewHelper helper = new GridViewHelper(this.SearchResults);
-            //helper.RegisterGroup("ForumSubject", true, true);
-            //helper.ApplyGroupSort();
+
+            if (ViewState["Extended"] != null)
+            {
+                if ((bool) ViewState["Extended"])
+                {
+                    EnableSearchForm();
+                    cbxArchive.Checked = true;
+                }
+            }
         }
 
         protected void SearchForums(object sender, EventArgs eventArgs)
@@ -147,10 +153,15 @@ namespace SnitzUI
                                            AuthorPostType = ddlUserPosts.SelectedValue,
                                            Author = tbxUserName.Text.Trim(),
                                            SearchFor = searchFor.Text.Trim(),
-                                           MessageAndSubject = true,
-                                           PageSize = Convert.ToInt32(ddlPageSize.SelectedValue)
+                                           MessageAndSubject = !cbxSubjectOnly.Checked,
+                                           PageSize = Convert.ToInt32(ddlPageSize.SelectedValue),
+                                           Archived = cbxArchive.Checked
                                        };
-
+            if (sparams.ForumId == -99)
+            {
+                //no forum selected
+                return;
+            }
             if (!string.IsNullOrEmpty(tbxDate.Text.Trim()))
             {
                 if (ddlSince.SelectedValue == "before")
@@ -175,6 +186,12 @@ namespace SnitzUI
         }
 
         protected void LinkButton1Click(object sender, EventArgs e)
+        {
+            EnableSearchForm();
+            ViewState["Extended"] = true;
+        }
+
+        private void EnableSearchForm()
         {
             extendedSearch.Visible = true;
             Options.Visible = true;

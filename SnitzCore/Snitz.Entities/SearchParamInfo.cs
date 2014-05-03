@@ -42,5 +42,9 @@ namespace Snitz.Entities
         public DateTime BeforeDate { get; set; }
 
         public DateTime SinceDate { get; set; }
+
+        public bool Archived { get; set; }
+
+        public bool SubjectOnly { get; set; }
     }
 }

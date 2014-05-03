@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MiniActiveTopics.ascx.cs" Inherits="SnitzUI.UserControls.MiniActiveTopics" EnableViewState="False" %>
 <%@ Import Namespace="SnitzCommon" %>
 <div class="sideBox">
-<asp:Repeater ID="DataList1" runat="server" EnableViewState="False">
+<asp:Repeater ID="DataList1" runat="server" EnableViewState="False" OnItemDataBound="BindRepeater">
     <HeaderTemplate>
         <div class="category cattitle">
             <asp:Label ID="Label1" runat="server" Text="Latest Posts" style="width:100%;margin:auto;" EnableViewState="False"></asp:Label>
@@ -23,7 +23,7 @@
                         ToolTip="<%$ Resources:webResources, lblLastPostJump %>" 
                         Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>&nbsp;
 
-                    <%# Common.TimeAgoTag((DateTime)DataBinder.Eval(Container.DataItem, "LastPostDate"), ThisPage.IsAuthenticated, ThisPage.Member.TimeOffset)%>
+                    <asp:Literal runat="server" ID="lastposttime"></asp:Literal>
          </div>
     </ItemTemplate>
     <FooterTemplate></div></FooterTemplate>

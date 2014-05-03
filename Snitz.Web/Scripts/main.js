@@ -25,22 +25,7 @@ mainScreen.Init = function () {
     }
     this.styleSheets = new Array
 };
-mainScreen.ShowConfirm = function (a, b, c) {
-    this.currentButtonUID = a.name;
-    this.mainModalTitleSpan.innerHTML = b;
-    this.mainModalContentsDiv.innerHTML = c
-};
-mainScreen.CancelConfirm = function () {
-    this.mainModalExtender.hide();
-    this.currentButtonUID = null
-};
-mainScreen.SubmitConfirm = function () {
-    if (this.currentButtonUID) {
-        __doPostBack(this.currentButtonUID, "")
-    }
-    this.mainModalExtender.hide();
-    this.currentButtonUID = null
-};
+
 mainScreen.ShowModal = function (a, b) {
     this.mainModalTitleSpan.innerHTML = a;
     this.mainModalContentsDiv.innerHTML = b;

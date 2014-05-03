@@ -41,7 +41,7 @@ namespace SnitzUI
     public partial class ForumPage : PageBase
     {
         const string session = "FORUMID";
-
+        protected int _archiveView;
         bool _bGetSelectCount;
         private ForumInfo _currentForum;
         public bool IsForumModerator;
@@ -98,6 +98,19 @@ namespace SnitzUI
                 Collapsed = stickystate.Value;
 
             topicUPD.Triggers.Add(new AsyncPostBackTrigger {ControlID = ddlShowTopicDays.UniqueID, EventName="SelectedIndexChanged"});
+            if (Request.QueryString["ARCHIVE"] != null)
+            {
+                if (Request.QueryString["ARCHIVE"] == "1")
+                {
+                    TopicODS.TypeName = "Snitz.BLL.Archive";
+                    _archiveView = 1;
+                }
+            }
+            else
+            {
+                TopicODS.TypeName = "Snitz.BLL.Forums";
+                _archiveView = 0;
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -202,7 +215,43 @@ namespace SnitzUI
                 }
                 BindData();
             }
-                
+            if (Page.IsPostBack)
+            {
+                string postbackbtn = Request.Form["__EVENTTARGET"];
+                string argument = Request.Form["__EVENTARGUMENT"];
+                int id;
+                switch (postbackbtn)
+                {
+                    case "LockTopic":
+                        id = Convert.ToInt32(argument);
+                        LockTopic(id);
+                        break;
+                    case "UnLockTopic":
+                        id = Convert.ToInt32(argument);
+                        UnLockTopic(id);
+                        break;
+                    case "TopicSubscribe":
+                        id = Convert.ToInt32(argument);
+                        TopicSubscribe(id);
+                        break;
+                    case "TopicUnSubscribe":
+                        id = Convert.ToInt32(argument);
+                        TopicUnSubscribe(id);
+                        break;
+                    case "DeleteTopic":
+                        id = Convert.ToInt32(argument);
+                        DeleteTopic(id);
+                        break;
+                    case "StickTopic":
+                        id = Convert.ToInt32(argument);
+                        StickTopic(id);
+                        break;
+                    case "UnStickTopic":
+                        id = Convert.ToInt32(argument);
+                        UnStickTopic(id);
+                        break;
+                }
+            }    
         }
 
         private void BindData()
@@ -305,16 +354,23 @@ namespace SnitzUI
                 var noArchiveIcon = e.Row.Cells[6].FindControl("hypNoArchiveTopic") as HyperLink;
                 var archiveIcon = e.Row.Cells[6].FindControl("hypArchiveTopic") as HyperLink;
                 var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
+                var lastpostdate = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
 
                 if(popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
                     popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
+                if (lastpostdate != null)
+                {
+                    lastpostdate.Text = Common.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,
+                        Member == null ? Config.TimeAdjust : Member.TimeOffset);
+                }
                 if(subscribe != null)
                 {
                     subscribe.Visible = IsAuthenticated;
                     subscribe.Visible = subscribe.Visible && topic.AllowSubscriptions;
+                    subscribe.OnClientClick = "setArgAndPostBack('Do you want to be notified when someone posts a reply?','TopicSubscribe'," + topic.Id + ");return false;";
                 }
                 if(unsubscribe != null)
                 {
@@ -327,39 +383,49 @@ namespace SnitzUI
                             unsubscribe.Visible = true;
                         }
                     }
+                    unsubscribe.OnClientClick = "setArgAndPostBack('Do you want to remove notifications from topic?','TopicUnSubscribe'," + topic.Id + ");return false;";
                 }
                 if (stickyIcon != null)
                 {
-                    stickyIcon.Visible = ((IsAdministrator || IsForumModerator) && (!topic.IsSticky));
+                    stickyIcon.Visible = ((IsAdministrator || IsForumModerator) && (!topic.IsSticky) && _archiveView != 1);
+                    stickyIcon.OnClientClick =
+                        "setArgAndPostBack('Do you want to make the Topic sticky?','StickTopic'," + topic.Id + ");return false;";
                 }
                 if (unstickyIcon != null)
                 {
-                    unstickyIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.IsSticky));
-                    
+                    unstickyIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.IsSticky) && _archiveView != 1);
+                    unstickyIcon.OnClientClick =
+                        "setArgAndPostBack('Do you want to un-stick the Topic?','UnStickTopic'," + topic.Id + ");return false;";
                 }
                 if (lockIcon != null)
                 {
-                    lockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status != (int)Enumerators.PostStatus.Closed));
+                    lockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status != (int)Enumerators.PostStatus.Closed) && _archiveView != 1);
+                    lockIcon.OnClientClick =
+                        "setArgAndPostBack('Do you want to lock the Topic?','LockTopic'," + topic.Id + ");return false;";
                 }
                 if (unlockIcon != null)
                 {
-                    unlockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status == (int)Enumerators.PostStatus.Closed));
+                    unlockIcon.Visible = ((IsAdministrator || IsForumModerator) && (topic.Status == (int)Enumerators.PostStatus.Closed) && _archiveView != 1);
+                    unlockIcon.OnClientClick =
+                        "setArgAndPostBack('Do you want to unlock the Topic?','UnLockTopic'," + topic.Id + ");return false;";
                 }
                 if (replyIcon != null)
                     replyIcon.NavigateUrl = "/Content/Forums/post.aspx?method=reply&TOPIC_ID=" + topic.Id;
                 if (noArchiveIcon != null)
                 {
-                    noArchiveIcon.Visible = IsAdministrator && (Topics.IsArchived(topic));
+                    noArchiveIcon.Visible = IsAdministrator && (Topics.IsArchived(topic)) && _archiveView != 1;
                     noArchiveIcon.NavigateUrl = "javascript:openConfirmDialog('pop_archive.aspx?archive=0&ID=" + topic.Id + "')";
                 }
                 if (archiveIcon != null)
                 {
-                    archiveIcon.Visible = IsAdministrator && (Topics.AllowArchive(topic));
+                    archiveIcon.Visible = IsAdministrator && (Topics.AllowArchive(topic)) && _archiveView != 1;
                     archiveIcon.NavigateUrl = "javascript:openConfirmDialog('pop_archive.aspx?archive=1&ID=" + topic.Id + "')";
                 }
                 if (delIcon != null)
                 {
                     delIcon.Visible = false;
+                    delIcon.OnClientClick =
+                        "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + topic.Id + ");return false;";
                 }
                 if (editIcon != null)
                 {
@@ -499,10 +565,15 @@ namespace SnitzUI
                 {
                     tempNode.Title += String.Format(" ({0})", EnumHelper.GetDescription((Enumerators.Moderation)_currentForum.ModerationLevel));
                 }
-                if (_currentForum.Status == (int)Enumerators.PostStatus.Closed)
+                if (_archiveView == 1)
+                {
+                    tempNode.Title += " (Archived)";
+                }                
+                else if (_currentForum.Status == (int)Enumerators.PostStatus.Closed)
                 {
                     tempNode.Title += webResources.ForumIsLocked;
                 }
+
                 return currentNode;
             }
             return null;
@@ -528,45 +599,41 @@ namespace SnitzUI
             }
         }
 
-        protected void DeleteTopic(object sender, ImageClickEventArgs e)
+        private void DeleteTopic(int topicid)
         {
             var lbl = UpdateProgress1.FindControl("lblProgress");
             if (lbl != null)
                 ((Label) lbl).Text = "Deleting Topic";
-            var btn = (ImageButton) sender;
-            Topics.Delete(Convert.ToInt32(btn.CommandArgument));
+
+            Topics.Delete(topicid);
             InvalidateCache();
             ForumTable.DataBind();
         }
 
-        protected void LockTopic(object sender, ImageClickEventArgs e)
+        private void LockTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Closed);
+            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Closed);
             InvalidateCache();
             ForumTable.DataBind();
         }
 
-        protected void UnLockTopic(object sender, ImageClickEventArgs e)
+        private void UnLockTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Open);
+            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Open);
             InvalidateCache();
             ForumTable.DataBind();
         }
 
-        protected void StickTopic(object sender, ImageClickEventArgs e)
+        private void StickTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.MakeSticky(Convert.ToInt32(btn.CommandArgument), true);
+            Topics.MakeSticky(topicid, true);
             InvalidateCache();
             ForumTable.DataBind();
         }
 
-        protected void UnStickTopic(object sender, ImageClickEventArgs e)
+        private void UnStickTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.MakeSticky(Convert.ToInt32(btn.CommandArgument), false);
+            Topics.MakeSticky(topicid, false);
             InvalidateCache();
             ForumTable.DataBind();
         }
@@ -585,22 +652,14 @@ namespace SnitzUI
             Response.Redirect(Request.RawUrl, true);
         }
 
-        protected void TopicSubscribe(object sender, ImageClickEventArgs e)
+        private void TopicSubscribe(int topicid)
         {
-            var btn = (ImageButton)sender;
-            int topicid = Convert.ToInt32(btn.CommandArgument);
-            switch (btn.CommandName)
-            {
-                case "sub" :
-                    Subscriptions.AddTopicSubscription(Member.Id, topicid);
-                    break;
-                case "unsub" :
-                    Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
-                    break;
-            }
-            
+            Subscriptions.AddTopicSubscription(Member.Id, topicid);
         }
-
+        protected void TopicUnSubscribe(int topicid)
+        {
+            Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
+        }
 
         [WebMethod]
         public static void Approval(string topicid, string replyid)

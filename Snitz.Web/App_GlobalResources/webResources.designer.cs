@@ -772,11 +772,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Topic.
+        ///   Looks up a localized string similar to Delete Post.
         /// </summary>
         internal static string lblDelPost {
             get {
                 return ResourceManager.GetString("lblDelPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Reply.
+        /// </summary>
+        internal static string lblDelReply {
+            get {
+                return ResourceManager.GetString("lblDelReply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Topic.
+        /// </summary>
+        internal static string lblDelTopic {
+            get {
+                return ResourceManager.GetString("lblDelTopic", resourceCulture);
             }
         }
         

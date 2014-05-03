@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
@@ -48,8 +47,7 @@ namespace SnitzUI.UserControls
                 UserId = ((int)Data);
                 CurrentUser = Members.GetMember(HttpContext.Current.User.Identity.Name);
                 IsAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
-                List<MemberInfo> authrsrc = new List<MemberInfo>();
-                authrsrc.Add(Members.GetMember(UserId));
+                List<MemberInfo> authrsrc = new List<MemberInfo> {Members.GetMember(UserId)};
                 rpt.DataSource = authrsrc;
                 rpt.DataBind();
             }

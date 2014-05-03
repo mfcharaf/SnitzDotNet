@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PollEdit.ascx.cs" Inherits="SnitzUI.Admin.EditPoll" %>
-<%@ Register TagPrefix="cc1" Namespace="Snitz.ThirdParty" Assembly="Snitz.Controls" %>
+<%@ Register TagPrefix="cc1" Namespace="Snitz.ThirdParty" Assembly="Snitz.ThirdParty" %>
 <asp:Panel ID="Panel1" runat="server" CssClass="pollForm">
   
     <asp:Panel ID="Panel2" runat="server" GroupingText="Question">

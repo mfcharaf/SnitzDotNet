@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Config", "SnitzCore\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Entities", "SnitzCore\Snitz.Entities\Snitz.Entities.csproj", "{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Utility", "SnitzCore\Snitz.Utility\Snitz.Utility.csproj", "{373AE234-0710-44D8-A8EF-443AACAD357F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.BusinessLayer", "SnitzCore\Snitz.BLL\Snitz.BusinessLayer.csproj", "{531B229D-52EF-458E-91C8-F7BC64FB38C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jquery.spellchecker", "SnitzCore\jquery.spellchecker\jquery.spellchecker.csproj", "{5C790F5D-25FB-48E3-8564-D8C618F3F89B}"
@@ -18,6 +16,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.ThirdParty", "SnitzCore\Snitz.ThirdParty\Snitz.ThirdParty.csproj", "{00F07D8D-AA42-4D83-AD21-1978346E2521}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.IDAL", "SnitzCore\Snitz.IDAL\Snitz.IDAL.csproj", "{BFD397A4-42A3-4C42-9563-569B3D0B6B9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snitz.MembershipProvider", "Snitz.MembershipProvider", "{119AF5E6-D9C0-4932-9033-225472EC9444}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Membership", "SnitzCore\Snitz.MembershipProvider\Snitz.Membership\Snitz.Membership.csproj", "{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Membership.IDal", "SnitzCore\Snitz.MembershipProvider\Snitz.Membership.IDal\Snitz.Membership.IDal.csproj", "{A0C1364E-09E1-429F-888F-7F9B26C77527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +45,6 @@ Global
 		{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3812BF2A-26F5-4CD0-AA7D-AC85BA726A96}.Release|Any CPU.Build.0 = Release|Any CPU
-		{373AE234-0710-44D8-A8EF-443AACAD357F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{373AE234-0710-44D8-A8EF-443AACAD357F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{373AE234-0710-44D8-A8EF-443AACAD357F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{373AE234-0710-44D8-A8EF-443AACAD357F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{531B229D-52EF-458E-91C8-F7BC64FB38C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{531B229D-52EF-458E-91C8-F7BC64FB38C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{531B229D-52EF-458E-91C8-F7BC64FB38C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,8 +61,20 @@ Global
 		{BFD397A4-42A3-4C42-9563-569B3D0B6B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFD397A4-42A3-4C42-9563-569B3D0B6B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFD397A4-42A3-4C42-9563-569B3D0B6B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C1364E-09E1-429F-888F-7F9B26C77527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C1364E-09E1-429F-888F-7F9B26C77527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C1364E-09E1-429F-888F-7F9B26C77527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C1364E-09E1-429F-888F-7F9B26C77527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7E2A124A-D5D5-4971-B1FF-408EFD3B331E} = {119AF5E6-D9C0-4932-9033-225472EC9444}
+		{A0C1364E-09E1-429F-888F-7F9B26C77527} = {119AF5E6-D9C0-4932-9033-225472EC9444}
 	EndGlobalSection
 EndGlobal

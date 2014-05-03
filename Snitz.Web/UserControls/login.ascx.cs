@@ -39,11 +39,9 @@ public partial class User_Controls_login : System.Web.UI.UserControl
 	
     protected void Page_Load(object sender, EventArgs e)
     {
-        string separator = "<br/>";
-
         if (!Request.Path.EndsWith("register.aspx"))
         {
-            PageBase page = (PageBase)this.Page;
+            PageBase page = (PageBase)Page;
 
             login = (System.Web.UI.WebControls.Login)LoginView1.FindControl("Login1");
 
@@ -51,7 +49,7 @@ public partial class User_Controls_login : System.Web.UI.UserControl
             {
                 LoginName Lname = (LoginName)LoginView1.FindControl("ln2");
                 Literal lit = (Literal) LoginView1.FindControl("Literal1");
-                separator = _skinid == "LoginTop" ? @"&nbsp;" : @"<br/>";
+                string separator = _skinid == "LoginTop" ? @"&nbsp;" : @"<br/>";
                 lit.Text = separator;
                 string lastloggedOn = Common.TimeAgoTag(page.LastVisitDateTime, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
                 if (Lname != null)

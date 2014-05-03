@@ -228,7 +228,6 @@ namespace SnitzUI
                     ReplyInfo reply = Replies.GetReply(_recId);
                     SubjectDiv.Visible = false;
                     ForumDiv.Visible = false;
-                    //_IsAuthor = (reply.Author.Name.ToLower() == HttpContext.Current.User.Identity.Name.ToLower());
                     msg = HttpUtility.HtmlDecode(reply.Message);
                     break;
                 case "topics":
@@ -237,8 +236,6 @@ namespace SnitzUI
                     ForumDropDown.SelectedValue = _thisTopic.ForumId.ToString();
                     SubjectDiv.Visible = true;
                     tbxSubject.Text = HttpUtility.HtmlDecode(_thisTopic.Subject);
-                    //_IsAuthor = (thisTopic.Author.Name == HttpContext.Current.User.Identity.Name.ToLower());
-                    //ForumDiv.Visible = ForumDiv.Visible || (_IsAuthor && IsModerator);
                     string poll = "";
                     if(_thisTopic.PollId != null)
                     {
@@ -248,7 +245,7 @@ namespace SnitzUI
                     break;
             }
 
-            Message.Text = msg; //.Replace("'", "&#39;");
+            Message.Text = msg; 
         }
         
         protected void PostMessage(object sender, EventArgs e)
@@ -391,9 +388,7 @@ namespace SnitzUI
 
         private void PostNewTopic()
         {
-            string ipaddress = Common.GetIPAddress();
-
-
+            string ipaddress = Common.GetIP4Address();
             #region Poll check code
             string topicPoll = String.Empty;
 
@@ -406,7 +401,6 @@ namespace SnitzUI
                 Message.Text = poll.Replace(Message.Text, "");
             }
             #endregion
-
             var topic = new TopicInfo
                               {
                                   Subject = tbxSubject.Text,
@@ -421,17 +415,19 @@ namespace SnitzUI
                                   ReplyCount = 0,
                                   Views = 0
                               };
-            if (ForumId.HasValue) topic.Forum = Forums.GetForum(ForumId.Value);
+            if (ForumId.HasValue)
+            {
+                topic.Forum = Forums.GetForum(ForumId.Value);
+                topic.ForumId = ForumId.Value;
+            }
             if (cbxLock.Checked)
                 topic.Status = (int)Enumerators.PostStatus.Closed;
-            else if (_inModeratedList)
+            else if (!_inModeratedList)
             {
                 if (topic.Forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||
                     topic.Forum.ModerationLevel == (int)Enumerators.Moderation.Topics)
                     topic.Status = (int)Enumerators.PostStatus.UnModerated;
             }
-
-            if (ForumId != null) topic.ForumId = ForumId.Value;
             if (CatId != null) topic.CatId = CatId.Value;
             topic.Id = Topics.Add(topic);
             if (pingSiteMap) { Ping(""); }
@@ -470,7 +466,7 @@ namespace SnitzUI
 
         private void PostNewReply()
         {
-            string ipaddress = Common.GetIPAddress();
+            string ipaddress = Common.GetIP4Address();
 
             var poll = new Regex(@"(?<poll>\[poll=(?<question>.+?)](?<answers>.+?)\[\/poll])", RegexOptions.Singleline);
 
@@ -489,9 +485,7 @@ namespace SnitzUI
                                   AuthorId = Member.Id,
                                   Date = DateTime.UtcNow
                               };
-            if (cbxLock.Checked)
-                reply.Status = (int)Enumerators.PostStatus.Closed;
-            else if (_inModeratedList)
+            if (!_inModeratedList)
             {
 
                 if (_thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||

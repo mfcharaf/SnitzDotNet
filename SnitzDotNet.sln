@@ -38,6 +38,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.SQLSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.Entities", "Plugins\EventCalendar\Snitz.EventsCalendar.Common\Snitz.EventsCalendar.Entities.csproj", "{9A4FCF60-FC99-46F3-A405-8B8751D46DF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.OleDbDAL", "Plugins\EventCalendar\Snitz.EventsCalendar.OleDbDAL\Snitz.EventsCalendar.OleDbDAL.csproj", "{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OleDbTest", "OleDbTest\OleDbTest.csproj", "{D2120A55-4102-4F7C-9558-8E22CFAD605A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,14 @@ Global
 		{9A4FCF60-FC99-46F3-A405-8B8751D46DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A4FCF60-FC99-46F3-A405-8B8751D46DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A4FCF60-FC99-46F3-A405-8B8751D46DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2120A55-4102-4F7C-9558-8E22CFAD605A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2120A55-4102-4F7C-9558-8E22CFAD605A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2120A55-4102-4F7C-9558-8E22CFAD605A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2120A55-4102-4F7C-9558-8E22CFAD605A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +91,6 @@ Global
 		{EBFE276B-4913-4E1D-A19E-C917C4F97A95} = {4F5FB4DD-52CD-4FA6-9177-A994A6AAA2E5}
 		{714439F4-8CBD-4A83-BD10-844E804EAD0A} = {4F5FB4DD-52CD-4FA6-9177-A994A6AAA2E5}
 		{9A4FCF60-FC99-46F3-A405-8B8751D46DF2} = {4F5FB4DD-52CD-4FA6-9177-A994A6AAA2E5}
+		{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786} = {4F5FB4DD-52CD-4FA6-9177-A994A6AAA2E5}
 	EndGlobalSection
 EndGlobal

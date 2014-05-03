@@ -2,7 +2,7 @@
 ##############################################################################################################
 ## Snitz Forums .net
 ##############################################################################################################
-## Copyright (C) 2012 Huw Reddick
+## Copyright (C) 2012-2014 Huw Reddick
 ## All rights reserved.
 ## based on code from Snitz Forums 2000 (c) Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
 ## http://forum.snitz.com
@@ -13,53 +13,23 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="CPhead" runat="server">
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
     <link rel="stylesheet" type="text/css" runat="server" id="faqCSS"/>
+    <link rel="stylesheet" type="text/css" href="/Scripts/prettify.css"/>
     <script src="/scripts/editor.min.js" type="text/javascript"></script>
-    <script src="/scripts/editor.min.js" type="text/javascript"></script>
+    <script src="/scripts/run_prettify.js"></script>
+    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $(".QRMsgArea").markItUp(mySettings);
 
             });
 
-            function setArgAndPostBack(msg, btn, id) {
-                myConfirm(msg, function () {
-                    $("#__EVENTARGUMENT").val(id);
-                    __doPostBack(btn, id);
-                }, function () {
-                    //cancelled so do nothing
-                },
-              'Confirmation Required'
-            );
-
-            }
-            function myConfirm(dialogText, okFunc, cancelFunc, dialogTitle) {
-                $('<div style="padding: 10px; max-width: 500px; word-wrap: break-word;">' + dialogText + '</div>').dialog({
-                    draggable: false,
-                    modal: true,
-                    resizable: false,
-                    width: 'auto',
-                    title: dialogTitle || 'Confirm',
-                    minHeight: 75,
-                    buttons: {
-                        OK: function () {
-                            if (typeof (okFunc) == 'function') {
-                                setTimeout(okFunc, 50);
-                            }
-                            $(this).dialog('destroy');
-                        },
-                        Cancel: function () {
-                            if (typeof (cancelFunc) == 'function') {
-                                setTimeout(cancelFunc, 50);
-                            }
-                            $(this).dialog('destroy');
-                        }
-                    }
-                });
-            }
         </script>
 </asp:Content>
 
 <asp:Content ID="Content6" ContentPlaceHolderID="CPHL" runat="server">
+    <style type="text/css">
+        .codebox { max-height: 2000px;}
+    </style>
     <div class="POTButtons clearfix">
         <asp:LinkButton ID="addTopic" Text="Add help Topic" runat="server" ToolTip="Add new help Topic" Visible='<%# IsAdministrator || Roles.IsUserInRole("FaqAdmin") %>' OnClick="NewTopic" EnableViewState="False" />
         <asp:LinkButton EnableViewState="False" ID="manageCats" OnClick="ManageCategories" runat="server" Text="Manage Categories" ToolTip="Manage Categories" Visible='<%# IsAdministrator || Roles.IsUserInRole("FaqAdmin") %>' />

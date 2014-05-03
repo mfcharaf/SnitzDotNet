@@ -20,7 +20,6 @@
 */
 
 using System;
-using System.Web;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
@@ -70,7 +69,7 @@ public partial class MiniStatistics : System.Web.UI.UserControl
     {
         if (Session["CurrentProfile"] != null)
             Session.Remove("CurrentProfile");
-        _page = (PageBase) this.Page;
+        _page = (PageBase) Page;
         stats = Statistics.GetStatistics();
         string newmemberlink = String.Format(ProfileUrl, stats.NewestMember, String.Format(webResources.lblViewProfile, stats.NewestMember));
         NewMember = string.Format(webResources.lblMiniStatsNewMember, newmemberlink);
@@ -95,13 +94,17 @@ public partial class MiniStatistics : System.Web.UI.UserControl
         const string url = "<a href=\"/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}\">{2}</a>";
         TopicInfo lastpost = stats.LastPost;
 
-        string lastpostDate = Common.TimeAgoTag(lastpost.LastPostDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, _page.Member != null ? _page.Member.TimeOffset : 0);
-        return String.Format(url, lastpost.Id, lastpost.LastReplyId, lastpostDate);
+        if (lastpost.LastPostDate != null)
+        {
+            string lastpostDate = Common.TimeAgoTag(lastpost.LastPostDate.Value, ((PageBase)Page).IsAuthenticated, _page.Member != null ? _page.Member.TimeOffset : 0);
+            return String.Format(url, lastpost.Id, lastpost.LastReplyId, lastpostDate);
+        }
+        return String.Empty;
     }
     
     private string GetLastPostAuthor() 
     {
-        var author = (AuthorInfo)stats.LastPostAuthor;
+        var author = stats.LastPostAuthor;
         return author == null ? String.Empty : String.Format(ProfileUrl, author.Username, String.Format(webResources.lblViewProfile,author.Username));
     }
 

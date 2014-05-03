@@ -29,7 +29,7 @@ namespace Snitz.IDAL
     /// </summary>
     public interface ITopic : IBaseObject<TopicInfo>
     {
-        IEnumerable<ReplyInfo> GetReplies(int topicid,int startrec,int maxrecs);
+        IEnumerable<ReplyInfo> GetReplies(TopicInfo topic,int startrec,int maxrecs);
         IEnumerable<TopicInfo> GetTopicsForSiteMap(int maxRecords);
         IEnumerable<TopicInfo> GetLatestTopics(int topicCount, string lastvisit);
         IEnumerable<TopicInfo> GetTopics(string lastHereDate, int startRowIndex, int maximumRows, int? forumid, bool isAdminOrModerator, int? topicstatus);

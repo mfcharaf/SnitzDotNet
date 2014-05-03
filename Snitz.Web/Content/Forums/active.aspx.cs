@@ -28,7 +28,6 @@ using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using Snitz.Providers;
 using SnitzConfig;
 
 using Image = System.Web.UI.WebControls.Image;
@@ -94,6 +93,35 @@ public partial class ActiveTopicPage : PageBase
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Page.IsPostBack)
+            {
+                string postbackbtn = Request.Form["__EVENTTARGET"];
+                string argument = Request.Form["__EVENTARGUMENT"];
+                int id;
+                switch (postbackbtn)
+                {
+                    case "LockTopic":
+                        id = Convert.ToInt32(argument);
+                        LockTopic(id);
+                        break;
+                    case "UnLockTopic":
+                        id = Convert.ToInt32(argument);
+                        UnLockTopic(id);
+                        break;     
+                    case "TopicSubscribe" :
+                        id = Convert.ToInt32(argument);
+                        TopicSubscribe(id);
+                        break;
+                    case "TopicUnSubscribe":
+                        id = Convert.ToInt32(argument);
+                        TopicUnSubscribe(id);
+                        break;
+                    case "DeleteTopic" :
+                        id = Convert.ToInt32(argument);
+                        DeleteTopic(id);
+                        break;
+                }
+            }
             if (!Page.IsPostBack)
             {
                 hdnLastOpened.Value = DateTime.UtcNow.ToForumDateStr();
@@ -165,13 +193,18 @@ public partial class ActiveTopicPage : PageBase
                 var replyIcon = e.Row.Cells[6].FindControl("hypReplyTopic") as HyperLink;
                 var newIcon = e.Row.Cells[6].FindControl("hypNewTopic") as HyperLink;
                 var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
+                var lastpost = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
 
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
                     popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
-
+                if (lastpost != null)
+                {
+                    lastpost.Text = Common.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,
+                        Member == null ? Config.TimeAdjust : Member.TimeOffset);
+                }
                 int replyCount = topic.ReplyCount;
                 int topicId = topic.Id;
                 int forumId = topic.ForumId;
@@ -183,17 +216,13 @@ public partial class ActiveTopicPage : PageBase
                 {
                     lockIcon.Visible = (IsAdministrator || inModeratedList);
                     lockIcon.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Lock', 'Do you want to lock the topic?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Lock Topic ?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
+                        "setArgAndPostBack('Do you want to lock the Topic?','LockTopic'," + topicId + ");return false;";
                 }
                 if (delIcon != null)
                 {
                     delIcon.Visible = false;
                     delIcon.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the topic?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Delete Topic ?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
+                        "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + topicId + ");return false;";
                 }
                 if (editIcon != null) editIcon.Visible = false;
 
@@ -206,25 +235,21 @@ public partial class ActiveTopicPage : PageBase
                     }
                     subscribe.Visible = subscribe.Visible && topic.AllowSubscriptions;
                     subscribe.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to be notified when someone posts a reply?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Subscribe to Topic ?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
+                        "setArgAndPostBack('Do you want to be notified when someone posts a reply?','TopicSubscribe'," + topicId + ");return false;";
                 }
                 if (unsubscribe != null)
                 {
                     unsubscribe.Visible = false;
                     if (subscribe != null && subscribe.Visible)
                     {
-                        if (Members.IsSubscribedToTopic(topic.Id,Member.Id))
+                        if (Members.IsSubscribedToTopic(topic.Id, Member == null ? 0 : Member.Id))
                         {
                             subscribe.Visible = false;
                             unsubscribe.Visible = true;
                         }
                     }
                     unsubscribe.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm Remove', 'Do you want to remove notifications from topic?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to remove notifications from topic?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
+                        "setArgAndPostBack('Do you want to remove notifications from topic?','TopicUnSubscribe'," + topicId + ");return false;";
                 }
 
                 e.Row.Cells[0].Controls.Add(GetRecentTopicIcon(topic, replyCount));
@@ -238,9 +263,7 @@ public partial class ActiveTopicPage : PageBase
                 {
                     unlockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status == (int)Enumerators.PostStatus.Closed));
                     unlockIcon.OnClientClick =
-                        "mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the topic?'); " +
-                        "mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'UnLock Topic ?'},'confirmHandlers.BeginRecieve'); " +
-                        "return false;";
+                        "setArgAndPostBack('Do you want to unlock the Topic?','UnLockTopic'," + topicId + ");return false;";
                 }
 
                 if (replyIcon != null)
@@ -332,7 +355,7 @@ public partial class ActiveTopicPage : PageBase
                 if (Member != null)
                 {
                     newdate = LastVisitDateTime;
-                    ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ",true,IsAuthenticated,Member.TimeOffset),@"(<.*?>)",""));
+                    ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ", true, IsAuthenticated, Member == null ? Config.TimeAdjust : Member.TimeOffset), @"(<.*?>)", ""));
                 }
             }
             else
@@ -508,8 +531,7 @@ public partial class ActiveTopicPage : PageBase
             switch ((Enumerators.PostStatus)topic.Status)
             {
                 case Enumerators.PostStatus.Closed:
-                    image.SkinID = "FolderNewLocked";
-
+                    image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderNewLocked" : "FolderLocked";
                     break;
                 case Enumerators.PostStatus.UnModerated:
                     image.SkinID = "Unmoderated";
@@ -520,9 +542,11 @@ public partial class ActiveTopicPage : PageBase
                     image.ToolTip = webResources.OnHold;
                     break;
                 default:
-                    image.SkinID = "FolderNew";
+                    image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderNew" : "Folder";
                     if (tReplies > Config.HotTopicNum)
-                        image.SkinID = "FolderNewHot";
+                    {
+                        image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderHot" : "FolderNewHot";
+                    }
                     break;
             }
             if(topic.PollId > 0)
@@ -589,41 +613,30 @@ public partial class ActiveTopicPage : PageBase
             }
         }
 
-        protected void DeleteTopic(object sender, ImageClickEventArgs e)
+        protected void DeleteTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.Delete(Convert.ToInt32(btn.CommandArgument));
+            Topics.Delete(topicid);
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void LockTopic(object sender, ImageClickEventArgs e)
+        protected void LockTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Closed);
+            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Closed);
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void UnLockTopic(object sender, ImageClickEventArgs e)
+        protected void UnLockTopic(int topicid)
         {
-            var btn = (ImageButton)sender;
-            Topics.SetTopicStatus(Convert.ToInt32(btn.CommandArgument), (int)Enumerators.PostStatus.Open);
+            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Open);
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void TopicSubscribe(object sender, ImageClickEventArgs e)
+        protected void TopicSubscribe(int topicid)
         {
-            var btn = (ImageButton)sender;
-            int topicid = Convert.ToInt32(btn.CommandArgument);
-            switch (btn.CommandName)
-            {
-                case "sub":
-                    Subscriptions.AddTopicSubscription(Member.Id, topicid);
-                    break;
-                case "unsub":
-                    Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
-                    break;
-            }
-
+            Subscriptions.AddTopicSubscription(Member == null ? 0 : Member.Id, topicid);
         }
-
+        protected void TopicUnSubscribe(int topicid)
+        {
+            Subscriptions.RemoveTopicSubscription(Member == null ? 0 : Member.Id, topicid);
+        }
     }

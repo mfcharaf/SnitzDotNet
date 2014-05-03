@@ -39,6 +39,40 @@ namespace SnitzCommon
 {
 	public class PageBase : Page
 	{
+        private ScriptManager _pageScriptManager;
+        private string LastVisitCookie 
+        { 
+            get
+            {
+                HttpCookie cookie = Request.Cookies.Get("LastVisit");
+                return cookie != null ? cookie.Value : null;
+            }
+            set
+            {
+                HttpCookie cookie = new HttpCookie("LastVisit", value) {Expires = DateTime.UtcNow.AddDays(61)};
+                Response.Cookies.Add(cookie);
+            }
+        }
+        private DateTime? _lastLoggedOn;
+	    private DateTime LastLoggedOn
+	    {
+	        get
+	        {
+                if(_lastLoggedOn == null)
+                {
+                    MembershipUser mu = Membership.GetUser(HttpContext.Current.User.Identity.Name, HttpContext.Current.User.Identity.IsAuthenticated);
+                    if (mu != null)
+                    {
+                        //a > b ? a : b;
+                        _lastLoggedOn = LastVisitDateTime > mu.LastLoginDate ? mu.LastLoginDate : LastVisitDateTime;
+                        return _lastLoggedOn.Value;
+                    }
+                    
+                }
+                return DateTime.UtcNow;
+	        }
+	    }
+
         /// <summary>
         /// Keep track of the current pages where page has paged dataset
         /// </summary>
@@ -59,10 +93,6 @@ namespace SnitzCommon
 	    public int? ForumId;
 	    public int? TopicId;
         public readonly ProfileCommon Profile = ProfileCommon.GetProfile();
-        public ScriptManager PageScriptManager
-        {
-            get { return _pageScriptManager ?? (_pageScriptManager = ScriptManager.GetCurrent(this)); }
-        }
 	    public readonly bool IsAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
         public bool IsModerator
         {
@@ -71,12 +101,8 @@ namespace SnitzCommon
                 if (HttpContext.Current.Session != null)
                 if (!String.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
                 {
-                    if (HttpContext.Current.Session["moderator"] != null)
-                        return (bool)HttpContext.Current.Session["moderator"];
                     bool check = Roles.IsUserInRole(HttpContext.Current.User.Identity.Name, "Moderator");
-                    HttpContext.Current.Session.Add("moderator", check);
                     return check;
-
                 }
                 return false;
             }
@@ -88,34 +114,14 @@ namespace SnitzCommon
                 if (HttpContext.Current.Session !=null)
                 if (!String.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
                 {
-                    if (HttpContext.Current.Session["adminuser"] != null)
-                        return (bool)HttpContext.Current.Session["adminuser"];
                     bool check = Roles.IsUserInRole(HttpContext.Current.User.Identity.Name, "Administrator");
-                    HttpContext.Current.Session.Add("adminuser",check);
                     return check;
-
                 }
                 return false;
             }
            
         }
 	    public readonly MemberInfo Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
-        public Stopwatch stopWatch = Stopwatch.StartNew();
-        
-        private ScriptManager _pageScriptManager;
-        private string LastVisitCookie 
-        { 
-            get
-            {
-                HttpCookie cookie = Request.Cookies.Get("LastVisit");
-                return cookie != null ? cookie.Value : null;
-            }
-            set
-            {
-                HttpCookie cookie = new HttpCookie("LastVisit", value) {Expires = DateTime.UtcNow.AddDays(61)};
-                Response.Cookies.Add(cookie);
-            }
-        }
         public DateTime LastVisitDateTime
 	    {
             get
@@ -130,26 +136,12 @@ namespace SnitzCommon
                 return DateTime.UtcNow;
             }
 	    }
-        private DateTime? _lastLoggedOn;
-	    private DateTime LastLoggedOn
-	    {
-	        get
-	        {
-                if(_lastLoggedOn == null)
-                {
-                    MembershipUser mu = Membership.GetUser(HttpContext.Current.User.Identity.Name, HttpContext.Current.User.Identity.IsAuthenticated);
-                    if (mu != null)
-                    {
-                        //a > b ? a : b;
-                        _lastLoggedOn = LastVisitDateTime > mu.LastLoginDate ? mu.LastLoginDate : LastVisitDateTime;
-                        return _lastLoggedOn.Value;
-                    }
-                    
-                }
-                return DateTime.UtcNow;
-	        }
-	    }
-	    
+
+        public Stopwatch stopWatch = Stopwatch.StartNew();
+        public ScriptManager PageScriptManager
+        {
+            get { return _pageScriptManager ?? (_pageScriptManager = ScriptManager.GetCurrent(this)); }
+        }
 		public event SiteMapResolveEventHandler SiteMapResolve;
         
         protected override void OnPreInit(EventArgs e)
@@ -189,7 +181,7 @@ namespace SnitzCommon
             if (current.Session["_LastVisit"] == null)
             {
                 //Our session is empty, reset everything
-                if (current.User.Identity.IsAuthenticated)
+                if (IsAuthenticated)
                 {
                     //we are logged in so get the lastheredate from the db and update the session
                     current.Session.Add("_LastVisit", LastLoggedOn.ToForumDateStr());
@@ -213,7 +205,7 @@ namespace SnitzCommon
             else
             {
                 //we have a session so just update LastVisit
-                if (current.User.Identity.IsAuthenticated)
+                if (IsAuthenticated)
                 {
                     Membership.GetUser(current.User.Identity.Name, true);
                     //we are logged in so get the lastheredate from the db and update the session
@@ -225,7 +217,7 @@ namespace SnitzCommon
                     LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
                 }
             }
-
+            current.Session.Add("_IsAdminOrModerator", IsModerator || IsAdministrator);
         }
         
         protected override void OnInit(EventArgs e)
@@ -302,19 +294,25 @@ namespace SnitzCommon
 
         public void Page_Error(object sender, EventArgs e)
         {
-            Exception objErr = Server.GetLastError().GetBaseException();
-            string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
-                         "<br/><b>Error in: </b>" + Request.Url.ToString() +
-                         "<br/><b>Error Message: </b>" + objErr.Message.ToString();
-            if (IsAdministrator || Config.DebugMode)
-                err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
-            Response.Write("<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
-            Response.Write(err);
-            Response.Write("<br/></div>");
-            Response.Write("<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
-            Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
-            Response.Write("</div>");
-            Server.ClearError();
+            if (!IsAdministrator)
+            {
+                Exception objErr = Server.GetLastError().GetBaseException();
+                string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
+                             "<br/><b>Error in: </b>" + Request.Url.ToString() +
+                             "<br/><b>Error Message: </b>" + objErr.Message.ToString();
+
+                if (IsAdministrator && Config.DebugMode)
+                    err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
+                Response.Write(
+                    "<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
+                Response.Write(err);
+                Response.Write("<br/></div>");
+                Response.Write(
+                    "<div style=\"width:auto;margin:100px;margin-top:0px;font-family:Tahoma,Arial,Helvetica;text-align:center;\">");
+                Response.Write("<a href=\"/default.aspx\" title=\"Return to forum\">Return to Forum</a>");
+                Response.Write("</div>");
+                Server.ClearError();
+            }
         }
 
 
@@ -370,7 +368,7 @@ namespace SnitzCommon
             //Response.Charset = CultureInfo.CurrentCulture.TextInfo.ANSICodePage.ToString();
         }
 
-        #region Page methods for Ajax Name and Email checks
+        #region Page methods
 
         [System.Web.Services.WebMethod]
         public static object[] ExecuteCommand(string commandName, string targetMethod, object data)

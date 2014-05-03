@@ -180,10 +180,8 @@ namespace Snitz.BLL
 
             string DownloadLink = "";
 
-            string[] strArray;
-
             const string oTag = "[code]";
-            const string roTag = "<div class='codebox'><div class='scrollcode'><ol><li><code>";
+            const string roTag = "<div class='codebox'><div class='scrollcode'><ol><li><code class='prettyprint'>";
             const string cTag = "[/code]";
             const string rcTag = "</code></li></ol></div></div>";
 
@@ -192,7 +190,7 @@ namespace Snitz.BLL
             int TagCount = 1;
             if ((oTagPos >= 0) && (cTagPos > 0))
             {
-                strArray = Regex.Split(strTempString, Regex.Escape(oTag), matchOptions);
+                string[] strArray = Regex.Split(strTempString, Regex.Escape(oTag), matchOptions);
                 for (int counter2 = 0; counter2 < strArray.Length; counter2++)
                 {
                     if (strArray[counter2].IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase) > 0)
@@ -206,7 +204,7 @@ namespace Snitz.BLL
                             strCodeText = Regex.Replace(strCodeText, @"<br />", Environment.NewLine, matchOptions);
                         }
                         strCodeText = HttpUtility.HtmlEncode(strCodeText);
-                        strCodeText = Regex.Replace(strCodeText, @"\n", "</code></li><li><code>", matchOptions);
+                        strCodeText = Regex.Replace(strCodeText, @"\n", "</code></li><li><code class='prettyprint'>", matchOptions);
                         strResultString = strResultString + roTag + DownloadLink + strCodeText + rcTag + strArray2[1];
                         TagCount++;
                     }

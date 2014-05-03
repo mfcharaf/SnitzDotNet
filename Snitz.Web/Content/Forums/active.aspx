@@ -25,6 +25,7 @@
 
     <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
     <script src="/scripts/smilies.min.js" type="text/javascript"></script>
+    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
     <script type="text/javascript">
         var RefreshTimer;
         $(document).ready(function () {
@@ -48,7 +49,9 @@
         };
 
     </script>
-
+    <style type="text/css">
+        #breadcrumbDIV{ display: none;}
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="CPH1" runat="server">
@@ -121,10 +124,12 @@
 </asp:Content>
 
 <asp:Content ID="content" ContentPlaceHolderID="CPM" runat="server">
-    <asp:ObjectDataSource EnablePaging="True" ID="ActiveTopicODS" OldValuesParameterFormatString="original_{0}" OnSelected="ActiveTopicOdsSelected" OnSelecting="ActiveTopicOdsSelecting" runat="server" SelectCountMethod="GetNewTopicCount" SelectMethod="GetNewTopics" TypeName="Snitz.BLL.Topics">
+    <asp:ObjectDataSource EnablePaging="True" ID="ActiveTopicODS" OldValuesParameterFormatString="original_{0}" OnSelected="ActiveTopicOdsSelected" OnSelecting="ActiveTopicOdsSelecting" runat="server" 
+        SelectCountMethod="GetNewTopicCount" 
+        SelectMethod="GetNewTopics" TypeName="Snitz.BLL.Topics">
         <SelectParameters>
-            <asp:SessionParameter DefaultValue="" Name="lastHereDate" SessionField="_SinceDate"
-                Type="String" />
+            <asp:SessionParameter DefaultValue="" Name="lastHereDate" SessionField="_SinceDate" Type="String" />
+            <asp:SessionParameter DefaultValue="false" Name="isAdminOrModerator" SessionField="_IsAdminOrModerator" Type="Boolean" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
             <asp:Parameter Name="maximumRows" Type="Int32" />
         </SelectParameters>
@@ -209,7 +214,8 @@
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>"
                                     Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
                             <br />
-                            <%# Common.TimeAgoTag((DateTime) DataBinder.Eval(Container.DataItem, "LastPostDate"), IsAuthenticated,Member.TimeOffset)%>
+                            <asp:Literal runat="server" ID="lastpostdate"></asp:Literal>
+                            
                         </ItemTemplate>
                         <HeaderStyle Width="122px" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
@@ -219,22 +225,13 @@
                         <ItemTemplate>
                             <asp:ImageButton ID="TopicLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lbllock %>"
-                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Lock', 'Do you want to lock the topic?');
-            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Lock Topic ?'},'confirmHandlers.BeginRecieve');
-            return false;"
-                                CausesValidation="False" EnableViewState="False" OnClick="LockTopic" />
+                                OnClientClick="" CausesValidation="False" EnableViewState="False" />
                             <asp:ImageButton ID="TopicUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lblUnlock %>"
-                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm UnLock', 'Do you want to unlock the topic?');
-            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'UnLock Topic ?'},'confirmHandlers.BeginRecieve');
-            return false;"
-                                CausesValidation="False" EnableViewState="False" OnClick="UnLockTopic" />
+                                OnClientClick="" CausesValidation="False" EnableViewState="False" />
                             <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>"
-                                OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Delete', 'Do you want to delete the topic?');
-            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Delete Topic ?'},'confirmHandlers.BeginRecieve');
-            return false;"
-                                CausesValidation="False" EnableViewState="False" OnClick="DeleteTopic" />
+                                OnClientClick="" CausesValidation="False" EnableViewState="False"/>
                             <asp:HyperLink rel="nofollow" ID="hypEditTopic" SkinID="EditTopic" runat="server"
                                 Visible="False" Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
                             <asp:HyperLink rel="nofollow" ID="hypReplyTopic" SkinID="ReplyTopic" runat="server"
@@ -242,15 +239,11 @@
                             <asp:HyperLink rel="nofollow" ID="hypNewTopic" SkinID="NewTopic" runat="server" Text="<%$ Resources:webResources, lblNewTopic %>"
                                 ToolTip="<%$ Resources:webResources, lblNewTopic %>"></asp:HyperLink>
                             <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>' CommandName="sub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Subscribe', 'Do you want to be notified when someone posts a reply?');
-            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Subscribe to Topic ?'},'confirmHandlers.BeginRecieve');
-            return false;"
-                                CausesValidation="False" EnableViewState="False" OnClick="TopicSubscribe" />
+                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
                             <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick="mainScreen.ShowConfirm(this, 'Confirm Remove', 'Do you want to remove notifications from topic?');
-            mainScreen.LoadServerControlHtml(' Confirm Action',{'pageID':3,'data': 'Do you want to remove notifications from topic?'},'confirmHandlers.BeginRecieve');
-            return false;"
-                                CausesValidation="False" EnableViewState="False" OnClick="TopicSubscribe" />
+                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False" />
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />
                     </asp:TemplateField>

@@ -40,14 +40,6 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Snitz.IDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\Snitz.IDAL.dll</HintPath>
-    </Reference>
-    <Reference Include="SnitzMembership, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\SnitzMembership.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -101,20 +93,28 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Snitz.BLL\Snitz.BusinessLayer.csproj">
-      <Project>{531B229D-52EF-458E-91C8-F7BC64FB38C3}</Project>
+      <Project>{531b229d-52ef-458e-91c8-f7bc64fb38c3}</Project>
       <Name>Snitz.BusinessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
-      <Project>{34E1755A-66A9-4428-B8D3-B3C32AA8A4B5}</Project>
+      <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
       <Name>Snitz.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Config\Snitz.Config.csproj">
-      <Project>{EAAC5B1E-E704-4233-97CE-9FD309CEBD9F}</Project>
+      <Project>{eaac5b1e-e704-4233-97ce-9fd309cebd9f}</Project>
       <Name>Snitz.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
       <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
       <Name>Snitz.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.IDAL\Snitz.IDAL.csproj">
+      <Project>{bfd397a4-42a3-4c42-9563-569b3d0b6b9a}</Project>
+      <Name>Snitz.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.MembershipProvider\Snitz.Membership\Snitz.Membership.csproj">
+      <Project>{7e2a124a-d5d5-4971-b1ff-408efd3b331e}</Project>
+      <Name>Snitz.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\Snitz.ThirdParty\Snitz.ThirdParty.csproj">
       <Project>{00f07d8d-aa42-4d83-ad21-1978346e2521}</Project>

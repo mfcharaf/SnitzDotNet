@@ -26,7 +26,7 @@ namespace Snitz.IDAL
 {
     public interface IReply : IBaseObject<ReplyInfo>
     {
-        IEnumerable<ReplyInfo> GetByParent(int parentid, int start, int maxrecs);
+        IEnumerable<ReplyInfo> GetByParent(TopicInfo parent, int start, int maxrecs);
         void MoveReplies(TopicInfo newtopic, List<int> replyids);
         void SetReplyStatus(int replyid, int status);
     }

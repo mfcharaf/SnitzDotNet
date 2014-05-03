@@ -35,7 +35,7 @@ using SnitzMembership;
 
 public partial class MessageProfile : UserControl
 {
-    protected int _authorId;
+    private int _authorId;
     private AuthorInfo _author;
     private readonly bool _loggedonuser = HttpContext.Current.User.Identity.IsAuthenticated;
 
@@ -57,7 +57,7 @@ public partial class MessageProfile : UserControl
 
     private void SetProperties()
     {
-        PageBase page = (PageBase)this.Page;
+        PageBase page = (PageBase)Page;
 
         if (Config.ShowRankStars || Config.ShowRankTitle)
         {
@@ -86,7 +86,7 @@ public partial class MessageProfile : UserControl
         {
             SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Username);
             Literal avatar = new Literal { Text = _author.AvatarUrl };
-            if (mu.IsActive)
+            if (mu != null && mu.IsActive)
                 avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
             phAvatar.Controls.Add(avatar);
         }
@@ -102,23 +102,23 @@ public partial class MessageProfile : UserControl
         {
             hHome.Visible = _loggedonuser && (_author.HomePage.Replace("http://", "").Trim() != string.Empty);
             hHome.NavigateUrl = string.Format("http://{0}", _author.HomePage.Replace("http://", ""));
-            hHome.Text = hHome.ToolTip = Resources.webResources.lblHomePage;
+            hHome.Text = hHome.ToolTip = webResources.lblHomePage;
         }
         if (!String.IsNullOrEmpty(_author.ICQ))
         {
             hICQ.Visible = _loggedonuser && (_author.ICQ.Trim() != "");
             hICQ.NavigateUrl = string.Format("http://www.icq.com/people/webmsg.php?to={0}", _author.ICQ);
-            hICQ.Text = hICQ.ToolTip = Resources.webResources.lblICQ;
+            hICQ.Text = hICQ.ToolTip = webResources.lblICQ;
         }
         if (!String.IsNullOrEmpty(_author.Yahoo))
         {
             hYAHOO.Visible = _loggedonuser && (_author.Yahoo.Trim() != "");
             hYAHOO.NavigateUrl = string.Format("http://edit.yahoo.com/config/send_webmesg?.target={0}&;.src=pg",
                                                _author.Yahoo);
-            hYAHOO.Text = hYAHOO.ToolTip = Resources.webResources.lblYAHOO;
+            hYAHOO.Text = hYAHOO.ToolTip = webResources.lblYAHOO;
         }
 
-        hEmail.Visible = ((_loggedonuser || !Config.LogonForEmail) && _author.ReceiveEmails) || page.IsAdministrator;
+        hEmail.Visible = (((_loggedonuser || !Config.LogonForEmail) && _author.ReceiveEmails) || page.IsAdministrator) && Config.UseEmail;
         hEmail.NavigateUrl = "#";
         hEmail.Attributes.Add("onclick",
                                      string.Format(
@@ -132,18 +132,21 @@ public partial class MessageProfile : UserControl
 
         hMSN.Visible = false; // (drv.Row.ItemArray[15].ToString().Trim() != "");
         hMSN.NavigateUrl = "javascript:openWindow('pop_messengers.aspx?mode=MSN&user=" + _author.Username + "&amp;id=" + _author.MSN + "')";
-        hMSN.Text = hMSN.ToolTip = Resources.webResources.lblMSN;
+        hMSN.Text = hMSN.ToolTip = webResources.lblMSN;
 
         hSKYPE.Visible = false;
         hSKYPE.NavigateUrl = "";
-        hSKYPE.Text = hSKYPE.ToolTip = Resources.webResources.lblSkype;
+        hSKYPE.Text = hSKYPE.ToolTip = webResources.lblSkype;
     }
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        var privateSend = LoadControl("~/UserControls/PrivateMessaging/pmSend.ascx");
-        phPrivateSend.Controls.Add(privateSend);
+        if (_loggedonuser)
+        {
+            var privateSend = LoadControl("~/UserControls/PrivateMessages/pmSend.ascx");
+            phPrivateSend.Controls.Add(privateSend);
+        }
     }
 
 }

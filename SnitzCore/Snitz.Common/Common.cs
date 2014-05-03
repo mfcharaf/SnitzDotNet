@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Net;
 using System.Threading;
 using System.Web;
 
@@ -29,25 +30,37 @@ namespace SnitzCommon
     public static class Common
     {
         /// <summary>
-        /// Get visitors IP address from Request object
+        /// Get visitors IP4 address
         /// </summary>
         /// <returns></returns>
-        public static string GetIPAddress()
+        public static string GetIP4Address()
         {
-            HttpContext context = HttpContext.Current;
+            string IP4Address = String.Empty;
 
-            string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
-            if (!string.IsNullOrEmpty(ipAddress))
+            foreach (IPAddress IPA in Dns.GetHostAddresses(HttpContext.Current.Request.UserHostAddress))
             {
-                string[] addresses = ipAddress.Split(',');
-                if (addresses.Length != 0)
+                if (IPA.AddressFamily.ToString() == "InterNetwork")
                 {
-                    return addresses[0];
+                    IP4Address = IPA.ToString();
+                    break;
                 }
             }
 
-            return context.Request.ServerVariables["REMOTE_ADDR"];
+            if (IP4Address != String.Empty)
+            {
+                return IP4Address;
+            }
+
+            foreach (IPAddress IPA in Dns.GetHostAddresses(Dns.GetHostName()))
+            {
+                if (IPA.AddressFamily.ToString() == "InterNetwork")
+                {
+                    IP4Address = IPA.ToString();
+                    break;
+                }
+            }
+
+            return IP4Address;
         }
 
         /// <summary>

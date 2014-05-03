@@ -64,6 +64,7 @@
     <Compile Include="ReplyInfo.cs" />
     <Compile Include="SearchParamInfo.cs" />
     <Compile Include="SearchResult.cs" />
+    <Compile Include="SnitzLink.cs" />
     <Compile Include="StatsInfo.cs" />
     <Compile Include="SubscriptionInfo.cs" />
     <Compile Include="TopicInfo.cs" />

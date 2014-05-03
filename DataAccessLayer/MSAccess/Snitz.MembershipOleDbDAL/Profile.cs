@@ -1,0 +1,742 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Configuration.Provider;
+using System.Data;
+using System.Data.OleDb;
+using System.Text;
+using System.Web.Profile;
+using Snitz.Entities;
+using Snitz.Membership.IDal;
+using Snitz.OLEDbDAL.Helpers;
+using ProfileInfo = System.Web.Profile.ProfileInfo;
+
+namespace Snitz.Membership.OLEDbDAL
+{
+    public class Profile : IProfile
+    {
+        public string TableName { get; set; }
+        private int _commandTimeout;
+        private const string S_LEGAL_CHARS = "_@#$";
+        private int CommandTimeout
+        {
+            get { return _commandTimeout; }
+        }
+
+        private struct ProfileColumnData
+        {
+            public string ColumnName;
+            public SettingsProperty PropertyValue;
+            public object Value;
+            public OleDbType DataType;
+
+            public ProfileColumnData(string col, SettingsProperty pv, object val, OleDbType type)
+            {
+                EnsureValidTableOrColumnName(col);
+                ColumnName = col;
+                PropertyValue = pv;
+                Value = val;
+                DataType = type;
+            }
+        }
+        private static void EnsureValidTableOrColumnName(string name)
+        {
+            for (int i = 0; i < name.Length; ++i)
+            {
+                if (!Char.IsLetterOrDigit(name[i]) && S_LEGAL_CHARS.IndexOf(name[i]) == -1)
+                    throw new ProviderException("Table and column names cannot contain: " + name[i]);
+            }
+        }
+        private void GetProfileDataFromTable(SettingsPropertyCollection properties, SettingsPropertyValueCollection svc, string username, OleDbConnection conn)
+        {
+            List<ProfileColumnData> columnData = new List<ProfileColumnData>(properties.Count);
+            StringBuilder commandText = new StringBuilder("SELECT u.MEMBER_ID");
+            OleDbCommand cmd = new OleDbCommand(String.Empty, conn);
+
+            int columnCount = 0;
+            foreach (SettingsProperty prop in properties)
+            {
+                SettingsPropertyValue value = new SettingsPropertyValue(prop);
+                if (prop.PropertyType == typeof(List<SnitzLink>))
+                {
+                    prop.ThrowOnErrorDeserializing = true;
+                    prop.SerializeAs = SettingsSerializeAs.Xml;
+                    value.Deserialized = false;
+                }
+                svc.Add(value);
+                string persistenceData = prop.Attributes["CustomProviderData"] as string;
+                // If we can't find the table/column info we will ignore this data
+                if (String.IsNullOrEmpty(persistenceData))
+                {
+                    // REVIEW: Perhaps we should throw instead?
+                    continue;
+                }
+                string[] chunk = persistenceData.Split(new char[] { ';' });
+                if (chunk.Length != 2)
+                {
+                    // REVIEW: Perhaps we should throw instead?
+                    continue;
+                }
+                if (chunk[1].ToLower() == "int")
+                    chunk[1] = "integer";
+                string columnName = chunk[0];
+                // REVIEW: Should we ignore case?
+                OleDbType datatype = (OleDbType)Enum.Parse(typeof(OleDbType), chunk[1], true);
+
+                columnData.Add(new ProfileColumnData(columnName, prop, null /* not needed for get */, datatype));
+                commandText.Append(", ");
+                commandText.Append("t." + columnName);
+                ++columnCount;
+            }
+
+            commandText.Append(" FROM " + TableName + " t, FORUM_MEMBERS u WHERE ");
+            commandText.Append("u.M_NAME = @Username AND t.UserID = u.MEMBER_ID");
+            cmd.CommandText = commandText.ToString();
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@Username", username);
+            OleDbDataReader reader = null;
+
+            try
+            {
+                reader = cmd.ExecuteReader();
+                //If no row exists in the database, then the default Profile values
+                //from configuration are used.
+                if (reader.Read())
+                {
+                    svc.Clear();
+                    int userId = reader.GetInt32(0);
+                    for (int i = 0; i < columnData.Count; ++i)
+                    {
+                        object val = reader.GetValue(i + 1);
+                        ProfileColumnData colData = columnData[i];
+                        SettingsPropertyValue propValue = new SettingsPropertyValue(colData.PropertyValue);
+
+                        //Only initialize a SettingsPropertyValue for non-null values
+                        //if (!(val is DBNull || val == null))
+                        //{
+                        propValue.IsDirty = false;
+                        if (propValue.Property.SerializeAs == SettingsSerializeAs.Xml)
+                        {
+                            propValue.Deserialized = false;
+                            object test = "";
+                            if (!val.Equals(test))
+                                propValue.SerializedValue = val;
+                        }
+                        else
+                        {
+                            propValue.PropertyValue = val;
+                            propValue.Deserialized = true;
+                        }
+
+
+                        svc.Add(propValue);
+                        //}
+                    }
+
+                    // need to close reader before we try to update the user
+                    if (reader != null)
+                    {
+                        reader.Close();
+                        reader = null;
+                    }
+
+                    //UpdateLastActivityDate(conn, userId);
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+        }
+        private ProfileInfoCollection GetProfilesForQuery(OleDbParameter[] insertArgs, int pageIndex, int pageSize, StringBuilder insertQuery, out int totalRecords)
+        {
+            if (pageIndex < 0)
+                throw new ArgumentException("pageIndex");
+            if (pageSize < 1)
+                throw new ArgumentException("pageSize");
+
+            long lowerBound = (long)pageIndex * pageSize;
+            long upperBound = lowerBound + pageSize - 1;
+            if (upperBound > Int32.MaxValue)
+            {
+                throw new ArgumentException("pageIndex and pageSize");
+            }
+
+            OleDbConnection conn = null;
+            OleDbDataReader reader = null;
+            OleDbCommand cmd = null;
+            try
+            {
+                conn = new OleDbConnection(SqlHelper.ConnString);
+                conn.Open();
+
+                StringBuilder cmdStr = new StringBuilder(200);
+                // Create a temp table TO store the select results
+                cmd = new OleDbCommand("CREATE TABLE #PageIndexForProfileUsers(IndexId int IDENTITY (0, 1) NOT NULL, UserId int)", conn);
+                cmd.CommandTimeout = CommandTimeout;
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                insertQuery.Append(" ORDER BY UserName");
+                cmd = new OleDbCommand(insertQuery.ToString(), conn);
+                cmd.CommandTimeout = CommandTimeout;
+                if (insertArgs != null)
+                {
+                    foreach (OleDbParameter arg in insertArgs)
+                        cmd.Parameters.Add(arg);
+                }
+
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                cmdStr = new StringBuilder(200);
+                cmdStr.Append("SELECT u.M_NAME, u.M_LASTHEREDATE, p.M_LASTUPDATED FROM FORUM_MEMBERS u, ").Append(TableName);
+                cmdStr.Append(" p, #PageIndexForProfileUsers i WHERE u.MEMBER_ID = p.UserId AND p.UserId = i.UserId AND i.IndexId >= ");
+                cmdStr.Append(lowerBound).Append(" AND i.IndexId <= ").Append(upperBound);
+                cmd = new OleDbCommand(cmdStr.ToString(), conn);
+                cmd.CommandTimeout = CommandTimeout;
+
+                reader = cmd.ExecuteReader(CommandBehavior.SequentialAccess);
+                ProfileInfoCollection profiles = new ProfileInfoCollection();
+                while (reader.Read())
+                {
+                    string username;
+                    DateTime dtLastActivity, dtLastUpdated = DateTime.UtcNow;
+                    bool isAnon;
+
+                    username = reader.GetString(0);
+                    isAnon = reader.GetBoolean(1);
+                    dtLastActivity = DateTime.SpecifyKind(reader.GetDateTime(2), DateTimeKind.Utc);
+                    dtLastUpdated = DateTime.SpecifyKind(reader.GetDateTime(3), DateTimeKind.Utc);
+                    profiles.Add(new ProfileInfo(username, isAnon, dtLastActivity, dtLastUpdated, 0));
+                }
+                totalRecords = profiles.Count;
+
+                if (reader != null)
+                {
+                    reader.Close();
+                    reader = null;
+                }
+
+                cmd.Dispose();
+
+                // Cleanup, REVIEW: should move to finally?
+                cmd = new OleDbCommand("DROP TABLE #PageIndexForProfileUsers", conn);
+                cmd.ExecuteNonQuery();
+
+                return profiles;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+
+                if (cmd != null)
+                    cmd.Dispose();
+
+                if (conn != null)
+                {
+                    conn.Close();
+                    conn = null;
+                }
+            }
+        }
+        private static OleDbParameter CreateInputParam(string paramName, OleDbType dbType, object objValue)
+        {
+            OleDbParameter param = new OleDbParameter(paramName, dbType);
+            if (objValue == null)
+                objValue = String.Empty;
+            param.Value = objValue;
+            return param;
+        }
+
+        private static OleDbParameter CreateOutputParam(string paramName, OleDbType dbType, int size)
+        {
+            OleDbParameter param = new OleDbParameter(paramName, dbType);
+            param.Direction = ParameterDirection.Output;
+            param.Size = size;
+            return param;
+        }
+        private StringBuilder GenerateTempInsertQueryForGetProfiles(ProfileAuthenticationOption authenticationOption)
+        {
+            StringBuilder cmdStr = new StringBuilder(200);
+            cmdStr.Append("INSERT INTO #PageIndexForProfileUsers (UserId) ");
+            cmdStr.Append("SELECT u.MEMBER_ID FROM FORUM_MEMBERS u, ").Append(TableName);
+            cmdStr.Append(" p WHERE ");
+            cmdStr.Append("u.MEMBER_ID = p.UserId");
+            return cmdStr;
+        }
+
+        private string GenerateQuery(bool delete, ProfileAuthenticationOption authenticationOption)
+        {
+            StringBuilder cmdStr = new StringBuilder(200);
+            cmdStr.Append(delete ? "DELETE FROM " : "SELECT COUNT(*) FROM ");
+            cmdStr.Append(TableName);
+            cmdStr.Append(" WHERE UserId IN (SELECT u.MEMBER_ID FROM FORUM_MEMBERS u WHERE ");
+            cmdStr.Append(" (u.M_LASTHEREDATE <= @InactiveSinceDate)");
+            cmdStr.Append(")");
+            return cmdStr.ToString();
+        }
+
+
+        public SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
+        {
+            SettingsPropertyValueCollection svc = new SettingsPropertyValueCollection();
+
+            if (collection == null || collection.Count < 1 || context == null)
+                return svc;
+
+            string username = (string)context["UserName"];
+            if (String.IsNullOrEmpty(username))
+                return svc;
+
+            OleDbConnection conn = null;
+            try
+            {
+                conn = new OleDbConnection(SqlHelper.ConnString);
+                conn.Open();
+
+                GetProfileDataFromTable(collection, svc, username, conn);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+
+            return svc;
+        }
+
+        public void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
+        {
+            string username = (string)context["UserName"];
+            bool userIsAuthenticated = (bool)context["IsAuthenticated"];
+
+            if (String.IsNullOrEmpty(username) || collection.Count < 1)
+                return;
+
+            OleDbConnection conn = null;
+            OleDbDataReader reader = null;
+            OleDbCommand cmd = null;
+            try
+            {
+                bool anyItemsToSave = false;
+
+                // First make sure we have at least one item to save
+                foreach (SettingsPropertyValue pp in collection)
+                {
+                    if (pp.IsDirty)
+                    {
+                        if (!userIsAuthenticated)
+                        {
+                            bool allowAnonymous = (bool)pp.Property.Attributes["AllowAnonymous"];
+                            if (!allowAnonymous)
+                                continue;
+                        }
+                        anyItemsToSave = true;
+                        break;
+                    }
+                }
+
+                if (!anyItemsToSave)
+                    return;
+
+                conn = new OleDbConnection(SqlHelper.ConnString);
+                conn.Open();
+
+                List<ProfileColumnData> columnData = new List<ProfileColumnData>(collection.Count);
+
+                foreach (SettingsPropertyValue pp in collection)
+                {
+                    if (!userIsAuthenticated)
+                    {
+                        bool allowAnonymous = (bool)pp.Property.Attributes["AllowAnonymous"];
+                        if (!allowAnonymous)
+                            continue;
+                    }
+
+                    //Normal logic for original SQL provider
+                    //if (!pp.IsDirty && pp.UsingDefaultValue) // Not fetched from DB and not written to
+
+                    //Can eliminate unnecessary updates since we are using a table though
+                    if (!pp.IsDirty)
+                        continue;
+
+                    string persistenceData = pp.Property.Attributes["CustomProviderData"] as string;
+                    // If we can't find the table/column info we will ignore this data
+                    if (String.IsNullOrEmpty(persistenceData))
+                    {
+                        // REVIEW: Perhaps we should throw instead?
+                        continue;
+                    }
+                    string[] chunk = persistenceData.Split(new char[] { ';' });
+                    if (chunk.Length != 2)
+                    {
+                        // REVIEW: Perhaps we should throw instead?
+                        continue;
+                    }
+                    if (chunk[1] == "int")
+                        chunk[1] = "integer";
+                    string columnName = chunk[0];
+                    // REVIEW: Should we ignore case?
+                    OleDbType datatype = (OleDbType)Enum.Parse(typeof(OleDbType), chunk[1], true);
+
+                    object value = null;
+
+                    // REVIEW: Is this handling null case correctly?
+                    if (pp.Deserialized && pp.PropertyValue == null)
+                    { // is value null?
+                        value = DBNull.Value;
+                    }
+                    else
+                    {
+                        if (pp.Deserialized && (pp.Property.PropertyType != typeof(List<SnitzLink>)))
+                            value = pp.PropertyValue;
+                        else
+                            value = pp.SerializedValue ?? pp.PropertyValue;
+                    }
+
+                    // REVIEW: Might be able to ditch datatype
+                    columnData.Add(new ProfileColumnData(columnName, null, value, datatype));
+                }
+
+                // Figure out userid, if we don't find a userid, go ahead and create a user in the aspnetUsers table
+                int userId = 0;
+                cmd = new OleDbCommand("SELECT MEMBER_ID FROM FORUM_MEMBERS WHERE M_NAME = @Username", conn);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userId = reader.GetInt32(0);
+                    }
+                    else
+                    {
+                        reader.Close();
+                        cmd.Dispose();
+                        reader = null;
+
+                    }
+                }
+                finally
+                {
+                    if (reader != null)
+                    {
+                        reader.Close();
+                        reader = null;
+                    }
+                    cmd.Dispose();
+                }
+
+                // Figure out if the row already exists in the table and use appropriate SELECT/UPDATE
+
+                OleDbParameter user = new OleDbParameter("@UserId",OleDbType.Integer){Value = userId};
+                var exists = SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, String.Format("SELECT COUNT(UserId) FROM {0} WHERE UserId = @UserId", TableName), user);
+
+                List<OleDbParameter> parms = new List<OleDbParameter>();
+                parms.Add(user);
+                // Build up strings used in the query
+                StringBuilder columnStr = new StringBuilder();
+                StringBuilder valueStr = new StringBuilder();
+                StringBuilder setStr = new StringBuilder();
+                int count = 0;
+                foreach (ProfileColumnData data in columnData)
+                {
+                    columnStr.Append(", ");
+                    valueStr.Append(", ");
+                    columnStr.Append(data.ColumnName);
+                    string valueParam = "@Value" + count;
+                    valueStr.Append(valueParam);
+                    OleDbParameter p = new OleDbParameter(valueParam,data.DataType){Value=data.Value};
+                    parms.Add(p);
+
+
+                    // REVIEW: Can't update Timestamps?
+                    if (data.DataType != OleDbType.DBTimeStamp)
+                    {
+                        if (count > 0)
+                        {
+                            setStr.Append(",");
+                        }
+                        setStr.Append(data.ColumnName);
+                        setStr.Append("=");
+                        setStr.Append(valueParam);
+                    }
+
+                    ++count;
+                }
+                StringBuilder sqlCommand = new StringBuilder();
+                if (exists == (object) 0)
+                {
+                    sqlCommand.Append("UPDATE ").Append(TableName).Append(" SET ").Append(setStr.ToString());
+                    sqlCommand.Append(" WHERE UserId = @UserId");
+
+                }
+                else
+                {
+                    sqlCommand.Append("INSERT INTO ").Append(TableName).Append(" (UserId").Append(columnStr.ToString());
+                    sqlCommand.Append(") VALUES (@UserId").Append(valueStr.ToString()).Append(")");
+                    
+                }
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlCommand.ToString(), parms.ToArray());
+
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                if (cmd != null)
+                    cmd.Dispose();
+                if (conn != null)
+                    conn.Close();
+            }
+        }
+
+        public int DeleteProfiles(string[] usernames)
+        {
+            if (usernames == null || usernames.Length < 1)
+            {
+                return 0;
+            }
+
+            int numProfilesDeleted = 0;
+            bool beginTranCalled = false;
+            try
+            {
+                OleDbConnection conn = null;
+                try
+                {
+                    conn = new OleDbConnection(SqlHelper.ConnString);
+                    conn.Open();
+
+                    OleDbCommand cmd;
+                    int numUsersRemaing = usernames.Length;
+                    while (numUsersRemaing > 0)
+                    {
+                        cmd = new OleDbCommand(String.Empty, conn);
+                        cmd.Parameters.AddWithValue("UserName0", usernames[usernames.Length - numUsersRemaing]);
+                        StringBuilder allUsers = new StringBuilder("@UserName0");
+                        numUsersRemaing--;
+
+                        int userIndex = 1;
+                        for (int iter = usernames.Length - numUsersRemaing; iter < usernames.Length; iter++)
+                        {
+                            // REVIEW: Should we check length of command string instead of parameter lengths?
+                            if (allUsers.Length + usernames[iter].Length + 3 >= 4000)
+                                break;
+                            string userNameParam = "UserName" + userIndex;
+                            allUsers.Append(",");
+                            allUsers.Append("@" + userNameParam);
+                            cmd.Parameters.AddWithValue(userNameParam, usernames[iter]);
+                            numUsersRemaing--;
+                            ++userIndex;
+                        }
+
+                        // We don't need to start a transaction if we can finish this in one sql command
+                        if (!beginTranCalled && numUsersRemaing > 0)
+                        {
+                            OleDbCommand beginCmd = new OleDbCommand("BEGIN TRANSACTION", conn);
+                            beginCmd.ExecuteNonQuery();
+                            beginTranCalled = true;
+                        }
+
+
+                        cmd.CommandText = "DELETE FROM " + TableName + " WHERE UserId IN ( SELECT u.MEMBER_ID FROM FORUM_MEMBERS u WHERE  u.M_NAME IN (" + allUsers.ToString() + "))";
+                        cmd.CommandTimeout = CommandTimeout;
+                        cmd.CommandText = GetQueryFromCommand(cmd);
+                        cmd.Parameters.Clear();
+                        numProfilesDeleted += cmd.ExecuteNonQuery();
+                    }
+
+                    if (beginTranCalled)
+                    {
+                        cmd = new OleDbCommand("COMMIT TRANSACTION", conn);
+                        cmd.ExecuteNonQuery();
+                        beginTranCalled = false;
+                    }
+                }
+                catch
+                {
+                    if (beginTranCalled)
+                    {
+                        OleDbCommand cmd = new OleDbCommand("ROLLBACK TRANSACTION", conn);
+                        cmd.ExecuteNonQuery();
+                        beginTranCalled = false;
+                    }
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                    {
+                        conn.Close();
+                        conn = null;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return numProfilesDeleted;
+        }
+
+        public string GetQueryFromCommand(object cmd)
+        {
+            string CommandTxt = ((OleDbCommand)cmd).CommandText;
+
+
+            foreach (OleDbParameter parms in ((OleDbCommand)cmd).Parameters)
+            {
+                string val = String.Empty;
+                if (parms.DbType.Equals(DbType.String) || parms.DbType.Equals(DbType.DateTime))
+                    val = "'" + Convert.ToString(parms.Value).Replace(@"\", @"\\").Replace("'", @"\'") + "'";
+                if (parms.DbType.Equals(DbType.Int16) || parms.DbType.Equals(DbType.Int32) || parms.DbType.Equals(DbType.Int64) || parms.DbType.Equals(DbType.Decimal) || parms.DbType.Equals(DbType.Double))
+                    val = Convert.ToString(parms.Value);
+                string paramname = "@" + parms.ParameterName;
+                CommandTxt = CommandTxt.Replace(paramname, val);
+            }
+            return (CommandTxt);
+        }
+
+        public ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption,
+            string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
+        {
+            StringBuilder insertQuery = GenerateTempInsertQueryForGetProfiles(authenticationOption);
+            insertQuery.Append(" AND LOWER(u.M_NAME) LIKE LOWER(@UserName) AND u.M_LASTHEREDATE <= @InactiveSinceDate");
+            OleDbParameter[] args = new OleDbParameter[2];
+            args[0] = CreateInputParam("@InactiveSinceDate", OleDbType.VarChar, userInactiveSinceDate.ToUniversalTime());
+            args[1] = CreateInputParam("@UserName", OleDbType.VarChar, usernameToMatch);
+            return GetProfilesForQuery(args, pageIndex, pageSize, insertQuery, out totalRecords);
+
+        }
+
+
+
+        public ProfileInfoCollection FindProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch,
+            int pageIndex, int pageSize, out int totalRecords)
+        {
+            StringBuilder insertQuery = GenerateTempInsertQueryForGetProfiles(authenticationOption);
+            insertQuery.Append(" AND LOWER(u.M_NAME) LIKE LOWER(@UserName)");
+            OleDbParameter[] args = new OleDbParameter[1];
+            args[0] = CreateInputParam("@UserName", OleDbType.VarChar, usernameToMatch);
+            return GetProfilesForQuery(args, pageIndex, pageSize, insertQuery, out totalRecords);
+
+        }
+
+        public ProfileInfoCollection GetAllInactiveProfiles(ProfileAuthenticationOption authenticationOption,
+            DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
+        {
+            StringBuilder insertQuery = GenerateTempInsertQueryForGetProfiles(authenticationOption);
+            insertQuery.Append(" AND u.M_LASTHEREDATE <= @InactiveSinceDate");
+            OleDbParameter[] args = new OleDbParameter[1];
+            args[0] = CreateInputParam("@InactiveSinceDate", OleDbType.VarChar, userInactiveSinceDate.ToUniversalTime());
+            return GetProfilesForQuery(args, pageIndex, pageSize, insertQuery, out totalRecords);
+
+        }
+
+        public ProfileInfoCollection GetAllProfiles(ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize,
+            out int totalRecords)
+        {
+            StringBuilder insertQuery = GenerateTempInsertQueryForGetProfiles(authenticationOption);
+            return GetProfilesForQuery(null, pageIndex, pageSize, insertQuery, out totalRecords);
+
+        }
+
+        public int GetNumberOfInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
+        {
+            OleDbConnection conn = null;
+            OleDbCommand cmd = null;
+            try
+            {
+                conn = new OleDbConnection(SqlHelper.ConnString);
+                conn.Open();
+
+                cmd = new OleDbCommand(GenerateQuery(false, authenticationOption), conn);
+                cmd.CommandTimeout = CommandTimeout;
+                cmd.Parameters.Add(CreateInputParam("@InactiveSinceDate", OleDbType.VarChar, userInactiveSinceDate.ToUniversalTime()));
+
+                object o = cmd.ExecuteScalar();
+                if (o == null || !(o is int))
+                    return 0;
+                return (int)o;
+            }
+            finally
+            {
+                if (cmd != null)
+                    cmd.Dispose();
+                if (conn != null)
+                {
+                    conn.Close();
+                    conn = null;
+                }
+            }
+        }
+
+        public int DeleteInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
+        {
+            try
+            {
+                OleDbConnection conn = null;
+                OleDbCommand cmd = null;
+                try
+                {
+                    conn = new OleDbConnection(SqlHelper.ConnString);
+                    conn.Open();
+
+                    cmd = new OleDbCommand(GenerateQuery(true, authenticationOption), conn);
+                    cmd.CommandTimeout = CommandTimeout;
+                    cmd.Parameters.Add(CreateInputParam("@InactiveSinceDate", OleDbType.VarChar, userInactiveSinceDate.ToUniversalTime()));
+
+                    return cmd.ExecuteNonQuery();
+                }
+                finally
+                {
+                    if (cmd != null)
+                    {
+                        cmd.Dispose();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                        conn = null;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public int DeleteProfiles(ProfileInfoCollection profiles)
+        {
+            if (profiles == null)
+            {
+                throw new ArgumentNullException("profiles");
+            }
+
+            if (profiles.Count < 1)
+            {
+                throw new ArgumentException("Profiles collection is empty");
+            }
+
+            string[] usernames = new string[profiles.Count];
+
+            int iter = 0;
+            foreach (ProfileInfo profile in profiles)
+            {
+                usernames[iter++] = profile.UserName;
+            }
+
+            return DeleteProfiles(usernames);
+        }
+    }
+}

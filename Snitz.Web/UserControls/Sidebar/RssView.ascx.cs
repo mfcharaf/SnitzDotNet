@@ -34,21 +34,23 @@ namespace SnitzUI.UserControls
         {
             Doc = new System.Xml.XmlDocument();
             Doc.Load(RssUrl);
-            Url = Doc.SelectSingleNode("/rss/channel/link").InnerText;
+            var link = Doc.SelectSingleNode("/rss/channel/link");
+            if (link != null)
+                Url = link.InnerText;
             base.DataBind();
         }
 
-        public void Page_Load(System.Object s, System.EventArgs e)
+        public void Page_Load(Object s, EventArgs e)
         {
             try
             {
-                this.DataBind();
+                DataBind();
                 MyRSSBlog.DataSource = Doc.SelectNodes("/rss/channel/item[position()<=4]");
                 MyRSSBlog.DataBind();
             }
             catch (Exception)
             {
-
+                //swallow any errors
             }
 
         }

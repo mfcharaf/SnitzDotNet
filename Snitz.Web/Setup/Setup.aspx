@@ -1,9 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Setup.aspx.cs" Inherits="SnitzUI.Setup.Setup" StyleSheetTheme="BlueGray" %>
-<%@ Register TagPrefix="ajaxtoolkit" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.5.51116.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
+<%@ Register TagPrefix="ajaxtoolkit" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
     <title>Database setup</title>
     <style type="text/css">
@@ -59,7 +59,12 @@ label {
 
             // Point the iframe to the location of
             //  the long running process.
-            var query = "?u=" + document.getElementById('updateType').value + "&n=" + document.getElementById('adminUser').value + "&p=" + document.getElementById('adminPassword').value + "&e=" + document.getElementById('adminEmail').value
+            var utype = document.getElementById('updateType').value;
+
+            var query = "?u=" + document.getElementById('updateType').value;
+            if (utype != 'upgrade') {
+                query = query + "&n=" + document.getElementById('adminUser').value + "&p=" + document.getElementById('adminPassword').value + "&e=" + document.getElementById('adminEmail').value;
+            }
             iframe.src = "/Setup/Process.aspx" + query;
 
             // Make the iframe invisible.
@@ -110,15 +115,17 @@ label {
     </div>
             
     <ajaxtoolkit:ToolkitScriptManager ID="MainSM" runat="server" ScriptMode="Release" LoadScriptsBeforeUI="true" EnablePageMethods="false">
-    </ajaxtoolkit:ToolkitScriptManager>        
+        <Scripts>
+            <asp:ScriptReference Path="setup.js"/>
+        </Scripts>
+    </ajaxtoolkit:ToolkitScriptManager>     
+    <asp:HiddenField ID="updateType" runat="server" />
+           
         <asp:Panel ID="AdminUserRequired" runat="server" GroupingText="Forum Admin User" CssClass="adminPanel">
             <asp:Label ID="Label1" runat="server" Text="Admin Username" AssociatedControlID="adminUser"></asp:Label><asp:TextBox ID="adminUser" runat="server"></asp:TextBox><br/>
             <asp:Label ID="Label2" runat="server" Text="Password" AssociatedControlID="adminPassword"></asp:Label>
                 <asp:TextBox ID="adminPassword" runat="server" TextMode="Password"></asp:TextBox><br/>
             <asp:Label ID="Label3" runat="server" Text="Email address" AssociatedControlID="adminEmail"></asp:Label><asp:TextBox ID="adminEmail" runat="server"></asp:TextBox><br/>
-        
-            <asp:HiddenField ID="updateType" runat="server" />
-
         </asp:Panel>  
             <div id="lnkreturn" style="font-family: Verdana,Arial,sans-serif;font-size: 14px;color:red;visibility:hidden;margin: auto;width:50%;text-align: center;">
                 <asp:HyperLink ID="lnkR" runat="server" NavigateUrl="~/default.aspx">Go to Forum</asp:HyperLink>

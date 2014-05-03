@@ -132,9 +132,9 @@ namespace SnitzUI
         {
             
             _editmode = _editmode || _isMyProfile;
-            //Quote
+            
             if (_editmode)
-            {
+            {   //Quote
                 var tbxQuote = new TextBox
                 {
                     ID = "tbxQuote",
@@ -144,6 +144,58 @@ namespace SnitzUI
                     Text = _user.FavouriteQuote
                 };
                 phQuote.Controls.Add(tbxQuote);
+
+                var tbxSig = new TextBox
+                {
+                    ID = "tbxSig",
+                    CssClass = "QRMsgArea",
+                    TextMode = TextBoxMode.MultiLine,
+
+                    Height = new Unit(99, UnitType.Pixel),
+                    Text = _user.Signature.Replace(">", "]").Replace("<", "[")
+                };
+                phSig.Controls.Add(tbxSig);
+
+                var tbxBiog = new TextBox
+                {
+                    ID = "tbxBiog",
+                    TextMode = TextBoxMode.MultiLine,
+                    CssClass = "QRMsgArea",
+                    Height = new Unit(99, UnitType.Pixel),
+                    Text = _user.Biography
+                };
+                phBiog.Controls.Add(tbxBiog);
+
+                var tbxHobby = new TextBox
+                {
+                    ID = "tbxHobby",
+                    TextMode = TextBoxMode.MultiLine,
+                    CssClass = "QRMsgArea",
+                    Height = new Unit(99, UnitType.Pixel),
+                    Text = _user.Hobbies
+                };
+                phHobby.Controls.Add(tbxHobby);
+
+                var tbxNews = new TextBox
+                {
+                    ID = "tbxNews",
+                    TextMode = TextBoxMode.MultiLine,
+                    CssClass = "QRMsgArea",
+                    Height = new Unit(99, UnitType.Pixel),
+                    Text = _user.LatestNews
+                };
+                phNews.Controls.Add(tbxNews);
+
+                lblHomePage.Visible = true;
+                lblHomePage.AssociatedControlID = "tbxHomePage";
+                var tbxHomePage = new TextBox
+                {
+                    ID = "tbxHomePage",
+                    TextMode = TextBoxMode.SingleLine,
+                    Text = _user.HomePage
+                };
+                phHomePage.Controls.Add(tbxHomePage);
+
             }
             else
             {
@@ -155,23 +207,7 @@ namespace SnitzUI
                     Text = _user.FavouriteQuote
                 };
                 phQuote.Controls.Add(tbxQuote);
-            }
-            //Signature
-            if (_editmode)
-            {
-                var tbxSig = new TextBox
-                {
-                    ID = "tbxSig",
-                    CssClass = "QRMsgArea",
-                    TextMode = TextBoxMode.MultiLine,
 
-                    Height = new Unit(99, UnitType.Pixel),
-                    Text = _user.Signature
-                };
-                phSig.Controls.Add(tbxSig);
-            }
-            else
-            {
                 var tbxSig = new Label
                 {
                     ID = "lblSig",
@@ -181,22 +217,7 @@ namespace SnitzUI
                     Text = @"<hr/>" + _user.Signature
                 };
                 phSig.Controls.Add(tbxSig);
-            }
-            //Biography
-            if (_editmode)
-            {
-                var tbxBiog = new TextBox
-                {
-                    ID = "tbxBiog",
-                    TextMode = TextBoxMode.MultiLine,
-                    CssClass = "QRMsgArea",
-                    Height = new Unit(99, UnitType.Pixel),
-                    Text = _user.Biography
-                };
-                phBiog.Controls.Add(tbxBiog);
-            }
-            else
-            {
+
                 var tbxBiog = new Label
                 {
                     ID = "lblBiog",
@@ -206,22 +227,7 @@ namespace SnitzUI
                     Text = _user.Biography
                 };
                 phBiog.Controls.Add(tbxBiog);
-            }
-            //Hobbies
-            if (_editmode)
-            {
-                var tbxHobby = new TextBox
-                {
-                    ID = "tbxHobby",
-                    TextMode = TextBoxMode.MultiLine,
-                    CssClass = "QRMsgArea",
-                    Height = new Unit(99, UnitType.Pixel),
-                    Text = _user.Hobbies
-                };
-                phHobby.Controls.Add(tbxHobby);
-            }
-            else
-            {
+
                 var tbxHobby = new Label
                 {
                     ID = "lblHobby",
@@ -231,22 +237,7 @@ namespace SnitzUI
                     Text = _user.Hobbies
                 };
                 phHobby.Controls.Add(tbxHobby);
-            }
-            // Latest news
-            if (_editmode)
-            {
-                var tbxNews = new TextBox
-                {
-                    ID = "tbxNews",
-                    TextMode = TextBoxMode.MultiLine,
-                    CssClass = "QRMsgArea",
-                    Height = new Unit(99, UnitType.Pixel),
-                    Text = _user.LatestNews
-                };
-                phNews.Controls.Add(tbxNews);
-            }
-            else
-            {
+
                 var tbxNews = new Label
                 {
                     ID = "lblNews",
@@ -256,22 +247,7 @@ namespace SnitzUI
                     Text = _user.LatestNews
                 };
                 phNews.Controls.Add(tbxNews);
-            }
-            //Homepage
-            if (_editmode)
-            {
-                lblHomePage.Visible = true;
-                lblHomePage.AssociatedControlID = "tbxHomePage";
-                var tbxHomePage = new TextBox
-                {
-                    ID = "tbxHomePage",
-                    TextMode = TextBoxMode.SingleLine,
-                    Text = _user.HomePage
-                };
-                phHomePage.Controls.Add(tbxHomePage);
-            }
-            else
-            {
+
                 if (_user.HomePage != null)
                     _user.HomePage = _user.HomePage.Trim();
                 string link = _user.HomePage;
@@ -820,6 +796,13 @@ namespace SnitzUI
                 else if (forumid > 0)
                     Subscriptions.RemoveForumSubscription(_user.Id, forumid);
             }
+        }
+
+        protected void ChangeTheme(object sender, EventArgs e)
+        {
+            Config.UserTheme = ddlTheme.SelectedValue;
+            Session.Add("PageTheme", Config.UserTheme);
+            Response.Redirect(Request.RawUrl);
         }
     }
 }

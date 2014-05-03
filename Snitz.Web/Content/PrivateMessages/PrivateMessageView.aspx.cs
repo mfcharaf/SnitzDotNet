@@ -47,7 +47,7 @@ namespace SnitzUI.Content.PrivateMessages
         {
             if (Session["CurrentProfile"] != null)
                 Session.Remove("CurrentProfile");
-            var pmview = (PmView)Page.LoadControl("~/UserControls/PrivateMessaging/pmview.ascx");
+            var pmview = (PMView)Page.LoadControl("~/UserControls/PrivateMessages/pmview.ascx");
 
             ViewPm.Controls.Add(pmview);
         }

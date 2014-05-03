@@ -34,6 +34,9 @@
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please select a forum"
                     ControlToValidate="ddlForum" InitialValue="-1" ValidationGroup="Search">*</asp:RequiredFieldValidator>
                 <br />
+                <asp:CheckBox ID="cbxSubjectOnly" runat="server" 
+                    Text="Subject Only" EnableViewState="True" Checked="True"/>
+                <br />
                 <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblSearchKeywords %>"
                     AssociatedControlID="searchFor" EnableViewState="False"></asp:Label>
                 <asp:TextBox ID="searchFor" runat="server" EnableViewState="False"></asp:TextBox><asp:RequiredFieldValidator
@@ -71,7 +74,7 @@
                     TargetControlID="tbxDate">
                 </asp:CalendarExtender>
                 <br />
-                <asp:CheckBox ID="cbxArchive" runat="server" Enabled="false" 
+                <asp:CheckBox ID="cbxArchive" runat="server" 
                     Text="<%$ Resources:webResources, lblSearchArchive %>" 
                     EnableViewState="False" />
             </asp:Panel>
@@ -79,8 +82,8 @@
                 Visible="False" EnableViewState="False">
                 <asp:Label ID="lblShowAs" runat="server" Text="<%$ Resources:webResources, lblShowAs %>"
                     AssociatedControlID="ddlShowAs" EnableViewState="False"></asp:Label>
-                <asp:DropDownList ID="ddlShowAs" runat="server" Enabled="false" 
-                    EnableViewState="False">
+                <asp:DropDownList ID="ddlShowAs" runat="server" 
+                    EnableViewState="False" Enabled="False">
                     <asp:ListItem Text="Topic List" Value="topic"></asp:ListItem>
                     <asp:ListItem Text="<%$ Resources:webResources, lblPosts %>" Value="post"></asp:ListItem>
                 </asp:DropDownList>

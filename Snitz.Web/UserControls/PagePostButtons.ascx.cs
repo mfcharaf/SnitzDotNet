@@ -43,7 +43,7 @@ namespace SnitzUI.UserControls
             SubscribeTopic.Visible = false;
             UnSubscribeTopic.Visible = false;
             
-            var page = (PageBase) this.Page;
+            var page = (PageBase) Page;
             if(page.TopicId.HasValue)
             {
                 _topic = Topics.GetTopic(page.TopicId.Value);
@@ -55,7 +55,7 @@ namespace SnitzUI.UserControls
                     SubscribeTopic.CommandName = "topicsub";
                     SubscribeTopic.CommandArgument = page.TopicId.Value.ToString();
 
-                    if (Members.IsSubscribedToTopic(page.TopicId.Value, page.Member.Id))
+                    if (Members.IsSubscribedToTopic(page.TopicId.Value, page.Member == null ? 0 : page.Member.Id))
                     {
                         UnSubscribeTopic.CommandName = "topicunsub";
                         UnSubscribeTopic.CommandArgument = page.TopicId.Value.ToString();
@@ -63,7 +63,7 @@ namespace SnitzUI.UserControls
                         SubscribeTopic.Visible = false;
                     }
                 }
-                SendTopic.Visible = page.IsAuthenticated && Config.SendTopic;
+                SendTopic.Visible = page.IsAuthenticated && Config.SendTopic && Config.UseEmail;
                 PrintTopic.Visible = page.IsAuthenticated && Config.PrintTopic;
                 SendTopic.Attributes.Add("onclick",
                                      string.Format(
@@ -80,7 +80,7 @@ namespace SnitzUI.UserControls
                 ReplyTopic.Visible = ReplyTopic.Visible && _topic.Status != (int)Enumerators.PostStatus.Closed;
                 NewTopic.Visible = _topic.Forum.Status == (int)Enumerators.PostStatus.Open;
 
-                ReplyTopic.Visible = ReplyTopic.Visible || Members.IsTopicAuthor(page.Member.Id,_topic.Id);
+                ReplyTopic.Visible = ReplyTopic.Visible || (page.Member == null ? 0 : page.Member.Id) == _topic.AuthorId;
 
                 NewTopic.Visible = NewTopic.Visible && page.IsAuthenticated;
                 ReplyTopic.Visible = ReplyTopic.Visible && page.IsAuthenticated;
@@ -99,7 +99,7 @@ namespace SnitzUI.UserControls
                         SubscribeTopic.CommandName = "forumsub";
                         SubscribeTopic.CommandArgument = page.ForumId.Value.ToString();
 
-                        if (Members.IsSubscribedToForum(page.Member.Id,page.ForumId.Value))
+                        if (Members.IsSubscribedToForum(page.Member == null ? 0 : page.Member.Id, page.ForumId.Value))
                         {
                             UnSubscribeTopic.CommandName = "forumunsub";
                             UnSubscribeTopic.CommandArgument = page.ForumId.Value.ToString();
@@ -115,21 +115,21 @@ namespace SnitzUI.UserControls
         protected void TopicSubscribe(object sender, EventArgs eventArgs)
         {
             var btn = (ImageButton)sender;
-            var page = (PageBase)this.Page;
+            var page = (PageBase)Page;
             int id = Convert.ToInt32(btn.CommandArgument);
             switch (btn.CommandName)
             {
                 case "topicsub":
-                    Subscriptions.AddTopicSubscription(page.Member.Id, id);
+                    Subscriptions.AddTopicSubscription(page.Member == null ? 0 : page.Member.Id, id);
                     break;
                 case "topicunsub":
-                    Subscriptions.RemoveTopicSubscription(page.Member.Id, id);
+                    Subscriptions.RemoveTopicSubscription(page.Member == null ? 0 : page.Member.Id, id);
                     break;
                 case "forumsub" :
-                    Subscriptions.AddForumSubscription(page.Member.Id,id);
+                    Subscriptions.AddForumSubscription(page.Member == null ? 0 : page.Member.Id, id);
                     break;
                 case "forumunsub" :
-                    Subscriptions.RemoveForumSubscription(page.Member.Id,id);
+                    Subscriptions.RemoveForumSubscription(page.Member == null ? 0 : page.Member.Id, id);
                     break;
             }
 

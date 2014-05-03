@@ -34,7 +34,6 @@ using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using Snitz.Providers;
 using SnitzConfig;
 
 
@@ -43,6 +42,7 @@ namespace SnitzUI
     public partial class TopicPage : PageBase, IRoutablePage
     {
         private TopicInfo _topic;
+        protected int _archiveView;
         protected internal GridPager ReplyPager;
         private int RowCount
         {
@@ -73,7 +73,9 @@ namespace SnitzUI
 
             }
             int pageSize = Config.TopicPageSize;
-            var replies = Topics.GetRepliesForTopic(_topic.Id, pageIndex, pageSize);
+            
+            
+            var replies = Topics.GetRepliesForTopic(_topic, pageIndex, pageSize);
             if(replyFilter.SelectedIndex > 0)
             {
                 switch (replyFilter.SelectedValue)
@@ -133,6 +135,19 @@ namespace SnitzUI
             if (TopicId == null)
                 throw new HttpException(404, "Topic not found");
                 //Response.Redirect("~/error.aspx?msg=errInvalidTopicId",true);
+            if (Request.QueryString["ARCHIVE"] != null)
+            {
+                if (Request.QueryString["ARCHIVE"] == "1")
+                {
+                    //TopicODS.TypeName = "Snitz.BLL.Archive";
+                    _archiveView = 1;
+                }
+            }
+            else
+            {
+                //TopicODS.TypeName = "Snitz.BLL.Forums";
+                _archiveView = 0;
+            }
             try
             {
                 if (TopicId != null)
@@ -377,10 +392,20 @@ namespace SnitzUI
             }
             SiteMapNode tempNode = currentNode;
             TopicInfo topic = _topic;
-            tempNode.Title = HttpUtility.HtmlDecode(topic.Subject.CleanForumCodeTags());
+            string strStatus = "";
+            if (topic.Status == 0)
+                strStatus = " (locked) ";
+            if (topic.IsArchived)
+            {
+                strStatus = " (Archived)";
+                topic.Status = 0;
+            }
+            tempNode.Title = HttpUtility.HtmlDecode(topic.Subject.CleanForumCodeTags()) + strStatus;
             tempNode = tempNode.ParentNode;
             tempNode.Title = HttpUtility.HtmlDecode(topic.Forum.Subject.CleanForumCodeTags());
             tempNode.Url = tempNode.Url + "?FORUM=" + topic.ForumId;
+            if (topic.IsArchived)
+                tempNode.Url += "&ARCHIVE=1";
             //TopicView.Visible = Pager1.CurrentIndex < 1;
             return currentNode;
 
@@ -419,17 +444,19 @@ namespace SnitzUI
         {
 
             var frm = (FormView)sender;
-            if(!Config.ShowTopicNav)
+            var currentTopic = ((TopicInfo) frm.DataItem);
+            var mbar = frm.FindControl(@"bbr") as MessageButtonBar;
+
+            if(!Config.ShowTopicNav || currentTopic.IsArchived)
             {
                 frm.HeaderRow.Visible = false;
             }
-            var mbar = frm.FindControl(@"bbr") as MessageButtonBar;
+            
             if (mbar != null)
                 mbar.DeleteClicked += TopicDeleted;
 
             var ph = frm.FindControl(@"msgPH") as PlaceHolder; 
             
-            var currentTopic = ((TopicInfo) frm.DataItem);
             currentTopic.PollId = Topics.GetTopicPollId(currentTopic.Id);
             var msgDisplay = new Literal { Text = currentTopic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls(), Mode = LiteralMode.Encode };
 

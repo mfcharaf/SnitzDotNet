@@ -28,7 +28,6 @@ using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using Snitz.Providers;
 using SnitzConfig;
 
 public partial class MessageButtonBar : UserControl
@@ -40,7 +39,7 @@ public partial class MessageButtonBar : UserControl
     private DateTime _postdate;
     private bool _unmoderated;
 
-    private string currentUser = HttpContext.Current.User.Identity.Name;
+    private readonly string currentUser = HttpContext.Current.User.Identity.Name;
 
     private AuthorInfo _author;
     private ForumInfo _forum;
@@ -64,9 +63,31 @@ public partial class MessageButtonBar : UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
-        //if (_post != null)
-        //    SetUpButtons();
+        if (Page.IsPostBack)
+        {
+            string postbackbtn = Request.Form["__EVENTTARGET"];
+            string argument = Request.Form["__EVENTARGUMENT"];
+            int id;
+            switch (postbackbtn)
+            {
+                case "DeleteTopic":
+                    id = Convert.ToInt32(argument);
+                    DeleteTopic(id);
+                    break;
+                case "DeleteReply":
+                    id = Convert.ToInt32(argument);
+                    DeleteReply(id);
+                    break;
+                case "BookMarkTopic":
+                    id = Convert.ToInt32(argument);
+                    BookMarkTopic(id);
+                    break;
+                case "BookMarkReply":
+                    id = Convert.ToInt32(argument);
+                    BookMarkReply(id);
+                    break;
+            }
+        }
         
     }
 
@@ -84,7 +105,7 @@ public partial class MessageButtonBar : UserControl
         TopicDelete.Visible = false;
         SplitTopic.Visible = false;
 
-        PageBase page = (PageBase)this.Page;
+        PageBase page = (PageBase)Page;
         bool _isadmin = page.IsAdministrator;
         bool newerreplies = false;
 
@@ -123,14 +144,12 @@ public partial class MessageButtonBar : UserControl
                     modtext = String.Format("<span class=\"moderation\">!!{0}!!</span>", webResources.OnHold);
 
             }
-            
-            imgPosticon.CommandName = "topic";
-            TopicDelete.CommandName = "topic";
             SplitTopic.Visible = false;
             hEdit.Text = webResources.lblEditTopic;
             hEdit.ToolTip = webResources.lblEditTopic;
-            TopicDelete.OnClientClick = TopicDelete.OnClientClick.Replace("[MESSAGE]", "Do you want to delete this Topic and all its replies?");
-
+            TopicDelete.AlternateText = webResources.lblDelTopic;
+            TopicDelete.OnClientClick = "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + ThisId + ");return false;";
+            imgPosticon.OnClientClick = "setArgAndPostBack('Do you want to bookmark the Topic?','BookMarkTopic'," + ThisId + ");return false;";
         }
         else if (_post is ReplyInfo)
         {
@@ -160,16 +179,14 @@ public partial class MessageButtonBar : UserControl
                     modtext = String.Format("<span class=\"moderation\">!!{0}!!</span>", webResources.OnHold);
             }
 
-            imgPosticon.CommandName = "reply";
-            TopicDelete.CommandName = "reply";
-            TopicDelete.AlternateText = webResources.lblDelPost;
+            TopicDelete.AlternateText = webResources.lblDelReply;
             SplitTopic.CommandArgument = ThisId.ToString();
             hEdit.ToolTip = webResources.lblEditReply;
             hEdit.Text = webResources.lblEditReply;
-            TopicDelete.OnClientClick = TopicDelete.OnClientClick.Replace("[MESSAGE]", "Do you want to delete this reply?");
+            TopicDelete.OnClientClick = "setArgAndPostBack('Do you want to delete the Reply?','DeleteReply'," + ThisId + ");return false;";
+            imgPosticon.OnClientClick = "setArgAndPostBack('Do you want to bookmark the Reply?','BookMarkReply'," + ThisId + ");return false;";
             SplitTopic.Visible = _isForumModerator || _isadmin;
-            SplitTopic.OnClientClick = //"$find('mpSplit').show();return false;";
-                    String.Format(
+            SplitTopic.OnClientClick = String.Format(
                     "mainScreen.LoadServerControlHtml('Split Topic',{{'pageID':6,'data':'{0},asc'}}, 'methodHandlers.BeginRecieve');return false;", reply.Id);
 
         }
@@ -199,53 +216,46 @@ public partial class MessageButtonBar : UserControl
         
     }
 
-    protected void DeletePost(object sender, ImageClickEventArgs e)
+    private void DeleteTopic(int topicid)
     {
-        ImageButton btn = (ImageButton) sender;
-        switch (btn.CommandName)
-        {
-            case "reply" :
-                Replies.DeleteReply(Convert.ToInt32(btn.CommandArgument));
-                if (this.DeleteClicked != null)
-                {
-                    this.DeleteClicked(this, EventArgs.Empty);
-                }
-                InvalidateForumCache();
-                break;
-            case "topic" :
-                TopicInfo t = Topics.GetTopic(Convert.ToInt32(btn.CommandArgument));
-                int forumid = t.ForumId;
-                Topics.Delete(t);
-                InvalidateForumCache();
-                Response.Redirect("~/Content/Forums/Forum.aspx?FORUM=" + forumid);
-                break;
-        }
+        TopicInfo t = Topics.GetTopic(topicid);
+        int forumid = t.ForumId;
+        Topics.Delete(t);
+        InvalidateForumCache();
+        Response.Redirect("~/Content/Forums/Forum.aspx?FORUM=" + forumid);        
     }
 
-    protected void BookMark(object sender, ImageClickEventArgs e)
+    private void DeleteReply(int replyid)
     {
-        PageBase page = (PageBase) Page;
-        ImageButton btn = (ImageButton)sender;
-        switch (btn.CommandName)
+        Replies.DeleteReply(replyid);
+        if (DeleteClicked != null)
         {
-            case "reply":
-                ReplyInfo r = Replies.GetReply(Convert.ToInt32(btn.CommandArgument));
-                TopicInfo rt = Topics.GetTopic(r.TopicId);
-                string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page.CurrentPage + 1, r.Id);
-                List<SnitzLink> rbookmarks = page.Profile.BookMarks;
-                rbookmarks.Add(new SnitzLink(rt.Subject,rurl));
-                page.Profile.BookMarks = rbookmarks;
-                page.Profile.Save();
-                break;
-            case "topic":
-                TopicInfo t = Topics.GetTopic(Convert.ToInt32(btn.CommandArgument));
-                string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
-                List<SnitzLink> bookmarks = page.Profile.BookMarks;
-                bookmarks.Add(new SnitzLink(t.Subject,url));
-                page.Profile.BookMarks = bookmarks;
-                page.Profile.Save();
-                break;
+            DeleteClicked(this, EventArgs.Empty);
         }
+        InvalidateForumCache();        
+    }
+
+    private void BookMarkTopic(int topicid)
+    {
+        PageBase page = (PageBase)Page;
+        TopicInfo t = Topics.GetTopic(topicid);
+        string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
+        List<SnitzLink> bookmarks = page.Profile.BookMarks;
+        bookmarks.Add(new SnitzLink(t.Subject, url));
+        page.Profile.BookMarks = bookmarks;
+        page.Profile.Save();        
+    }
+
+    private void BookMarkReply(int replyid)
+    {
+        PageBase page = (PageBase)Page;
+        ReplyInfo r = Replies.GetReply(replyid);
+        TopicInfo rt = Topics.GetTopic(r.TopicId);
+        string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page.CurrentPage + 1, r.Id);
+        List<SnitzLink> rbookmarks = page.Profile.BookMarks;
+        rbookmarks.Add(new SnitzLink(rt.Subject, rurl));
+        page.Profile.BookMarks = rbookmarks;
+        page.Profile.Save();        
     }
 
     private void InvalidateForumCache()

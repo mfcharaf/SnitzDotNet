@@ -5,8 +5,8 @@
 #LoginBox .content {font-size:small;color:White; border:0px;}
 #topsection{background: #111;}
 
-fieldset{padding:5px;font-size:1.1em;border:1px solid #000;margin:3px;}
-legend{color:#000;}
+fieldset{padding:5px;font-size:1.1em;border:1px solid rgb(47,47,47);margin:3px;}
+legend{color:rgb(47,47,47);}
 
 hr	{ height: 0px; border: dotted #c4d1da 0px; border-top-width: 1px;}
 
@@ -20,13 +20,14 @@ p   {font-size:0.9em;padding:0px 4px 0px 4px;}
 
 input,textarea, select {
 	color : #fff;
-    background-color: #222;
+    background-color: rgb(47,47,47);
 	border-color : #000;
 	border-top-width : 1px; 
     border-right-width : 1px; 
     border-bottom-width : 1px; 
     border-left-width : 1px;  
 }
+input[type="checkbox"],input[type="radio"]{ background-color: transparent; }
 input { text-indent : 2px; }
 input[type="image"] {
     background-color: transparent;
@@ -110,12 +111,12 @@ img.captchaImage
 .row td.CatHeaderRow{background-color:#000;border:0px;}
 .row td.ForumHeaderRow {background-color: #222; color:silver;border:0px;}
 .row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;}
-.row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;background-color:#111;}
+.row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;}
 .row td.subjectCol, .altrow td.subjectCol {overflow:hidden;max-width:300px;width:300px;}
 
 .emptyrow{text-align:center;}
 
-.category{background-color: #000; height: 24px;background-image:url(/images/cat-bar.gif)}
+.category{background-color: rgb(47,47,47); height: 24px;background-image:url(/images/cat-bar.gif)}
 tr.category {background-image:url(images/cat-bar.gif);}
 td.category, .row td.categorylink{background-color: #000; height: 24px;padding-top:4px;background-image:url(images/cat-bar.gif)}
 .categorylink,th.categorylink ,td.categorylink {color:#ffffff;font-size:1.2em;font-weight:bold;}
@@ -135,7 +136,7 @@ td.category, .row td.categorylink{background-color: #000; height: 24px;padding-t
     color: #fff;
     font-weight: normal;
     background-color: #111;
-    font-size: smaller;
+
 }
 .cattitle		{ font-weight: bold; color : #FFFFFF; }
 .FooterTable 
@@ -289,7 +290,7 @@ tr.rowsticky{border-bottom:1px solid #000;}
 
 .editedDIV{color:#990033;font-size:0.8em;}
 .editedDIV span {}
-.sigDIV p{height:auto;margin-bottom:0;vertical-align:baseline;font-size:smaller;}
+.sigDIV {position: absolute;bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
 .sigDIV{font-size:x-small;}
 
  

@@ -182,6 +182,7 @@ namespace Snitz.BLL
         {
             if (maximumRows == 0)
                 return new List<TopicInfo>();
+            
             ITopic dal = Factory<ITopic>.Create("Topic");
             return new List<TopicInfo>(dal.GetTopics(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus));
         }

@@ -72,7 +72,7 @@ public partial class MainMaster : BaseMasterPage
         lblCopyright.Text = @"&copy; " + Config.Copyright;
         imgGoUp.NavigateUrl = Request.RawUrl + @"#top";
         TimerLabel.Visible = Config.ShowTimer;
-        var pmAlert = LoadControl("~/UserControls/PrivateMessaging/PMAlert.ascx");
+        var pmAlert = LoadControl("~/UserControls/PrivateMessages/PMAlert.ascx");
         PhPMALert.Controls.Add(pmAlert);
     }
 

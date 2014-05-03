@@ -20,8 +20,8 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
@@ -34,8 +34,9 @@ namespace SnitzUI.UserControls
         public int TopicCount { get; set; }
         public bool Hide { get; set; }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
+            base.OnInit(e);
             ThisPage = (PageBase)Page;
             var activetopics = Topics.GetLatestTopics(TopicCount);
             if (activetopics == null || !activetopics.Any())
@@ -48,8 +49,23 @@ namespace SnitzUI.UserControls
                 DataList1.DataSource = activetopics;
                 DataList1.DataBind();
             }
+
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ThisPage = (PageBase)Page;
+
         }
 
 
+        protected void BindRepeater(object sender, RepeaterItemEventArgs e)
+        {
+            Literal test = (Literal)e.Item.FindControl("lastposttime");
+            if (test != null)
+            {
+                test.Text = Common.TimeAgoTag(((TopicInfo)e.Item.DataItem).LastPostDate,
+                    ThisPage.IsAuthenticated, ThisPage.Member == null ? 0 : ThisPage.Member.TimeOffset);
+            }
+        }
     }
 }

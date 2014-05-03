@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True"  CodeBehind="ResXEditor.ascx.cs" Inherits="ResxWebEditor.Editor.ResXEditor" %>
-<%@ Register TagPrefix="resx" Namespace="Snitz.ThirdParty" Assembly="Snitz.Controls" %>
+<%@ Register TagPrefix="resx" Namespace="Snitz.ThirdParty" Assembly="Snitz.ThirdParty" %>
 
 
 <div style="margin: auto;">

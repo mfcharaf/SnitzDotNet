@@ -186,7 +186,7 @@ namespace SnitzUI
             newMember.ReceiveEmails = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("recemail")).SelectedValue);
 
             newMember.Signature = ((TextBox)CreateUserWizard1.WizardSteps[3].FindControl("signature")).Text;
-            newMember.MembersIP = Common.GetIPAddress();
+            newMember.MembersIP = Common.GetIP4Address();
             newMember.LastIP = newMember.MembersIP;
             // Save the profile - must be done since we explicitly created this profile instance
             Members.SaveMember(newMember);
@@ -248,7 +248,7 @@ namespace SnitzUI
             const string stopforumspamurl = "http://www.stopforumspam.com/api";
             string email = "email=" + CreateUserWizard1.Email;
             string username = "username=" + CreateUserWizard1.UserName;
-            string memberIP = "ip=" + Common.GetIPAddress();
+            string memberIP = "ip=" + Common.GetIP4Address();
 
             var client = new WebClient();
             byte[] data = client.DownloadData(string.Format("{0}?{1}&{2}&{3}", stopforumspamurl, email, username, memberIP));

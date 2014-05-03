@@ -56,14 +56,27 @@ namespace Snitz.BLL
             {
                 topic.Forum = Forums.GetForum(topic.ForumId);
                 topic.PollId = GetTopicPollId(topicid);
+                topic.IsArchived = false;
+            }
+            else
+            {
+                //let's check archives
+                IArchiveForum archDal = Factory<IArchiveForum>.Create("ArchiveForums");
+                topic = archDal.GetTopic(topicid);
+                if (topic != null)
+                {
+                    topic.Forum = Forums.GetForum(topic.ForumId);
+                    topic.IsArchived = true;
+                }
             }
             return topic;
         }
 
-        public static IEnumerable<ReplyInfo> GetRepliesForTopic(int topicid, int startrec, int maxrecs)
+        public static IEnumerable<ReplyInfo> GetRepliesForTopic(TopicInfo topic, int startrec, int maxrecs)
         {
             IReply dal = Factory<IReply>.Create("Reply");
-            return dal.GetByParent(topicid,startrec,maxrecs);
+            
+            return dal.GetByParent(topic,startrec,maxrecs);
         }
 
         public static TopicInfo GetNextPrevTopic(int topicid, string which)
@@ -203,16 +216,16 @@ namespace Snitz.BLL
             Update(topic);
         }
 
-        public static int GetNewTopicCount(string lastHereDate, int startRowIndex, int maximumRows)
+        public static int GetNewTopicCount(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null,false,-1);
+            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null);
         }
 
-        public static List<TopicInfo> GetNewTopics(string lastHereDate, int startRowIndex, int maximumRows)
+        public static List<TopicInfo> GetNewTopics(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null,false,1));
+            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null));
         }
 
         public static void Dispose()

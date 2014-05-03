@@ -4,7 +4,7 @@
     {
         private const string UPDATECOUNTS = "" +
 
-                "CREATE PROCEDURE [dbo].[snitz_updateCounts]" +
+                "CREATE PROCEDURE [snitz_updateCounts]" +
                 "AS" +
                 "BEGIN" +
                 "    -- SET NOCOUNT ON added to prevent extra result sets from" +

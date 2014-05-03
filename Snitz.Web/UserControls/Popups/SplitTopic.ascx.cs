@@ -77,8 +77,8 @@ namespace SnitzUI.UserControls.Popups
         {
             
             List<ReplyInfo> replies = ddlSort.SelectedValue == "desc" ?
-                Topics.GetRepliesForTopic(_topic.Id,0,_topic.ReplyCount).OrderByDescending(r => r.Date).ToList() :
-                Topics.GetRepliesForTopic(_topic.Id, 0, _topic.ReplyCount).OrderBy(r => r.Date).ToList();
+                Topics.GetRepliesForTopic(_topic,0,_topic.ReplyCount).OrderByDescending(r => r.Date).ToList() :
+                Topics.GetRepliesForTopic(_topic, 0, _topic.ReplyCount).OrderBy(r => r.Date).ToList();
 
             grdReplies.DataSource = replies;
             grdReplies.DataBind();

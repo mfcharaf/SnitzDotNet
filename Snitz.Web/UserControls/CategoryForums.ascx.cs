@@ -36,25 +36,21 @@ namespace SnitzUI.UserControls
 {
     public partial class CategoryForums : System.Web.UI.UserControl
     {
-        
-        protected bool IsAdministrator
+
+        public bool IsAdministrator
         {
             get
             {
                 if (HttpContext.Current.Session != null)
                     if (!String.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
                     {
-                        if (HttpContext.Current.Session["adminuser"] != null)
-                            return (bool)HttpContext.Current.Session["adminuser"];
                         bool check = Roles.IsUserInRole(HttpContext.Current.User.Identity.Name, "Administrator");
-                        HttpContext.Current.Session.Add("adminuser", check);
                         return check;
-
                     }
                 return false;
             }
         }
-        protected DateTime LastVisitDateTime
+        public DateTime LastVisitDateTime
         {
             get
             {
@@ -106,6 +102,8 @@ namespace SnitzUI.UserControls
                 var empty = item.FindControl("ForumEmpty") as ImageButton;
                 var archive = item.FindControl("ArchiveForum") as ImageButton;
                 var newIcon = item.FindControl("hypNewTopic") as HyperLink;
+                var viewarchive = item.FindControl("hypViewArchive") as HyperLink;
+
                 var popuplink = item.FindControl("popuplink") as Literal;
                 var ldate = (Literal)item.FindControl("lDate");
                 var iconPh = (PlaceHolder)item.FindControl("Ticons");
@@ -223,6 +221,13 @@ namespace SnitzUI.UserControls
                                                             forum.Id, forum.CatId);
                         newIcon.Visible = newIcon.Visible && (forum.Type != 1);
                     }
+                    if (viewarchive != null)
+                    {
+                        viewarchive.ImageUrl = imagedir + "/admin/newwindow.png";
+                        viewarchive.Visible = forum.ArchivedTopicCount > 0;
+                        viewarchive.NavigateUrl = string.Format("~/Content/Forums/forum.aspx?FORUM={0}&ARCHIVE=1",forum.Id);
+                        viewarchive.Visible = viewarchive.Visible && (forum.Type != 1);                        
+                    }
                     if (lockIcon != null)
                     {
                         lockIcon.ImageUrl = imagedir + "/admin/lock.png";
@@ -288,7 +293,7 @@ namespace SnitzUI.UserControls
                         }
                     break;
                 default:
-                    image.ImageUrl = imagedir + "/admin/lock.png";
+                    image.ImageUrl = imagedir + "/message/folder_locked.png";
                     image.AlternateText = webResources.lblLockedForum;
                     break;
             }

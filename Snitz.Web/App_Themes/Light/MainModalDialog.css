@@ -72,5 +72,5 @@
     background-color: #000000;
 
 }
-#header,#upheader,#brwsheader{width:100%;background:#0FA1B8;height:26px; vertical-align:middle;}
+#header,#upheader,#brwsheader{width:100%;background:#bbb;height:26px; vertical-align:middle;}
 #header a,#upheader a,#brwsheader a{color:White;font-weight:bolder;}

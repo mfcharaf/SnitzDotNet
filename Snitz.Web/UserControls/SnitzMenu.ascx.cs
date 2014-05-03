@@ -89,7 +89,10 @@ public partial class SnitzMenu : UserControl
 
     protected void MenuItemDataBound(object sender, MenuEventArgs e)
     {
-        if (e.Item.NavigateUrl.ToLower().Contains("action=validate") || e.Item.NavigateUrl.ToLower().Contains("pendingmembers.aspx"))
+        PageBase page = (PageBase)Page;
+        MembershipUser mu = Membership.GetUser(false);
+
+        if (e.Item.NavigateUrl.ToLower().Contains("action=validate") || e.Item.NavigateUrl.ToLower().Contains("pendingmembers"))
         {
             int pCount = SnitzMembershipProvider.GetUnApprovedMemberCount();
             e.Item.Enabled = false;
@@ -119,7 +122,12 @@ public partial class SnitzMenu : UserControl
         }
         if (e.Item.NavigateUrl.ToLower().Contains("privatemessage"))
         {
-            int unreadcount = PrivateMessages.GetUnreadPMCount(((PageBase)Page).Member.Id);
+            int unreadcount = 0;
+
+            if (((PageBase)Page).Member != null)
+            {
+                unreadcount = PrivateMessages.GetUnreadPMCount(((PageBase) Page).Member.Id);
+            }
             if (unreadcount > 0)
             {
                 e.Item.Text += string.Format(" ({0})", unreadcount);
@@ -132,11 +140,11 @@ public partial class SnitzMenu : UserControl
         }
         if (e.Item.NavigateUrl.ToLower().Contains("active"))
         {
-            PageBase page = (PageBase) Page;
-            MembershipUser mu = Membership.GetUser(false);
+
             if(mu != null)
             {
-                int unreadcount = Topics.GetNewTopicCount(page.LastVisitDateTime.ToForumDateStr(), 0, 100);
+
+                int unreadcount = Topics.GetNewTopicCount(page.LastVisitDateTime.ToForumDateStr(), page.IsAdministrator || page.IsModerator, 0, 100);
                 if (unreadcount > 0)
                 {
                     e.Item.Text += @" (" + unreadcount + @")";

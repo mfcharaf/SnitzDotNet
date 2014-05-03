@@ -8,7 +8,7 @@
 <asp:ImageButton SkinID="Properties" runat="server" ImageUrl="Images/admin/properties.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Subscribe" runat="server" ImageUrl="Images/admin/subscribe.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="UnSubscribe" runat="server" ImageUrl="Images/admin/unsubscribe.png" CssClass="msgIcons"/>
-<asp:ImageButton SkinID="SplitTopic" runat="server" ImageUrl="Images/message/splittopic.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="SplitTopic" runat="server" ImageUrl="Images/message/splittopic.png" CssClass="msgIcons" Width="32"/>
 <asp:ImageButton SkinID="UnStickyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unstick.png"/>
 <asp:ImageButton SkinID="Search" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/search.png"/>
 <asp:ImageButton SkinID="StickyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/stick.png"/>
@@ -50,7 +50,7 @@
 
 <asp:HyperLink SkinID="EditPost" runat="server" ImageUrl="Images/message/edit.png" CssClass="msgIcons"></asp:HyperLink>
 <asp:HyperLink SkinID="ReplyQuote" runat="server" ImageUrl="Images/message/quote.png" CssClass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="GotoTop" runat="server" ImageUrl="Images/message/up.png" cssclass="TopIcon"></asp:HyperLink>
+<asp:HyperLink SkinID="GotoTop" runat="server" ImageUrl="Images/message/up.png" cssclass="TopIcon" ></asp:HyperLink>
 
 <asp:HyperLink SkinID="GoUpFooter" runat="server" ImageUrl="Images/message/up.png"></asp:HyperLink>
 <asp:HyperLink SkinID="RSS" runat="server" Text="RSS Feed" ImageUrl="Images/rss.png"></asp:HyperLink>

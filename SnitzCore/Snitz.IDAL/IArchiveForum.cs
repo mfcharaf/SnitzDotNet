@@ -19,11 +19,22 @@
 #################################################################################################################### 
 */
 
+using System.Collections.Generic;
+using Snitz.Entities;
+
 namespace Snitz.IDAL
 {
     public interface IArchiveForum
     {
         void ArchiveTopic(int forumid,int topicid);
         void ArchiveForum(int forumid, string archivedate);
+
+        IEnumerable<ReplyInfo> GetReplies(TopicInfo topic, int startrec, int maxrecs);
+        IEnumerable<TopicInfo> GetTopics(int startRowIndex, int maximumRows, int forumid, bool isAdminOrModerator);
+        IEnumerable<int> GetReplyIdList(int topicid);
+
+        TopicInfo GetNextPrevTopic(int topicid, string which);
+        int GetTopicCount(int startRowIndex, int maximumRows, int forumid, bool isAdminOrModerator);
+        TopicInfo GetTopic(int topicid);
     }
 }

@@ -280,7 +280,7 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 
 .editedDIV{color:#990033;font-size:0.8em;}
 .editedDIV span {}
-.sigDIV p{height:auto;margin-bottom:0;vertical-align:baseline;font-size:smaller;}
+.sigDIV {position: absolute;bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
 .sigDIV{font-size:x-small;}
 
  

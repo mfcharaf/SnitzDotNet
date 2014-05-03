@@ -49,6 +49,7 @@ namespace Snitz.Entities
         public bool UseSignatures { get; set; }
         public int UnModeratedReplies { get; set; }
         public int? PollId { get; set; }
+        public bool IsArchived { get; set; }
 
         public CategoryInfo CategoryInfo { get; set; }
         public ForumInfo Forum { get; set; }

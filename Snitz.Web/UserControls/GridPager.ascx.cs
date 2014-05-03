@@ -80,7 +80,7 @@ public partial class GridPager : UserControl
                 textPager.Visible = true;
                 string url = Request.RawUrl;
                 if (url.Contains("&"))
-                    url = url.Substring(0, Request.RawUrl.IndexOf("&"));
+                    url = url.Substring(0, url.IndexOf("&"));
                 litPager.Text = CreatePagerLinks(url);
                 break;
             case Enumerators.PagerType.Lnkbutton:
@@ -307,9 +307,9 @@ public partial class GridPager : UserControl
 
     protected void PagerClick(object sender, EventArgs e)
     {
-        if (this.UserControlLinkClick != null)
+        if (UserControlLinkClick != null)
         {
-            this.UserControlLinkClick(sender, e);
+            UserControlLinkClick(sender, e);
         }
     }
 

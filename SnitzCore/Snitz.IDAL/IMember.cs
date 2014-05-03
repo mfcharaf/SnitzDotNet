@@ -34,5 +34,8 @@ namespace Snitz.IDAL
 
         MemberInfo GetByEmail(string email);
         string[] ForumAdministrators();
+        int GetPendingMemberCount();
+        IEnumerable<MemberInfo> GetPendingMembers(int startRecord, int maxRecords);
+        void UpdateVisit(MemberInfo member);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Web.UI.WebControls;
 using Snitz.Entities;
 using SnitzConfig;
@@ -50,8 +49,7 @@ namespace SnitzUI.Admin
 
         protected void PollAnswerInsert_ItemInserting(object sender, DetailsViewInsertEventArgs e)
         {
-            PollChoiceInfo choice = new PollChoiceInfo();
-            choice.PollId = Convert.ToInt32(Request.QueryString["pid"]);
+            PollChoiceInfo choice = new PollChoiceInfo {PollId = Convert.ToInt32(Request.QueryString["pid"])};
             TextBox text = (TextBox) PollAnswerInsert.FindControl("NewPollAnswerDisplayText");
             TextBox order = (TextBox)PollAnswerInsert.FindControl("NewPollAnswerSortOrder");
             choice.DisplayText = text.Text;
@@ -68,11 +66,13 @@ namespace SnitzUI.Admin
             string displayText = GridView1.GetNewValue<string>(e.RowIndex, 2);
             int order = GridView1.GetNewValue<int>(e.RowIndex, 3);
 
-            PollChoiceInfo choice = new PollChoiceInfo();
-            choice.Id = choiceid;
-            choice.DisplayText = displayText;
-            choice.PollId = pollid;
-            choice.Order = order;
+            PollChoiceInfo choice = new PollChoiceInfo
+            {
+                Id = choiceid,
+                DisplayText = displayText,
+                PollId = pollid,
+                Order = order
+            };
             Snitz.BLL.Polls.UpdatePollAnswer(choice);
         }
 

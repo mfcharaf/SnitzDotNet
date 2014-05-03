@@ -30,6 +30,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\..\..\SnitzDotNet\Dependency\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\..\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -146,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Snitz.pubxml" />
-    <Content Include="web.config" />
+    <None Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -181,8 +183,11 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy /s /y "$(ProjectDir)UserControls\Events\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Events\"
+
 xcopy /s /y "$(ProjectDir)UserControls\Popups\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Popups\"
+
 xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.*" "$(SolutionDir)Snitz.Web\bin\"
+
 xcopy /s /y "$(ProjectDir)Content\Events\*.aspx" "$(SolutionDir)Snitz.Web\Content\Events\"
 </PostBuildEvent>
   </PropertyGroup>

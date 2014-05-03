@@ -9,7 +9,7 @@
             <div class="innertube">
         </HeaderTemplate>
         <ItemTemplate>
-            <div style="max-width: 300px; overflow: hidden;background-color:#eee">
+            <div style="max-width: 300px; overflow: hidden;">
                 <p>
                 <i>Forum: <em style="color: #8c0017"><%# XPath("category")%></em></i>
                 <asp:HyperLink ID="myLink" runat="server" Target="_blank" NavigateUrl='<%# XPath("link") %>' EnableViewState="False">        

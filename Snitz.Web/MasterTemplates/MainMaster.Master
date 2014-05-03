@@ -22,7 +22,6 @@
     <script type="text/javascript" src="/scripts/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/scripts/jquery.timeago.min.js"></script>
     <script type="text/javascript" src="/scripts/confirmHandler.min.js"></script>
-    <asp:ContentPlaceHolder ID="CPhead" runat="server"></asp:ContentPlaceHolder>
     <script type="text/javascript">
 
         (function ($) {
@@ -67,6 +66,8 @@
         })(jQuery);
 
     </script>
+        <asp:ContentPlaceHolder ID="CPhead" runat="server"></asp:ContentPlaceHolder>
+
 </head>
 <body>
     <form id="form1" runat="server">

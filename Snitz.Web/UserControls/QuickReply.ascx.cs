@@ -72,10 +72,7 @@ public partial class QuickReply : UserControl
             Session.Add("LastPostMade", DateTime.UtcNow.ToForumDateStr());
         } 
         
-        string MemberIP = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-        if ((MemberIP == "") || (MemberIP == "unknown") || (MemberIP == null))
-            MemberIP = Request.ServerVariables["REMOTE_ADDR"];
-        
+        string MemberIP = Common.GetIP4Address();
         ReplyInfo reply = new ReplyInfo
                           {
                               TopicId = thisTopic.Id,

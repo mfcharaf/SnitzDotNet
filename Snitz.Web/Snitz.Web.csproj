@@ -34,6 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -70,15 +72,16 @@
     <Reference Include="Snitz.Entities">
       <HintPath>..\Dependency\Snitz.Entities.dll</HintPath>
     </Reference>
+    <Reference Include="Snitz.IDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependency\Snitz.IDAL.dll</HintPath>
+    </Reference>
     <Reference Include="Snitz.Membership.IDal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\Snitz.Membership.IDal.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.ThirdParty">
       <HintPath>..\Dependency\Snitz.ThirdParty.dll</HintPath>
-    </Reference>
-    <Reference Include="Snitz.Utility">
-      <HintPath>..\Dependency\Snitz.Utility.dll</HintPath>
     </Reference>
     <Reference Include="SnitzBase">
       <HintPath>..\Dependency\SnitzBase.dll</HintPath>
@@ -120,15 +123,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Activate.aspx" />
-    <Content Include="Admin\ArchiveForums.ascx" />
+    <Content Include="Admin\UserControls\ArchiveForums.ascx" />
+    <Content Include="Admin\css\ClassicSnitz\admin.css" />
+    <Content Include="Admin\css\ClassicSnitz\Menu.css" />
     <Content Include="Admin\css\Light\admin.css" />
     <Content Include="Admin\css\Light\Menu.css" />
     <Content Include="Admin\css\Dark\admin.css" />
     <Content Include="Admin\css\Dark\Menu.css" />
-    <Content Include="Admin\ManageCategories.ascx" />
-    <Content Include="Admin\ManageModerators.ascx" />
-    <Content Include="App_Themes\BlueGray\bluegray.min.css">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <Content Include="Admin\UserControls\ManageCategories.ascx" />
+    <Content Include="Admin\UserControls\ManageModerators.ascx" />
+    <Content Include="App_Data\SnitzDotNetDatabase.mdf" />
+    <Content Include="App_Data\SnitzDotNetDatabase_log.ldf">
+      <DependentUpon>SnitzDotNetDatabase.mdf</DependentUpon>
     </Content>
     <Content Include="App_Themes\BlueGray\images\admin\folderX.png" />
     <Content Include="App_Themes\BlueGray\images\cat-bar.gif" />
@@ -169,13 +175,9 @@
     <Content Include="App_Themes\BlueGray\images\nav-bg.gif" />
     <Content Include="App_Themes\BlueGray\images\page_go.png" />
     <Content Include="App_Themes\BlueGray\images\top-bar.gif" />
-    <None Include="App_Themes\BlueGray\jquery.alerts.css" />
-    <None Include="App_Themes\BlueGray\Bundle.chirp.config" />
-    <None Include="App_Themes\ClassicSnitz\base.css" />
-    <None Include="App_Themes\ClassicSnitz\classicsnitz.css" />
-    <Content Include="App_Themes\ClassicSnitz\classicsnitz.min.css">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
-    </Content>
+    <Content Include="App_Themes\BlueGray\jquery.alerts.css" />
+    <Content Include="App_Themes\ClassicSnitz\base.css" />
+    <Content Include="App_Themes\ClassicSnitz\classicsnitz.css" />
     <Content Include="App_Themes\ClassicSnitz\images\activity.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\archive.png" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\book.png" />
@@ -286,6 +288,7 @@
     <Content Include="App_Themes\ClassicSnitz\images\logo_snitz_forums_net.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\menu-expand.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\message\doc.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\message\document.png" />
     <Content Include="App_Themes\ClassicSnitz\images\message\edit.png" />
     <Content Include="App_Themes\ClassicSnitz\images\message\Email.png" />
     <Content Include="App_Themes\ClassicSnitz\images\message\foldernewposts.png" />
@@ -331,8 +334,8 @@
     <Content Include="App_Themes\ClassicSnitz\images\User-online.png" />
     <Content Include="App_Themes\ClassicSnitz\images\valid-xhtml10.png" />
     <Content Include="App_Themes\ClassicSnitz\images\vcss.gif" />
-    <None Include="App_Themes\ClassicSnitz\jquery.alerts.css" />
-    <None Include="App_Themes\ClassicSnitz\MainModalDialog.css" />
+    <Content Include="App_Themes\ClassicSnitz\jquery.alerts.css" />
+    <Content Include="App_Themes\ClassicSnitz\MainModalDialog.css" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pm_old.gif" />
@@ -346,12 +349,8 @@
     <Content Include="App_Themes\ClassicSnitz\pm\pmreceive.jpg" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmreply.jpg" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmreplyquote.jpg" />
-    <None Include="App_Themes\ClassicSnitz\Bundle.chirp.config" />
-    <None Include="App_Themes\Dark\base.css" />
-    <None Include="App_Themes\Dark\dark.css" />
-    <Content Include="App_Themes\Dark\dark.min.css">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
-    </Content>
+    <Content Include="App_Themes\Dark\base.css" />
+    <Content Include="App_Themes\Dark\dark.css" />
     <Content Include="App_Themes\Dark\images\activity.gif" />
     <Content Include="App_Themes\Dark\images\admin\archive.png" />
     <Content Include="App_Themes\Dark\images\admin\book.png" />
@@ -513,8 +512,8 @@
     <Content Include="App_Themes\Dark\images\User-online.png" />
     <Content Include="App_Themes\Dark\images\valid-xhtml10.png" />
     <Content Include="App_Themes\Dark\images\vcss.gif" />
-    <None Include="App_Themes\Dark\jquery.alerts.css" />
-    <None Include="App_Themes\Dark\MainModalDialog.css" />
+    <Content Include="App_Themes\Dark\jquery.alerts.css" />
+    <Content Include="App_Themes\Dark\MainModalDialog.css" />
     <Content Include="App_Themes\Dark\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\Dark\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\Dark\pm\icon_pm_old.gif" />
@@ -528,8 +527,8 @@
     <Content Include="App_Themes\Dark\pm\pmreceive.jpg" />
     <Content Include="App_Themes\Dark\pm\pmreply.jpg" />
     <Content Include="App_Themes\Dark\pm\pmreplyquote.jpg" />
-    <None Include="App_Themes\Dark\Bundle.chirp.config" />
-    <None Include="App_Themes\Light\base.css" />
+    <Content Include="App_Themes\Light\Admin.skin" />
+    <Content Include="App_Themes\Light\base.css" />
     <Content Include="App_Themes\Light\images\activity.gif" />
     <Content Include="App_Themes\Light\images\admin\archive.png" />
     <Content Include="App_Themes\Light\images\admin\book.png" />
@@ -696,12 +695,9 @@
     <Content Include="App_Themes\Light\images\valid-xhtml10.png" />
     <Content Include="App_Themes\Light\images\vcss.gif" />
     <Content Include="App_Themes\Light\images\editor\youtube.png" />
-    <None Include="App_Themes\Light\light.css" />
-    <None Include="App_Themes\Light\jquery.alerts.css" />
-    <Content Include="App_Themes\Light\light.min.css">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
-    </Content>
-    <None Include="App_Themes\Light\MainModalDialog.css" />
+    <Content Include="App_Themes\Light\light.css" />
+    <Content Include="App_Themes\Light\jquery.alerts.css" />
+    <Content Include="App_Themes\Light\MainModalDialog.css" />
     <Content Include="App_Themes\Light\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\Light\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\Light\pm\icon_pm_old.gif" />
@@ -717,13 +713,13 @@
     <Content Include="App_Themes\Light\pm\pmreplyquote.jpg" />
     <Content Include="Content\FAQ\Help.aspx" />
     <Content Include="Content\Forums\active.aspx" />
-    <Content Include="Admin\AdminPanel.ascx" />
-    <Content Include="Admin\AdminRadioButton.ascx" />
+    <Content Include="Admin\UserControls\AdminPanel.ascx" />
+    <Content Include="Admin\UserControls\AdminRadioButton.ascx" />
     <Content Include="Admin\css\BlueGray\admin.css" />
     <Content Include="Admin\css\BlueGray\Menu.css" />
-    <Content Include="Admin\dateTime.ascx" />
+    <Content Include="Admin\UserControls\dateTime.ascx" />
     <Content Include="Admin\default.aspx" />
-    <Content Include="Admin\EmoticonAdmin.ascx" />
+    <Content Include="Admin\UserControls\EmoticonAdmin.ascx" />
     <Content Include="App_Themes\BlueGray\images\quote_lt.png" />
     <Content Include="App_Themes\BlueGray\images\quote_rt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_lt.png" />
@@ -805,6 +801,7 @@
       <DependentUpon>Bundle.chirp.config</DependentUpon>
     </Content>
     <None Include="Scripts\confirmHandler.js" />
+    <Content Include="Scripts\confirmdialog.js" />
     <Content Include="Scripts\confirmHandler.min.js">
       <DependentUpon>Bundle.chirp.config</DependentUpon>
     </Content>
@@ -834,16 +831,22 @@
     <Content Include="Scripts\topic_print.min.js">
       <DependentUpon>Bundle.chirp.config</DependentUpon>
     </Content>
+    <Content Include="Setup\base.xml" />
     <Content Include="Setup\Process.aspx" />
     <Content Include="Setup\Setup.aspx" />
+    <Content Include="Setup\setup.js" />
+    <Content Include="Setup\test1.aspx" />
+    <Content Include="Setup\update.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="UserControls\AnnounceBox.ascx" />
     <Content Include="UserControls\CategoryForums.ascx" />
     <Content Include="UserControls\emoticons.ascx" />
     <Content Include="UserControls\GoogleAdCode.ascx" />
     <Content Include="UserControls\Polls\PollEdit.ascx" />
-    <Content Include="Admin\email.ascx" />
-    <Content Include="Admin\features.ascx" />
-    <Content Include="Admin\filters.ascx" />
+    <Content Include="Admin\UserControls\email.ascx" />
+    <Content Include="Admin\UserControls\features.ascx" />
+    <Content Include="Admin\UserControls\filters.ascx" />
     <Content Include="Admin\images\archive.png" />
     <Content Include="Admin\images\book.png" />
     <Content Include="Admin\images\calendar.png" />
@@ -872,18 +875,18 @@
     <Content Include="Admin\images\User-online.png" />
     <Content Include="Admin\images\Warning.png" />
     <Content Include="Admin\images\Write.png" />
-    <Content Include="Admin\ManageAvatars.ascx" />
-    <Content Include="Admin\ManageProfile.ascx" />
-    <Content Include="Admin\ManageRoles.ascx" />
-    <Content Include="Admin\membership.ascx" />
-    <Content Include="Admin\NewMember.ascx" />
-    <Content Include="Admin\NewRole.ascx" />
-    <Content Include="Admin\PendingMembers.ascx" />
+    <Content Include="Admin\UserControls\ManageAvatars.ascx" />
+    <Content Include="Admin\UserControls\ManageProfile.ascx" />
+    <Content Include="Admin\UserControls\ManageRoles.ascx" />
+    <Content Include="Admin\UserControls\membership.ascx" />
+    <Content Include="Admin\UserControls\NewMember.ascx" />
+    <Content Include="Admin\UserControls\NewRole.ascx" />
+    <Content Include="Admin\UserControls\PendingMembers.ascx" />
     <Content Include="UserControls\Polls\PollAdmin.ascx" />
-    <Content Include="Admin\Statistics.ascx" />
-    <Content Include="Admin\Subscriptions.ascx" />
-    <Content Include="Admin\system.ascx" />
-    <Content Include="Admin\UpdateCounts.ascx" />
+    <Content Include="Admin\UserControls\Statistics.ascx" />
+    <Content Include="Admin\UserControls\Subscriptions.ascx" />
+    <Content Include="Admin\UserControls\system.ascx" />
+    <Content Include="Admin\UserControls\UpdateCounts.ascx" />
     <Content Include="Content\AdRedirect.aspx" />
     <Content Include="Content\AdRotator.aspx" />
     <Content Include="App_Data\AdminRegisterMail.html" />
@@ -923,8 +926,8 @@
       <LastGenOutput>webResources.ja1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <None Include="App_Themes\BlueGray\base.css" />
-    <None Include="App_Themes\BlueGray\bluegrey.css" />
+    <Content Include="App_Themes\BlueGray\base.css" />
+    <Content Include="App_Themes\BlueGray\bluegrey.css" />
     <Content Include="App_Themes\BlueGray\images\activity.gif" />
     <Content Include="App_Themes\BlueGray\images\admin\book.png" />
     <Content Include="App_Themes\BlueGray\images\admin\calendar.png" />
@@ -964,7 +967,7 @@
     <Content Include="App_Themes\BlueGray\images\Tab\tabline.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tab-activeR.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tabR.gif" />
-    <None Include="App_Themes\BlueGray\MainModalDialog.css" />
+    <Content Include="App_Themes\BlueGray\MainModalDialog.css" />
     <Content Include="App_Themes\BlueGray\images\close.gif" />
     <Content Include="App_Data\countries.xml" />
     <Content Include="App_Data\PasswordReset.txt" />
@@ -1131,9 +1134,9 @@
     <Content Include="ResourceEditor\images\tick.png" />
     <Content Include="ResourceEditor\Default.aspx" />
     <Content Include="ResourceEditor\ResXEditor.ascx" />
-    <Content Include="UserControls\PrivateMessaging\PMAlert.ascx" />
-    <Content Include="UserControls\PrivateMessaging\pmSend.ascx" />
-    <Content Include="UserControls\PrivateMessaging\pmView.ascx" />
+    <Content Include="UserControls\PrivateMessages\PMAlert.ascx" />
+    <Content Include="UserControls\PrivateMessages\pmSend.ascx" />
+    <Content Include="UserControls\PrivateMessages\PMView.ascx" />
     <Content Include="UserControls\Sidebar\MiniActiveTopics.ascx" />
     <Content Include="UserControls\Polls\Poll.ascx" />
     <Content Include="UserControls\Popups\EmailMember.ascx" />
@@ -1176,7 +1179,6 @@
     <Content Include="App_Themes\ClassicSnitz\Profile.skin" />
     <Content Include="App_Themes\ClassicSnitz\SnitzTheme.skin" />
     <Content Include="App_Themes\ClassicSnitz\StatsPanel.skin" />
-    <None Include="App_Themes\Light\Bundle.chirp.config" />
     <None Include="Properties\PublishProfiles\Snitz.pubxml" />
     <Content Include="Scripts\jquery.timeago.min.js" />
     <Content Include="Scripts\jquery.youtube.player.min.js" />
@@ -1229,7 +1231,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <None Include="Scripts\Bundle.chirp.config" />
+    <None Include="Scripts\Bundle.chirp.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Activate.aspx.cs">
@@ -1239,25 +1243,25 @@
     <Compile Include="Account\Activate.aspx.designer.cs">
       <DependentUpon>Activate.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ArchiveForums.ascx.cs">
+    <Compile Include="Admin\UserControls\ArchiveForums.ascx.cs">
       <DependentUpon>ArchiveForums.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ArchiveForums.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ArchiveForums.ascx.designer.cs">
       <DependentUpon>ArchiveForums.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageCategories.ascx.cs">
+    <Compile Include="Admin\UserControls\ManageCategories.ascx.cs">
       <DependentUpon>ManageCategories.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageCategories.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ManageCategories.ascx.designer.cs">
       <DependentUpon>ManageCategories.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageModerators.ascx.cs">
+    <Compile Include="Admin\UserControls\ManageModerators.ascx.cs">
       <DependentUpon>ManageModerators.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageModerators.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ManageModerators.ascx.designer.cs">
       <DependentUpon>ManageModerators.ascx</DependentUpon>
     </Compile>
     <Compile Include="Content\FAQ\Help.aspx.cs">
@@ -1277,6 +1281,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Setup\DBSFileProcessor.cs" />
     <Compile Include="Setup\Process.aspx.cs">
       <DependentUpon>Process.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1289,6 +1294,13 @@
     </Compile>
     <Compile Include="Setup\StoredProcs.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\test1.aspx.cs">
+      <DependentUpon>test1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\test1.aspx.designer.cs">
+      <DependentUpon>test1.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CategoryForums.ascx.cs">
       <DependentUpon>CategoryForums.ascx</DependentUpon>
@@ -1320,18 +1332,18 @@
     <Compile Include="Content\Forums\active.aspx.designer.cs">
       <DependentUpon>active.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\AdminRadioButton.ascx.cs">
+    <Compile Include="Admin\UserControls\AdminRadioButton.ascx.cs">
       <DependentUpon>AdminRadioButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\AdminRadioButton.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\AdminRadioButton.ascx.designer.cs">
       <DependentUpon>AdminRadioButton.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\dateTime.ascx.cs">
+    <Compile Include="Admin\UserControls\dateTime.ascx.cs">
       <DependentUpon>dateTime.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\dateTime.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\dateTime.ascx.designer.cs">
       <DependentUpon>dateTime.ascx</DependentUpon>
     </Compile>
     <Compile Include="Admin\default.aspx.cs">
@@ -1341,11 +1353,11 @@
     <Compile Include="Admin\default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\EmoticonAdmin.ascx.cs">
+    <Compile Include="Admin\UserControls\EmoticonAdmin.ascx.cs">
       <DependentUpon>EmoticonAdmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\EmoticonAdmin.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\EmoticonAdmin.ascx.designer.cs">
       <DependentUpon>EmoticonAdmin.ascx</DependentUpon>
     </Compile>
     <Compile Include="Content\Forums\members.aspx.designer.cs">
@@ -1389,74 +1401,74 @@
     <Compile Include="UserControls\Polls\PollEdit.ascx.designer.cs">
       <DependentUpon>PollEdit.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\email.ascx.cs">
+    <Compile Include="Admin\UserControls\email.ascx.cs">
       <DependentUpon>email.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\email.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\email.ascx.designer.cs">
       <DependentUpon>email.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\features.ascx.cs">
+    <Compile Include="Admin\UserControls\features.ascx.cs">
       <DependentUpon>features.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\features.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\features.ascx.designer.cs">
       <DependentUpon>features.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\filters.ascx.cs">
+    <Compile Include="Admin\UserControls\filters.ascx.cs">
       <DependentUpon>filters.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\filters.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\filters.ascx.designer.cs">
       <DependentUpon>filters.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageAvatars.ascx.cs">
+    <Compile Include="Admin\UserControls\ManageAvatars.ascx.cs">
       <DependentUpon>ManageAvatars.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageAvatars.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ManageAvatars.ascx.designer.cs">
       <DependentUpon>ManageAvatars.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageProfile.ascx.cs">
+    <Compile Include="Admin\UserControls\ManageProfile.ascx.cs">
       <DependentUpon>ManageProfile.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageProfile.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ManageProfile.ascx.designer.cs">
       <DependentUpon>ManageProfile.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ManageRoles.ascx.cs">
+    <Compile Include="Admin\UserControls\ManageRoles.ascx.cs">
       <DependentUpon>ManageRoles.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ManageRoles.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\ManageRoles.ascx.designer.cs">
       <DependentUpon>ManageRoles.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\membership.ascx.cs">
+    <Compile Include="Admin\UserControls\membership.ascx.cs">
       <DependentUpon>membership.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\membership.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\membership.ascx.designer.cs">
       <DependentUpon>membership.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\NewMember.ascx.cs">
+    <Compile Include="Admin\UserControls\NewMember.ascx.cs">
       <DependentUpon>NewMember.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\NewMember.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\NewMember.ascx.designer.cs">
       <DependentUpon>NewMember.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\NewRole.ascx.cs">
+    <Compile Include="Admin\UserControls\NewRole.ascx.cs">
       <DependentUpon>NewRole.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\NewRole.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\NewRole.ascx.designer.cs">
       <DependentUpon>NewRole.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\PendingMembers.ascx.cs">
+    <Compile Include="Admin\UserControls\PendingMembers.ascx.cs">
       <DependentUpon>PendingMembers.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\PendingMembers.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\PendingMembers.ascx.designer.cs">
       <DependentUpon>PendingMembers.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Polls\PollAdmin.ascx.cs">
@@ -1466,32 +1478,32 @@
     <Compile Include="UserControls\Polls\PollAdmin.ascx.designer.cs">
       <DependentUpon>PollAdmin.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Statistics.ascx.cs">
+    <Compile Include="Admin\UserControls\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Statistics.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\Statistics.ascx.designer.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Subscriptions.ascx.cs">
+    <Compile Include="Admin\UserControls\Subscriptions.ascx.cs">
       <DependentUpon>Subscriptions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Subscriptions.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\Subscriptions.ascx.designer.cs">
       <DependentUpon>Subscriptions.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\system.ascx.cs">
+    <Compile Include="Admin\UserControls\system.ascx.cs">
       <DependentUpon>system.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\system.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\system.ascx.designer.cs">
       <DependentUpon>system.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\UpdateCounts.ascx.cs">
+    <Compile Include="Admin\UserControls\UpdateCounts.ascx.cs">
       <DependentUpon>UpdateCounts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\UpdateCounts.ascx.designer.cs">
+    <Compile Include="Admin\UserControls\UpdateCounts.ascx.designer.cs">
       <DependentUpon>UpdateCounts.ascx</DependentUpon>
     </Compile>
     <Compile Include="Content\AdRedirect.aspx.cs">
@@ -1728,26 +1740,26 @@
     <Compile Include="UserControls\CaptchaControl.ascx.designer.cs">
       <DependentUpon>CaptchaControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\PMAlert.ascx.cs">
+    <Compile Include="UserControls\PrivateMessages\PMAlert.ascx.cs">
       <DependentUpon>PMAlert.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\PMAlert.ascx.designer.cs">
+    <Compile Include="UserControls\PrivateMessages\PMAlert.ascx.designer.cs">
       <DependentUpon>PMAlert.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\pmSend.ascx.cs">
+    <Compile Include="UserControls\PrivateMessages\pmSend.ascx.cs">
       <DependentUpon>pmSend.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\pmSend.ascx.designer.cs">
+    <Compile Include="UserControls\PrivateMessages\pmSend.ascx.designer.cs">
       <DependentUpon>pmSend.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\pmView.ascx.cs">
-      <DependentUpon>pmView.ascx</DependentUpon>
+    <Compile Include="UserControls\PrivateMessages\PMView.ascx.cs">
+      <DependentUpon>PMView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\PrivateMessaging\pmView.ascx.designer.cs">
-      <DependentUpon>pmView.ascx</DependentUpon>
+    <Compile Include="UserControls\PrivateMessages\PMView.ascx.designer.cs">
+      <DependentUpon>PMView.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Sidebar\MiniActiveTopics.ascx.cs">
       <DependentUpon>MiniActiveTopics.ascx</DependentUpon>
@@ -2024,7 +2036,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
-    <Folder Include="Content\Mobile\" />
     <Folder Include="Gallery\" />
   </ItemGroup>
   <ItemGroup>
@@ -2168,4 +2179,10 @@
     </ItemGroup>
   </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y "$(SolutionDir)\Dependency\*.dll" "$(SolutionDir)Snitz.Web\bin\"
+
+xcopy /s /y "$(SolutionDir)\Dependency\*.dll" "$(SolutionDir)..\Published\bin\"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

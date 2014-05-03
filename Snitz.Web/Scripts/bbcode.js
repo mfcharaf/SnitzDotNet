@@ -202,8 +202,10 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
                 return "<a title=\"open attachment\" href=\"/download.ashx?file=";
             case "q":
             case "quote":
-                if(m3 && m3.length)
-                m3 = m3.replace(/\"/g, "");
+                
+                if (m3 && m3.length) {
+                    m3 = m3.replace(/\"/g, "");
+                }
                 opentags.push(new taginfo_t(m2, "</span></blockquote>"));
                 return m3 && m3.length && uri_re.test(m3) ? "<blockquote class=\"quoteMessage\" ><em>Originally posted by " + m3 + "</em></br><span>" : "<blockquote class=\"quoteMessage\"><span>";
             case "table":
@@ -268,7 +270,7 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
 //
 function parseBBCode(post) {
     var result, endtags, tag;
-
+    
     // convert CRLF to <br> by default
     crlf2br = true;
 
@@ -297,6 +299,6 @@ function parseBBCode(post) {
         while (opentags.length)
             endtags += opentags.pop().etag;
     }
-
+    
     return endtags ? result + endtags : result;
 }

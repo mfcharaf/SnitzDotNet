@@ -4,7 +4,7 @@
         emoticon = $(this).attr("rel");
         $.markItUp({ replaceWith: emoticon });
     });
-    if (updPostId != 'undefined') {
+    try {
         $('#' + updPostId).click(function() {
             var img = $get(imgTagId).innerHTML;
             var pos = $('#caretP').val();
@@ -14,6 +14,8 @@
             $find('mpUpload').hide();
             return false;
         });
+    } catch (e) {
+        
     }
     $('img.imgSelect').click(function () {
         src = $(this).attr("rel");

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Web;
 using Snitz.Entities;
 using Snitz.Providers;
+using SnitzConfig;
 
 namespace Snitz.BLL
 {
@@ -58,8 +59,12 @@ namespace Snitz.BLL
             else
             {
                 fullforumlist = Forums.ListForumJumpTo();
+                if (Config.AllowSearchAllForums)
+                {
+                    fullforumlist.Insert(0, new ForumJumpto { Name = "[All Forums]", Id = -1, Category = "" });
+                }
                 if (fullforumlist[0].Id != -1)
-                    fullforumlist.Insert(0, new ForumJumpto { Name = "[Select Forum]", Id = -1, Category = "" });
+                    fullforumlist.Insert(0, new ForumJumpto { Name = "[Select Forum]", Id = -99, Category = "" });
                 HttpContext.Current.Cache["forumjumplist"] = fullforumlist;
             }
             return fullforumlist;

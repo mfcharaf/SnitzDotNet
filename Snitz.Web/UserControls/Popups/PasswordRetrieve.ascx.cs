@@ -38,7 +38,7 @@ namespace SnitzUI.UserControls.Popups
 
         protected void RecoverSendingMail(object sender, MailMessageEventArgs e)
         {
-            string memberIP = Common.GetIPAddress();
+            string memberIP = Common.GetIP4Address();
             e.Message.Body = e.Message.Body.Replace("[IPAddress]", memberIP).Replace("[forumTitle]", Config.ForumTitle);
         }
     }

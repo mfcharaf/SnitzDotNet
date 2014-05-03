@@ -40,6 +40,10 @@ namespace SnitzCommon
         {
             return obj ?? DBNull.Value;
         }
+        public static object ConvertDBNull(this object obj, object def)
+        {
+            return obj ?? def;
+        }
         /// <summary>
         /// Checks if a string is a valid number
         /// </summary>

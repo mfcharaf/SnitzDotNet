@@ -17,7 +17,7 @@
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Import Namespace="SnitzConfig" %>
 <%@ Register TagPrefix="stats" TagName="Statistics" Src="~/UserControls/Statistics.ascx" %>
-<%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.5.51116.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
+<%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 <%@ Register TagPrefix="asp" Namespace="SnitzUI.UserControls" Assembly="Snitz.UI" %>
 
 <asp:Content runat="server" ID="metatag" ContentPlaceHolderID="CPMeta">
@@ -28,7 +28,7 @@
     <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
     <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" />
-
+    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
     <script type="text/javascript">
         var expandedIndex = [];
         var allcpe = [];
@@ -189,41 +189,7 @@
             //$get('progress').style.visibility = 'hidden';
             alert(error.get_message());
         }
-        function setArgAndPostBack(msg, btn, id) {
-            myConfirm(msg, function () {
-                $("#__EVENTARGUMENT").val(id);
-                __doPostBack(btn, id);
-                }, function () {
-                    //cancelled so do nothing
-                },
-              'Confirmation Required'
-            );
 
-        }
-        function myConfirm(dialogText, okFunc, cancelFunc, dialogTitle) {
-            $('<div style="padding: 10px; max-width: 500px; word-wrap: break-word;">' + dialogText + '</div>').dialog({
-                draggable: false,
-                modal: true,
-                resizable: false,
-                width: 'auto',
-                title: dialogTitle || 'Confirm',
-                minHeight: 75,
-                buttons: {
-                    OK: function () {
-                        if (typeof (okFunc) == 'function') {
-                            setTimeout(okFunc, 50);
-                        }
-                        $(this).dialog('destroy');
-                    },
-                    Cancel: function () {
-                        if (typeof (cancelFunc) == 'function') {
-                            setTimeout(cancelFunc, 50);
-                        }
-                        $(this).dialog('destroy');
-                    }
-                }
-            });
-        }
         
         
     </script>
@@ -235,7 +201,7 @@
         <br />
         <asp:DropDownList Visible="true" ID="ddlGroups" runat="server" AutoPostBack="True"
             DataTextField="Value" DataValueField="Key" OnSelectedIndexChanged="DdlGroupsSelectedIndexChanged"
-            meta:resourcekey="ddlGroups" EnableViewState="False">
+            EnableViewState="False">
         </asp:DropDownList>
     </div>
 </asp:Content>
@@ -274,8 +240,8 @@
             </asp:Panel>
             <br  style="line-height:0.5em;" />
             <asp:CollapsiblePanelEx ID="Cat_Panel_CollapsiblePanelExtender" SuppressPostBack="true" SkinID="CatExpandSkin"
-                CollapseControlID="Cat_HeaderPanel" ExpandControlID="Cat_HeaderPanel" Collapsed="true"
-                runat="server" Enabled="True" TargetControlID="Cat_Panel"  EnableViewState="true" OnExpand="onExpand" >
+                CollapseControlID="catExpand" ExpandControlID="catExpand" Collapsed="true"
+                runat="server" Enabled="True"  TargetControlID="Cat_Panel"  EnableViewState="true" OnExpand="onExpand" >
             </asp:CollapsiblePanelEx>
         </ItemTemplate>
         <FooterTemplate>

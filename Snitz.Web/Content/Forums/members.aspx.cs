@@ -52,7 +52,7 @@ public partial class MembersPage : PageBase
         base.OnInit(e);
         if (!IsAuthenticated)
         {
-            throw new SecurityException("You must be a logged in member to view users profiles");
+            throw new NotSupportedException("You must be a logged in member to view forum users");
         }
 
         Page.Title = SiteMapLocalizations.MembersPageTitle;

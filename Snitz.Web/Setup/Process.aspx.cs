@@ -37,17 +37,15 @@ namespace SnitzUI.Setup
             try
             {
 
-
                 UpdateDatabase(updateType.Value);
-                StoredProcedures();
 
                 // All finished!
                 UpdateProgress(100, "Database upgrade Completed!");
-
+                Config.UpdateConfig("RunSetup", "false");
             }
             catch (Exception ex)
             {
-                UpdateProgress(0, "Exception: " + ex.Message);
+                UpdateProgress(0, "Exception: " + ex.Message.Replace("'",""));
 
                 SB.Append("Back Up Failed!");
                 SB.Append("<br/>");
@@ -66,6 +64,7 @@ namespace SnitzUI.Setup
 
         private void UpdateDatabase(string updatetype)
         {
+            DbsFileProcessor dbsUpgrade = new DbsFileProcessor(HttpContext.Current.Server.MapPath("update.xml"));
             switch (updatetype)
             {
                 case "new":
@@ -86,12 +85,14 @@ namespace SnitzUI.Setup
                         }
 
                     }
+                    StoredProcedures();
                     //Add some default data
                     UpdateProgress(0,"Adding default data<br/>");
                     AddRoles();
                     AddDefaultData();
                     break;
                 case "empty":
+                    StoredProcedures();
                     UpdateProgress(0,"Creating base forum tables<br/>");
                     Thread.Sleep(500);
                     //create base forum tables
@@ -110,20 +111,26 @@ namespace SnitzUI.Setup
                         Thread.Sleep(200);
                     }
                     //upgrade to latest version
-                    UpgradeDatabase();
+                    dbsUpgrade.Process();
                     //Add some default data
                     AddRoles();
                     AddDefaultData();
                     break;
                 case "upgrade":
-                    UpdateProgress(0,"");
-                    //upgrade to latest version
-                    UpgradeDatabase();
+                    dbsUpgrade.Process();
+                    StoredProcedures();
                     AddRoles();
                     UpdateUserRoles();
                     UpdateForumAllowedRoles();
                     UpdateMembersTable();
                     UpdateMembersRole();
+                    break;
+                case "upgradeadmin":
+
+                    dbsUpgrade.Process();
+                    AddRoles();
+                    AddDefaultData();
+                    UpdateForumAllowedRoles();
                     break;
             }
 
@@ -145,19 +152,17 @@ namespace SnitzUI.Setup
             MembershipUser admin = Membership.GetUser(aUsername);
             if (admin == null || admin.UserName != aUsername)
                 admin = Membership.CreateUser(aUsername, adminpassword, adminemail, ".", ".", true, out status);
-
             Membership.UpdateUser(admin);
             Roles.AddUserToRoles(admin.UserName, new string[] { "Administrator", "Member" });
 
-            var newadmin =
-                "UPDATE FORUM_MEMBERS SET M_SUBSCRIPTION=1,M_LEVEL=3,M_STATUS=1,M_HIDE_EMAIL = 1,M_RECEIVE_EMAIL = 1,M_VOTED = 0 WHERE M_NAME='" +
-                aUsername + "'; INSERT INTO FORUM_TOTALS (P_COUNT,P_A_COUNT,T_COUNT,T_A_COUNT,U_COUNT) VALUES (0,0,0,0,1)";
+            var newadmin = "UPDATE FORUM_MEMBERS SET M_TITLE='Forum Administrator', M_SUBSCRIPTION=1,M_LEVEL=3,M_STATUS=1,M_HIDE_EMAIL = 1,M_RECEIVE_EMAIL = 1,M_VOTED = 0 WHERE M_NAME='" + aUsername + "'";
             Snitz.BLL.Admin.ExecuteScript(newadmin);
-
+            Snitz.BLL.Admin.ExecuteScript("INSERT INTO FORUM_TOTALS (P_COUNT,P_A_COUNT,T_COUNT,T_A_COUNT,U_COUNT) VALUES (0,0,0,0,1)");
             CategoryInfo cat = new CategoryInfo();
             ForumInfo forum = new ForumInfo();
+            TopicInfo topic = new TopicInfo();
             cat.Id = -1;
-            cat.Name = "Default Category";
+            cat.Name = "Snitz .Net Forums";
             cat.Order = 0;
             cat.Status = (int)Enumerators.PostStatus.Open;
             cat.SubscriptionLevel = 0;
@@ -169,8 +174,8 @@ namespace SnitzUI.Setup
             forum.Id = -1;
             forum.Status = (int)Enumerators.PostStatus.Open;
             forum.AllowPolls = false;
-            forum.Description = "Default forum";
-            forum.Subject = "Snitz .Net Forum";
+            forum.Description = "This forum gives you a chance to become more familiar with how this product responds to different features and keeps testing in one place instead of posting tests all over. Happy Posting! [:)]";
+            forum.Subject = "Testing Forum";
             forum.SubscriptionLevel = 0;
             forum.ModerationLevel = 0;
             forum.Order = 0;
@@ -178,17 +183,32 @@ namespace SnitzUI.Setup
             forum.UpdatePostCount = true;
 
             int forumid = Forums.SaveForum(forum);
-            
+
+            topic.CatId = catid;
+            topic.ForumId = forumid;
+            topic.Status = 1;
+            topic.Message = "Thank you for downloading Snitz Forums 2000. We hope you enjoy this great tool to support your organization!" + 0x13 + 0x10 + 0x13 + 0x10 + "Many thanks go out to John Penfold &lt;asp@asp-dev.com&gt; and Tim Teal &lt;tteal@tealnet.com&gt; for the original source code and to all the people of Snitz Forums 2000 at http://forum.snitz.com for continued support of this product.";
+            topic.Subject = "Welcome to Snitz .Net Forums";
+            topic.AuthorId = (int)admin.ProviderUserKey;
+            topic.Date = DateTime.UtcNow;
+            topic.PosterIp = "0.0.0.0";
+
+            Topics.Add(topic);
+
         }
 
         private void AddRoles()
         {
             UpdateProgress(0,"Adding default Roles<br/>");
             SnitzRoleProvider roles = new SnitzRoleProvider();
-            roles.CreateRoleFullInfo("Administrator", "Forum Administrator", 99);
-            roles.CreateRoleFullInfo("Member", "Snitz Forum member", 1);
-            roles.CreateRoleFullInfo("Moderator", "Snitz Forum Moderator", 10);
-            roles.CreateRoleFullInfo("All", "All Visitors", 0);
+            if(!roles.RoleExists("Administrator"))
+                roles.CreateRoleFullInfo("Administrator", "Forum Administrator", 99);
+            if (!roles.RoleExists("Member"))
+                roles.CreateRoleFullInfo("Member", "Snitz Forum member", 1);
+            if (!roles.RoleExists("Moderator"))
+                roles.CreateRoleFullInfo("Moderator", "Snitz Forum Moderator", 10);
+            if (!roles.RoleExists("All"))
+                roles.CreateRoleFullInfo("All", "All Visitors", 0);
             UpdateProgress(0,"New Forum Roles Added</br>");
         }
 
@@ -206,12 +226,16 @@ namespace SnitzUI.Setup
             {
                 try
                 {
-                    Snitz.BLL.Admin.ExecuteScript(newTable);
-                    UpdateProgress(0,string.Format("<br/> {0}", newTable));
+                    var res = Snitz.BLL.Admin.ExecuteScript(newTable);
+                    if (res != null)
+                        UpdateProgress(0, string.Format("<br/><span style=\"color:red\">{0}:{1}</span>",
+                                                         newTable, res));
+                    else
+                        UpdateProgress(0, string.Format("<br/> {0}", newTable));
                 }
                 catch (Exception ex)
                 {
-                    UpdateProgress(0,string.Format("<br/><span style='color:red'>{0}:{1}</span>",
+                    UpdateProgress(0, string.Format("<br/><span style=\"color:red\">{0}:{1}</span>",
                                                          newTable, ex.Message));
                 }
                 Thread.Sleep(200);
@@ -222,12 +246,16 @@ namespace SnitzUI.Setup
             {
                 try
                 {
-                    Snitz.BLL.Admin.ExecuteScript(table);
+                    var res = Snitz.BLL.Admin.ExecuteScript(table);
+                    if(res != null)
+                        UpdateProgress(0, string.Format("<br/><span style=\"color:red\">{0}:{1}</span>",
+                                                         table, res));
+                    else
                     UpdateProgress(0,string.Format("<br/> {0}", table));
                 }
                 catch (Exception ex)
                 {
-                    UpdateProgress(0,string.Format("<br/><span style='color:red'>{0}:{1}</span>",
+                    UpdateProgress(0, string.Format("<br/><span style=\"color:red\">{0}:{1}</span>",
                                                          table, ex.Message));
                 }
                 Thread.Sleep(200);

@@ -93,7 +93,7 @@ public partial class ucStatistics : System.Web.UI.UserControl
         }
         if (Session["CurrentProfile"] != null)
             Session.Remove("CurrentProfile");
-        _page = (PageBase)this.Page;
+        _page = (PageBase)Page;
         
         if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
         {
@@ -124,8 +124,12 @@ public partial class ucStatistics : System.Web.UI.UserControl
         TopicInfo lastpost = stats.LastPost;
         if (lastpost == null)
             return String.Empty;
-        string lastpostDate = Common.TimeAgoTag(lastpost.LastPostDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, _page.Member != null ? _page.Member.TimeOffset : 0);
-        return String.Format(url, lastpost.Id, lastpost.LastReplyId, lastpostDate);
+        if (lastpost.LastPostDate != null)
+        {
+            string lastpostDate = Common.TimeAgoTag(lastpost.LastPostDate.Value, ((PageBase)Page).IsAuthenticated, _page.Member != null ? _page.Member.TimeOffset : 0);
+            return String.Format(url, lastpost.Id, lastpost.LastReplyId, lastpostDate);
+        }
+        return String.Empty;
     }
     private string GetLastPostAuthor() 
     {

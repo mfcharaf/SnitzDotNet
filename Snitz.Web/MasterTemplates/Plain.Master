@@ -52,7 +52,7 @@
     <div id="CPH1DIV" class="nowrap"><asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False"></asp:ContentPlaceHolder></div>
 </div>
     <div id="contentwrapper">
-        <div id="contentcolumn">
+        <div id="contentcolumn" style="width:100%">
             <div class="innertube">
     <div id="contentDIV" style="vertical-align:top;">
         <asp:ContentPlaceHolder id="CPM" runat="server"></asp:ContentPlaceHolder>
@@ -60,7 +60,7 @@
 </div>
 </div>
 </div>
-    <div id="rightcolumn">
+    <div id="rightcolumn" style="display:none;">
         <div class="innertube">
             <asp:ContentPlaceHolder ID="RightCol" runat="server" >
 
@@ -77,7 +77,7 @@
                     <table width="100%">
                     <tr>
                     <td width="90%"><asp:Label CssClass="footerText" ID="lblFooterTitle" runat="server" EnableViewState="False" Text="<%# Config.ForumTitle %>"></asp:Label></td>
-                    <td width="*" style=" white-space:nowrap;">&copy; <asp:Label CssClass="footerText" ID="lblCopyright" runat="server" EnableViewState="False" Text="<%# Config.Copyright %>"></asp:Label>&nbsp;</td>
+                    <td width="*" style=" white-space:nowrap;"><asp:Label CssClass="footerText" ID="lblCopyright" runat="server" EnableViewState="False" Text="<%# Config.Copyright %>"></asp:Label>&nbsp;</td>
                     <td width="20px"><asp:HyperLink CssClass="footerText" ID="imgGoUp" SkinID="GoUpFooter" runat="server" NavigateUrl="~/?#top" Text="<%$ Resources:webResources, lblGotoTop %>" ToolTip="<%$ Resources:webResources, lblGotoTop %>" ></asp:HyperLink></td>
                     </tr>
                     <tr><td colspan="3"><asp:Label CssClass="pageTimer" runat="server" Text="" ID="TimerLabel" EnableViewState="False" Visible="<%# Config.ShowTimer %>"></asp:Label></td></tr>

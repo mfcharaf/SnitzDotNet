@@ -717,7 +717,7 @@ namespace SnitzConfig
         {
             get
             {
-                return (ConfigurationManager.AppSettings["boolMoveNotify"] == "1");
+                return (ConfigurationManager.AppSettings["boolMoveNotify"] == "1" && Config.UseEmail);
             }
             set
             {
@@ -764,7 +764,7 @@ namespace SnitzConfig
         {
             get
             {
-                return (ConfigurationManager.AppSettings["boolUseEmail"] == "1");
+                return (ConfigurationManager.AppSettings["boolUseEmail"] == "1" && EmailHost != "SMTPSERVER");
             }
             set
             {
@@ -867,12 +867,6 @@ namespace SnitzConfig
             set { UpdateConfig("boolShowRightColumn", value ? "1" : "0"); }
         }
 
-        public static string strTablePrefix
-        {
-            get { return ConfigurationManager.AppSettings["strTablePrefix"]; }
-            set { UpdateConfig("strTablePrefix", value); }
-        }
-
         [Description("boolShowAnnouncement")]
         public static bool Announcement
         {
@@ -956,6 +950,25 @@ namespace SnitzConfig
             get { return ConfigurationManager.AppSettings["boolArchiveState"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolArchiveState"]) == 1; }
             set { UpdateConfig("boolArchiveState", value ? "1" : "0"); }            
         }
+
+        [Description("boolAllowSearchAllForums")]
+        public static bool AllowSearchAllForums
+        {
+            get { return ConfigurationManager.AppSettings["boolAllowSearchAllForums"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolAllowSearchAllForums"]) == 1; }
+            set { UpdateConfig("boolAllowSearchAllForums", value ? "1" : "0"); }
+        }
+
+        public static string strTablePrefix
+        {
+            get { return ConfigurationManager.AppSettings["strTablePrefix"]; }
+
+        }
+        public static string strMemberTablePrefix
+        {
+            get { return ConfigurationManager.AppSettings["strMemberTablePrefix"]; }
+
+        }
+
 
         #endregion
 

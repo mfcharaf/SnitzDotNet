@@ -119,7 +119,7 @@
                                     <br />
                                     <asp:LinkButton ID="btnAvatar" Text="<%$ Resources:webResources, btnUploadAvatar %>" runat="server" OnClientClick="ShowUpload();return false;"
                                         AlternateText="<%$ Resources:webResources, btnUploadAvatar %>" /><br />
-                                    <asp:CheckBox ID="cbxGravatar" runat="server" Text="Use Gravatar image" />
+                                    <asp:CheckBox ID="cbxGravatar" runat="server" Text="Use Gravatar image" CssClass="gravatar" />
                                 </asp:Panel>
                                 <asp:Panel ID="account" runat="server" GroupingText="<%$ Resources:webResources, lblProfile %>">
                                     <ol>
@@ -194,7 +194,7 @@
                 &lt;br /&gt;Only the administrator will have access to your Date of Birth, normal users will only see your age unless the hide age option is selected.&lt;br /&gt; "
                                         EnableViewState="False"></asp:Literal>
                                 </p>
-                                <asp:CheckBox ID="cbxHideAge" runat="server" Text="<%$ Resources:webResources, lblHideAge %>" />
+                                <asp:CheckBox ID="cbxHideAge" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblHideAge %>" />
                             </asp:Panel>
                             <div style="z-index: 101; float: right; width: 49%; margin-right: 0px;">
                                 <asp:Panel ID="pnlSiteInf" runat="server" GroupingText="<%$ Resources:webResources, lblSiteInfo %>">
@@ -203,7 +203,7 @@
                                         </asp:DropDownList>
                                     <br />
                                     <asp:Label ID="lblTheme" AssociatedControlID="ddlTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlTheme" runat="server">
+                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlTheme" runat="server" OnSelectedIndexChanged="ChangeTheme" AutoPostBack="True" >
                                             <asp:ListItem Value="ClassicSnitz" Text="Classic Snitz" />
                                             <asp:ListItem Value="BlueGray" Text="BlueGray" />
                                             <asp:ListItem Value="Dark" Text="Dark" />

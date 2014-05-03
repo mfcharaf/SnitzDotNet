@@ -475,6 +475,12 @@
     <value>AIM Screen Name</value>
   </data>
   <data name="lblDelPost" xml:space="preserve">
+    <value>Delete Post</value>
+  </data>
+  <data name="lblDelReply" xml:space="preserve">
+    <value>Delete Reply</value>
+  </data>
+  <data name="lblDelTopic" xml:space="preserve">
     <value>Delete Topic</value>
   </data>
   <data name="lblEditPost" xml:space="preserve">

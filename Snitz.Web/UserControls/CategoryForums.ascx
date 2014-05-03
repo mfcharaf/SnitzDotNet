@@ -6,22 +6,22 @@
                 <HeaderTemplate>
                     <table id="defaultTopicTable" style="table-layout: fixed; width: 100%;">
                     <tr style="padding: 0px;">
-                        <td style="padding: 0px;" valign="top" colspan="3">
-                            <table width="100%" class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%;
-                                margin: 0px; table-layout: fixed;" border="0" >
+                        <td style="padding: 0px;vertical-align: top;" colspan="3">
+                            <table class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%;
+                                margin: 0px; table-layout: fixed;" >
                                 <thead runat="server" ID="fTableHeader">
                                 <tr>
-                                <th class="tableheader" width="20px"></th>
-                                <th class="tableheader nowrap" width="*">
+                                <th class="tableheader" style="width:20px;"></th>
+                                <th class="tableheader nowrap" style="width:auto;">
                                     <asp:Label ID="LF" runat="server" Text="<%$ Resources:webResources, lblForum %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center nowrap" width="60px">
+                                <th class="tableheader center nowrap" style="width:60px;">
                                     <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopics %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center nowrap" width="60px">
+                                <th class="tableheader center nowrap" style="width:60px;">
                                     <asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblPosts %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center" width="180px">
+                                <th class="tableheader center" style="width:180px;">
                                     <asp:Label ID="Label3" runat="server" Text="<%$ Resources:webResources, lblLastPost %>" EnableViewState="False"></asp:Label>
                                 </th>
                                 <th class="tableheader" style="width: 50px"></th>
@@ -76,7 +76,8 @@
                                     runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                             <asp:ImageButton ID="ForumUnSub" SkinID="UnSubscribe" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
                                     runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                        
+                            <asp:HyperLink ID="hypViewArchive" SkinID="ViewArchive" runat="server" Text="A"
+                                    ToolTip="Show Archived topics" EnableViewState="False"></asp:HyperLink>
                         </td>
                     </tr>
                 </ItemTemplate>

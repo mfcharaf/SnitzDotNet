@@ -37,6 +37,11 @@ namespace SnitzUI.Setup
                         //UpdateDB.Text = "Create Tables";
                         AdminUserRequired.Visible = true;
                     }
+                    else if (Snitz.BLL.Members.GetMemberCount() == 0)
+                    {
+                        AdminUserRequired.Visible = true;
+                        updateType.Value = "upgradeadmin";                        
+                    }
                     else
                     {
                         AdminUserRequired.Visible = false;

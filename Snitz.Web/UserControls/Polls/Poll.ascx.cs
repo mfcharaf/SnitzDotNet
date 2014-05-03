@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data.SqlClient;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
@@ -45,14 +43,13 @@ public partial class Poll : UserControl
     {
         base.OnInit(e);
 
-        page = (PageBase)this.Page;
+        page = (PageBase)Page;
 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
         PollFormView.Visible = (Config.ActivePoll > 0 || ViewState["PollID"] != null);
-        var polls = new List<PollInfo>();
-        polls.Add(Polls.GetTopicPoll(PollId));
+        var polls = new List<PollInfo> {Polls.GetTopicPoll(PollId)};
         PollFormView.DataSource = polls;
         PollFormView.DataBind();
     }
@@ -117,7 +114,7 @@ public partial class Poll : UserControl
                     }
                 }
             }
-            string path = this.Page.Request.FilePath;
+            string path = Page.Request.FilePath;
             if (path.ToLower().Contains("topic.aspx"))
                 viewCommentsPanel.Visible = false;
         }

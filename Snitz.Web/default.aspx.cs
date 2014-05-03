@@ -21,10 +21,8 @@
       
    
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
@@ -241,6 +239,7 @@ public partial class Homepage : PageBase
         Page page = new Page();
         
         CategoryForums ctl = (CategoryForums)page.LoadControl("~/UserControls/CategoryForums.ascx");
+        
         ctl.Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
         ctl.CategoryId = categoryId;
         page.Controls.Add(ctl);

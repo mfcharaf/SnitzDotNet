@@ -33,10 +33,6 @@
     <Reference Include="Cryptos">
       <HintPath>..\Dependency\Cryptos.dll</HintPath>
     </Reference>
-    <Reference Include="SnitzMembership, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\SnitzMembership.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -52,6 +48,7 @@
     <Compile Include="Archive.cs" />
     <Compile Include="Avatars.cs" />
     <Compile Include="Categories.cs" />
+    <Compile Include="DBSFileProcessor.cs" />
     <Compile Include="Emoticon.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="Forums.cs" />
@@ -76,10 +73,6 @@
     <Compile Include="UrlCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snitz.IDAL\Snitz.IDAL.csproj">
-      <Project>{bfd397a4-42a3-4c42-9563-569b3d0b6b9a}</Project>
-      <Name>Snitz.IDAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Snitz.Common\Snitz.Common.csproj">
       <Project>{34e1755a-66a9-4428-b8d3-b3c32aa8a4b5}</Project>
       <Name>Snitz.Common</Name>
@@ -91,6 +84,14 @@
     <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
       <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
       <Name>Snitz.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.IDAL\Snitz.IDAL.csproj">
+      <Project>{bfd397a4-42a3-4c42-9563-569b3d0b6b9a}</Project>
+      <Name>Snitz.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snitz.MembershipProvider\Snitz.Membership\Snitz.Membership.csproj">
+      <Project>{7e2a124a-d5d5-4971-b1ff-408efd3b331e}</Project>
+      <Name>Snitz.Membership</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

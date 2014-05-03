@@ -30,8 +30,8 @@
 </asp:Content>
 <asp:Content ID="Classifieds" ContentPlaceHolderID="CPAd" runat="server"></asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPH1" runat="server">
-    <script src="/scripts/editor.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/Scripts/postpage.js"></script>
+    <script src="/scripts/editor.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Scripts/postpage.min.js"></script>
     <script type="text/javascript">
         var messageId = '<%= Message.ClientID %>';
         var clientMsgId = '<%= clientSide.ClientID %>';

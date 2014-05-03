@@ -63,6 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Snitz.Entities\Snitz.Entities.csproj">
       <Project>{3812bf2a-26f5-4cd0-aa7d-ac85ba726a96}</Project>
       <Name>Snitz.Entities</Name>

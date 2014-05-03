@@ -19,7 +19,7 @@
                 }
 
         </script>
-<div class="ForumTable">
+<div class="forumtable" style="width:75%;background-color:rgb(47,47,47);margin:auto;">
 
     <asp:Login runat="server" id="Login1" 
     VisibleWhenLoggedIn="False" EnableViewState="False"  
