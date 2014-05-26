@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -12,7 +13,7 @@ namespace Snitz.SQLServerDAL
     {
         public bool AddColumn(ProfileColumn column)
         {
-            string strSql = String.Format("ALTER TABLE [ProfileData] ADD {0} {1} DEFAULT {2} {3}", column.ColumnName, column.DataType, column.DefaultValue, column.AllowNull ? "NULL" : "NOT NULL");
+            string strSql = String.Format("ALTER TABLE {0}ProfileData ADD {1} {2} DEFAULT {3} {4}",Config.MemberTablePrefix, column.ColumnName, column.DataType, column.DefaultValue, column.AllowNull ? "NULL" : "NOT NULL");
             try
             {
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql + column, null);
@@ -28,7 +29,7 @@ namespace Snitz.SQLServerDAL
         {
             try
             {
-                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "ALTER TABLE [ProfileData] DROP COLUMN " + column, null);
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "ALTER TABLE " + Config.MemberTablePrefix + "ProfileData DROP COLUMN " + column, null);
             }
             catch (Exception)
             {

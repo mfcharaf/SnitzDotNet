@@ -6,6 +6,7 @@ using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -97,7 +98,7 @@ namespace Snitz.SQLServerDAL
         public IEnumerable<ForumInfo> PrivateForums()
         {
             List<ForumInfo> forumlist = new List<ForumInfo>();
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F.F_PRIVATEFORUMS,F_SUBJECT FROM FORUM_FORUM F WHERE COALESCE(F.F_PRIVATEFORUMS,0) > 0", null))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F.F_PRIVATEFORUMS,F_SUBJECT FROM " + Config.ForumTablePrefix + "FORUM F WHERE COALESCE(F.F_PRIVATEFORUMS,0) > 0", null))
             {
                 while (rdr.Read())
                 {
@@ -112,7 +113,7 @@ namespace Snitz.SQLServerDAL
         public string[] AllowedMembers(int forumid)
         {
             List<string> forumlist = new List<string>();
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT M.M_NAME FROM FORUM_ALLOWED_MEMBERS FM LEFT OUTER JOIN FORUM_MEMBERS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE FM.FORUM_ID=@ForumId", new SqlParameter("@ForumId",SqlDbType.Int){Value = forumid}))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT M.M_NAME FROM " + Config.ForumTablePrefix + "ALLOWED_MEMBERS FM LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE FM.FORUM_ID=@ForumId", new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumid }))
             {
                 while (rdr.Read())
                 {

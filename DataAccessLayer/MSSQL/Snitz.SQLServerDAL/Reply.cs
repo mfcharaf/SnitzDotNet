@@ -7,6 +7,7 @@ using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -21,7 +22,7 @@ namespace Snitz.SQLServerDAL
 
         public void MoveReplies(TopicInfo newtopic, List<int> replyids)
         {
-            const string strSql = "UPDATE FORUM_REPLY SET CAT_ID=@CatId, FORUM_ID=@ForumId, TOPIC_ID=@TopicId WHERE REPLY_ID IN ({0}) ";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "REPLY SET CAT_ID=@CatId, FORUM_ID=@ForumId, TOPIC_ID=@TopicId WHERE REPLY_ID IN ({0}) ";
             int[] values = replyids.ToArray();
 
             var inparms = values.Select((s, i) => "@p" + i.ToString()).ToArray();
@@ -37,7 +38,7 @@ namespace Snitz.SQLServerDAL
         public void SetReplyStatus(int replyid, int status)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            const string strSql = "UPDATE FORUM_REPLY SET R_STATUS=@Status WHERE REPLY_ID=@ReplyId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "REPLY SET R_STATUS=@Status WHERE REPLY_ID=@ReplyId";
             parms.Add(new SqlParameter("@Status", SqlDbType.Int) { Value = status });
             parms.Add(new SqlParameter("@ReplyId", SqlDbType.Int) { Value = replyid });
 
@@ -51,10 +52,10 @@ namespace Snitz.SQLServerDAL
 
         public ReplyInfo GetById(int id)
         {
-            const string strSql = "SELECT " + REPLY_COLS +
-                                  "FROM FORUM_REPLY R " +
-                                  "LEFT OUTER JOIN FORUM_MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID " +
-                                  "LEFT OUTER JOIN FORUM_MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
+            string strSql = "SELECT " + REPLY_COLS +
+                                  "FROM " + Config.ForumTablePrefix + "REPLY R " +
+                                  "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID " +
+                                  "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
                                   "WHERE REPLY_ID=@ReplyId";
             ReplyInfo reply = null;
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@ReplyId", SqlDbType.Int){Value = id}))
@@ -75,7 +76,7 @@ namespace Snitz.SQLServerDAL
 
         public int Add(ReplyInfo reply)
         {
-            const string insert = "INSERT INTO dbo.FORUM_REPLY (CAT_ID,FORUM_ID,TOPIC_ID,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_SIG)";
+            string insert = "INSERT INTO " + Config.ForumTablePrefix + "REPLY (CAT_ID,FORUM_ID,TOPIC_ID,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_SIG)";
             string values = String.Format("VALUES({0},{1},{2},{3},@Message,'{4}','{5}',{6},{7}); SELECT SCOPE_IDENTITY();"
                 , reply.CatId, reply.ForumId, reply.TopicId, reply.AuthorId, reply.Date.ToString("yyyyMMddHHmmss"), reply.PosterIp,reply.Status, reply.UseSignatures ? 1 : 0);
 
@@ -91,7 +92,8 @@ namespace Snitz.SQLServerDAL
         public void Update(ReplyInfo reply)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            StringBuilder replySql = new StringBuilder("UPDATE FORUM_REPLY SET ");
+            StringBuilder replySql = new StringBuilder();
+            replySql.AppendFormat("UPDATE {0}REPLY SET",Config.ForumTablePrefix).AppendLine();
             replySql.AppendLine("R_MESSAGE=@Message,");
             if (reply.LastEditedById.HasValue)
             {
@@ -113,7 +115,7 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(ReplyInfo reply)
         {
-            const string deleteSql = "DELETE FROM FORUM_REPLY WHERE REPLY_ID=@ReplyId;";
+            string deleteSql = "DELETE FROM " + Config.ForumTablePrefix + "REPLY WHERE REPLY_ID=@ReplyId;";
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, deleteSql, new SqlParameter("@ReplyId", SqlDbType.Int) { Value = reply.Id });
         }
@@ -127,17 +129,19 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<ReplyInfo> GetByParent(TopicInfo topic, int start, int maxrecs)
         {
-            string replytable = "FORUM_REPLY";
+            start = start*maxrecs;
+
+            string replytable = Config.ForumTablePrefix + "REPLY";
             if (topic.IsArchived)
-                replytable = "FORUM_A_REPLY";
+                replytable = Config.ForumTablePrefix + "A_REPLY";
 
             List<ReplyInfo> topics = new List<ReplyInfo>();
             List<SqlParameter> parms = new List<SqlParameter>();
             string selectOver = "WITH ReplyEntities AS (SELECT ROW_NUMBER() OVER (ORDER BY R_DATE ASC) AS Row, REPLY_ID FROM " + replytable + " WHERE TOPIC_ID=@TopicId) ";
             string selectOverFrom =
                 "FROM ReplyEntities RE INNER JOIN " + replytable + " R on RE.REPLY_ID = R.REPLY_ID " +
-                "LEFT OUTER JOIN FORUM_MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID " +
-                "LEFT OUTER JOIN FORUM_MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
+                "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID " +
+                "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
                 "WHERE RE.Row Between @Start AND @MaxRows ORDER BY RE.Row ASC";
 
             parms.Add(new SqlParameter("@TopicId", SqlDbType.Int) { Value = topic.Id });

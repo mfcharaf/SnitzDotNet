@@ -7,6 +7,7 @@ using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -21,7 +22,7 @@ namespace Snitz.OLEDbDAL
 
         public void MoveReplies(TopicInfo newtopic, List<int> replyids)
         {
-            const string strSql = "UPDATE FORUM_REPLY SET CAT_ID=@CatId, FORUM_ID=@ForumId, TOPIC_ID=@TopicId WHERE REPLY_ID IN ({0}) ";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "REPLY SET CAT_ID=@CatId, FORUM_ID=@ForumId, TOPIC_ID=@TopicId WHERE REPLY_ID IN ({0}) ";
             int[] values = replyids.ToArray();
 
             var inparms = values.Select((s, i) => "@p" + i.ToString()).ToArray();
@@ -37,7 +38,7 @@ namespace Snitz.OLEDbDAL
         public void SetReplyStatus(int replyid, int status)
         {
             List<OleDbParameter> parms = new List<OleDbParameter>();
-            const string strSql = "UPDATE FORUM_REPLY SET R_STATUS=@Status WHERE REPLY_ID=@ReplyId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "REPLY SET R_STATUS=@Status WHERE REPLY_ID=@ReplyId";
             parms.Add(new OleDbParameter("@Status", OleDbType.Numeric) { Value = status });
             parms.Add(new OleDbParameter("@ReplyId", OleDbType.Numeric) { Value = replyid });
 
@@ -51,10 +52,10 @@ namespace Snitz.OLEDbDAL
 
         public ReplyInfo GetById(int id)
         {
-            const string strSql = "SELECT " + REPLY_COLS +
-                                  "FROM (FORUM_REPLY R " +
-                                  "LEFT OUTER JOIN FORUM_MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID) " +
-                                  "LEFT OUTER JOIN FORUM_MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
+            string strSql = "SELECT " + REPLY_COLS +
+                                  "FROM (" + Config.ForumTablePrefix + "REPLY R " +
+                                  "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID) " +
+                                  "LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID " +
                                   "WHERE REPLY_ID=@ReplyId";
             ReplyInfo reply = null;
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@ReplyId", OleDbType.Numeric) { Value = id }))
@@ -75,7 +76,7 @@ namespace Snitz.OLEDbDAL
 
         public int Add(ReplyInfo reply)
         {
-            const string insert = "INSERT INTO FORUM_REPLY (CAT_ID,FORUM_ID,TOPIC_ID,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_SIG)";
+            string insert = "INSERT INTO " + Config.ForumTablePrefix + "REPLY (CAT_ID,FORUM_ID,TOPIC_ID,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_SIG)";
             string values = String.Format("VALUES({0},{1},{2},{3},@Message,'{4}','{5}',{6},{7})"
                 , reply.CatId, reply.ForumId, reply.TopicId, reply.AuthorId, reply.Date.ToString("yyyyMMddHHmmss"), reply.PosterIp, reply.Status, reply.UseSignatures ? 1 : 0);
 
@@ -91,7 +92,8 @@ namespace Snitz.OLEDbDAL
         public void Update(ReplyInfo reply)
         {
             List<OleDbParameter> parms = new List<OleDbParameter>();
-            StringBuilder replySql = new StringBuilder("UPDATE FORUM_REPLY SET ");
+            StringBuilder replySql = new StringBuilder();
+            replySql.AppendFormat("UPDATE {0}REPLY SET",Config.ForumTablePrefix).AppendLine();
             replySql.AppendLine("R_MESSAGE=@Message,");
             if (reply.LastEditedById.HasValue)
             {
@@ -113,7 +115,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(ReplyInfo reply)
         {
-            const string deleteSql = "DELETE FROM FORUM_REPLY WHERE REPLY_ID=@ReplyId";
+            string deleteSql = "DELETE FROM " + Config.ForumTablePrefix + "REPLY WHERE REPLY_ID=@ReplyId";
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, deleteSql, new OleDbParameter("@ReplyId", OleDbType.Numeric) { Value = reply.Id });
         }
@@ -127,9 +129,9 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<ReplyInfo> GetByParent(TopicInfo topic, int start, int maxrecs)
         {
-            string replytable = "FORUM_REPLY";
+            string replytable = Config.ForumTablePrefix + "REPLY";
             if (topic.IsArchived)
-                replytable = "FORUM_A_REPLY";
+                replytable = Config.ForumTablePrefix + "A_REPLY";
             List<ReplyInfo> topics = new List<ReplyInfo>();
             List<OleDbParameter> parms = new List<OleDbParameter>();
 
@@ -137,13 +139,13 @@ namespace Snitz.OLEDbDAL
             over.AppendLine("FROM (((");
             over.AppendFormat("SELECT TOP {0} sub.REPLY_ID, sub.R_DATE ", maxrecs);
             over.AppendLine("FROM  (");
-            over.AppendFormat(" SELECT TOP {0} REPLY_ID,R_DATE FROM " + replytable + " WHERE TOPIC_ID=@TopicId ORDER BY R_DATE desc", (Math.Max(topic.ReplyCount, maxrecs) - (start * maxrecs)));
+            over.AppendFormat(" SELECT TOP {0} REPLY_ID,R_DATE FROM {1} WHERE TOPIC_ID=@TopicId ORDER BY R_DATE desc", (Math.Max(topic.ReplyCount, maxrecs) - (start * maxrecs)),replytable).AppendLine();
             over.AppendLine(") sub ");
             over.AppendLine(" ORDER BY sub.R_DATE asc");
             over.AppendLine(") RE ");
-            over.AppendLine(" INNER JOIN " + replytable + " R on RE.REPLY_ID = R.REPLY_ID) ");
-            over.AppendLine("LEFT OUTER JOIN FORUM_MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID) ");
-            over.AppendLine("LEFT OUTER JOIN FORUM_MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID ");
+            over.AppendFormat(" INNER JOIN {0} R on RE.REPLY_ID = R.REPLY_ID) ",replytable).AppendLine();
+            over.AppendFormat("LEFT OUTER JOIN {0}MEMBERS EM ON R.R_LAST_EDITBY = EM.MEMBER_ID) ",Config.MemberTablePrefix).AppendLine();
+            over.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS AM ON R.R_AUTHOR = AM.MEMBER_ID ",Config.MemberTablePrefix).AppendLine();
 
             parms.Add(new OleDbParameter("@TopicId", OleDbType.Numeric) { Value = topic.Id });
             //(TotRows - ((Page_Number - 1) * PageSize)

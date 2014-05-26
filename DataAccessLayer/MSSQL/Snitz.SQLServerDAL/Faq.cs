@@ -6,6 +6,7 @@ using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -16,7 +17,7 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<FaqCategoryInfo> GetCategories(string lang)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER FROM FORUM_FAQ_CAT WHERE FC_LANG_ID = @Lang ORDER BY FC_ORDER,FC_DESCRIPTION";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_LANG_ID = @Lang ORDER BY FC_ORDER,FC_DESCRIPTION";
             List<FaqCategoryInfo> faqcategories = new List<FaqCategoryInfo>();
 
             SqlParameter parm = new SqlParameter("@Lang", SqlDbType.VarChar,6) {Value = lang};
@@ -31,7 +32,8 @@ namespace Snitz.SQLServerDAL
                             Id=rdr.GetInt32(0),
                             Description = rdr.GetString(1),
                             Language = lang,
-                            Order = rdr.GetInt32(2)
+                            Order = rdr.GetInt32(2),
+                            Roles = rdr.SafeGetString(3)
                         };
                     faqcategories.Add(faqcat);
                 }
@@ -45,7 +47,7 @@ namespace Snitz.SQLServerDAL
 
         public FaqCategoryInfo GetById(int catid)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID FROM FORUM_FAQ_CAT WHERE FC_ID = @CatId";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_ID = @CatId";
             FaqCategoryInfo faqcat = null;
             //Execute a query to read the products
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@CatId", SqlDbType.Int) { Value = catid }))
@@ -56,8 +58,9 @@ namespace Snitz.SQLServerDAL
                     {
                         Id = rdr.GetInt32(0),
                         Description = rdr.SafeGetString(1),
-                        Language = rdr.SafeGetString(2),
-                        Order = rdr.GetInt32(3)
+                        Language = rdr.SafeGetString(3),
+                        Order = rdr.GetInt32(2),
+                        Roles = rdr.SafeGetString(4)
                     };
 
                 }
@@ -67,7 +70,7 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<FaqCategoryInfo> GetByName(string name)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID FROM FORUM_FAQ_CAT WHERE FC_DESCRIPTION=@Name";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_DESCRIPTION=@Name";
             List<FaqCategoryInfo> faqcat = new List<FaqCategoryInfo>();
             //Execute a query to read the products
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Name", SqlDbType.NVarChar) { Value = name }))
@@ -78,8 +81,9 @@ namespace Snitz.SQLServerDAL
                     {
                         Id = rdr.GetInt32(0),
                         Description = rdr.SafeGetString(1),
-                        Language = rdr.SafeGetString(2),
-                        Order = rdr.GetInt32(3)
+                        Language = rdr.SafeGetString(3),
+                        Order = rdr.GetInt32(2),
+                        Roles = rdr.SafeGetString(4)
                     });
 
                 }
@@ -89,12 +93,13 @@ namespace Snitz.SQLServerDAL
 
         public int Add(FaqCategoryInfo cat)
         {
-            const string strSql = "INSERT INTO FORUM_FAQ_CAT (FC_DESCRIPTION,FC_ORDER,FC_LANG_ID) VALUES (@Description,@Order,@Lang); SELECT SCOPE_IDENTITY();";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "FAQ_CAT (FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES) VALUES (@Description,@Order,@Lang,@Roles); SELECT SCOPE_IDENTITY();";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@Description", SqlDbType.VarChar) {Value = cat.Description},
                     new SqlParameter("@Order", SqlDbType.Int) {Value = cat.Order},
-                    new SqlParameter("@Lang", SqlDbType.VarChar) {Value = cat.Language}
+                    new SqlParameter("@Lang", SqlDbType.VarChar) {Value = cat.Language},
+                    new SqlParameter("@Roles", SqlDbType.VarChar) {Value = cat.Roles}
                 };
 
             return Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray()));
@@ -102,19 +107,20 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(FaqCategoryInfo faqcat)
         {
-            const string strSql = "DELETE FROM FORUM_FAQ_INFO WHERE FI_CAT=@CatId; DELETE FROM FORUM_FAQ_CAT WHERE FC_ID=@CatId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT=@CatId; DELETE FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_ID=@CatId";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@CatId", SqlDbType.Int) { Value = faqcat.Id });
         }
 
         public void Update(FaqCategoryInfo faqcat)
         {
-            const string strSql = "UPDATE FORUM_FAQ_CAT SET FC_DESCRIPTION=@Description,FC_ORDER=@Order,FC_LANG_ID=@Lang WHERE FC_ID=@CatId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "FAQ_CAT SET FC_DESCRIPTION=@Description,FC_ORDER=@Order,FC_LANG_ID=@Lang,FC_ROLES=@Roles WHERE FC_ID=@CatId";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@CatId", SqlDbType.Int) {Value = faqcat.Id},
                     new SqlParameter("@Description", SqlDbType.VarChar) {Value = faqcat.Description},
                     new SqlParameter("@Order", SqlDbType.Int) {Value = faqcat.Order},
-                    new SqlParameter("@Lang", SqlDbType.VarChar) {Value = faqcat.Language}
+                    new SqlParameter("@Lang", SqlDbType.VarChar) {Value = faqcat.Language},
+                    new SqlParameter("@Roles", SqlDbType.VarChar) {Value = faqcat.Roles}
                 };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray());
@@ -133,8 +139,8 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<FaqInfo> GetFaqItems(int catid, string lang)
         {
-            const string strSql =
-                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql =
+                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
             List<FaqInfo> faqquestions = new List<FaqInfo>();
             List<SqlParameter> parms = new List<SqlParameter>
                 {
@@ -155,8 +161,8 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<FaqInfo> FindFaqItem(string searchfor, string lang)
         {
-            const string strSql =
-                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_LANG_ID = @Lang AND (FI_LINK_BODY LIKE @SearchFor OR FI_LINK_TITLE LIKE @SearchFor)  ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql =
+                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_LANG_ID = @Lang AND (FI_LINK_BODY LIKE @SearchFor OR FI_LINK_TITLE LIKE @SearchFor)  ORDER BY FI_ORDER, FI_LINK_TITLE";
             List<FaqInfo> faqquestions = new List<FaqInfo>();
             List<SqlParameter> parms = new List<SqlParameter>
                 {
@@ -177,7 +183,7 @@ namespace Snitz.SQLServerDAL
 
         public Dictionary<int, string> GetQuestions(int catid, string filter, string lang)
         {
-            const string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
             Dictionary<int, string> questions = new Dictionary<int, string>();
             List<SqlParameter> parms = new List<SqlParameter>
                 {
@@ -196,6 +202,7 @@ namespace Snitz.SQLServerDAL
                         Link = rdr.SafeGetString(1),
                         LinkTitle = rdr.SafeGetString(2)
                     };
+                    if(String.IsNullOrEmpty(filter) || rdr.SafeGetString(3).Contains(filter))
                     questions.Add(faq.Id,faq.LinkTitle);
                 }
             }
@@ -206,7 +213,7 @@ namespace Snitz.SQLServerDAL
         {
             List<SqlParameter> parms = new List<SqlParameter>();
             FaqInfo faq = null;
-            const string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_ID = @FaqId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID = @FaqId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
             
             parms.Add(new SqlParameter("@Lang", SqlDbType.VarChar, 6) { Value = lang });
             parms.Add(new SqlParameter("@FaqId", SqlDbType.Int) { Value = faqid });
@@ -230,7 +237,7 @@ namespace Snitz.SQLServerDAL
         {
             List<SqlParameter> parms = new List<SqlParameter>();
             FaqInfo faq = null;
-            const string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_ID = @FaqId ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID = @FaqId ORDER BY FI_ORDER, FI_LINK_TITLE";
 
             parms.Add(new SqlParameter("@FaqId", SqlDbType.Int) { Value = id });
 
@@ -253,7 +260,7 @@ namespace Snitz.SQLServerDAL
 
         public int Add(FaqInfo faq)
         {
-            string insertSql = "INSERT INTO FORUM_FAQ_INFO (FI_ORDER,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID) VALUES ";
+            string insertSql = "INSERT INTO " + Config.ForumTablePrefix + "FAQ_INFO (FI_ORDER,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID) VALUES ";
             insertSql = insertSql + "(@Order,@Link,@LinkTitle,@LinkBody,@CatId,@Lang); ";
             insertSql = insertSql + "SELECT SCOPE_IDENTITY();";
 
@@ -277,7 +284,9 @@ namespace Snitz.SQLServerDAL
 
         public void Update(FaqInfo faq)
         {
-            StringBuilder updateFaq = new StringBuilder("UPDATE FORUM_FAQ_INFO SET ");
+            StringBuilder updateFaq = new StringBuilder();
+            updateFaq.AppendFormat("UPDATE {0}FAQ_INFO SET ", Config.ForumTablePrefix).AppendLine();
+            updateFaq.AppendLine("FI_CAT=@CatId,");
             updateFaq.AppendLine("FI_LINK_TITLE=@LinkTitle,");
             updateFaq.AppendLine("FI_LINK_BODY=@LinkBody,");
             updateFaq.AppendLine("FI_LANG_ID=@Lang,");
@@ -286,6 +295,7 @@ namespace Snitz.SQLServerDAL
 
             List<SqlParameter> parms = new List<SqlParameter>
                 {
+                    new SqlParameter("@CatId", SqlDbType.Int) {Value = faq.CatId},
                     new SqlParameter("@LinkTitle", SqlDbType.NVarChar) {Value = faq.LinkTitle},
                     new SqlParameter("@LinkBody", SqlDbType.NVarChar) {Value = faq.LinkBody},
                     new SqlParameter("@Lang", SqlDbType.VarChar, 6) {Value = faq.Language},
@@ -298,7 +308,7 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(FaqInfo faq)
         {
-            const string strSql = "DELETE FROM FORUM_FAQ_INFO WHERE FI_ID=@FaqId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID=@FaqId";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@FaqId", SqlDbType.Int) { Value = faq.Id });
         }
 

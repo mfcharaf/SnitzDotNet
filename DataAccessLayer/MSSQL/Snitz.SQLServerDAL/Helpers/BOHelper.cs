@@ -82,7 +82,7 @@ namespace Snitz.SQLServerDAL.Helpers
                                             AIM = rdr.SafeGetString(9),
                                             Yahoo = rdr.SafeGetString(10),
                                             ICQ = rdr.SafeGetString(11),
-                                            MSN = rdr.SafeGetString(12),
+                                            Skype = rdr.SafeGetString(12),
                                             PostCount = rdr.SafeGetInt32(13) ?? 0,
                                             MemberSince = rdr.GetSnitzDate(14).Value,
                                             LastVisitDate = rdr.GetSnitzDate(15),

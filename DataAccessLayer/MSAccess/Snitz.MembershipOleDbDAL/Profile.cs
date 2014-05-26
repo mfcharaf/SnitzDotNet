@@ -9,6 +9,7 @@ using System.Web.Profile;
 using Snitz.Entities;
 using Snitz.Membership.IDal;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 using ProfileInfo = System.Web.Profile.ProfileInfo;
 
 namespace Snitz.Membership.OLEDbDAL
@@ -89,7 +90,7 @@ namespace Snitz.Membership.OLEDbDAL
                 ++columnCount;
             }
 
-            commandText.Append(" FROM " + TableName + " t, FORUM_MEMBERS u WHERE ");
+            commandText.AppendFormat(" FROM {0} t, {1}MEMBERS u WHERE ",TableName,Config.MemberTablePrefix).AppendLine();
             commandText.Append("u.M_NAME = @Username AND t.UserID = u.MEMBER_ID");
             cmd.CommandText = commandText.ToString();
             cmd.CommandType = CommandType.Text;
@@ -193,7 +194,7 @@ namespace Snitz.Membership.OLEDbDAL
                 cmd.Dispose();
 
                 cmdStr = new StringBuilder(200);
-                cmdStr.Append("SELECT u.M_NAME, u.M_LASTHEREDATE, p.M_LASTUPDATED FROM FORUM_MEMBERS u, ").Append(TableName);
+                cmdStr.AppendFormat("SELECT u.M_NAME, u.M_LASTHEREDATE, p.M_LASTUPDATED FROM {0}MEMBERS u, ",Config.MemberTablePrefix).AppendLine(TableName);
                 cmdStr.Append(" p, #PageIndexForProfileUsers i WHERE u.MEMBER_ID = p.UserId AND p.UserId = i.UserId AND i.IndexId >= ");
                 cmdStr.Append(lowerBound).Append(" AND i.IndexId <= ").Append(upperBound);
                 cmd = new OleDbCommand(cmdStr.ToString(), conn);
@@ -264,7 +265,7 @@ namespace Snitz.Membership.OLEDbDAL
         {
             StringBuilder cmdStr = new StringBuilder(200);
             cmdStr.Append("INSERT INTO #PageIndexForProfileUsers (UserId) ");
-            cmdStr.Append("SELECT u.MEMBER_ID FROM FORUM_MEMBERS u, ").Append(TableName);
+            cmdStr.AppendFormat("SELECT u.MEMBER_ID FROM {0}MEMBERS u, ",Config.MemberTablePrefix).AppendLine(TableName);
             cmdStr.Append(" p WHERE ");
             cmdStr.Append("u.MEMBER_ID = p.UserId");
             return cmdStr;
@@ -275,7 +276,7 @@ namespace Snitz.Membership.OLEDbDAL
             StringBuilder cmdStr = new StringBuilder(200);
             cmdStr.Append(delete ? "DELETE FROM " : "SELECT COUNT(*) FROM ");
             cmdStr.Append(TableName);
-            cmdStr.Append(" WHERE UserId IN (SELECT u.MEMBER_ID FROM FORUM_MEMBERS u WHERE ");
+            cmdStr.AppendFormat(" WHERE UserId IN (SELECT u.MEMBER_ID FROM {0}MEMBERS u WHERE ",Config.MemberTablePrefix);
             cmdStr.Append(" (u.M_LASTHEREDATE <= @InactiveSinceDate)");
             cmdStr.Append(")");
             return cmdStr.ToString();
@@ -407,7 +408,7 @@ namespace Snitz.Membership.OLEDbDAL
 
                 // Figure out userid, if we don't find a userid, go ahead and create a user in the aspnetUsers table
                 int userId = 0;
-                cmd = new OleDbCommand("SELECT MEMBER_ID FROM FORUM_MEMBERS WHERE M_NAME = @Username", conn);
+                cmd = new OleDbCommand("SELECT MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME = @Username", conn);
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Username", username);
                 try
@@ -548,7 +549,7 @@ namespace Snitz.Membership.OLEDbDAL
                         }
 
 
-                        cmd.CommandText = "DELETE FROM " + TableName + " WHERE UserId IN ( SELECT u.MEMBER_ID FROM FORUM_MEMBERS u WHERE  u.M_NAME IN (" + allUsers.ToString() + "))";
+                        cmd.CommandText = "DELETE FROM " + TableName + " WHERE UserId IN ( SELECT u.MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS u WHERE  u.M_NAME IN (" + allUsers.ToString() + "))";
                         cmd.CommandTimeout = CommandTimeout;
                         cmd.CommandText = GetQueryFromCommand(cmd);
                         cmd.Parameters.Clear();

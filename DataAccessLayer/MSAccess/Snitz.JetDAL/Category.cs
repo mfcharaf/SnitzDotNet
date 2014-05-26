@@ -5,6 +5,7 @@ using System.Data.OleDb;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -20,7 +21,7 @@ namespace Snitz.OLEDbDAL
 
         public void SetStatus(int catid, int status)
         {
-            const string strSql = "UPDATE FORUM_CATEGORY SET CAT_STATUS=@Status WHERE CAT_ID=@CatId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "CATEGORY SET CAT_STATUS=@Status WHERE CAT_ID=@CatId";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@CatId", OleDbType.Integer) {Value = catid},
@@ -31,11 +32,11 @@ namespace Snitz.OLEDbDAL
 
         public bool HasPosts(int catid)
         {
-            const string strSql = "SELECT  SUM(Posts) totalPosts FROM " +
+            string strSql = "SELECT  SUM(Posts) totalPosts FROM " +
                                   "( " +
-                                  "    SELECT COUNT(CAT_ID) AS Posts FROM FORUM_REPLY WHERE CAT_ID=@CatId" +
+                                  "    SELECT COUNT(CAT_ID) AS Posts FROM " + Config.ForumTablePrefix + "REPLY WHERE CAT_ID=@CatId" +
                                   "    UNION ALL" +
-                                  "    SELECT COUNT(CAT_ID) AS Posts FROM FORUM_TOPICS WHERE CAT_ID=@CatId" +
+                                  "    SELECT COUNT(CAT_ID) AS Posts FROM " + Config.ForumTablePrefix + "TOPICS WHERE CAT_ID=@CatId" +
                                   ") s";
             int res =
                 Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@CatId", OleDbType.Integer) { Value = catid }));
@@ -44,9 +45,9 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<CategoryInfo> GetByParent(int groupid)
         {
-            const string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER " +
-                                  "FROM FORUM_CATEGORY ORDER BY CAT_ORDER, CAT_NAME " +
-                                  "WHERE CAT_ID IN (SELECT GROUP_CATID FROM FORUM_GROUPS WHERE GROUP_ID=@GroupId";
+            string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER " +
+                                  "FROM " + Config.ForumTablePrefix + "CATEGORY ORDER BY CAT_ORDER, CAT_NAME " +
+                                  "WHERE CAT_ID IN (SELECT GROUP_CATID FROM " + Config.ForumTablePrefix + "GROUPS WHERE GROUP_ID=@GroupId";
             List<CategoryInfo> categories = new List<CategoryInfo>();
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
@@ -69,7 +70,7 @@ namespace Snitz.OLEDbDAL
         public CategoryInfo GetById(int catid)
         {
             CategoryInfo category = null;
-            const string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM FORUM_CATEGORY WHERE CAT_ID = @CatId ORDER BY CAT_ORDER, CAT_NAME";
+            string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM " + Config.ForumTablePrefix + "CATEGORY WHERE CAT_ID = @CatId ORDER BY CAT_ORDER, CAT_NAME";
             OleDbParameter parm = new OleDbParameter("@CatId", OleDbType.Integer) { Value = catid };
 
             //Execute a query to read the products
@@ -86,7 +87,7 @@ namespace Snitz.OLEDbDAL
         public IEnumerable<CategoryInfo> GetByName(string name)
         {
             List<CategoryInfo> categories = new List<CategoryInfo>();
-            const string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM FORUM_CATEGORY WHERE CAT_NAME = @Name ORDER BY CAT_ORDER, CAT_NAME";
+            string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM " + Config.ForumTablePrefix + "CATEGORY WHERE CAT_NAME = @Name ORDER BY CAT_ORDER, CAT_NAME";
             OleDbParameter parm = new OleDbParameter("@Name", OleDbType.Integer) { Value = name };
 
             //Execute a query to read the products
@@ -102,7 +103,7 @@ namespace Snitz.OLEDbDAL
 
         public int Add(CategoryInfo cat)
         {
-            const string strSql = "INSERT INTO FORUM_CATEGORY (CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER) VALUES (@Name,@Status,@ModLevel,@SubsLevel,@Order)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "CATEGORY (CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER) VALUES (@Name,@Status,@ModLevel,@SubsLevel,@Order)";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@Name", OleDbType.LongVarChar) {Value = cat.Name},
@@ -117,7 +118,7 @@ namespace Snitz.OLEDbDAL
 
         public void Update(CategoryInfo cat)
         {
-            const string strSql = "UPDATE FORUM_CATEGORY SET " +
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "CATEGORY SET " +
                                   "CAT_NAME=@Name, CAT_STATUS=@Status, CAT_MODERATION=@ModLevel, CAT_SUBSCRIPTION=@SubsLevel, CAT_ORDER=@Order " +
                                   "WHERE CAT_ID=@CatId";
             List<OleDbParameter> parms = new List<OleDbParameter>
@@ -135,13 +136,13 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(CategoryInfo cat)
         {
-            const string strSql =
-                "DELETE FROM FORUM_A_REPLY WHERE CAT_ID = @CatId " +
-                "DELETE FROM FORUM_A_TOPICS WHERE CAT_ID = @CatId " +
-                "DELETE FROM FORUM_REPLY WHERE CAT_ID = @CatId " +
-                "DELETE FROM FORUM_TOPICS WHERE CAT_ID=@CatId " +
-                "DELETE FROM FORUM_FORUM WHERE CAT_ID=@CatId " +
-                "DELETE FROM FORUM_CATEGORY WHERE CAT_ID=@CatId";
+            string strSql =
+                "DELETE FROM " + Config.ForumTablePrefix + "A_REPLY WHERE CAT_ID = @CatId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "A_TOPICS WHERE CAT_ID = @CatId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "REPLY WHERE CAT_ID = @CatId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "TOPICS WHERE CAT_ID=@CatId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "FORUM WHERE CAT_ID=@CatId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "CATEGORY WHERE CAT_ID=@CatId";
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@CatId", OleDbType.Integer) { Value = cat.Id });
         }
@@ -155,8 +156,8 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<CategoryInfo> GetAll()
         {
-            const string strSql =
-                "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM FORUM_CATEGORY ORDER BY CAT_ORDER, CAT_NAME";
+            string strSql =
+                "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM " + Config.ForumTablePrefix + "CATEGORY ORDER BY CAT_ORDER, CAT_NAME";
             List<CategoryInfo> categories = new List<CategoryInfo>();
 
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))

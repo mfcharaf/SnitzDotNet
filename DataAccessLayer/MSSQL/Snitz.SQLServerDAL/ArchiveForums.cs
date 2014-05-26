@@ -2,46 +2,45 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
     public class ArchiveForums : IArchiveForum
     {
-        const string TopicCols = 
+        const string TOPIC_COLS = 
             " T.TOPIC_ID,T.CAT_ID,T.FORUM_ID,T.T_STATUS,T.T_SUBJECT,T.T_AUTHOR,T.T_REPLIES,T.T_VIEW_COUNT,T.T_LAST_POST" +
             ",T.T_DATE,T.T_IP,T.T_LAST_POST_AUTHOR,T.T_STICKY,T.T_LAST_EDIT,T.T_LAST_EDITBY,T.T_SIG,T.T_LAST_POST_REPLY_ID" +
             ",T.T_UREPLIES,T.T_MESSAGE,A.M_NAME AS Author, LPA.M_NAME AS LastPostAuthor, EM.M_NAME AS Editor,A.M_VIEW_SIG, A.M_SIG ";
-        const string TopicFrom =
-            "FROM FORUM_A_TOPICS T " +
-            "LEFT OUTER JOIN FORUM_MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID " +
-            "LEFT OUTER JOIN FORUM_MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID " +
-            "LEFT OUTER JOIN FORUM_MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID ";
-
+        
         public void ArchiveTopic(int forumid, int topicid)
         {
-
-            const string topicSql = "INSERT INTO FORUM_A_TOPICS (CAT_ID,FORUM_ID,TOPIC_ID,T_STATUS,T_MAIL,T_SUBJECT,T_MESSAGE,T_AUTHOR,T_REPLIES,T_UREPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_LAST_POSTER,T_IP,T_LAST_POST_AUTHOR,T_LAST_POST_REPLY_ID,T_LAST_EDIT,T_LAST_EDITBY,T_STICKY,T_SIG) " +
-                                    "SELECT CAT_ID,FORUM_ID,TOPIC_ID,T_STATUS,T_MAIL,T_SUBJECT,T_MESSAGE,T_AUTHOR,T_REPLIES,T_UREPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_LAST_POSTER,T_IP,T_LAST_POST_AUTHOR,T_LAST_POST_REPLY_ID,T_LAST_EDIT,T_LAST_EDITBY,T_STICKY,T_SIG " + 
-                                    "FROM FORUM_TOPICS WHERE TOPIC_ID=@TopicId; ";
-            const string replySql = "INSERT INTO FORUM_A_REPLY " + "" +
+            string topicSql = "INSERT INTO " + Config.ForumTablePrefix + "A_TOPICS (CAT_ID,FORUM_ID,TOPIC_ID,T_STATUS,T_MAIL,T_SUBJECT,T_MESSAGE,T_AUTHOR,T_REPLIES,T_UREPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_LAST_POSTER,T_IP,T_LAST_POST_AUTHOR,T_LAST_POST_REPLY_ID,T_LAST_EDIT,T_LAST_EDITBY,T_STICKY,T_SIG) " +
+                                    "SELECT CAT_ID,FORUM_ID,TOPIC_ID,T_STATUS,T_MAIL,T_SUBJECT,T_MESSAGE,T_AUTHOR,T_REPLIES,T_UREPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_LAST_POSTER,T_IP,T_LAST_POST_AUTHOR,T_LAST_POST_REPLY_ID,T_LAST_EDIT,T_LAST_EDITBY,T_STICKY,T_SIG " +
+                                    "FROM " + Config.ForumTablePrefix + "TOPICS WHERE TOPIC_ID=@TopicId";
+            string replySql = "INSERT INTO " + Config.ForumTablePrefix + "A_REPLY " + "" +
                                     "(CAT_ID,FORUM_ID,TOPIC_ID,REPLY_ID,R_MAIL,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_LAST_EDIT,R_LAST_EDITBY,R_SIG) " +
                                     "SELECT CAT_ID,FORUM_ID,TOPIC_ID,REPLY_ID,R_MAIL,R_AUTHOR,R_MESSAGE,R_DATE,R_IP,R_STATUS,R_LAST_EDIT,R_LAST_EDITBY,R_SIG " +
-                                    "FROM FORUM_REPLY WHERE TOPIC_ID=@TopicId; ";
-            const string deleteSql = "DELETE FROM FORUM_REPLY WHERE TOPIC_ID=@TopicId; DELETE FROM FORUM_TOPICS WHERE TOPIC_ID=@TopicId; ";
-            const string updateSql = "UPDATE FORUM_FORUM SET " +
-                                     "F_TOPICS = (SELECT COUNT(*) FROM FORUM_TOPICS WHERE FORUM_ID = @ArchiveForumID )," +
-                                     "F_COUNT = (SELECT COUNT(*) FROM FORUM_REPLY WHERE FORUM_ID = @ArchiveForumID )," +
-                                     "F_A_TOPICS = (SELECT COUNT(*) FROM FORUM_A_TOPICS WHERE FORUM_ID = @ArchiveForumID )," +
-                                     "F_A_COUNT = (SELECT	COUNT(*) FROM FORUM_A_REPLY WHERE FORUM_ID = @ArchiveForumID ) " +
-                                     "WHERE FORUM_ID = @ForumId " +
-                                     "UPDATE FORUM_TOTALS SET " +
-                                     "P_COUNT = (	SELECT COUNT(*)	FROM FORUM_REPLY)," +
-                                     "P_A_COUNT = (SELECT COUNT(*) FROM FORUM_A_REPLY )," +
-                                     "T_COUNT = (SELECT COUNT(*) FROM FORUM_TOPICS )," +
-                                     "T_A_COUNT = (SELECT COUNT(*) FROM FORUM_A_TOPICS)";
+                                    "FROM " + Config.ForumTablePrefix + "REPLY WHERE TOPIC_ID=@TopicId";
+            string deleteSql = "DELETE FROM " + Config.ForumTablePrefix + "REPLY WHERE TOPIC_ID=@TopicId; DELETE FROM " + Config.ForumTablePrefix + "TOPICS WHERE TOPIC_ID=@TopicId ";
+            
+            StringBuilder updateSql = new StringBuilder();
+            updateSql.AppendFormat("UPDATE {0}FORUM SET ", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("F_TOPICS = (SELECT COUNT(*) FROM {0}TOPICS WHERE FORUM_ID = @ArchiveForumID ),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("F_COUNT = (SELECT COUNT(*) FROM {0}REPLY WHERE FORUM_ID = @ArchiveForumID ),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("F_A_TOPICS = (SELECT COUNT(*) FROM {0}A_TOPICS WHERE FORUM_ID = @ArchiveForumID ),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("F_A_COUNT = (SELECT	COUNT(*) FROM {0}A_REPLY WHERE FORUM_ID = @ArchiveForumID ) ", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendLine("WHERE FORUM_ID = @ForumId ");
+            updateSql.AppendFormat("UPDATE {0}TOTALS SET ", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("P_COUNT = (	SELECT COUNT(*)	FROM {0}REPLY),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("P_A_COUNT = (SELECT COUNT(*) FROM {0}A_REPLY ),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("T_COUNT = (SELECT COUNT(*) FROM {0}TOPICS ),", Config.ForumTablePrefix).AppendLine();
+            updateSql.AppendFormat("T_A_COUNT = (SELECT COUNT(*) FROM {0}A_TOPICS)", Config.ForumTablePrefix).AppendLine();
+
 
             List<SqlParameter> parms = new List<SqlParameter>
                                        {
@@ -72,12 +71,13 @@ namespace Snitz.SQLServerDAL
         {
             List<SqlParameter> param = new List<SqlParameter>();
 
-            const string selectover = "WITH TopicEntities AS (SELECT ROW_NUMBER() OVER (ORDER BY FORUM_ID,T_LAST_POST DESC,T_SUBJECT) AS Row, TOPIC_ID FROM FORUM_A_TOPICS WHERE FORUM_ID=@ForumId)";
-            const string strFrom = "FROM TopicEntities TE INNER JOIN FORUM_A_TOPICS T on TE.TOPIC_ID = T.TOPIC_ID " +
-                                 "LEFT OUTER JOIN FORUM_MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID " +
-                                 "LEFT OUTER JOIN FORUM_MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID " +
-                                 "LEFT OUTER JOIN FORUM_MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID " +
-                                 "WHERE TE.Row Between @Start AND @MaxRows ORDER BY TE.Row ASC";
+            string selectover = "WITH TopicEntities AS (SELECT ROW_NUMBER() OVER (ORDER BY FORUM_ID,T_LAST_POST DESC,T_SUBJECT) AS Row, TOPIC_ID FROM " + Config.ForumTablePrefix + "A_TOPICS WHERE FORUM_ID=@ForumId)";
+            StringBuilder from = new StringBuilder();
+            from.AppendFormat("FROM TopicEntities TE INNER JOIN {0}A_TOPICS T on TE.TOPIC_ID = T.TOPIC_ID ", Config.ForumTablePrefix).AppendLine();
+            from.AppendFormat("LEFT OUTER JOIN {0}MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            from.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            from.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            from.AppendLine("WHERE TE.Row Between @Start AND @MaxRows ORDER BY TE.Row ASC");
 
             param.Add(new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumid });
 
@@ -86,7 +86,7 @@ namespace Snitz.SQLServerDAL
             param.Add(new SqlParameter("@Start", SqlDbType.Int) { Value = startRowIndex + 1 });
             param.Add(new SqlParameter("@MaxRows", SqlDbType.VarChar) { Value = startRowIndex + maximumRows });
 
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, selectover + "SELECT" + TopicCols + strFrom, param.ToArray()))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, selectover + "SELECT" + TOPIC_COLS + from, param.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -108,7 +108,7 @@ namespace Snitz.SQLServerDAL
 
         public int GetTopicCount(int startRowIndex, int maximumRows, int forumid, bool isAdminOrModerator)
         {
-            const string strSql = "SELECT COUNT(TOPIC_ID) FROM FORUM_A_TOPICS WHERE FORUM_ID=@ForumId ";
+            string strSql = "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "A_TOPICS WHERE FORUM_ID=@ForumId ";
 
             List<SqlParameter> param = new List<SqlParameter>
             {
@@ -121,11 +121,18 @@ namespace Snitz.SQLServerDAL
 
         public TopicInfo GetTopic(int topicid)
         {
+            StringBuilder topicFrom = new StringBuilder();
+            topicFrom.AppendFormat("FROM {0}A_TOPICS T ", Config.ForumTablePrefix).AppendLine();
+            topicFrom.AppendFormat("LEFT OUTER JOIN {0}MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            topicFrom.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            topicFrom.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
+            topicFrom.AppendLine("WHERE T.TOPIC_ID = @TopicId");
+
             TopicInfo topic = null;
 
             SqlParameter parm = new SqlParameter("@TopicId", SqlDbType.Int) { Value = topicid };
 
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + TopicCols + TopicFrom + "WHERE T.TOPIC_ID = @TopicId", parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + TOPIC_COLS + topicFrom , parm))
             {
                 while (rdr.Read())
                 {

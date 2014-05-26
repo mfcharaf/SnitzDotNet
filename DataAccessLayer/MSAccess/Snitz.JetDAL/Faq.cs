@@ -6,6 +6,7 @@ using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -16,7 +17,7 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<FaqCategoryInfo> GetCategories(string lang)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER FROM FORUM_FAQ_CAT WHERE FC_LANG_ID = @Lang ORDER BY FC_ORDER,FC_DESCRIPTION";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_LANG_ID = @Lang ORDER BY FC_ORDER,FC_DESCRIPTION";
             List<FaqCategoryInfo> faqcategories = new List<FaqCategoryInfo>();
 
             OleDbParameter parm = new OleDbParameter("@Lang", OleDbType.VarChar) { Value = lang };
@@ -31,7 +32,8 @@ namespace Snitz.OLEDbDAL
                             Id = rdr.GetInt32(0),
                             Description = rdr.GetString(1),
                             Language = lang,
-                            Order = rdr.GetInt32(2)
+                            Order = rdr.GetInt32(2),
+                            Roles = rdr.SafeGetString(3)
                         };
                     faqcategories.Add(faqcat);
                 }
@@ -45,7 +47,7 @@ namespace Snitz.OLEDbDAL
 
         public FaqCategoryInfo GetById(int catid)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID FROM FORUM_FAQ_CAT WHERE FC_ID = @CatId";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_ID = @CatId";
             FaqCategoryInfo faqcat = null;
             //Execute a query to read the products
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@CatId", OleDbType.Integer) { Value = catid }))
@@ -56,8 +58,9 @@ namespace Snitz.OLEDbDAL
                     {
                         Id = rdr.GetInt32(0),
                         Description = rdr.SafeGetString(1),
-                        Language = rdr.SafeGetString(2),
-                        Order = rdr.GetInt32(3)
+                        Language = rdr.SafeGetString(3),
+                        Order = rdr.GetInt32(2),
+                        Roles = rdr.SafeGetString(4)
                     };
 
                 }
@@ -67,7 +70,7 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<FaqCategoryInfo> GetByName(string name)
         {
-            const string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID FROM FORUM_FAQ_CAT WHERE FC_DESCRIPTION=@Name";
+            string strSql = "SELECT FC_ID,FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_DESCRIPTION=@Name";
             List<FaqCategoryInfo> faqcat = new List<FaqCategoryInfo>();
             //Execute a query to read the products
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Name", OleDbType.VarChar) { Value = name }))
@@ -78,8 +81,9 @@ namespace Snitz.OLEDbDAL
                     {
                         Id = rdr.GetInt32(0),
                         Description = rdr.SafeGetString(1),
-                        Language = rdr.SafeGetString(2),
-                        Order = rdr.GetInt32(3)
+                        Language = rdr.SafeGetString(3),
+                        Order = rdr.GetInt32(2),
+                        Roles = rdr.SafeGetString(4)
                     });
 
                 }
@@ -89,12 +93,13 @@ namespace Snitz.OLEDbDAL
 
         public int Add(FaqCategoryInfo cat)
         {
-            const string strSql = "INSERT INTO FORUM_FAQ_CAT (FC_DESCRIPTION,FC_ORDER,FC_LANG_ID) VALUES (@Description,@Order,@Lang)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "FAQ_CAT (FC_DESCRIPTION,FC_ORDER,FC_LANG_ID,FC_ROLES) VALUES (@Description,@Order,@Lang,@Roles)";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@Description", OleDbType.VarChar) {Value = cat.Description},
                     new OleDbParameter("@Order", OleDbType.Integer) {Value = cat.Order},
-                    new OleDbParameter("@Lang", OleDbType.VarChar) {Value = cat.Language}
+                    new OleDbParameter("@Lang", OleDbType.VarChar) {Value = cat.Language},
+                    new OleDbParameter("@Roles", OleDbType.VarChar) {Value = cat.Roles}
                 };
 
             return Convert.ToInt32(SqlHelper.ExecuteInsertQuery(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray()));
@@ -102,20 +107,20 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(FaqCategoryInfo faqcat)
         {
-            const string strSql = "DELETE FROM FORUM_FAQ_INFO WHERE FI_CAT=@CatId; DELETE FROM FORUM_FAQ_CAT WHERE FC_ID=@CatId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT=@CatId; DELETE FROM " + Config.ForumTablePrefix + "FAQ_CAT WHERE FC_ID=@CatId";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@CatId", OleDbType.Integer) { Value = faqcat.Id });
         }
 
         public void Update(FaqCategoryInfo faqcat)
         {
-            const string strSql = "UPDATE FORUM_FAQ_CAT SET FC_DESCRIPTION=@Description,FC_ORDER=@Order,FC_LANG_ID=@Lang WHERE FC_ID=@CatId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "FAQ_CAT SET FC_DESCRIPTION=@Description,FC_ORDER=@Order,FC_LANG_ID=@Lang,FC_ROLES=@Roles WHERE FC_ID=@CatId";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
-                    
                     new OleDbParameter("@Description", OleDbType.VarChar) {Value = faqcat.Description},
                     new OleDbParameter("@Order", OleDbType.Integer) {Value = faqcat.Order},
                     new OleDbParameter("@Lang", OleDbType.VarChar) {Value = faqcat.Language},
-                    new OleDbParameter("@CatId", OleDbType.Integer) {Value = faqcat.Id}
+                    new OleDbParameter("@CatId", OleDbType.Integer) {Value = faqcat.Id},
+                    new OleDbParameter("@Roles", OleDbType.Integer) {Value = faqcat.Roles}
                 };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray());
@@ -134,8 +139,8 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<FaqInfo> GetFaqItems(int catid, string lang)
         {
-            const string strSql =
-                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql =
+                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
             List<FaqInfo> faqquestions = new List<FaqInfo>();
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
@@ -157,8 +162,8 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<FaqInfo> FindFaqItem(string searchfor, string lang)
         {
-            const string strSql =
-                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_LANG_ID = @Lang AND (FI_LINK_BODY LIKE @SearchFor OR FI_LINK_TITLE LIKE @SearchFor)  ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql =
+                "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_LANG_ID = @Lang AND (FI_LINK_BODY LIKE @SearchFor OR FI_LINK_TITLE LIKE @SearchFor)  ORDER BY FI_ORDER, FI_LINK_TITLE";
             List<FaqInfo> faqquestions = new List<FaqInfo>();
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
@@ -179,7 +184,7 @@ namespace Snitz.OLEDbDAL
 
         public Dictionary<int, string> GetQuestions(int catid, string filter, string lang)
         {
-            const string strSql = "SELECT FI_ID,FI_CAT,FI_ORDER,FI_LANG_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY  FROM FORUM_FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_CAT,FI_ORDER,FI_LANG_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_CAT = @CatId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
             Dictionary<int, string> questions = new Dictionary<int, string>();
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
@@ -208,7 +213,7 @@ namespace Snitz.OLEDbDAL
         {
             List<OleDbParameter> parms = new List<OleDbParameter>();
             FaqInfo faq = null;
-            const string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_ID = @FaqId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID = @FaqId AND FI_LANG_ID = @Lang ORDER BY FI_ORDER, FI_LINK_TITLE";
 
             
             parms.Add(new OleDbParameter("@FaqId", OleDbType.Integer) { Value = faqid });
@@ -232,7 +237,7 @@ namespace Snitz.OLEDbDAL
         {
             List<OleDbParameter> parms = new List<OleDbParameter>();
             FaqInfo faq = null;
-            const string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM FORUM_FAQ_INFO WHERE FI_ID = @FaqId ORDER BY FI_ORDER, FI_LINK_TITLE";
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID = @FaqId ORDER BY FI_ORDER, FI_LINK_TITLE";
 
             parms.Add(new OleDbParameter("@FaqId", OleDbType.Integer) { Value = id });
 
@@ -255,7 +260,7 @@ namespace Snitz.OLEDbDAL
 
         public int Add(FaqInfo faq)
         {
-            string insertSql = "INSERT INTO FORUM_FAQ_INFO (FI_ORDER,FI_CAT,FI_LANG_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY) VALUES ";
+            string insertSql = "INSERT INTO " + Config.ForumTablePrefix + "FAQ_INFO (FI_ORDER,FI_CAT,FI_LANG_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY) VALUES ";
             insertSql = insertSql + "(@Order,@CatId,@Lang,@Link,@LinkTitle,@LinkBody) ";
 
             List<OleDbParameter> parms = new List<OleDbParameter>
@@ -280,7 +285,9 @@ namespace Snitz.OLEDbDAL
 
         public void Update(FaqInfo faq)
         {
-            StringBuilder updateFaq = new StringBuilder("UPDATE FORUM_FAQ_INFO SET ");
+            StringBuilder updateFaq = new StringBuilder("");
+            updateFaq.AppendFormat("UPDATE {0}FAQ_INFO SET ",Config.ForumTablePrefix).AppendLine();
+            updateFaq.AppendLine("FI_CAT=@CatId,");
             updateFaq.AppendLine("FI_LINK_TITLE=@LinkTitle,");
             updateFaq.AppendLine("FI_LINK_BODY=@LinkBody,");
             updateFaq.AppendLine("FI_LANG_ID=@Lang,");
@@ -289,6 +296,7 @@ namespace Snitz.OLEDbDAL
 
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
+                    new OleDbParameter("@CatId", OleDbType.Integer) {Value = faq.CatId},
                     new OleDbParameter("@LinkTitle", OleDbType.VarChar) {Value = faq.LinkTitle},
                     new OleDbParameter("@LinkBody", OleDbType.VarChar) {Value = faq.LinkBody},
                     new OleDbParameter("@Lang", OleDbType.VarChar, 6) {Value = faq.Language},
@@ -301,7 +309,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(FaqInfo faq)
         {
-            const string strSql = "DELETE FROM FORUM_FAQ_INFO WHERE FI_ID=@FaqId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_ID=@FaqId";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@FaqId", OleDbType.Integer) { Value = faq.Id });
         }
 

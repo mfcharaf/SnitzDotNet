@@ -5,12 +5,13 @@ using System.Data.OleDb;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
     public class BadWordFilter : IBadWordFilter
     {
-        private const string SELECT = "SELECT B_ID,B_BADWORD,B_REPLACE FROM FORUM_BADWORDS ";
+        private string SELECT = "SELECT B_ID,B_BADWORD,B_REPLACE FROM " + Config.FilterTablePrefix + "BADWORDS ";
 
         #region IBaseObject<BadwordInfo> Members
 
@@ -44,7 +45,7 @@ namespace Snitz.OLEDbDAL
 
         public int Add(BadwordInfo badword)
         {
-            const string strSql = "INSERT INTO FORUM_BADWORDS (B_BADWORD,B_REPLACE) VALUES (@Badword,@Replaceword)";
+            string strSql = "INSERT INTO " + Config.FilterTablePrefix + "BADWORDS (B_BADWORD,B_REPLACE) VALUES (@Badword,@Replaceword)";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@Badword", OleDbType.VarChar) {Value = badword.Badword},
@@ -56,7 +57,7 @@ namespace Snitz.OLEDbDAL
 
         public void Update(BadwordInfo badword)
         {
-            const string strSql = "UPDATE FORUM_BADWORDS SET B_BADWORD=@Badword,B_REPLACE=@Replaceword WHERE B_ID=@BadwordId";
+            string strSql = "UPDATE " + Config.FilterTablePrefix + "BADWORDS SET B_BADWORD=@Badword,B_REPLACE=@Replaceword WHERE B_ID=@BadwordId";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@BadwordId", OleDbType.Numeric) {Value = badword.Id},
@@ -69,7 +70,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(BadwordInfo badword)
         {
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "DELETE FROM FORUM_BADWORDS WHERE B_ID=@BadwordId", new OleDbParameter("@BadwordId", OleDbType.Numeric) { Value = badword.Id });
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "DELETE FROM " + Config.FilterTablePrefix + "BADWORDS WHERE B_ID=@BadwordId", new OleDbParameter("@BadwordId", OleDbType.Numeric) { Value = badword.Id });
         }
 
         public IEnumerable<BadwordInfo> GetAll()
@@ -88,7 +89,7 @@ namespace Snitz.OLEDbDAL
 
         public void DeleteAll()
         {
-            const string strSql = "TRUNCATE TABLE FORUM_BADWORDS ";
+            string strSql = "TRUNCATE TABLE " + Config.FilterTablePrefix + "BADWORDS ";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, null);
         }
 

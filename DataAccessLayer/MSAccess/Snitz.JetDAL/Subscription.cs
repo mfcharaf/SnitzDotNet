@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -12,7 +13,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(int subscriptionid)
         {
-            const string strSql = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE SUBSCRIPTION_ID=@SubsId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE SUBSCRIPTION_ID=@SubsId";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@SubsId", OleDbType.Numeric) { Value = subscriptionid });
         }
 
@@ -20,7 +21,7 @@ namespace Snitz.OLEDbDAL
         {
             var topicsubs = new List<SubscriptionInfo>();
 
-            const string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, TOPIC_ID FROM FORUM_SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, TOPIC_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
             OleDbParameter parm = new OleDbParameter("@Topic", OleDbType.Numeric) { Value = topicid };
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -36,7 +37,7 @@ namespace Snitz.OLEDbDAL
         {
             var forumsubs = new List<SubscriptionInfo>();
 
-            const string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, FORUM_ID FROM FORUM_SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
+            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, FORUM_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
             OleDbParameter parm = new OleDbParameter("@Forum", OleDbType.Numeric) { Value = forumid };
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -52,7 +53,7 @@ namespace Snitz.OLEDbDAL
         {
             var catsubs = new List<SubscriptionInfo>();
 
-            const string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID FROM FORUM_SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
+            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
             OleDbParameter parm = new OleDbParameter("@Category", OleDbType.Numeric) { Value = catid };
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -69,7 +70,7 @@ namespace Snitz.OLEDbDAL
             //OR (S.CAT_ID = 0 AND S.FORUM_ID = 0 AND S.TOPIC_ID = 0)
             var boardsubs = new List<SubscriptionInfo>();
 
-            const string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID FROM FORUM_SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
+            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
             {
                 while (rdr.Read())
@@ -84,7 +85,7 @@ namespace Snitz.OLEDbDAL
         {
             var membersubs = new List<SubscriptionInfo>();
 
-            const string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID, FORUM_ID, TOPIC_ID FROM FORUM_SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
+            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID, FORUM_ID, TOPIC_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
             OleDbParameter parm = new OleDbParameter("@Member", OleDbType.Numeric) { Value = memberid };
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -98,42 +99,42 @@ namespace Snitz.OLEDbDAL
 
         public void RemoveAllCategorySubscriptions(int categoryid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
             OleDbParameter parm = new OleDbParameter("@Category", OleDbType.Numeric) { Value = categoryid };
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
         }
 
         public void RemoveAllForumSubscriptions(int forumid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
             OleDbParameter parm = new OleDbParameter("@Forum", OleDbType.Numeric) { Value = forumid };
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
         }
 
         public void RemoveAllTopicSubscriptions(int topicid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
             OleDbParameter parm = new OleDbParameter("@Topic", OleDbType.Numeric) { Value = topicid };
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
         }
 
         public void RemoveAllBoardSubscriptions()
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, null);
         }
 
         public void RemoveAllMemberSubscriptions(int memberid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
             OleDbParameter parm = new OleDbParameter("@Member", OleDbType.Numeric) { Value = memberid };
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
         }
 
         public void RemoveMembersForumSubscriptions(int memberid, int forumid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum";
             List<OleDbParameter> parms = new List<OleDbParameter>(new OleDbParameter[2])
                 {
                     new OleDbParameter("@Member", OleDbType.Numeric) {Value = memberid},
@@ -144,7 +145,7 @@ namespace Snitz.OLEDbDAL
 
         public void RemoveMembersTopicSubscription(int memberid, int topicid)
         {
-            const string SqlStr = "DELETE FROM FORUM_SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND TOPIC_ID=@TopicId";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND TOPIC_ID=@TopicId";
             List<OleDbParameter> parms = new List<OleDbParameter>
             {
                 new OleDbParameter("@Member", OleDbType.Numeric) {Value = memberid},
@@ -157,13 +158,13 @@ namespace Snitz.OLEDbDAL
         {
             var allsubs = new List<SubscriptionInfo>();
 
-            const string SqlStr =
+            string SqlStr =
                 "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME " +
-                "FROM (((FORUM_SUBSCRIPTIONS SUBS " +
-                "LEFT JOIN FORUM_FORUM F ON F.FORUM_ID = SUBS.FORUM_ID) " +
-                "LEFT JOIN FORUM_CATEGORY C ON C.CAT_ID = SUBS.CAT_ID) " +
-                "LEFT JOIN FORUM_TOPICS T ON T.TOPIC_ID = SUBS.TOPIC_ID) " +
-                "LEFT JOIN FORUM_MEMBERS M ON M.MEMBER_ID = SUBS.MEMBER_ID";
+                "FROM (((" + Config.ForumTablePrefix + "SUBSCRIPTIONS SUBS " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "FORUM F ON F.FORUM_ID = SUBS.FORUM_ID) " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "CATEGORY C ON C.CAT_ID = SUBS.CAT_ID) " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "TOPICS T ON T.TOPIC_ID = SUBS.TOPIC_ID) " +
+                "LEFT JOIN " + Config.MemberTablePrefix + "MEMBERS M ON M.MEMBER_ID = SUBS.MEMBER_ID";
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
             {
                 while (rdr.Read())
@@ -188,7 +189,7 @@ namespace Snitz.OLEDbDAL
         public int[] GetForumSubscriptionList(int forumId)
         {
             var forumsubscribers = new List<int>();
-            const string SqlStr = "SELECT MEMBER_ID FROM FORUM_SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND IIF(TOPIC_ID IS NULL, 0,TOPIC_ID) = 0";
+            string SqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND IIF(TOPIC_ID IS NULL, 0,TOPIC_ID) = 0";
             OleDbParameter parm = new OleDbParameter("@Forum", OleDbType.Numeric);
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -203,7 +204,7 @@ namespace Snitz.OLEDbDAL
         public int[] GetTopicSubscriptionList(int forumId)
         {
             var topicsubscribers = new List<int>();
-            const string SqlStr = "SELECT MEMBER_ID FROM FORUM_SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            string SqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
             OleDbParameter parm = new OleDbParameter("@Topic", OleDbType.Numeric);
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
@@ -217,9 +218,8 @@ namespace Snitz.OLEDbDAL
 
         public int Add(SubscriptionInfo subscription)
         {
-            const string strSql = "INSERT INTO FORUM_SUBSCRIPTIONS " +
-                                  "(MEMBER_ID,CAT_ID,TOPIC_ID,FORUM_ID) " +
-                                  "VALUES (@MemberId,@CatId,@TopicId,@ForumId)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "SUBSCRIPTIONS " +
+                                  "(MEMBER_ID,CAT_ID,TOPIC_ID,FORUM_ID) VALUES (@MemberId,@CatId,@TopicId,@ForumId)";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
                     new OleDbParameter("@MemberId", OleDbType.Numeric) {Value = subscription.MemberId},

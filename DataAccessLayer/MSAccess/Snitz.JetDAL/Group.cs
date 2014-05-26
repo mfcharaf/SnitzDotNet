@@ -6,6 +6,7 @@ using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -16,7 +17,7 @@ namespace Snitz.OLEDbDAL
 
         public void AddCategory(int groupid, int categoryid)
         {
-            const string strSql = "INSERT INTO FORUM_GROUPS (GROUP_ID, GROUP_CATID) VALUES (@GroupId,@CatId)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "GROUPS (GROUP_ID, GROUP_CATID) VALUES (@GroupId,@CatId)";
             List<OleDbParameter> parms = new List<OleDbParameter>();
             parms.Add(new OleDbParameter("@GroupId", OleDbType.Numeric) { Value = groupid });
             parms.Add(new OleDbParameter("@CatId", OleDbType.Numeric) { Value = categoryid });
@@ -28,7 +29,7 @@ namespace Snitz.OLEDbDAL
 
         public IEnumerable<GroupInfo> GetAll()
         {
-            const string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM FORUM_GROUP_NAMES";
+            string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM " + Config.ForumTablePrefix + "GROUP_NAMES";
             List<GroupInfo> groups = new List<GroupInfo>();
 
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
@@ -59,7 +60,7 @@ namespace Snitz.OLEDbDAL
 
         public GroupInfo GetById(int id)
         {
-            const string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@Group";
+            string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM " + Config.ForumTablePrefix + "GROUP_NAMES WHERE GROUP_ID=@Group";
             GroupInfo group = null;
 
             OleDbParameter parm = new OleDbParameter("@Group", OleDbType.Numeric) { Value = id };
@@ -88,7 +89,7 @@ namespace Snitz.OLEDbDAL
 
         public int Add(GroupInfo group)
         {
-            const string strSql = "INSERT INTO FORUM_GROUP_NAMES (GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE) VALUES (@Name,@Description,@Icon,@Image)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "GROUP_NAMES (GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE) VALUES (@Name,@Description,@Icon,@Image)";
             List<OleDbParameter> parms = new List<OleDbParameter>();
             parms.Add(new OleDbParameter("@Name", OleDbType.VarChar) { Value = group.Name });
             parms.Add(new OleDbParameter("@Description", OleDbType.VarChar) { Value = group.Name });
@@ -100,7 +101,7 @@ namespace Snitz.OLEDbDAL
 
         public void Update(GroupInfo group)
         {
-            const string strSql = "UPDATE FORUM_GROUP_NAMES SET GROUP_NAME=@Name,GROUP_DESCRIPTION=@Description,GROUP_ICON=@Icon,GROUP_IMAGE=@Image) WHERE GROUP_ID=@GroupId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "GROUP_NAMES SET GROUP_NAME=@Name,GROUP_DESCRIPTION=@Description,GROUP_ICON=@Icon,GROUP_IMAGE=@Image) WHERE GROUP_ID=@GroupId";
             List<OleDbParameter> parms = new List<OleDbParameter>
             {
                 new OleDbParameter("@GroupId", OleDbType.Numeric) {Value = @group.Id},
@@ -115,7 +116,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(GroupInfo group)
         {
-            const string strSql = "DELETE FROM FORUM_GROUPS WHERE GROUP_ID=@GroupId; DELETE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@GroupId";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "GROUPS WHERE GROUP_ID=@GroupId; DELETE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@GroupId";
             List<OleDbParameter> parms = new List<OleDbParameter>
             {
                 new OleDbParameter("@GroupId", OleDbType.Numeric) {Value = @group.Id}

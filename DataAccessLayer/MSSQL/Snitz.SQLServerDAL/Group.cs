@@ -6,6 +6,7 @@ using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -16,7 +17,7 @@ namespace Snitz.SQLServerDAL
 
         public void AddCategory(int groupid, int categoryid)
         {
-            const string strSql = "INSERT INTO FORUM_GROUPS (GROUP_ID, GROUP_CATID) VALUES (@GroupId,@CatId)";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "GROUPS (GROUP_ID, GROUP_CATID) VALUES (@GroupId,@CatId)";
             List<SqlParameter> parms = new List<SqlParameter>();
             parms.Add(new SqlParameter("@GroupId", SqlDbType.Int) { Value = groupid });
             parms.Add(new SqlParameter("@CatId", SqlDbType.Int) { Value = categoryid });
@@ -28,7 +29,7 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<GroupInfo> GetAll()
         {
-            const string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM FORUM_GROUP_NAMES";
+            string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM " + Config.ForumTablePrefix + "GROUP_NAMES";
             List<GroupInfo> groups = new List<GroupInfo>();
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
@@ -59,7 +60,7 @@ namespace Snitz.SQLServerDAL
 
         public GroupInfo GetById(int id)
         {
-            const string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@Group";
+            string strSql = "SELECT GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE FROM " + Config.ForumTablePrefix + "GROUP_NAMES WHERE GROUP_ID=@Group";
             GroupInfo group = null;
 
             SqlParameter parm = new SqlParameter("@Group", SqlDbType.Int) { Value = id };
@@ -88,7 +89,7 @@ namespace Snitz.SQLServerDAL
 
         public int Add(GroupInfo group)
         {
-            const string strSql = "INSERT INTO FORUM_GROUP_NAMES (GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE) VALUES (@Name,@Description,@Icon,@Image); SELECT SCOPE_IDENTITY();";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "GROUP_NAMES (GROUP_NAME,GROUP_DESCRIPTION,GROUP_ICON,GROUP_IMAGE) VALUES (@Name,@Description,@Icon,@Image); SELECT SCOPE_IDENTITY();";
             List<SqlParameter> parms = new List<SqlParameter>();
             parms.Add(new SqlParameter("@Name",SqlDbType.NVarChar){Value = group.Name});
             parms.Add(new SqlParameter("@Description", SqlDbType.NVarChar) { Value = group.Name });
@@ -100,7 +101,7 @@ namespace Snitz.SQLServerDAL
 
         public void Update(GroupInfo group)
         {
-            const string strSql = "UPDATE FORUM_GROUP_NAMES SET GROUP_NAME=@Name,GROUP_DESCRIPTION=@Description,GROUP_ICON=@Icon,GROUP_IMAGE=@Image) WHERE GROUP_ID=@GroupId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "GROUP_NAMES SET GROUP_NAME=@Name,GROUP_DESCRIPTION=@Description,GROUP_ICON=@Icon,GROUP_IMAGE=@Image) WHERE GROUP_ID=@GroupId";
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter("@GroupId", SqlDbType.Int) {Value = @group.Id},
@@ -115,7 +116,7 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(GroupInfo group)
         {
-            const string strSql = "DELETE FROM FORUM_GROUPS WHERE GROUP_ID=@GroupId; DELETE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@GroupId;";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "GROUPS WHERE GROUP_ID=@GroupId; DELETE FROM FORUM_GROUP_NAMES WHERE GROUP_ID=@GroupId;";
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter("@GroupId", SqlDbType.Int) {Value = @group.Id}

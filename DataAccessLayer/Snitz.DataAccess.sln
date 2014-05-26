@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.SQLServerDAL", "MSSQL\Snitz.SQLServerDAL\Snitz.SQLServerDAL.csproj", "{769B1FC3-DFA1-4C8C-B720-33D9375543E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.OLEDbDAL", "MSAccess\Snitz.JetDAL\Snitz.OLEDbDAL.csproj", "{FE5B5A18-CF13-4E99-976F-7A9415150842}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Membership.SQLServerDAL", "MSSQL\Snitz.Membership.SQLServerDAL\Snitz.Membership.SQLServerDAL.csproj", "{568F3BD9-067B-4C26-8024-F307416409DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.MembershipOleDbDAL", "MSAccess\Snitz.MembershipOleDbDAL\Snitz.MembershipOleDbDAL.csproj", "{73E00507-4CF8-434D-A6C6-F21A236BC413}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Access OLEDb", "Access OLEDb", "{CB1B0911-202B-45D8-BAC0-CDDC80933F62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MS Sql", "MS Sql", "{14D77B56-1D8F-47BD-8796-099BAB5130DF}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://snitzforums.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MSSQL\\Snitz.SQLServerDAL\\Snitz.SQLServerDAL.csproj
+		SccProjectTopLevelParentUniqueName1 = Snitz.DataAccess.sln
+		SccProjectName1 = MSSQL/Snitz.SQLServerDAL
+		SccLocalPath1 = MSSQL\\Snitz.SQLServerDAL
+		SccProjectUniqueName2 = MSAccess\\Snitz.JetDAL\\Snitz.OLEDbDAL.csproj
+		SccProjectTopLevelParentUniqueName2 = Snitz.DataAccess.sln
+		SccProjectName2 = MSAccess/Snitz.JetDAL
+		SccLocalPath2 = MSAccess\\Snitz.JetDAL
+		SccProjectUniqueName3 = MSSQL\\Snitz.Membership.SQLServerDAL\\Snitz.Membership.SQLServerDAL.csproj
+		SccProjectTopLevelParentUniqueName3 = Snitz.DataAccess.sln
+		SccProjectName3 = MSSQL/Snitz.Membership.SQLServerDAL
+		SccLocalPath3 = MSSQL\\Snitz.Membership.SQLServerDAL
+		SccProjectUniqueName4 = MSAccess\\Snitz.MembershipOleDbDAL\\Snitz.MembershipOleDbDAL.csproj
+		SccProjectTopLevelParentUniqueName4 = Snitz.DataAccess.sln
+		SccProjectName4 = MSAccess/Snitz.MembershipOleDbDAL
+		SccLocalPath4 = MSAccess\\Snitz.MembershipOleDbDAL
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{769B1FC3-DFA1-4C8C-B720-33D9375543E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769B1FC3-DFA1-4C8C-B720-33D9375543E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769B1FC3-DFA1-4C8C-B720-33D9375543E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769B1FC3-DFA1-4C8C-B720-33D9375543E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE5B5A18-CF13-4E99-976F-7A9415150842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE5B5A18-CF13-4E99-976F-7A9415150842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE5B5A18-CF13-4E99-976F-7A9415150842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE5B5A18-CF13-4E99-976F-7A9415150842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{568F3BD9-067B-4C26-8024-F307416409DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{568F3BD9-067B-4C26-8024-F307416409DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{568F3BD9-067B-4C26-8024-F307416409DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{568F3BD9-067B-4C26-8024-F307416409DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73E00507-4CF8-434D-A6C6-F21A236BC413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73E00507-4CF8-434D-A6C6-F21A236BC413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73E00507-4CF8-434D-A6C6-F21A236BC413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73E00507-4CF8-434D-A6C6-F21A236BC413}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{568F3BD9-067B-4C26-8024-F307416409DF} = {14D77B56-1D8F-47BD-8796-099BAB5130DF}
+		{769B1FC3-DFA1-4C8C-B720-33D9375543E7} = {14D77B56-1D8F-47BD-8796-099BAB5130DF}
+		{73E00507-4CF8-434D-A6C6-F21A236BC413} = {CB1B0911-202B-45D8-BAC0-CDDC80933F62}
+		{FE5B5A18-CF13-4E99-976F-7A9415150842} = {CB1B0911-202B-45D8-BAC0-CDDC80933F62}
+	EndGlobalSection
+EndGlobal

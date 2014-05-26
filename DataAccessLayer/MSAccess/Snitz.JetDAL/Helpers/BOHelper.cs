@@ -82,7 +82,7 @@ namespace Snitz.OLEDbDAL.Helpers
                 member.AIM = rdr.SafeGetString(9);
                 member.Yahoo = rdr.SafeGetString(10);
                 member.ICQ = rdr.SafeGetString(11);
-                member.MSN = rdr.SafeGetString(12);
+                member.Skype = rdr.SafeGetString(12);
                 member.PostCount = rdr.SafeGetInt32(13) ?? 0;
                 member.MemberSince = rdr.GetSnitzDate(14) == null ? DateTime.UtcNow : rdr.GetSnitzDate(14).Value;
                 member.LastVisitDate = rdr.GetSnitzDate(15);

@@ -7,6 +7,7 @@ using System.Linq;
 using Snitz.Entities;
 using Snitz.Membership.IDal;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.Membership.OLEDbDAL
 {
@@ -91,14 +92,13 @@ namespace Snitz.Membership.OLEDbDAL
                 RemoveUsersFromRoles(usernames, roleNames);
                 foreach (string role in roles)
                 {
-                    const string sql = "INSERT INTO aspnet_UsersInRoles (RoleId,UserId) " +
-                        "SELECT ar.RoleId,M.MEMBER_ID FROM aspnet_Roles ar ,FORUM_MEMBERS M " +
-                        "WHERE ar.loweredrolename=@Rolename AND M.M_NAME=@Name";
+                    var roleinfo = GetRole(role);
+                    string sql = "INSERT INTO aspnet_UsersInRoles (RoleId,UserId) SELECT @RoleId,MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME=@Name";
 
                     foreach (string username in usernames)
                     {
                         List<OleDbParameter> parms = new List<OleDbParameter>();
-                        parms.Add(new OleDbParameter("@Rolename", SqlDbType.VarChar) { Value = role.ToLower() });
+                        parms.Add(new OleDbParameter("@RoleId", SqlDbType.Int) { Value = roleinfo.Id });
                         parms.Add(new OleDbParameter("@Name", SqlDbType.VarChar) { Value = username });
                         SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql, parms.ToArray());
 
@@ -119,9 +119,9 @@ namespace Snitz.Membership.OLEDbDAL
             {
                 foreach (string role in roles)
                 {
-                    const string sql = "DELETE FROM aspnet_UsersInRoles WHERE " +
+                    string sql = "DELETE FROM aspnet_UsersInRoles WHERE " +
                                        "RoleId=(SELECT RoleId FROM aspnet_Roles WHERE LoweredRolename=@Rolename) AND " +
-                                       "UserId = (SELECT MEMBER_ID FROM FORUM_MEMBERS WHERE M_NAME=@Name)";
+                                       "UserId = (SELECT MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME=@Name)";
                     foreach (string username in usernames)
                     {
                         List<OleDbParameter> parms = new List<OleDbParameter>();
@@ -135,10 +135,10 @@ namespace Snitz.Membership.OLEDbDAL
 
         public bool IsUserInRole(string username, string roleName)
         {
-            const string strSql = "SELECT COUNT(M.MEMBER_ID) " +
+            string strSql = "SELECT COUNT(M.MEMBER_ID) " +
                       "FROM (aspnet_UsersInRoles AS UR INNER JOIN " +
                       "aspnet_Roles AS R ON UR.RoleId = R.RoleId) INNER JOIN " +
-                      "FORUM_MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
+                      Config.MemberTablePrefix + "MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
                       "WHERE M.M_NAME=@Username AND R.RoleName=@Rolename";
             List<OleDbParameter> parms = new List<OleDbParameter>
                                        {
@@ -210,10 +210,10 @@ namespace Snitz.Membership.OLEDbDAL
         public string[] GetRolesForUser(string username)
         {
             List<string> rolenames = new List<string>();
-            const string strSql = "SELECT R.RoleName " +
+            string strSql = "SELECT R.RoleName " +
                                   "FROM (aspnet_UsersInRoles AS UR INNER JOIN " +
                                   "aspnet_Roles AS R ON UR.RoleId = R.RoleId) INNER JOIN " +
-                                  "FORUM_MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
+                                  Config.MemberTablePrefix + "MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
                                   "WHERE M.M_NAME=@Username";
             using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Username", SqlDbType.VarChar) { Value = username }))
             {
@@ -228,10 +228,10 @@ namespace Snitz.Membership.OLEDbDAL
         public string[] GetUsersInRole(string roleName)
         {
             List<string> usernames = new List<string>();
-            const string strSql = "SELECT M.M_NAME " +
+            string strSql = "SELECT M.M_NAME " +
                                   "FROM (aspnet_UsersInRoles AS UR INNER JOIN " +
                                   "aspnet_Roles AS R ON UR.RoleId = R.RoleId) INNER JOIN " +
-                                  "FORUM_MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
+                                  Config.MemberTablePrefix + "MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
                                   "WHERE R.Rolename=@Rolename";
 
             using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Rolename", SqlDbType.VarChar) { Value = roleName }))
@@ -246,8 +246,8 @@ namespace Snitz.Membership.OLEDbDAL
 
         public string[] GetForumRoles(int forumId)
         {
-            const string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM FORUM_ROLES INNER JOIN aspnet_Roles " +
-                                            "ON FORUM_ROLES.Role_Id = aspnet_Roles.RoleId WHERE (FORUM_ROLES.Forum_id=@ForumId)";
+            string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN aspnet_Roles " +
+                                            "ON FR.Role_Id = aspnet_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
 
             List<string> currentroles = new List<string>();
             using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strForumRolesSql, new OleDbParameter("@ForumId", SqlDbType.Int) { Value = forumId }))
@@ -262,9 +262,9 @@ namespace Snitz.Membership.OLEDbDAL
 
         public bool IsUserForumModerator(string username, int forumid)
         {
-            const string strSql = "SELECT COUNT(MOD_ID) " +
-                                  "FROM FORUM_MODERATOR INNER JOIN FORUM_MEMBERS ON FORUM_MODERATOR.MEMBER_ID = FORUM_MEMBERS.MEMBER_ID " +
-                                  "WHERE FORUM_ID=@ForumId AND FORUM_MEMBERS.M_NAME=@Username";
+            string strSql = "SELECT COUNT(MOD_ID) " +
+                                  "FROM " + Config.ForumTablePrefix + "MODERATOR FM INNER JOIN " + Config.MemberTablePrefix + "MEMBERS M ON FM.MEMBER_ID = M.MEMBER_ID " +
+                                  "WHERE FM.FORUM_ID=@ForumId AND M.M_NAME=@Username";
             List<OleDbParameter> parms = new List<OleDbParameter>
                                        {
                                            new OleDbParameter("@ForumId", SqlDbType.Int)
@@ -288,11 +288,11 @@ namespace Snitz.Membership.OLEDbDAL
 
         public Dictionary<int, string> ListAllRolesForUser(string username)
         {
-            const string strSql = "SELECT aspnet_Roles.RoleId, aspnet_Roles.RoleName " +
+            string strSql = "SELECT aspnet_Roles.RoleId, aspnet_Roles.RoleName " +
                                   "FROM (aspnet_Roles INNER JOIN " +
                                   "aspnet_UsersInRoles ON aspnet_Roles.RoleId = aspnet_UsersInRoles.RoleId) INNER JOIN " +
-                                  "FORUM_MEMBERS ON aspnet_UsersInRoles.UserId = FORUM_MEMBERS.MEMBER_ID " +
-                                  "WHERE (FORUM_MEMBERS.M_NAME = @Username)";
+                                  Config.MemberTablePrefix + "MEMBERS M ON aspnet_UsersInRoles.UserId = M.MEMBER_ID " +
+                                  "WHERE (M.M_NAME = @Username)";
 
             Dictionary<int, string> roles = new Dictionary<int, string>();
             using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Username", SqlDbType.VarChar) { Value = username }))
@@ -323,7 +323,7 @@ namespace Snitz.Membership.OLEDbDAL
                                            {
                                                Value=name
                                            },
-                                           new OleDbParameter("@loweredRolename", SqlDbType.VarChar)
+                                           new OleDbParameter("@loweredname", SqlDbType.VarChar)
                                            {
                                                Value=name.ToLower()
                                            },
@@ -358,7 +358,7 @@ namespace Snitz.Membership.OLEDbDAL
 
         public RoleInfo GetRole(int roleid)
         {
-            const string strSql = "SELECT RoleId,RoleName,RoleDescription FROM aspnet_Roles WHERE RoleId=@Roleid";
+            const string strSql = "SELECT RoleId,RoleName,Description FROM aspnet_Roles WHERE RoleId=@Roleid";
             RoleInfo role = null;
             using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Roleid", SqlDbType.Int) { Value = roleid }))
             {
@@ -374,13 +374,30 @@ namespace Snitz.Membership.OLEDbDAL
             }
             return role;
         }
-
+        public RoleInfo GetRole(string rolename)
+        {
+            const string strSql = "SELECT RoleId,RoleName,Description FROM aspnet_Roles WHERE RoleName=@RoleName";
+            RoleInfo role = null;
+            using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@RoleName", SqlDbType.VarChar) { Value = rolename }))
+            {
+                while (rdr.Read())
+                {
+                    role = new RoleInfo
+                    {
+                        Id = rdr.GetInt32(0),
+                        RoleName = rdr.GetString(1),
+                        Description = rdr.GetString(2)
+                    };
+                }
+            }
+            return role;
+        }
         public void AddRolesToForum(int forumId, string[] newroles)
         {
-            const string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM FORUM_ROLES INNER JOIN aspnet_Roles " +
-                                            "ON FORUM_ROLES.Role_Id = aspnet_Roles.RoleId WHERE (FORUM_ROLES.Forum_id=@ForumId)";
+            string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN aspnet_Roles " +
+                                            "ON FR.Role_Id = aspnet_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
 
-            string strRemoveSql = "DELETE FROM FORUM_ROLES WHERE FORUM_ID=@ForumId AND ROLE_ID NOT IN " +
+            string strRemoveSql = "DELETE FROM " + Config.ForumTablePrefix + "ROLES WHERE FORUM_ID=@ForumId AND ROLE_ID NOT IN " +
                                "(SELECT ROLE_ID FROM aspnet_Roles WHERE RoleName IN ([newroles]))";
             string newrolelist = "";
             foreach (string role in newroles)
@@ -413,7 +430,7 @@ namespace Snitz.Membership.OLEDbDAL
 
             foreach (string role in rolestoadd)
             {
-                const string strInsertSql = "INSERT INTO FORUM_ROLES (FORUM_ID,ROLE_ID) VALUES (@ForumId, SELECT RoleId FROM aspnet_Roles WHERE RoleName=@Rolename)";
+                string strInsertSql = "INSERT INTO " + Config.ForumTablePrefix + "ROLES (FORUM_ID,ROLE_ID) SELECT @ForumId, RoleId FROM aspnet_Roles WHERE RoleName=@Rolename";
                 List<OleDbParameter> parms = new List<OleDbParameter>
                                            {
                                                new OleDbParameter("@ForumId", SqlDbType.Int)

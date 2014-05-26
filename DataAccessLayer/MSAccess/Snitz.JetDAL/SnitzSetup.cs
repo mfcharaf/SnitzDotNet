@@ -6,6 +6,7 @@ using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -32,20 +33,7 @@ namespace Snitz.OLEDbDAL
 
         public bool ChangeDbOwner()
         {
-            const string changeDbOwner =
-                "declare @sql varchar(8000); " +
-                "select @sql = coalesce( @sql, ';', '') + 'alter schema dbo transfer [' + s.name + '].[' + t.name + '];' " +
-                "from  sys.tables t inner join sys.schemas s on t.[schema_id] = s.[schema_id] where  s.name <> 'dbo' ;" +
-                "exec( @sql );";
-            try
-            {
-                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, changeDbOwner, null);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return true;
 
         }
 
@@ -97,7 +85,7 @@ namespace Snitz.OLEDbDAL
         public IEnumerable<ForumInfo> PrivateForums()
         {
             List<ForumInfo> forumlist = new List<ForumInfo>();
-            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F.F_PRIVATEFORUMS,F_SUBJECT FROM FORUM_FORUM F WHERE F.F_PRIVATEFORUMS > 0", null))
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F.F_PRIVATEFORUMS,F_SUBJECT FROM " + Config.ForumTablePrefix + "FORUM F WHERE F.F_PRIVATEFORUMS > 0", null))
             {
                 while (rdr.Read())
                 {
@@ -112,7 +100,7 @@ namespace Snitz.OLEDbDAL
         public string[] AllowedMembers(int forumid)
         {
             List<string> forumlist = new List<string>();
-            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT M.M_NAME FROM FORUM_ALLOWED_MEMBERS FM LEFT OUTER JOIN FORUM_MEMBERS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE FM.FORUM_ID=@ForumId", new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid }))
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT M.M_NAME FROM " + Config.ForumTablePrefix + "ALLOWED_MEMBERS FM LEFT OUTER JOIN " + Config.MemberTablePrefix + "MEMBERS M ON FM.MEMBER_ID = M.MEMBER_ID WHERE FM.FORUM_ID=@ForumId", new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid }))
             {
                 while (rdr.Read())
                 {

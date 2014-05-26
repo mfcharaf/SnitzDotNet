@@ -5,6 +5,7 @@ using System.Data.OleDb;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -12,7 +13,7 @@ namespace Snitz.OLEDbDAL
     {
         public bool AddColumn(ProfileColumn column)
         {
-            string strSql = String.Format("ALTER TABLE [ProfileData] ADD {0} {1} DEFAULT {2} {3}", column.ColumnName, column.DataType, column.DefaultValue, column.AllowNull ? "NULL" : "NOT NULL");
+            string strSql = String.Format("ALTER TABLE {0}ProfileData ADD {1} {2} DEFAULT {3} {4}",Config.MemberTablePrefix, column.ColumnName, column.DataType, column.DefaultValue, column.AllowNull ? "NULL" : "NOT NULL");
             try
             {
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql + column, null);
@@ -28,7 +29,7 @@ namespace Snitz.OLEDbDAL
         {
             try
             {
-                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "ALTER TABLE [ProfileData] DROP COLUMN " + column, null);
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "ALTER TABLE " + Config.MemberTablePrefix + "ProfileData DROP COLUMN " + column, null);
             }
             catch (Exception)
             {
@@ -44,7 +45,7 @@ namespace Snitz.OLEDbDAL
             using (var con = new OleDbConnection(SqlHelper.ConnString))
             {
                 con.Open();
-                using (var cmd = new OleDbCommand("select * from ProfileData", con))
+                using (var cmd = new OleDbCommand("select * from " + Config.MemberTablePrefix + "ProfileData", con))
                 using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
                 {
                     var table = reader.GetSchemaTable();
@@ -64,23 +65,7 @@ namespace Snitz.OLEDbDAL
                     }
                 }
             }
-            //string strSql = "SELECT COLUMN_NAME,IS_NULLABLE,DATA_TYPE,COLUMN_DEFAULT,COALESCE(CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='ProfileData'";
-            
-            //using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
-            //{
-            //    while (rdr.Read())
-            //    {
-            //        columns.Add(new ProfileColumn()
-            //        {
-            //            ColumnName = rdr.GetString(0),
-            //            AllowNull = rdr.GetString(1) == "YES",
-            //            DataType = rdr.GetString(2),
-            //            DefaultValue = rdr.SafeGetString(3),
-            //            Precision = rdr.GetInt32(4).ToString()
-            //        });
 
-            //    }
-            //}
             return columns;
         }
     }

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
     public class Member : IMember
     {
         private int _pendingMemberCount;
-        private string SELECT_OVER = "WITH MemberEntities AS (SELECT ROW_NUMBER() OVER [ORDERBY] AS Row, MEMBER_ID FROM FORUM_MEMBERS [WHERE]) ";
-        private const string SELECT_OVER_FROM = "FROM MemberEntities ME INNER JOIN FORUM_MEMBERS M on ME.MEMBER_ID = M.MEMBER_ID " +
+        private string SELECT_OVER = "WITH MemberEntities AS (SELECT ROW_NUMBER() OVER [ORDERBY] AS Row, MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS [WHERE]) ";
+        private string SELECT_OVER_FROM = "FROM MemberEntities ME INNER JOIN " + Config.MemberTablePrefix + "MEMBERS M on ME.MEMBER_ID = M.MEMBER_ID " +
             " WHERE ME.Row Between @Start AND @MaxRows ORDER BY ME.Row ASC ";
 
         private const string MEMBER_SELECT =
@@ -25,7 +27,7 @@ namespace Snitz.SQLServerDAL
             ",M.M_VOTED,M.M_ALLOWEMAIL,M.M_AVATAR,M.M_THEME,M.M_TIMEOFFSET,M.M_DOB,M_AGE,M_PASSWORD,M_KEY,M_VALID,M_LASTUPDATED " +
             ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE ";
 
-        private const string FROM = " FROM FORUM_MEMBERS M ";
+        private string FROM = " FROM " + Config.MemberTablePrefix + "MEMBERS M ";
         private const string WHERE_NAME = " WHERE M.M_NAME = @Username ";
         private const string WHERE_ID = " WHERE M.MEMBER_ID = @Id ";
 
@@ -65,7 +67,7 @@ namespace Snitz.SQLServerDAL
         {
             List<SqlParameter> memberparms;
 
-            const string strSql = "INSERT INTO FORUM_MEMBERS " +
+            string strSql = "INSERT INTO " + Config.MemberTablePrefix + "MEMBERS " +
                                   "(M_NAME,M_STATUS,M_LEVEL,M_TITLE,M_EMAIL,M_PASSWORD,M_VALID,M_KEY,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION" +
                                   ",M_SEX,M_AGE,M_DOB,M_MARSTATUS,M_CITY,M_STATE,M_COUNTRY,M_HOMEPAGE,M_SIG" +
                                   ",M_HIDE_EMAIL,M_RECEIVE_EMAIL,M_VIEW_SIG,M_SIG_DEFAULT,M_HOBBIES,M_LNEWS" +
@@ -212,43 +214,43 @@ namespace Snitz.SQLServerDAL
         {
             if (member.Username.ToLower() == "guest")
                 return;
-            const string strSql = "UPDATE FORUM_MEMBERS SET " +
-                                  "M_TITLE=@Title" +
-                                  ",M_EMAIL=@Email" +
-                                  ",M_PASSWORD=@Password" +
-                                  ",M_VALID=@IsValid" +
-                                  ",M_KEY=@ValidationKey" +
+            StringBuilder updateSql = new StringBuilder();
+            updateSql.AppendFormat("UPDATE {0}MEMBERS SET",Config.MemberTablePrefix).AppendLine();
+            updateSql.AppendLine("M_TITLE=@Title");
+            updateSql.AppendLine(",M_EMAIL=@Email");
+            updateSql.AppendLine(",M_PASSWORD=@Password");
+            updateSql.AppendLine(",M_VALID=@IsValid");
+            updateSql.AppendLine(",M_KEY=@ValidationKey");
+            updateSql.AppendLine(",M_FIRSTNAME=@Firstname");
+            updateSql.AppendLine(",M_LASTNAME=@Lastname");
+            updateSql.AppendLine(",M_OCCUPATION=@Occupation");
+            updateSql.AppendLine(",M_SEX=@Gender");
+            updateSql.AppendLine(",M_AGE=@Age");
+            updateSql.AppendLine(",M_DOB=@Dob");
+            updateSql.AppendLine(",M_MARSTATUS=@Maritalstatus");
+            updateSql.AppendLine(",M_CITY=@City");
+            updateSql.AppendLine(",M_STATE=@State");
+            updateSql.AppendLine(",M_COUNTRY= @Country");
+            updateSql.AppendLine(",M_HOMEPAGE=@Homepage");
+            updateSql.AppendLine(",M_SIG=@Signature");
+            updateSql.AppendLine(",M_HIDE_EMAIL=@Hidemail");
+            updateSql.AppendLine(",M_RECEIVE_EMAIL=@Receivemails");
+            updateSql.AppendLine(",M_VIEW_SIG=@Viewsignatures");
+            updateSql.AppendLine(",M_SIG_DEFAULT=@Usesignature");
+            updateSql.AppendLine(",M_HOBBIES=@Hobbies");
+            updateSql.AppendLine(",M_LNEWS=@Latestnews");
+            updateSql.AppendLine(",M_QUOTE=@Favquote");
+            updateSql.AppendLine(",M_BIO=@Bio");
+            updateSql.AppendLine(",M_LINK1=@Link1");
+            updateSql.AppendLine(",M_LINK2=@Link2");
+            updateSql.AppendLine(",M_AIM=@Aim,M_YAHOO=@Yahoo,M_ICQ=@Icq,M_MSN=@Msn");
+            updateSql.AppendLine(",M_LAST_IP=@LastIP");
+            updateSql.AppendLine(",M_LASTUPDATED=@Lastupdated,M_LASTHEREDATE=@LastVisit");
+            updateSql.AppendLine(",M_AVATAR=@Avatar");
+            updateSql.AppendLine(",M_THEME=@Theme");
+            updateSql.AppendLine(",M_TIMEOFFSET=@Timeoffset");
+            updateSql.AppendLine("WHERE MEMBER_ID=@MemberId");
 
-                                  ",M_FIRSTNAME=@Firstname" +
-                                  ",M_LASTNAME=@Lastname" +
-                                  ",M_OCCUPATION=@Occupation" +
-                                  ",M_SEX=@Gender" +
-                                  ",M_AGE=@Age" +
-                                  ",M_DOB=@Dob" +
-                                  ",M_MARSTATUS=@Maritalstatus" +
-                                  ",M_CITY=@City" +
-                                  ",M_STATE=@State" +
-                                  ",M_COUNTRY= @Country" +
-                                  ",M_HOMEPAGE=@Homepage" +
-                                  ",M_SIG=@Signature" +
-                                  ",M_HIDE_EMAIL=@Hidemail" +
-                                  ",M_RECEIVE_EMAIL=@Receivemails" +
-                                  ",M_VIEW_SIG=@Viewsignatures" +
-                                  ",M_SIG_DEFAULT=@Usesignature" +
-                                  ",M_HOBBIES=@Hobbies" +
-                                  ",M_LNEWS=@Latestnews" +
-                                  ",M_QUOTE=@Favquote" +
-                                  ",M_BIO=@Bio" +
-                                  ",M_LINK1=@Link1" +
-                                  ",M_LINK2=@Link2" +
-                                  ",M_AIM=@Aim,M_YAHOO=@Yahoo,M_ICQ=@Icq,M_MSN=@Msn" +
-                                  ",M_LAST_IP=@LastIP" +
-                                  ",M_LASTUPDATED=@Lastupdated" +
-                                  ",M_LASTHEREDATE=@LastVisit" +
-                                  ",M_AVATAR=@Avatar" +
-                                  ",M_THEME=@Theme" +
-                                  ",M_TIMEOFFSET=@Timeoffset" +
-                                  " WHERE MEMBER_ID=@MemberId";
             List<SqlParameter> memberparms = new List<SqlParameter>
                                              {
                 new SqlParameter("@Title", SqlDbType.NVarChar) {Value = member.Title.ConvertDBNull(),IsNullable = true},
@@ -361,7 +363,7 @@ namespace Snitz.SQLServerDAL
                 new SqlParameter("@MemberId", SqlDbType.Int) {Value = member.Id}
             };
 
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, memberparms.ToArray());
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateSql.ToString(), memberparms.ToArray());
         }
 
         public void Delete(MemberInfo member)
@@ -380,7 +382,7 @@ namespace Snitz.SQLServerDAL
                 member.AIM = null;
                 member.Signature = null;
                 member.ICQ = null;
-                member.MSN = null;
+                member.Skype = null;
                 member.LatestNews = null;
                 member.HomePage = null;
                 member.FavLink1 = null;
@@ -390,7 +392,7 @@ namespace Snitz.SQLServerDAL
             }
             else
             {
-                const string strSql = "DELETE FROM FORUM_MEMBERS WHERE MEMBER_ID=@Member";
+                string strSql = "DELETE FROM " + Config.MemberTablePrefix + "MEMBERS WHERE MEMBER_ID=@Member";
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@MemberId", SqlDbType.Int) { Value = member.Id });
             }
         }
@@ -403,7 +405,7 @@ namespace Snitz.SQLServerDAL
         public int GetMemberCount(object filter)
         {
             string whereclause = "";
-            const string strSql = "SELECT COUNT(MEMBER_ID) FROM FORUM_MEMBERS";
+            string strSql = "SELECT COUNT(MEMBER_ID) FROM " + Config.MemberTablePrefix + "MEMBERS";
             List<SqlParameter> parms = new List<SqlParameter>();
 
             if (filter != null)
@@ -457,7 +459,7 @@ namespace Snitz.SQLServerDAL
         {
             List<int> forums = new List<int>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
-            const string SqlStr = "SELECT FORUM_ID FROM FORUM_FORUM";
+            string SqlStr = "SELECT FORUM_ID FROM " + Config.ForumTablePrefix + "FORUM";
 
             //Execute a query to read the products
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
@@ -489,7 +491,7 @@ namespace Snitz.SQLServerDAL
         {
             List<KeyValuePair<int, string>> forums = new List<KeyValuePair<int, string>>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
-            const string SqlStr = "SELECT FORUM_ID,F_SUBJECT FROM FORUM_FORUM ORDER BY F_SUBJECT";
+            string SqlStr = "SELECT FORUM_ID,F_SUBJECT FROM " + Config.ForumTablePrefix + "FORUM ORDER BY F_SUBJECT";
 
             //Execute a query to read the products
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
@@ -524,23 +526,22 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<TopicInfo> GetRecentTopics(int memberid, MemberInfo member)
         {
-            const string strSql =
-            "SELECT DISTINCT TOP (20)  " +
-            " T.TOPIC_ID,T.CAT_ID,T.FORUM_ID,T.T_STATUS,T.T_SUBJECT,T.T_AUTHOR,T.T_REPLIES" +
-            ",T.T_VIEW_COUNT,T.T_LAST_POST,T.T_DATE,T.T_IP,T.T_LAST_POST_AUTHOR,T.T_STICKY,T.T_LAST_EDIT,T.T_LAST_EDITBY" +
-            ",T.T_SIG,T.T_LAST_POST_REPLY_ID,T.T_UREPLIES,T.T_MESSAGE,A.M_NAME AS Author, LPA.M_NAME AS LastPostAuthor, EM.M_NAME AS Editor " +            
-            
-            "FROM " +
-            "FORUM_TOPICS AS T LEFT OUTER JOIN " +
-            "FORUM_REPLY AS R ON T.TOPIC_ID = R.TOPIC_ID LEFT OUTER JOIN " +
-            "FORUM_MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID LEFT OUTER JOIN " +
-            "FORUM_MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID LEFT OUTER JOIN " +
-            "FORUM_MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID " +
-            "WHERE        " +
-            "T.T_LAST_POST > @SinceDate AND " +
-            "(T.T_AUTHOR = @UserId OR R.R_AUTHOR = @UserId) AND " +
-            "(R.R_STATUS < 2 OR T.T_STATUS < 2) " +
-            "ORDER BY T.T_LAST_POST DESC";
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("SELECT DISTINCT TOP (20)  ");
+            sql.AppendLine("T.TOPIC_ID,T.CAT_ID,T.FORUM_ID,T.T_STATUS,T.T_SUBJECT,T.T_AUTHOR,T.T_REPLIES");
+            sql.AppendLine(",T.T_VIEW_COUNT,T.T_LAST_POST,T.T_DATE,T.T_IP,T.T_LAST_POST_AUTHOR,T.T_STICKY,T.T_LAST_EDIT,T.T_LAST_EDITBY");
+            sql.AppendLine(",T.T_SIG,T.T_LAST_POST_REPLY_ID,T.T_UREPLIES,T.T_MESSAGE,A.M_NAME AS Author, LPA.M_NAME AS LastPostAuthor, EM.M_NAME AS Editor ");
+            sql.AppendLine("FROM");
+            sql.AppendFormat("{0}TOPICS AS T LEFT OUTER JOIN",Config.ForumTablePrefix).AppendLine();
+            sql.AppendFormat("{0}REPLY AS R ON T.TOPIC_ID = R.TOPIC_ID LEFT OUTER JOIN", Config.ForumTablePrefix).AppendLine();
+            sql.AppendFormat("{0}MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID LEFT OUTER JOIN", Config.MemberTablePrefix).AppendLine();
+            sql.AppendFormat("{0}MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID LEFT OUTER JOIN", Config.MemberTablePrefix).AppendLine();
+            sql.AppendFormat("{0}MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID", Config.MemberTablePrefix).AppendLine();
+            sql.AppendLine("WHERE");
+            sql.AppendLine("T.T_LAST_POST > @SinceDate AND");
+            sql.AppendLine("(T.T_AUTHOR = @UserId OR R.R_AUTHOR = @UserId) AND");
+            sql.AppendLine("(R.R_STATUS < 2 OR T.T_STATUS < 2)");
+            sql.AppendLine("ORDER BY T.T_LAST_POST DESC");
 
             TimeSpan ts = new TimeSpan(30, 0, 0, 0);
             DateTime startDate = DateTime.UtcNow - ts;
@@ -551,7 +552,7 @@ namespace Snitz.SQLServerDAL
             parms[1] = user;
 
             List<TopicInfo> topics = new List<TopicInfo>();
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parms))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sql.ToString(), parms))
             {
                 while (rdr.Read())
                 {
@@ -624,8 +625,8 @@ namespace Snitz.SQLServerDAL
 
             SELECT_OVER = SELECT_OVER.Replace("[WHERE]", whereclause);
             List<MemberInfo> members = new List<MemberInfo>();
-            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord };
-            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = maxRecords };
+            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord + 1 };
+            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = startRecord + maxRecords };
             parms.Add(start);
             parms.Add(recs);
 
@@ -657,7 +658,7 @@ namespace Snitz.SQLServerDAL
         public string[] ForumAdministrators()
         {
             List<string> members = new List<string>();
-            const string strSql = "SELECT M_NAME FROM FORUM_MEMBERS WHERE M_LEVEL=3 AND M_STATUS=1";
+            string strSql = "SELECT M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_LEVEL=3 AND M_STATUS=1";
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
             {
@@ -672,7 +673,7 @@ namespace Snitz.SQLServerDAL
         public void UpdateLastMemberPost(object post)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            const string updateMemberSql = "UPDATE FORUM_MEMBERS SET M_POSTS=COALESCE(M_POSTS,0)+1, M_LASTPOSTDATE = @PostDate WHERE MEMBER_ID=@MemberId ";
+            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_POSTS=COALESCE(M_POSTS,0)+1, M_LASTPOSTDATE = @PostDate WHERE MEMBER_ID=@MemberId ";
             
             SqlParameter memberid = new SqlParameter("@MemberId", SqlDbType.Int);
             SqlParameter postdate = new SqlParameter("@PostDate", SqlDbType.VarChar);
@@ -719,7 +720,7 @@ namespace Snitz.SQLServerDAL
         public void UpdateVisit(MemberInfo member)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            const string updateMemberSql = "UPDATE FORUM_MEMBERS SET M_LASTHEREDATE=@LastVisit WHERE MEMBER_ID=@MemberId ";
+            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_LASTHEREDATE=@LastVisit WHERE MEMBER_ID=@MemberId ";
             SqlParameter memberid = new SqlParameter("@MemberId", SqlDbType.Int){Value = member.Id};
             SqlParameter lastvisit = new SqlParameter("@LastVisit", SqlDbType.VarChar){Value = DateTime.UtcNow.ToForumDateStr()};
             parms.Add(lastvisit);

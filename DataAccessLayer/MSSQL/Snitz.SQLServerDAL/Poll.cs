@@ -7,6 +7,7 @@ using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -17,7 +18,7 @@ namespace Snitz.SQLServerDAL
 
         public bool CastVote(object userid, int answerid)
         {
-            const string strSql = "INSERT INTO FORUM_POLLRESPONSE (UserID, PollAnswerID) VALUES (@User, @Answer);";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "POLLRESPONSE (UserID, PollAnswerID) VALUES (@User, @Answer);";
             
             List<SqlParameter> parms = new List<SqlParameter>(new SqlParameter[2])
                 {
@@ -32,7 +33,7 @@ namespace Snitz.SQLServerDAL
 
         public bool CanUserVote(int pollId, int userId)
         {
-            const string strSql = "SELECT COUNT(*) FROM FORUM_POLLRESPONSE r INNER JOIN FORUM_POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID AND r.UserID = @UserID";
+            string strSql = "SELECT COUNT(*) FROM " + Config.ForumTablePrefix + "POLLRESPONSE r INNER JOIN " + Config.ForumTablePrefix + "POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID AND r.UserID = @UserID";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@PollID", SqlDbType.Int) {Value = pollId},
@@ -44,14 +45,14 @@ namespace Snitz.SQLServerDAL
 
         public int TotalVotes(int pollId)
         {
-            const string strSql = "SELECT COUNT(*) FROM FORUM_POLLRESPONSE r INNER JOIN FORUM_POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID";
+            string strSql = "SELECT COUNT(*) FROM " + Config.ForumTablePrefix + "POLLRESPONSE r INNER JOIN " + Config.ForumTablePrefix + "POLLANSWERS a ON r.PollAnswerID = a.PollAnswerID WHERE a.PollID = @PollID";
             // Calculate the total # of votes
             return Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql,new SqlParameter("@PollID", SqlDbType.Int) {Value = pollId}));
         }
 
         public IEnumerable<PollChoiceInfo> GetPollChoices(int pollId)
         {
-            const string strSql = "SELECT PollAnswerId,DisplayText,SortOrder FROM FORUM_POLLANSWERS WHERE PollId=@PollId ORDER BY SortOrder";
+            string strSql = "SELECT PollAnswerId,DisplayText,SortOrder FROM " + Config.ForumTablePrefix + "POLLANSWERS WHERE PollId=@PollId ORDER BY SortOrder";
             List<PollChoiceInfo> answers = new List<PollChoiceInfo>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@PollID", SqlDbType.Int) { Value = pollId }))
             {
@@ -72,8 +73,8 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<PollResponse> GetPollResponses(int pollId)
         {
-            const string strSql = "SELECT a.PollAnswerID, a.DisplayText,COUNT(r.UserID) AS Votes FROM FORUM_POLLANSWERS AS a LEFT OUTER JOIN " +
-                                  "FORUM_POLLRESPONSE AS r ON a.PollAnswerID = r.PollAnswerID WHERE a.PollId=@PollId " + 
+            string strSql = "SELECT a.PollAnswerID, a.DisplayText,COUNT(r.UserID) AS Votes FROM " + Config.ForumTablePrefix + "POLLANSWERS AS a LEFT OUTER JOIN " +
+                                  Config.ForumTablePrefix + "POLLRESPONSE AS r ON a.PollAnswerID = r.PollAnswerID WHERE a.PollId=@PollId " + 
                                   "GROUP BY a.PollID, a.DisplayText, a.PollAnswerID,a.SortOrder " +
                                   "ORDER BY a.SortOrder";
             List<PollResponse> responses = new List<PollResponse>();
@@ -95,7 +96,7 @@ namespace Snitz.SQLServerDAL
 
         public string GetPollTopicString(int? pollId)
         {
-            const string strSql = "SELECT P.DisplayText AS Question, A.DisplayText AS Answer, A.SortOrder FROM FORUM_POLLS P LEFT OUTER JOIN FORUM_POLLANSWERS A ON P.PollID = A.PollID WHERE (P.PollID = @PollId) ORDER BY A.SortOrder";
+            string strSql = "SELECT P.DisplayText AS Question, A.DisplayText AS Answer, A.SortOrder FROM " + Config.ForumTablePrefix + "POLLS P LEFT OUTER JOIN " + Config.ForumTablePrefix + "POLLANSWERS A ON P.PollID = A.PollID WHERE (P.PollID = @PollId) ORDER BY A.SortOrder";
             
             TopicPoll poll = new TopicPoll {Answers = new Dictionary<int, string>()};
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@PollID", SqlDbType.Int) { Value = pollId }))
@@ -118,7 +119,7 @@ namespace Snitz.SQLServerDAL
 
         public void AddChoice(PollChoiceInfo pollChoice)
         {
-            const string strSql = "INSERT INTO FORUM_POLLANSWERS (PollID,DisplayText,SortOrder) VALUES (@PollId,@Answer,@Order); SELECT SCOPE_IDENTITY();";
+            string strSql = "INSERT INTO " + Config.ForumTablePrefix + "POLLANSWERS (PollID,DisplayText,SortOrder) VALUES (@PollId,@Answer,@Order); SELECT SCOPE_IDENTITY();";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@PollID", SqlDbType.Int) {Value = pollChoice.PollId},
@@ -130,7 +131,7 @@ namespace Snitz.SQLServerDAL
 
         public void UpdateChoice(PollChoiceInfo pollChoice)
         {
-            const string strSql = "UPDATE FORUM_POLLANSWERS SET PollID = @PollId,DisplayText = @Answer,SortOrder = @Order WHERE PollAnswerID=@Id";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "POLLANSWERS SET PollID = @PollId,DisplayText = @Answer,SortOrder = @Order WHERE PollAnswerID=@Id";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@PollID", SqlDbType.Int) {Value = pollChoice.PollId},
@@ -145,13 +146,13 @@ namespace Snitz.SQLServerDAL
 
         public void DeleteChoice(int pollChoiceId)
         {
-            const string strSql = "DELETE FROM FORUM_POLLANSWERS WHERE PollAnswerID=@Id";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "POLLANSWERS WHERE PollAnswerID=@Id";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Id", SqlDbType.Int) { Value = pollChoiceId });
         }
 
         public IEnumerable<PollInfo> GetPolls()
         {
-            const string strSql = "SELECT PollId,DisplayText,TopicId FROM FORUM_POLLS";
+            string strSql = "SELECT PollId,DisplayText,TopicId FROM " + Config.ForumTablePrefix + "POLLS";
             List<PollInfo> polls = new List<PollInfo>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
             {
@@ -174,7 +175,7 @@ namespace Snitz.SQLServerDAL
 
         public PollInfo GetById(int id)
         {
-            const string strSql = "SELECT PollId,DisplayText,TopicId FROM FORUM_POLLS WHERE PollId=@PollId";
+            string strSql = "SELECT PollId,DisplayText,TopicId FROM " + Config.ForumTablePrefix + "POLLS WHERE PollId=@PollId";
             PollInfo poll = null;
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@PollID", SqlDbType.Int) { Value = id }))
             {
@@ -199,7 +200,7 @@ namespace Snitz.SQLServerDAL
 
         public int Add(PollInfo poll)
         {
-            const string pollSql = "INSERT INTO FORUM_POLLS (DisplayText,TopicId) VALUES (@Question,@TopicId); SELECT SCOPE_IDENTITY();";
+            string pollSql = "INSERT INTO " + Config.ForumTablePrefix + "POLLS (DisplayText,TopicId) VALUES (@Question,@TopicId); SELECT SCOPE_IDENTITY();";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@TopicId", SqlDbType.Int) {Value = poll.TopicId},
@@ -211,7 +212,7 @@ namespace Snitz.SQLServerDAL
             StringBuilder choices = new StringBuilder();
             foreach (var choice in poll.Choices)
             {
-                choices.AppendFormat("INSERT INTO FORUM_POLLANSWERS (PollID,DisplayText,SortOrder) VALUES (@PollId,'{0}',{1});",choice.DisplayText, choice.Order);
+                choices.AppendFormat("INSERT INTO {0}POLLANSWERS (PollID,DisplayText,SortOrder) VALUES (@PollId,'{1}',{2});",Config.ForumTablePrefix,choice.DisplayText, choice.Order);
             }
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, choices.ToString(),new SqlParameter("@PollId", SqlDbType.Int) {Value = pollid});
 
@@ -220,7 +221,7 @@ namespace Snitz.SQLServerDAL
 
         public void Update(PollInfo poll)
         {
-            const string pollSql = "UPDATE FORUM_POLLS SET DisplayText=@Question WHERE TopicId=@TopicId;";
+            string pollSql = "UPDATE " + Config.ForumTablePrefix + "POLLS SET DisplayText=@Question WHERE TopicId=@TopicId;";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@TopicId", SqlDbType.Int) {Value = poll.TopicId},
@@ -270,7 +271,7 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(PollInfo poll)
         {
-            const string pollSql = "DELETE FROM FORUM_POLLS WHERE PollId=@PollId;";
+            string pollSql = "DELETE FROM " + Config.ForumTablePrefix + "POLLS WHERE PollId=@PollId;";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, pollSql, new SqlParameter("@PollId",SqlDbType.Int){Value = poll.Id});
         }
 

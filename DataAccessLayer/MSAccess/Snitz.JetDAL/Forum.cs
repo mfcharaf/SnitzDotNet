@@ -7,6 +7,7 @@ using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
 using SnitzCommon;
+using SnitzConfig;
 
 namespace Snitz.OLEDbDAL
 {
@@ -17,16 +18,17 @@ namespace Snitz.OLEDbDAL
             ",F.F_SUBSCRIPTION,F.F_ORDER, F.F_COUNT_M_POSTS,F.F_LAST_POST_TOPIC_ID,F.F_LAST_POST_REPLY_ID,F.F_POLLS,F.F_DESCRIPTION" +
             ",F.F_L_ARCHIVE,F.F_ARCHIVE_SCHED,T.T_SUBJECT,M.M_NAME ";
 
-        private const string FROM_CLAUSE = " FROM (FORUM_FORUM F LEFT OUTER JOIN " +
-            "FORUM_MEMBERS M ON F.F_LAST_POST_AUTHOR = M.MEMBER_ID) LEFT OUTER JOIN " +
-            "FORUM_TOPICS T ON F.F_LAST_POST_TOPIC_ID = T.TOPIC_ID ";
+        private string FROM_CLAUSE = 
+            " FROM (" + Config.ForumTablePrefix + "FORUM F LEFT OUTER JOIN " +
+            Config.MemberTablePrefix + "MEMBERS M ON F.F_LAST_POST_AUTHOR = M.MEMBER_ID) LEFT OUTER JOIN " +
+            Config.ForumTablePrefix + "TOPICS T ON F.F_LAST_POST_TOPIC_ID = T.TOPIC_ID ";
 
         #region IForum Members
 
         public IEnumerable<ForumJumpto> ListForumJumpTo()
         {
             List<ForumJumpto> forumlist = new List<ForumJumpto>();
-            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F_SUBJECT,C.CAT_NAME FROM FORUM_FORUM F LEFT OUTER JOIN FORUM_CATEGORY C ON F.CAT_ID = C.CAT_ID ORDER BY C.CAT_ORDER,F.F_ORDER", null))
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT F.FORUM_ID,F_SUBJECT,C.CAT_NAME FROM " + Config.ForumTablePrefix + "FORUM F LEFT OUTER JOIN " + Config.ForumTablePrefix + "CATEGORY C ON F.CAT_ID = C.CAT_ID ORDER BY C.CAT_ORDER,F.F_ORDER", null))
             {
                 while (rdr.Read())
                 {
@@ -57,7 +59,7 @@ namespace Snitz.OLEDbDAL
         {
             List<int> roles = new List<int>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
-            const string sqlStr = "SELECT ROLE_ID FROM FORUM_ROLES WHERE FORUM_ID = @ForumId";
+            string sqlStr = "SELECT ROLE_ID FROM " + Config.ForumTablePrefix + "ROLES WHERE FORUM_ID = @ForumId";
 
             OleDbParameter parm = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
 
@@ -76,8 +78,8 @@ namespace Snitz.OLEDbDAL
         {
             List<string> roles = new List<string>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
-            const string sqlStr = "SELECT aspnet_Roles.RoleName " +
-                                  "FROM FORUM_ROLES LEFT OUTER JOIN aspnet_Roles ON FORUM_ROLES.Role_Id = aspnet_Roles.RoleId WHERE FORUM_ID = @ForumId";
+            string sqlStr = "SELECT aspnet_Roles.RoleName " +
+                                  "FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN aspnet_Roles ON FR.Role_Id = aspnet_Roles.RoleId WHERE FR.FORUM_ID = @ForumId";
 
             OleDbParameter parm = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
 
@@ -91,21 +93,6 @@ namespace Snitz.OLEDbDAL
             }
             return roles;
         }
-
-        //public IEnumerable<TopicInfo> GetTopics(int forumid)
-        //{
-        //    List<TopicInfo> topics = new List<TopicInfo>();
-        //    OleDbParameter parm = new OleDbParameter("@Forum", OleDbType.Numeric) { Value = forumid };
-        //    using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + Topic.TopicCols + Topic.TopicFrom + " WHERE T.FORUM_ID = @Forum AND T.T_STICKY=0", parm))
-        //    {
-        //        while (rdr.Read())
-        //        {
-        //            topics.Add(BoHelper.CopyTopicToBO(rdr));
-        //        }
-
-        //    }
-        //    return topics;
-        //}
 
         public IEnumerable<TopicInfo> GetStickyTopics(int forumid)
         {
@@ -124,7 +111,7 @@ namespace Snitz.OLEDbDAL
 
         public void UpdateLastForumPost(object post)
         {
-            string updateForumSql = "UPDATE FORUM_FORUM SET F_COUNT=F_COUNT+1 [INCTOPIC], F_LAST_POST_TOPIC_ID=@TopicId, ";
+            string updateForumSql = "UPDATE " + Config.ForumTablePrefix + "FORUM SET F_COUNT=F_COUNT+1 [INCTOPIC], F_LAST_POST_TOPIC_ID=@TopicId, ";
             if (post is ReplyInfo)
             {
                 updateForumSql += "F_LAST_POST_REPLY_ID=@ReplyId,";
@@ -170,7 +157,7 @@ namespace Snitz.OLEDbDAL
 
         public void SetForumStatus(int forumid, int status)
         {
-            const string strSql = "UPDATE FORUM_FORUM SET F_STATUS=@Status WHERE FORUM_ID=@ForumId";
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "FORUM SET F_STATUS=@Status WHERE FORUM_ID=@ForumId";
             OleDbParameter forum = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
             OleDbParameter fstatus = new OleDbParameter("@Status", OleDbType.Numeric) { Value = status };
             OleDbParameter[] parms = new OleDbParameter[2];
@@ -182,20 +169,20 @@ namespace Snitz.OLEDbDAL
 
         public void EmptyForum(int forumid)
         {
-            const string strSql =
-                "DELETE FROM FORUM_A_REPLY WHERE FORUM_ID = @ForumId " +
-                "DELETE FROM FORUM_A_TOPICS WHERE FORUM_ID = @ForumId " +
-                "DELETE FROM FORUM_REPLY WHERE FORUM_ID = @ForumId " +
-                "DELETE FROM FORUM_TOPICS WHERE FORUM_ID=@ForumId ";
+            string strSql =
+                "DELETE FROM " + Config.ForumTablePrefix + "A_REPLY WHERE FORUM_ID = @ForumId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "A_TOPICS WHERE FORUM_ID = @ForumId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "REPLY WHERE FORUM_ID = @ForumId " +
+                "DELETE FROM " + Config.ForumTablePrefix + "TOPICS WHERE FORUM_ID=@ForumId ";
             OleDbParameter forum = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, forum);
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "UPDATE FORUM_FORUM SET F_LAST_POST_AUTHOR=NULL,F_LAST_POST=NULL,F_LAST_POST_TOPIC_ID=NULL,F_LAST_POST_REPLY_ID=NULL WHERE FORUM_ID=@ForumId", forum);
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, "UPDATE " + Config.ForumTablePrefix + "FORUM SET F_LAST_POST_AUTHOR=NULL,F_LAST_POST=NULL,F_LAST_POST_TOPIC_ID=NULL,F_LAST_POST_REPLY_ID=NULL WHERE FORUM_ID=@ForumId", forum);
         }
 
         public string[] GetForumRoles(int forumid)
         {
-            const string strSql = "SELECT AR.LoweredRoleName FROM FORUM_ROLES FR LEFT OUTER JOIN aspnet_Roles AR ON FR.Role_Id = AR.RoleId WHERE FORUM_ID=@ForumId";
+            string strSql = "SELECT AR.LoweredRoleName FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN aspnet_Roles AR ON FR.Role_Id = AR.RoleId WHERE FORUM_ID=@ForumId";
             List<string> forums = new List<string>();
 
             OleDbParameter parm = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
@@ -257,7 +244,7 @@ namespace Snitz.OLEDbDAL
                 forum.Type = 1;
             List<OleDbParameter> parms = new List<OleDbParameter>();
 
-            const string strsql = "INSERT INTO FORUM_FORUM " +
+            string strsql = "INSERT INTO " + Config.ForumTablePrefix + "FORUM " +
                                   "(CAT_ID,F_STATUS,F_MAIL,F_SUBJECT,F_URL,F_DESCRIPTION,F_TOPICS,F_COUNT,F_LAST_POST,F_PASSWORD_NEW,F_PRIVATEFORUMS " +
                                   ",F_TYPE,F_IP,F_LAST_POST_AUTHOR,F_A_TOPICS,F_A_COUNT,F_MODERATION,F_SUBSCRIPTION,F_ORDER,F_L_ARCHIVE,F_ARCHIVE_SCHED " +
                                   ",F_L_DELETE,F_DELETE_SCHED,F_DEFAULTDAYS,F_COUNT_M_POSTS,F_LAST_POST_TOPIC_ID,F_LAST_POST_REPLY_ID,F_POLLS) " +
@@ -286,7 +273,8 @@ namespace Snitz.OLEDbDAL
         public void Update(ForumInfo forum)
         {
             List<OleDbParameter> parms = new List<OleDbParameter>();
-            StringBuilder strSql = new StringBuilder("UPDATE FORUM_FORUM SET ");
+            StringBuilder strSql = new StringBuilder();
+            strSql.AppendFormat("UPDATE {0}FORUM SET ", Config.ForumTablePrefix).AppendLine();
             strSql.AppendLine("CAT_ID=@CatId,");
             strSql.AppendLine("F_STATUS=@Status,");
             strSql.AppendLine("F_SUBJECT=@Subject,");
@@ -320,7 +308,7 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(ForumInfo forum)
         {
-            const string strSql = "DELETE FROM FORUM_FORUM WHERE FORUM_ID=@ForumId ";
+            string strSql = "DELETE FROM " + Config.ForumTablePrefix + "FORUM WHERE FORUM_ID=@ForumId ";
 
             EmptyForum(forum.Id);
 

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
@@ -14,7 +15,7 @@ namespace Snitz.SQLServerDAL
 
         public NameFilterInfo GetById(int id)
         {
-            const string strSql = "SELECT N_ID,N_NAME FROM FORUM_NAMEFILTER WHERE N_ID=@Id";
+            string strSql = "SELECT N_ID,N_NAME FROM " + Config.FilterTablePrefix + "NAMEFILTER WHERE N_ID=@Id";
             NameFilterInfo filter = null;
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Id", SqlDbType.Int) { Value = id }))
             {
@@ -32,7 +33,7 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<NameFilterInfo> GetByName(string name)
         {
-            const string strSql = "SELECT N_ID,N_NAME FROM FORUM_NAMEFILTER WHERE N_NAME=@Name";
+            string strSql = "SELECT N_ID,N_NAME FROM " + Config.FilterTablePrefix + "NAMEFILTER WHERE N_NAME=@Name";
             List<NameFilterInfo> filters = new List<NameFilterInfo>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Name", SqlDbType.VarChar) { Value = name }))
             {
@@ -50,13 +51,13 @@ namespace Snitz.SQLServerDAL
 
         public int Add(NameFilterInfo filter)
         {
-            const string strSql = "INSERT INTO FORUM_NAMEFILTER (N_NAME) VALUES (@Name); SELECT SCOPE_IDENTITY();";
+            string strSql = "INSERT INTO " + Config.FilterTablePrefix + "NAMEFILTER (N_NAME) VALUES (@Name); SELECT SCOPE_IDENTITY();";
             return Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql,new SqlParameter("@Name", SqlDbType.VarChar) {Value = filter.Name}));
         }
 
         public void Update(NameFilterInfo filter)
         {
-            const string strSql = "UPDATE FORUM_NAMEFILTER SET M_NAME=@Name WHERE N_ID=@Id";
+            string strSql = "UPDATE " + Config.FilterTablePrefix + "NAMEFILTER SET M_NAME=@Name WHERE N_ID=@Id";
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter("@Id", SqlDbType.Int) {Value = filter.Id},
@@ -68,7 +69,7 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(NameFilterInfo filter)
         {
-            const string strSql = "DELETE FROM FORUM_NAMEFILTER WHERE N_ID=@Id";
+            string strSql = "DELETE FROM " + Config.FilterTablePrefix + "NAMEFILTER WHERE N_ID=@Id";
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Id", SqlDbType.VarChar) {Value = filter.Id});
         }
 
@@ -80,7 +81,7 @@ namespace Snitz.SQLServerDAL
 
         public IEnumerable<NameFilterInfo> GetAll()
         {
-            const string strSql = "SELECT N_ID,N_NAME FROM FORUM_NAMEFILTER"; 
+            string strSql = "SELECT N_ID,N_NAME FROM " + Config.FilterTablePrefix + "NAMEFILTER"; 
             List<NameFilterInfo> namefilters = new List<NameFilterInfo>();
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))

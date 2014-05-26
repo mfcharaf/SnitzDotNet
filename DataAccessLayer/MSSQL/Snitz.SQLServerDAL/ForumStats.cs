@@ -3,20 +3,21 @@ using System.Data.SqlClient;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
+using SnitzConfig;
 
 namespace Snitz.SQLServerDAL
 {
     public class ForumStats : IForumStats
     {
-        private const string TOPIC_SELECT = "SELECT TOP(1) TOPIC_ID,CAT_ID,FORUM_ID,T_STATUS,T_SUBJECT,T_AUTHOR,T_REPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_IP,T_LAST_POST_AUTHOR" + ",T_STICKY,T_LAST_EDIT,T_LAST_EDITBY,T_SIG,T_LAST_POST_REPLY_ID,T_UREPLIES,T_MESSAGE FROM FORUM_TOPICS ORDER BY T_LAST_POST DESC";
+        private string TOPIC_SELECT = "SELECT TOP(1) TOPIC_ID,CAT_ID,FORUM_ID,T_STATUS,T_SUBJECT,T_AUTHOR,T_REPLIES,T_VIEW_COUNT,T_LAST_POST,T_DATE,T_IP,T_LAST_POST_AUTHOR,T_STICKY,T_LAST_EDIT,T_LAST_EDITBY,T_SIG,T_LAST_POST_REPLY_ID,T_UREPLIES,T_MESSAGE FROM " + Config.ForumTablePrefix + "TOPICS ORDER BY T_LAST_POST DESC";
 
-        private const string ACTIVE_MEMBERS = "SELECT COUNT(MEMBER_ID) FROM FORUM_MEMBERS WHERE M_STATUS=1; ";
-        private const string ACTIVE_TOPICS = "SELECT COUNT(TOPIC_ID) FROM FORUM_TOPICS WHERE T_STATUS=1 AND T_LAST_POST > @LastVisit; ";
-        private const string ARCHIVED_REPLY = "SELECT COUNT(REPLY_ID) FROM FORUM_A_REPLY; ";
-        private const string ARCHIVED_TOPICS = "SELECT COUNT(TOPIC_ID) FROM FORUM_A_TOPICS; ";
-        private const string TOTAL_MEMBERS = "SELECT COUNT(MEMBER_ID) FROM FORUM_MEMBERS; ";
-        private const string TOTAL_TOPICS = "SELECT COUNT(TOPIC_ID) FROM FORUM_TOPICS; ";
-        private const string TOTAL_POSTS = "SELECT ((SELECT COUNT(TOPIC_ID) FROM FORUM_TOPICS)+(SELECT COUNT(REPLY_ID) FROM FORUM_REPLY)); ";
+        private string ACTIVE_MEMBERS = "SELECT COUNT(MEMBER_ID) FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_STATUS=1; ";
+        private string ACTIVE_TOPICS = "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "TOPICS WHERE T_STATUS=1 AND T_LAST_POST > @LastVisit; ";
+        private string ARCHIVED_REPLY = "SELECT COUNT(REPLY_ID) FROM " + Config.ForumTablePrefix + "A_REPLY; ";
+        private string ARCHIVED_TOPICS = "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "A_TOPICS; ";
+        private string TOTAL_MEMBERS = "SELECT COUNT(MEMBER_ID) FROM " + Config.MemberTablePrefix + "MEMBERS; ";
+        private string TOTAL_TOPICS = "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "TOPICS; ";
+        private string TOTAL_POSTS = "SELECT ((SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "TOPICS)+(SELECT COUNT(REPLY_ID) FROM " + Config.ForumTablePrefix + "REPLY)); ";
 
         public StatsInfo GetStatistics(string lastvisit)
         {
@@ -78,7 +79,7 @@ namespace Snitz.SQLServerDAL
 
         private string GetNewestMember()
         {
-            return (string)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP(1) M_NAME FROM FORUM_MEMBERS ORDER BY M_DATE DESC", null);
+            return (string)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP(1) M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS ORDER BY M_DATE DESC", null);
             
         }
 
