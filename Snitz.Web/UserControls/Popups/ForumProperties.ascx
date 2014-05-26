@@ -85,7 +85,7 @@
             <asp:DropDownList ID="ddlModUsers" runat="server">
             </asp:DropDownList>
             <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>');">Add Moderator</button>
-            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','true');">Remove Moderator</button>
+            <%--<button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','true');">Remove Moderator</button>--%>
 
         </asp:Panel>
 

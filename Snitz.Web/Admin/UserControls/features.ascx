@@ -171,10 +171,6 @@
                 <asp:ListItem Value="3" meta:resourcekey="ListItemResource63">Rank and Stars</asp:ListItem>
             </asp:DropDownList>
             <br />
-            <asp:Label ID="lblCalendar" runat="server" Text="Show Events Calendar" 
-                AssociatedControlID="rblShowEvents"></asp:Label>
-            <uc1:AdminRadioButton ID="rblShowEvents" runat="server" /> 
-            <br />
             <asp:Label ID="lblPrivateMessages" runat="server" Text="Allow Private messages" 
                 AssociatedControlID="rblPrivateMessages"></asp:Label>
             <uc1:AdminRadioButton ID="rblPrivateMessages" runat="server" /> 

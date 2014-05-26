@@ -39,7 +39,7 @@ namespace SnitzUI.UserControls
             SendTopic.Visible = false;
             PrintTopic.Visible = false;
             NewTopic.Visible = false;
-            ReplyTopic.Visible = false;
+            ReplyTopic.Visible = true;
             SubscribeTopic.Visible = false;
             UnSubscribeTopic.Visible = false;
             
@@ -49,7 +49,7 @@ namespace SnitzUI.UserControls
                 _topic = Topics.GetTopic(page.TopicId.Value);
                 NewTopic.PostBackUrl = string.Format("~/Content/Forums/post.aspx?method=topic&FORUM={0}&CAT={1}", _topic.ForumId, _topic.CatId);
                 ReplyTopic.PostBackUrl = string.Format("~/Content/Forums/post.aspx?method=reply&TOPIC={0}", _topic.Id);
-                if (_topic.AllowSubscriptions)
+                if (_topic.AllowSubscriptions && !_topic.IsArchived)
                 {
                     SubscribeTopic.Visible = page.IsAuthenticated;
                     SubscribeTopic.CommandName = "topicsub";
@@ -77,18 +77,20 @@ namespace SnitzUI.UserControls
                     ReplyTopic.Visible = false;
                     NewTopic.Visible = _topic.Forum.Status != (int)Enumerators.PostStatus.Closed;
                 }
+
                 ReplyTopic.Visible = ReplyTopic.Visible && _topic.Status != (int)Enumerators.PostStatus.Closed;
                 NewTopic.Visible = _topic.Forum.Status == (int)Enumerators.PostStatus.Open;
 
                 ReplyTopic.Visible = ReplyTopic.Visible || (page.Member == null ? 0 : page.Member.Id) == _topic.AuthorId;
 
                 NewTopic.Visible = NewTopic.Visible && page.IsAuthenticated;
-                ReplyTopic.Visible = ReplyTopic.Visible && page.IsAuthenticated;
+                ReplyTopic.Visible = ReplyTopic.Visible && page.IsAuthenticated && !_topic.IsArchived;
 
             }else
             {
                 if(page.ForumId.HasValue)
                 {
+                    ReplyTopic.Visible = false;
                     ForumInfo forum = Forums.GetForum(page.ForumId.Value);
                     NewTopic.PostBackUrl = string.Format("~/Content/Forums/post.aspx?method=topic&FORUM={0}&CAT={1}", forum.Id, forum.CatId);
                     NewTopic.Visible = page.IsAuthenticated;

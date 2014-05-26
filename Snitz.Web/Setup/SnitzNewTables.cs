@@ -18,7 +18,7 @@
         private string[] _newTableStrings = new string[] { 
             ASPNET_ROLES,ASPNET_USERS,ASPNET_USERSINROLES,FORUM_FAQ_CAT,
             FORUM_FAQ_INFO,FORUM_PM,FORUM_POLLANSWERS,FORUM_POLLRESPONSE,
-            FORUM_POLLS,FORUM_ROLES,PROFILEDATA, FORUM_EVENTS
+            FORUM_POLLS,FORUM_ROLES,MEMBER_PROFILEDATA, FORUM_EVENTS
         };
 
         private const string CREATE_DATABASE = "";
@@ -104,7 +104,7 @@
                                            "    [Role_Id] [int] NOT NULL" +
                                            ") ON [PRIMARY]";
 
-        private const string PROFILEDATA = "CREATE TABLE [ProfileData](" +
+        private const string MEMBER_PROFILEDATA = "CREATE TABLE [FORUM_ProfileData](" +
                                            "    [UserId] [int] NOT NULL," +
                                            "    [Skype] [varchar](50) NULL," +
                                            "    [HideAge] [smallint] NOT NULL DEFAULT (1)," +

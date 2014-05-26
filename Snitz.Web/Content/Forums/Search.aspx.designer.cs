@@ -58,15 +58,6 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.DropDownList ddlForum;
         
         /// <summary>
-        /// RequiredFieldValidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-        
-        /// <summary>
         /// cbxSubjectOnly control.
         /// </summary>
         /// <remarks>
@@ -110,15 +101,6 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMatch;
-        
-        /// <summary>
-        /// lnkAdvanced control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkAdvanced;
         
         /// <summary>
         /// ValidationSummary1 control.
@@ -274,6 +256,15 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.DropDownList ddlPageSize;
         
         /// <summary>
+        /// updButtons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updButtons;
+        
+        /// <summary>
         /// SearchButtons control.
         /// </summary>
         /// <remarks>
@@ -283,6 +274,15 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.Panel SearchButtons;
         
         /// <summary>
+        /// lnkAdvanced control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAdvanced;
+        
+        /// <summary>
         /// btnSearch control.
         /// </summary>
         /// <remarks>
@@ -290,6 +290,15 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSearch;
+        
+        /// <summary>
+        /// updResults control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updResults;
         
         /// <summary>
         /// SearchResults control.

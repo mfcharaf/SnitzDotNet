@@ -27,10 +27,11 @@
         .mainModalContent{white-space:normal;}
         #emoticons img{border:0px;margin:2px;}
     </style>
+    <asp:Literal runat="server" ID="uploadStyle"></asp:Literal>
 </asp:Content>
 <asp:Content ID="Classifieds" ContentPlaceHolderID="CPAd" runat="server"></asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPH1" runat="server">
-    <script src="/scripts/editor.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/scripts/editor.min.js"></script>
     <script type="text/javascript" src="/Scripts/postpage.min.js"></script>
     <script type="text/javascript">
         var messageId = '<%= Message.ClientID %>';
@@ -138,7 +139,7 @@
         </div>
     </div>
     <br class="clearfix" />
-    <!-- Upload popup -->
+    <!-- Upload file popup -->
     <asp:Panel ID="fUpload" runat="server" Style="display: none; clear:both;" EnableViewState="false">
         <div class="mainModalPopup mainModalBorder">
             <div class="mainModalInnerDiv mainModalInnerBorder">
@@ -189,7 +190,7 @@
         TargetControlID="btnHid" BehaviorID="mpUpload" BackgroundCssClass="modalBackground"
         CancelControlID="clB" OnCancelScript="$find('mpUpload').hide();" DropShadow="true" />
 
-    <!-- Browse popup -->
+    <!-- Browse image popup -->
     <asp:Panel ID="browseImage" runat="server" Style="display: none;max-width:600px;" EnableViewState="false">
         <div class="mainModalPopup mainModalBorder">
             <div class="mainModalInnerDiv mainModalInnerBorder">

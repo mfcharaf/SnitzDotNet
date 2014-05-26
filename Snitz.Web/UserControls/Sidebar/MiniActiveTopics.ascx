@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MiniActiveTopics.ascx.cs" Inherits="SnitzUI.UserControls.MiniActiveTopics" EnableViewState="False" %>
-<%@ Import Namespace="SnitzCommon" %>
 <div class="sideBox">
 <asp:Repeater ID="DataList1" runat="server" EnableViewState="False" OnItemDataBound="BindRepeater">
     <HeaderTemplate>
@@ -10,12 +9,10 @@
     </HeaderTemplate>
     <ItemTemplate>
         <div class="ovHidden" style="padding:4px;">
-        <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>" 
+        <a class="" href='/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>'
                         target='<%# Eval("Author.LinkTarget") %>' 
                         title="<%# Eval("Subject") %>">
-                        <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>
-                    </a>
-        <br />
+                        <span class="minibbcode mImg" ><%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></span></a><br />
         <span class="smallText">last post by:&nbsp;<asp:Literal 
                         ID="popuplink" runat="server" 
                         Text='<%# Eval("LastPostAuthorPopup") %>' EnableViewState="False"></asp:Literal>&nbsp;<asp:HyperLink

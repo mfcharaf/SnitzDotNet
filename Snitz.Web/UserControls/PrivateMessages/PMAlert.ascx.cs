@@ -33,7 +33,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected void Page_Load(object sender, EventArgs e)
         {
             MembershipUser currentUser = Membership.GetUser(HttpContext.Current.User.Identity.Name);
-            if (currentUser == null || currentUser.ProviderUserKey == null)
+            if (currentUser == null || currentUser.ProviderUserKey == null || !HttpContext.Current.User.Identity.IsAuthenticated)
                 return;
 
             if (PrivateMessages.GetUnreadPMCount((int)currentUser.ProviderUserKey) > 0)

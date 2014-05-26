@@ -94,7 +94,9 @@ public partial class ucStatistics : System.Web.UI.UserControl
         if (Session["CurrentProfile"] != null)
             Session.Remove("CurrentProfile");
         _page = (PageBase)Page;
-        
+        if (stats == null)
+            return;
+
         if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
         {
             LastVisit = webResources.lblStatsLastVisit;

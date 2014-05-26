@@ -30,6 +30,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using AjaxControlToolkit;
+using ModConfig;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzUI.MasterTemplates;
@@ -83,6 +84,23 @@ namespace SnitzUI
 
             ForumDropDown.DataSource = Forums.AllowedForumsList(Member);
             ForumDropDown.DataBind();
+            
+            if (ConfigHelper.GetBoolValue("UploadConfig","AllowFileUpload"))
+            {
+                string style = !ConfigHelper.GetBoolValue("UploadConfig","ShowFileAttach") ? ".upload{display:none;}" : "";
+                if (!Config.UserGallery)
+                    style += ".browse{display:none;}";
+
+                if (!String.IsNullOrEmpty(style))
+                    uploadStyle.Text = "<style>" + style + "</style>";
+                else
+                    uploadStyle.Text = "";
+            }
+            else
+            {
+                uploadStyle.Text = "<style>.upload{display:none;} .browse{display:none;}</style>";
+            }
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -107,7 +125,7 @@ namespace SnitzUI
                             DateTime? lastpost = Session["LastPostMade"].ToString().ToDateTime();
                             DateTime dt = DateTime.UtcNow - diff1;
                             if (lastpost > dt)
-                                throw new HttpException(403, "Flood check enabled, please try later");
+                                throw new HttpException(403, "FloodCheck");
 
                         }
                     }
@@ -195,13 +213,41 @@ namespace SnitzUI
             if (TopicId != null)
             {
                 _thisTopic = Topics.GetTopic(TopicId.Value);
+                if (IsModerator)
+                    _inModeratedList = Moderators.IsUserForumModerator(User.Identity.Name, _thisTopic.ForumId);
                 _topicLocked = _thisTopic.Status == (int)Enumerators.PostStatus.Closed;
             }
             else if (_type == "topics")
             {
                 TopicId = Int32.Parse(Request.Params["id"]);
                 _thisTopic = Topics.GetTopic(TopicId.Value);
+                if (IsModerator)
+                {
+                    _inModeratedList = Moderators.IsUserForumModerator(User.Identity.Name, _thisTopic.ForumId);
+                }
                 _topicLocked = _thisTopic.Status == (int)Enumerators.PostStatus.Closed;
+            }
+
+            switch (_action)
+            {
+                case "topic":
+                    Page.Title = Config.ForumTitle + ": "  + Resources.webResources.lblNewTopic;
+                    break;
+                case "reply":
+                case "quote":
+                    Page.Title = Config.ForumTitle + ": " + Resources.webResources.lblReplyToTopic;
+                    break;
+                case "edit":
+                    switch (_type)
+                    {
+                        case "reply":
+                            Page.Title = Config.ForumTitle + ": " + Resources.webResources.lblEditReply;
+                            break;
+                        case "topics":
+                            Page.Title = Config.ForumTitle + ": " + Resources.webResources.lblEditTopic;
+                            break;
+                    }
+                    break;
             }
         }
 
@@ -220,6 +266,7 @@ namespace SnitzUI
 
         private void SetupForEditMessage()
         {
+
             string msg = String.Empty;
             //fetch original message from db
             switch (_type)
@@ -251,7 +298,7 @@ namespace SnitzUI
         protected void PostMessage(object sender, EventArgs e)
         {
             btnSubmit.Enabled = false;
-
+           
             switch (_action.ToLower())
             {
                 case "topic":
@@ -335,7 +382,7 @@ namespace SnitzUI
 
             int oldforumId = _thisTopic.ForumId;
             Topics.Update(_thisTopic.Id, Message.Text, tbxSubject.Text, Member, IsAdministrator, cbxSig.Checked);
-            if (ForumDropDown.SelectedValue != oldforumId.ToString())
+            if (ForumDropDown.SelectedValue != oldforumId.ToString() && ForumDiv.Visible)
             {
                 //move the topic
                 int forumid = Convert.ToInt32(ForumDropDown.SelectedValue);
@@ -532,11 +579,24 @@ namespace SnitzUI
                     break;
                 case "reply":
                 case "quote":
-                case "edit":
                     TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                    tempNode.Title = textInfo.ToTitleCase(_action) + Resources.webResources.lblMessage;
+                    tempNode.Title = _thisTopic.Subject +  " (" + textInfo.ToTitleCase(_action) + ")";
                     tempNode = tempNode.ParentNode;
-                    tempNode.Title = string.Format("{0}:{1}", _thisTopic.Forum.Subject, _thisTopic.Subject);
+                    tempNode.Title = string.Format("{0}", _thisTopic.Forum.Subject);
+                    tempNode.Url = "~/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id;
+                    break;
+                case "edit":
+                    switch (_type)
+                    {
+                        case "reply":
+                            tempNode.Title = Resources.webResources.lblEditReply;
+                            break;
+                        case "topics":
+                            tempNode.Title = Resources.webResources.lblEditTopic + " " + _thisTopic.Subject;
+                            break;
+                    }
+                    tempNode = tempNode.ParentNode;
+                    tempNode.Title = string.Format("{0}", _thisTopic.Forum.Subject);
                     tempNode.Url = "~/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id;
                     break;
             }

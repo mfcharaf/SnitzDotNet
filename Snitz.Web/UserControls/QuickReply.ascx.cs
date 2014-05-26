@@ -63,7 +63,7 @@ public partial class QuickReply : UserControl
                 DateTime dt = newdate - diff1;
                 DateTime? lastpost = Session["LastPostMade"].ToString().ToDateTime();
                 if (lastpost > dt)
-                    throw new HttpException(403, "Access denied, please try again later");
+                    throw new HttpException(403, "FloodCheck");
                     //Response.Redirect("error.aspx?msg=errFloodError");
             }
         }

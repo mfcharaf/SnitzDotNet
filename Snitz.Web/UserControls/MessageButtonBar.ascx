@@ -1,11 +1,11 @@
 <%@ Control Language="C#" AutoEventWireup="True" Inherits="MessageButtonBar" CodeBehind="MessageButtonBar.ascx.cs"
-    EnableViewState="true" %>
+    EnableViewState="false" %>
 
 <span class="buttonbarTxt"><a name="<%# ThisId %>" id='<%# ThisId %>'>
-    <asp:ImageButton ID="imgPosticon" SkinID="Document" runat="server" ImageAlign="Middle"
+    <asp:ImageButton  ID="imgPosticon" SkinID="Document" runat="server" ImageAlign="Middle"
         ToolTip="Bookmark Post" CausesValidation="False"
-        OnClientClick="" Style="vertical-align: top;" /></a>&nbsp;
-    <asp:Label ID="date" runat="server" Style="padding:0px;margin-bottom:4px;"></asp:Label>
+        OnClientClick="" Style="vertical-align: top;" EnableViewState="False" /></a>&nbsp;
+    <asp:Label ID="date" runat="server" Style="padding:0px;margin-bottom:4px;" EnableViewState="False"></asp:Label>
 </span>
 <div class="buttonbarImg">
     <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Approve Post"

@@ -59,7 +59,7 @@ namespace SnitzUI.Setup
 
         private void StoredProcedures()
         {
-            Snitz.BLL.Admin.ExecuteScript(UPDATECOUNTS);
+            Snitz.BLL.Admin.ExecuteScript(UpdateCounts());
         }
 
         private void UpdateDatabase(string updatetype)

@@ -24,6 +24,10 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,15 +70,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.BLL">
-      <HintPath>..\Dependency\Snitz.BLL.dll</HintPath>
+    <Reference Include="Snitz.BLL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependency\Snitz.BLL.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.Entities">
-      <HintPath>..\Dependency\Snitz.Entities.dll</HintPath>
+    <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependency\Snitz.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.IDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\Snitz.IDAL.dll</HintPath>
+      <HintPath>..\..\Dependency\Snitz.IDAL.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.Membership.IDal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,6 +122,9 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="Validators">
+      <HintPath>..\Dependency\Validators.dll</HintPath>
+    </Reference>
     <Reference Include="WebOptimizer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5660f4b37e89cc19, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependency\WebOptimizer.dll</HintPath>
@@ -123,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Activate.aspx" />
+    <Content Include="Account\Bookmark.aspx" />
     <Content Include="Admin\UserControls\ArchiveForums.ascx" />
     <Content Include="Admin\css\ClassicSnitz\admin.css" />
     <Content Include="Admin\css\ClassicSnitz\Menu.css" />
@@ -132,12 +142,15 @@
     <Content Include="Admin\css\Dark\Menu.css" />
     <Content Include="Admin\UserControls\ManageCategories.ascx" />
     <Content Include="Admin\UserControls\ManageModerators.ascx" />
-    <Content Include="App_Data\SnitzDotNetDatabase.mdf" />
-    <Content Include="App_Data\SnitzDotNetDatabase_log.ldf">
-      <DependentUpon>SnitzDotNetDatabase.mdf</DependentUpon>
+    <Content Include="Admin\UserControls\ModConfiguration.ascx" />
+    <Content Include="App_Themes\BlueGray\bluegreycss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
     <Content Include="App_Themes\BlueGray\images\admin\folderX.png" />
+    <Content Include="App_Themes\BlueGray\images\admin\weblink.png" />
+    <Content Include="App_Themes\BlueGray\images\bookmark.png" />
     <Content Include="App_Themes\BlueGray\images\cat-bar.gif" />
+    <Content Include="App_Themes\BlueGray\images\close.png" />
     <Content Include="App_Themes\BlueGray\images\editor\align_center.gif" />
     <Content Include="App_Themes\BlueGray\images\editor\align_left.gif" />
     <Content Include="App_Themes\BlueGray\images\editor\align_right.gif" />
@@ -156,6 +169,7 @@
     <Content Include="App_Themes\BlueGray\images\editor\pictureBrowse.png" />
     <Content Include="App_Themes\BlueGray\images\editor\pictureUp.png" />
     <Content Include="App_Themes\BlueGray\images\editor\preview.png" />
+    <Content Include="App_Themes\BlueGray\images\editor\quotes.png" />
     <Content Include="App_Themes\BlueGray\images\editor\spellcheck.png" />
     <Content Include="App_Themes\BlueGray\images\editor\strike.gif" />
     <Content Include="App_Themes\BlueGray\images\editor\stroke.png" />
@@ -165,8 +179,10 @@
     <Content Include="App_Themes\BlueGray\images\editor\textdir.png" />
     <Content Include="App_Themes\BlueGray\images\editor\underline.png" />
     <Content Include="App_Themes\BlueGray\images\editor\youtube.png" />
-    <Content Include="App_Themes\BlueGray\images\icon_pmgotmail.gif" />
-    <Content Include="App_Themes\BlueGray\images\information.png" />
+    <Content Include="App_Themes\BlueGray\images\emoticons\delete.png" />
+    <Content Include="App_Themes\BlueGray\images\emoticons\edit.png" />
+    <Content Include="App_Themes\BlueGray\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\BlueGray\images\emoticons\pencil.png" />
     <Content Include="App_Themes\BlueGray\images\message\folder3.png" />
     <Content Include="App_Themes\BlueGray\images\message\foldernewposts.png" />
     <Content Include="App_Themes\BlueGray\images\message\foldernoposts.png" />
@@ -174,10 +190,20 @@
     <Content Include="App_Themes\BlueGray\images\message\weblink.png" />
     <Content Include="App_Themes\BlueGray\images\nav-bg.gif" />
     <Content Include="App_Themes\BlueGray\images\page_go.png" />
+    <Content Include="App_Themes\BlueGray\images\social\icon_aim.png" />
+    <Content Include="App_Themes\BlueGray\images\social\icon_icq.png" />
+    <Content Include="App_Themes\BlueGray\images\social\icon_skype.png" />
+    <Content Include="App_Themes\BlueGray\images\social\icon_yahoo.png" />
     <Content Include="App_Themes\BlueGray\images\top-bar.gif" />
-    <Content Include="App_Themes\BlueGray\jquery.alerts.css" />
-    <Content Include="App_Themes\ClassicSnitz\base.css" />
-    <Content Include="App_Themes\ClassicSnitz\classicsnitz.css" />
+    <None Include="App_Themes\BlueGray\jquery.alerts.css" />
+    <None Include="App_Themes\BlueGray\bundle.chirp.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App_Themes\ClassicSnitz\base.css" />
+    <None Include="App_Themes\ClassicSnitz\classicsnitz.css" />
+    <Content Include="App_Themes\ClassicSnitz\classicsnitzcss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
     <Content Include="App_Themes\ClassicSnitz\images\activity.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\archive.png" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\book.png" />
@@ -208,6 +234,7 @@
     <Content Include="App_Themes\ClassicSnitz\images\admin\unsubscribe.png" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\Warning.png" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\weblink.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\bookmark.png" />
     <Content Include="App_Themes\ClassicSnitz\images\buttons\button_left.png" />
     <Content Include="App_Themes\ClassicSnitz\images\buttons\button_right.png" />
     <Content Include="App_Themes\ClassicSnitz\images\close.gif" />
@@ -241,6 +268,8 @@
     <Content Include="App_Themes\ClassicSnitz\images\editor\underline.png" />
     <Content Include="App_Themes\ClassicSnitz\images\editor\youtube.png" />
     <Content Include="App_Themes\ClassicSnitz\images\email.gif" />
+    <Content Include="App_Themes\ClassicSnitz\images\emoticons\delete.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\emoticons\edit.png" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile_8ball.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile_angry.gif" />
@@ -268,6 +297,8 @@
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile_test.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile_tongue.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\ClassicSnitz\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\emoticons\pencil.png" />
     <Content Include="App_Themes\ClassicSnitz\images\error.png" />
     <Content Include="App_Themes\ClassicSnitz\images\expand_blue.jpg" />
     <Content Include="App_Themes\ClassicSnitz\images\hotOld.png" />
@@ -321,6 +352,10 @@
     <Content Include="App_Themes\ClassicSnitz\images\rss.png" />
     <Content Include="App_Themes\ClassicSnitz\images\smallquote_lt.png" />
     <Content Include="App_Themes\ClassicSnitz\images\smallquote_rt.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\social\icon_aim.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\social\icon_icq.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\social\icon_skype.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\social\icon_yahoo.png" />
     <Content Include="App_Themes\ClassicSnitz\images\sort_ascending.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\sort_descending.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\Tab\tab-active.gif" />
@@ -334,8 +369,8 @@
     <Content Include="App_Themes\ClassicSnitz\images\User-online.png" />
     <Content Include="App_Themes\ClassicSnitz\images\valid-xhtml10.png" />
     <Content Include="App_Themes\ClassicSnitz\images\vcss.gif" />
-    <Content Include="App_Themes\ClassicSnitz\jquery.alerts.css" />
-    <Content Include="App_Themes\ClassicSnitz\MainModalDialog.css" />
+    <None Include="App_Themes\ClassicSnitz\jquery.alerts.css" />
+    <None Include="App_Themes\ClassicSnitz\MainModalDialog.css" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\ClassicSnitz\pm\icon_pm_old.gif" />
@@ -349,8 +384,12 @@
     <Content Include="App_Themes\ClassicSnitz\pm\pmreceive.jpg" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmreply.jpg" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmreplyquote.jpg" />
-    <Content Include="App_Themes\Dark\base.css" />
-    <Content Include="App_Themes\Dark\dark.css" />
+    <None Include="App_Themes\ClassicSnitz\bundle.chirp.config" />
+    <None Include="App_Themes\Dark\base.css" />
+    <None Include="App_Themes\Dark\dark.css" />
+    <Content Include="App_Themes\Dark\darkcss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
     <Content Include="App_Themes\Dark\images\activity.gif" />
     <Content Include="App_Themes\Dark\images\admin\archive.png" />
     <Content Include="App_Themes\Dark\images\admin\book.png" />
@@ -383,6 +422,7 @@
     <Content Include="App_Themes\Dark\images\admin\Warning.png" />
     <Content Include="App_Themes\Dark\images\admin\Write.png" />
     <Content Include="App_Themes\Dark\images\bg-pattern.gif" />
+    <Content Include="App_Themes\Dark\images\bookmark.png" />
     <Content Include="App_Themes\Dark\images\buttons\agree.gif" />
     <Content Include="App_Themes\Dark\images\buttons\attach.gif" />
     <Content Include="App_Themes\Dark\images\buttons\button_left.png" />
@@ -415,6 +455,8 @@
     <Content Include="App_Themes\Dark\images\editor\table-col.png" />
     <Content Include="App_Themes\Dark\images\editor\table-row.png" />
     <Content Include="App_Themes\Dark\images\editor\table.png" />
+    <Content Include="App_Themes\Dark\images\emoticons\delete.png" />
+    <Content Include="App_Themes\Dark\images\emoticons\edit.png" />
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile.gif" />
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile_8ball.gif" />
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile_angry.gif" />
@@ -442,6 +484,8 @@
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile_test.gif" />
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile_tongue.gif" />
     <Content Include="App_Themes\Dark\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Dark\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\Dark\images\emoticons\pencil.png" />
     <Content Include="App_Themes\Dark\images\error.png" />
     <Content Include="App_Themes\Dark\images\expand.png" />
     <Content Include="App_Themes\Dark\images\flame.png" />
@@ -497,6 +541,10 @@
     <Content Include="App_Themes\Dark\images\Rss.png" />
     <Content Include="App_Themes\Dark\images\smallquote_lt.png" />
     <Content Include="App_Themes\Dark\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Dark\images\social\icon_aim.png" />
+    <Content Include="App_Themes\Dark\images\social\icon_icq.png" />
+    <Content Include="App_Themes\Dark\images\social\icon_skype.png" />
+    <Content Include="App_Themes\Dark\images\social\icon_yahoo.png" />
     <Content Include="App_Themes\Dark\images\sort_ascending.gif" />
     <Content Include="App_Themes\Dark\images\sort_descending.gif" />
     <Content Include="App_Themes\Dark\images\Tab\tab-active.gif" />
@@ -512,8 +560,8 @@
     <Content Include="App_Themes\Dark\images\User-online.png" />
     <Content Include="App_Themes\Dark\images\valid-xhtml10.png" />
     <Content Include="App_Themes\Dark\images\vcss.gif" />
-    <Content Include="App_Themes\Dark\jquery.alerts.css" />
-    <Content Include="App_Themes\Dark\MainModalDialog.css" />
+    <None Include="App_Themes\Dark\jquery.alerts.css" />
+    <None Include="App_Themes\Dark\MainModalDialog.css" />
     <Content Include="App_Themes\Dark\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\Dark\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\Dark\pm\icon_pm_old.gif" />
@@ -528,13 +576,13 @@
     <Content Include="App_Themes\Dark\pm\pmreply.jpg" />
     <Content Include="App_Themes\Dark\pm\pmreplyquote.jpg" />
     <Content Include="App_Themes\Light\Admin.skin" />
-    <Content Include="App_Themes\Light\base.css" />
+    <None Include="App_Themes\Dark\bundle.chirp.config" />
+    <None Include="App_Themes\Light\base.css" />
     <Content Include="App_Themes\Light\images\activity.gif" />
     <Content Include="App_Themes\Light\images\admin\archive.png" />
     <Content Include="App_Themes\Light\images\admin\book.png" />
     <Content Include="App_Themes\Light\images\admin\calendar.png" />
     <Content Include="App_Themes\Light\images\admin\Cancel.png" />
-    <Content Include="App_Themes\Light\images\admin\day.png" />
     <Content Include="App_Themes\Light\images\admin\Discuss.png" />
     <Content Include="App_Themes\Light\images\admin\document.png" />
     <Content Include="App_Themes\Light\images\admin\Flag.png" />
@@ -551,7 +599,6 @@
     <Content Include="App_Themes\Light\images\admin\search.png" />
     <Content Include="App_Themes\Light\images\admin\stick.png" />
     <Content Include="App_Themes\Light\images\admin\subscribe.png" />
-    <Content Include="App_Themes\Light\images\admin\Text Plus.png" />
     <Content Include="App_Themes\Light\images\admin\Topic.png" />
     <Content Include="App_Themes\Light\images\admin\Trash.png" />
     <Content Include="App_Themes\Light\images\admin\unlock.png" />
@@ -562,6 +609,7 @@
     <Content Include="App_Themes\Light\images\admin\Warning.png" />
     <Content Include="App_Themes\Light\images\admin\weblink.png" />
     <Content Include="App_Themes\Light\images\admin\Write.png" />
+    <Content Include="App_Themes\Light\images\bookmark.png" />
     <Content Include="App_Themes\Light\images\buttons\button_left.png" />
     <Content Include="App_Themes\Light\images\buttons\button_right.png" />
     <Content Include="App_Themes\Light\images\close.gif" />
@@ -575,7 +623,6 @@
     <Content Include="App_Themes\Light\images\editor\code.png" />
     <Content Include="App_Themes\Light\images\editor\colors.png" />
     <Content Include="App_Themes\Light\images\editor\fonts.png" />
-    <Content Include="App_Themes\Light\images\editor\icon_separator.gif" />
     <Content Include="App_Themes\Light\images\editor\italic.png" />
     <Content Include="App_Themes\Light\images\editor\link.png" />
     <Content Include="App_Themes\Light\images\editor\list-bullet.png" />
@@ -595,6 +642,8 @@
     <Content Include="App_Themes\Light\images\editor\underline.png" />
     <Content Include="App_Themes\Light\images\editor\email.gif" />
     <Content Include="App_Themes\Light\images\email.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\delete.png" />
+    <Content Include="App_Themes\Light\images\emoticons\edit.png" />
     <Content Include="App_Themes\Light\images\emoticons\icon_smile.gif" />
     <Content Include="App_Themes\Light\images\emoticons\icon_smile_8ball.gif" />
     <Content Include="App_Themes\Light\images\emoticons\icon_smile_angry.gif" />
@@ -622,6 +671,8 @@
     <Content Include="App_Themes\Light\images\emoticons\icon_smile_test.gif" />
     <Content Include="App_Themes\Light\images\emoticons\icon_smile_tongue.gif" />
     <Content Include="App_Themes\Light\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Light\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\Light\images\emoticons\pencil.png" />
     <Content Include="App_Themes\Light\images\error.png" />
     <Content Include="App_Themes\Light\images\expand.png" />
     <Content Include="App_Themes\Light\images\flame.png" />
@@ -681,6 +732,10 @@
     <Content Include="App_Themes\Light\images\rss.png" />
     <Content Include="App_Themes\Light\images\smallquote_lt.png" />
     <Content Include="App_Themes\Light\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Light\images\social\icon_aim.png" />
+    <Content Include="App_Themes\Light\images\social\icon_icq.png" />
+    <Content Include="App_Themes\Light\images\social\icon_skype.png" />
+    <Content Include="App_Themes\Light\images\social\icon_yahoo.png" />
     <Content Include="App_Themes\Light\images\sort_ascending.gif" />
     <Content Include="App_Themes\Light\images\sort_descending.gif" />
     <Content Include="App_Themes\Light\images\Tab\tab-active.gif" />
@@ -695,9 +750,12 @@
     <Content Include="App_Themes\Light\images\valid-xhtml10.png" />
     <Content Include="App_Themes\Light\images\vcss.gif" />
     <Content Include="App_Themes\Light\images\editor\youtube.png" />
-    <Content Include="App_Themes\Light\light.css" />
-    <Content Include="App_Themes\Light\jquery.alerts.css" />
-    <Content Include="App_Themes\Light\MainModalDialog.css" />
+    <None Include="App_Themes\Light\light.css" />
+    <None Include="App_Themes\Light\jquery.alerts.css" />
+    <Content Include="App_Themes\Light\lightcss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
+    <None Include="App_Themes\Light\MainModalDialog.css" />
     <Content Include="App_Themes\Light\pm\icon_pmgotmail.gif" />
     <Content Include="App_Themes\Light\pm\icon_pm_new.gif" />
     <Content Include="App_Themes\Light\pm\icon_pm_old.gif" />
@@ -725,19 +783,33 @@
     <Content Include="App_Themes\BlueGray\images\smallquote_lt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_rt.png" />
     <Content Include="Content\PrivateMessages\PrivateMessageView.aspx" />
+    <Content Include="css\BlueGray\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\BlueGray\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
     <Content Include="css\ClassicSnitz\editor.css" />
     <Content Include="css\ClassicSnitz\eventsrtl.css" />
     <Content Include="css\ClassicSnitz\faq.css" />
     <Content Include="css\ClassicSnitz\faqrtl.css" />
     <Content Include="css\ClassicSnitz\HomePage.css" />
     <Content Include="css\ClassicSnitz\homepagertl.css" />
-    <Content Include="css\ClassicSnitz\jquery-ui.css" />
+    <None Include="App_Themes\Light\bundle.chirp.config" />
+    <None Include="css\ClassicSnitz\jquery-ui.chirp.less" />
+    <Content Include="css\ClassicSnitz\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\ClassicSnitz\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
     <Content Include="css\ClassicSnitz\ProfilePage.css" />
     <Content Include="css\ClassicSnitz\profilepagertl.css" />
     <Content Include="css\ClassicSnitz\RegWizard.css" />
     <Content Include="css\ClassicSnitz\rtl.css" />
     <Content Include="css\ClassicSnitz\search.css" />
     <Content Include="css\ClassicSnitz\searchrtl.css" />
+    <Content Include="css\ClassicSnitz\shThemeDefault.css" />
     <Content Include="css\Dark\eventsrtl.css" />
     <Content Include="css\Dark\faq.css" />
     <Content Include="css\Dark\faqrtl.css" />
@@ -758,29 +830,50 @@
     <Content Include="App_Themes\Dark\images\editor\textdir.png" />
     <Content Include="App_Themes\Dark\images\editor\underline.png" />
     <Content Include="App_Themes\Dark\images\editor\youtube.png" />
-    <Content Include="css\Dark\jquery-ui.css" />
+    <None Include="css\Dark\jquery-ui.chirp.less" />
     <Content Include="css\Dark\editor.css" />
+    <Content Include="css\Dark\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\Dark\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
     <Content Include="css\Dark\ProfilePage.css" />
     <Content Include="css\Dark\profilepagertl.css" />
     <Content Include="css\Dark\RegWizard.css" />
     <Content Include="css\Dark\rtl.css" />
     <Content Include="css\Dark\search.css" />
     <Content Include="css\Dark\searchrtl.css" />
-    <Content Include="css\BlueGray\jquery-ui.css" />
+    <None Include="css\BlueGray\jquery-ui.chirp.less" />
+    <Content Include="css\Dark\shThemeDefault.css" />
+    <Content Include="css\jsShare.css" />
     <Content Include="css\Light\eventsrtl.css" />
     <Content Include="css\Light\faq.css" />
     <Content Include="css\Light\faqrtl.css" />
     <Content Include="css\Light\HomePage.css" />
     <Content Include="css\Light\homepagertl.css" />
-    <Content Include="css\Light\jquery-ui.css" />
+    <None Include="css\Light\jquery-ui.chirp.less" />
     <Content Include="css\Light\editor.css" />
+    <Content Include="css\Light\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\Light\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
     <Content Include="css\Light\ProfilePage.css" />
     <Content Include="css\Light\profilepagertl.css" />
     <Content Include="css\Light\RegWizard.css" />
     <Content Include="css\Light\rtl.css" />
     <Content Include="css\Light\search.css" />
     <Content Include="css\Light\searchrtl.css" />
+    <Content Include="css\Light\shThemeDefault.css" />
+    <Content Include="css\shCore.css" />
+    <Content Include="css\BlueGray\shThemeDefault.css" />
     <Content Include="images\bar.JPG" />
+    <Content Include="images\buzz.png" />
+    <Content Include="images\delicious.png" />
+    <Content Include="images\digg.png" />
+    <Content Include="images\facebook.png" />
     <Content Include="images\fb-like-button.png" />
     <Content Include="images\gplus-button.png" />
     <Content Include="images\in-recommend-button.png" />
@@ -796,42 +889,126 @@
     <Content Include="App_Themes\Light\Profile.skin" />
     <Content Include="App_Themes\Light\SnitzTheme.skin" />
     <Content Include="App_Themes\Light\StatsPanel.skin" />
-    <None Include="Scripts\bbcode.js" />
-    <Content Include="Scripts\bbcode.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <Content Include="App_Themes\Light\Breadcrumb.skin" />
+    <Content Include="images\linkedin.png" />
+    <Content Include="images\messenger.png" />
+    <Content Include="images\orkut.png" />
+    <Content Include="images\plus.png" />
+    <Content Include="images\reddit.png" />
+    <Content Include="images\stumbleupon.png" />
+    <Content Include="images\twitter.png" />
+    <Content Include="images\upload.png" />
+    <Content Include="packages.config" />
+    <None Include="Scripts\bbcode.yui.js" />
+    <None Include="Scripts\bbcode.min.js">
+      <DependentUpon>bbcode.yui.js</DependentUpon>
+    </None>
+    <Content Include="Scripts\bundle.chirp.config">
+      <SubType>Designer</SubType>
     </Content>
-    <None Include="Scripts\confirmHandler.js" />
-    <Content Include="Scripts\confirmdialog.js" />
-    <Content Include="Scripts\confirmHandler.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <None Include="Scripts\confirmHandler.yui.js" />
+    <None Include="Scripts\confirmdialog.js" />
+    <None Include="Scripts\confirmHandler.min.js">
+      <DependentUpon>confirmHandler.yui.js</DependentUpon>
+    </None>
+    <Content Include="Scripts\common.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
+    <Content Include="Scripts\defaultpage.min.js">
+      <DependentUpon>defaultpage.yui.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\defaultpage.yui.js" />
     <Content Include="Scripts\Editor.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+      <DependentUpon>Editor.yui.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\help.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-1.8.2.min.js" />
-    <None Include="Scripts\jquery-ui.js" />
-    <None Include="Scripts\net.js" />
-    <None Include="Scripts\main.js" />
+    <None Include="Scripts\jquery-ui.yui.js" />
+    <None Include="Scripts\net.yui.js" />
+    <None Include="Scripts\main.yui.js" />
+    <None Include="Scripts\smilies.yui.js" />
     <Content Include="Scripts\jquery-ui.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+      <DependentUpon>jquery-ui.yui.js</DependentUpon>
     </Content>
+    <None Include="Scripts\jsShare.min.js">
+      <DependentUpon>jsShare.yui.js</DependentUpon>
+    </None>
+    <None Include="Scripts\jsShare.yui.js" />
     <Content Include="Scripts\main.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+      <DependentUpon>main.yui.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\net.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <Content Include="Scripts\master.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
+    <None Include="Scripts\net.min.js">
+      <DependentUpon>net.yui.js</DependentUpon>
+    </None>
     <Content Include="Scripts\postpage.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+      <DependentUpon>postpage.yui.js</DependentUpon>
     </Content>
-    <None Include="Scripts\smilies.js" />
-    <Content Include="Scripts\smilies.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <None Include="Scripts\shBrushCSharp.min.js">
+      <DependentUpon>shBrushCSharp.yui.js</DependentUpon>
+    </None>
+    <None Include="Scripts\shBrushCSharp.yui.js" />
+    <Content Include="Scripts\singlemaster.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\topic_print.min.js">
-      <DependentUpon>Bundle.chirp.config</DependentUpon>
+    <Content Include="Scripts\syntax\shAutoloader.min.js">
+      <DependentUpon>shAutoloader.yui.js</DependentUpon>
     </Content>
-    <Content Include="Setup\base.xml" />
+    <None Include="Scripts\syntax\shAutoloader.yui.js" />
+    <Content Include="Scripts\syntax\shBrushCSharp.min.js">
+      <DependentUpon>shBrushCSharp.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushCSharp.yui.js" />
+    <Content Include="Scripts\syntax\shBrushCss.min.js">
+      <DependentUpon>shBrushCss.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushCss.yui.js" />
+    <Content Include="Scripts\syntax\shBrushJScript.min.js">
+      <DependentUpon>shBrushJScript.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushJScript.yui.js" />
+    <Content Include="Scripts\syntax\shBrushPlain.min.js">
+      <DependentUpon>shBrushPlain.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushPlain.yui.js" />
+    <Content Include="Scripts\syntax\shBrushSql.min.js">
+      <DependentUpon>shBrushSql.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushSql.yui.js" />
+    <Content Include="Scripts\syntax\shBrushVb.min.js">
+      <DependentUpon>shBrushVb.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushVb.yui.js" />
+    <Content Include="Scripts\syntax\shBrushXml.min.js">
+      <DependentUpon>shBrushXml.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shBrushXml.yui.js" />
+    <Content Include="Scripts\syntax\shCore.min.js">
+      <DependentUpon>shCore.yui.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\syntax\shCore.yui.js" />
+    <Content Include="Scripts\syntax\shLegacy.js" />
+    <None Include="Scripts\shCore.min.js">
+      <DependentUpon>shCore.yui.js</DependentUpon>
+    </None>
+    <None Include="Scripts\shCore.yui.js" />
+    <None Include="Scripts\smilies.min.js">
+      <DependentUpon>smilies.yui.js</DependentUpon>
+    </None>
+    <None Include="Scripts\swfobject.js" />
+    <Content Include="Scripts\topic.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
+    <None Include="Scripts\topic_print.min.js">
+      <DependentUpon>topic_print.yui.js</DependentUpon>
+    </None>
+    <Content Include="Setup\base.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Setup\Process.aspx" />
     <Content Include="Setup\Setup.aspx" />
     <Content Include="Setup\setup.js" />
@@ -905,6 +1082,7 @@
     <Content Include="App_GlobalResources\webResources.en-ie.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>webResources.en-ie1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\webResources.fa.resx">
       <SubType>Designer</SubType>
@@ -926,8 +1104,8 @@
       <LastGenOutput>webResources.ja1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Themes\BlueGray\base.css" />
-    <Content Include="App_Themes\BlueGray\bluegrey.css" />
+    <None Include="App_Themes\BlueGray\base.css" />
+    <None Include="App_Themes\BlueGray\bluegrey.css" />
     <Content Include="App_Themes\BlueGray\images\activity.gif" />
     <Content Include="App_Themes\BlueGray\images\admin\book.png" />
     <Content Include="App_Themes\BlueGray\images\admin\calendar.png" />
@@ -945,21 +1123,11 @@
     <Content Include="App_Themes\BlueGray\images\admin\Warning.png" />
     <Content Include="App_Themes\BlueGray\images\buttons\button_left.png" />
     <Content Include="App_Themes\BlueGray\images\buttons\button_right.png" />
-    <Content Include="App_Themes\BlueGray\images\buttons\edit.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\save.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\subscribe.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\unsubscribe.gif" />
-    <Content Include="App_Themes\BlueGray\images\close.png" />
     <Content Include="App_Themes\BlueGray\images\collapse_blue.jpg" />
     <Content Include="App_Themes\BlueGray\images\expand_blue.jpg" />
     <Content Include="App_Themes\BlueGray\images\logo_snitz_forums_net.gif" />
-    <Content Include="App_Themes\BlueGray\images\menu-expand.gif" />
     <Content Include="App_Themes\BlueGray\images\message\PM.png" />
     <Content Include="App_Themes\BlueGray\images\message\SplitTopic.png" />
-    <Content Include="App_Themes\BlueGray\images\error.png" />
-    <Content Include="App_Themes\BlueGray\images\flame.png" />
-    <Content Include="App_Themes\BlueGray\images\hotOld.png" />
-    <Content Include="App_Themes\BlueGray\images\poll.png" />
     <Content Include="App_Themes\BlueGray\images\Tab\tab-active.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tab-activeL.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tab.gif" />
@@ -967,8 +1135,7 @@
     <Content Include="App_Themes\BlueGray\images\Tab\tabline.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tab-activeR.gif" />
     <Content Include="App_Themes\BlueGray\images\Tab\tabR.gif" />
-    <Content Include="App_Themes\BlueGray\MainModalDialog.css" />
-    <Content Include="App_Themes\BlueGray\images\close.gif" />
+    <None Include="App_Themes\BlueGray\MainModalDialog.css" />
     <Content Include="App_Data\countries.xml" />
     <Content Include="App_Data\PasswordReset.txt" />
     <Content Include="App_Data\Policy.txt" />
@@ -1024,33 +1191,6 @@
     <Content Include="App_Themes\BlueGray\images\admin\unstick.png" />
     <Content Include="App_Themes\BlueGray\images\admin\Write.png" />
     <Content Include="App_Themes\BlueGray\images\bg-pattern.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\agree.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\attach.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\cancel.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\continue.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\finish.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\login.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\logout.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\newtopic.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\next.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\prev.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\preview.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\print.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\reply.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\reset.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\search.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\send.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\spell.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\submit.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\update.gif" />
-    <Content Include="App_Themes\BlueGray\images\buttons\upload.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_aim.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_icq.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_lastpost.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_msnm.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_profile.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_profile_locked.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_skype.gif" />
     <Content Include="App_Themes\BlueGray\images\emoticons\icon_smile.gif" />
     <Content Include="App_Themes\BlueGray\images\emoticons\icon_smile_8ball.gif" />
     <Content Include="App_Themes\BlueGray\images\emoticons\icon_smile_angry.gif" />
@@ -1087,11 +1227,6 @@
     <Content Include="App_Themes\BlueGray\images\ranking\icon_star_purple.gif" />
     <Content Include="App_Themes\BlueGray\images\ranking\icon_star_red.gif" />
     <Content Include="App_Themes\BlueGray\images\ranking\icon_star_silver.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_user_delete.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_user_edit.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_user_lock.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_user_unlock.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_yahoo.gif" />
     <Content Include="App_Themes\BlueGray\images\message\Burn.png" />
     <Content Include="App_Themes\BlueGray\images\message\doc.png" />
     <Content Include="App_Themes\BlueGray\images\message\Document.png" />
@@ -1106,10 +1241,6 @@
     <Content Include="App_Themes\BlueGray\images\message\Trash.png" />
     <Content Include="App_Themes\BlueGray\images\message\Up.png" />
     <Content Include="App_Themes\BlueGray\images\message\User.png" />
-    <Content Include="App_Themes\BlueGray\images\sort_ascending.gif" />
-    <Content Include="App_Themes\BlueGray\images\sort_descending.gif" />
-    <Content Include="App_Themes\BlueGray\images\User-offline.png" />
-    <Content Include="App_Themes\BlueGray\images\User-online.png" />
     <Content Include="App_Themes\BlueGray\images\valid-xhtml10.png" />
     <Content Include="App_Themes\BlueGray\images\vcss.gif" />
     <Content Include="Avatars\default.gif" />
@@ -1142,10 +1273,7 @@
     <Content Include="UserControls\Popups\EmailMember.ascx" />
     <Content Include="Account\Profile.aspx" />
     <Content Include="Account\Register.aspx" />
-    <Content Include="App_Themes\BlueGray\images\email.gif" />
-    <Content Include="App_Themes\BlueGray\images\icon_smile.gif" />
-    <Content Include="App_Themes\BlueGray\images\quotes.png" />
-    <None Include="Scripts\Editor.js" />
+    <None Include="Scripts\Editor.yui.js" />
     <Content Include="Scripts\jquery.lightbox-0.5.min.js" />
     <Content Include="Scripts\locale\jquery.timeago.de.js" />
     <Content Include="App_Themes\BlueGray\Events.skin" />
@@ -1180,15 +1308,15 @@
     <Content Include="App_Themes\ClassicSnitz\SnitzTheme.skin" />
     <Content Include="App_Themes\ClassicSnitz\StatsPanel.skin" />
     <None Include="Properties\PublishProfiles\Snitz.pubxml" />
-    <Content Include="Scripts\jquery.timeago.min.js" />
-    <Content Include="Scripts\jquery.youtube.player.min.js" />
+    <None Include="Scripts\jquery.timeago.min.js" />
+    <None Include="Scripts\jquery.youtube.player.min.js" />
     <Content Include="css\BlueGray\editor.css" />
     <Content Include="Scripts\locale\jquery.timeago.fa.js" />
     <Content Include="Scripts\locale\jquery.timeago.fr.js" />
     <Content Include="Scripts\locale\jquery.timeago.it.js" />
     <Content Include="Scripts\locale\jquery.timeago.ja.js" />
-    <None Include="Scripts\postpage.js" />
-    <None Include="Scripts\topic_print.js" />
+    <None Include="Scripts\postpage.yui.js" />
+    <None Include="Scripts\topic_print.yui.js" />
     <Content Include="Content\Forums\Search.aspx" />
     <Content Include="Content\Forums\Topic.aspx" />
     <Content Include="UserControls\adrotation.ascx" />
@@ -1230,10 +1358,9 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
-    <None Include="Scripts\Bundle.chirp.config">
-      <TransformOnBuild>true</TransformOnBuild>
-    </None>
+    <Content Include="SnitzConnections.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Activate.aspx.cs">
@@ -1242,6 +1369,13 @@
     </Compile>
     <Compile Include="Account\Activate.aspx.designer.cs">
       <DependentUpon>Activate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Bookmark.aspx.cs">
+      <DependentUpon>Bookmark.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Bookmark.aspx.designer.cs">
+      <DependentUpon>Bookmark.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserControls\ArchiveForums.ascx.cs">
       <DependentUpon>ArchiveForums.ascx</DependentUpon>
@@ -1264,6 +1398,19 @@
     <Compile Include="Admin\UserControls\ManageModerators.ascx.designer.cs">
       <DependentUpon>ManageModerators.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\UserControls\ModConfiguration.ascx.cs">
+      <DependentUpon>ModConfiguration.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UserControls\ModConfiguration.ascx.designer.cs">
+      <DependentUpon>ModConfiguration.ascx</DependentUpon>
+    </Compile>
+    <Content Include="App_Code\EventsConfig.config.cs" />
+    <Content Include="App_Code\UploadConfig.config.cs" />
+    <Content Include="App_Code\ShareItConfig.config.cs" />
+    <Content Include="App_Code\SampleModConfig.config.cs">
+      <SubType>Code</SubType>
+    </Content>
     <Compile Include="Content\FAQ\Help.aspx.cs">
       <DependentUpon>Help.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1996,6 +2143,7 @@
     <Content Include="App_GlobalResources\emoticons.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>emoticons.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\extras.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
@@ -2035,7 +2183,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\" />
     <Folder Include="Gallery\" />
   </ItemGroup>
   <ItemGroup>
@@ -2180,9 +2327,9 @@
   </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)\Dependency\*.dll" "$(SolutionDir)Snitz.Web\bin\"
+    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)WWW\bin\"
 
-xcopy /s /y "$(SolutionDir)\Dependency\*.dll" "$(SolutionDir)..\Published\bin\"
+xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)..\Published\bin\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

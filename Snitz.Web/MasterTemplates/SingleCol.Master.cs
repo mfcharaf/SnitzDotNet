@@ -66,7 +66,7 @@ namespace SnitzUI.MasterTemplates
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "loctime", "$(document).ready(function () {replaceText();});", true);
 
             lblForumTitle.Text = Config.ForumTitle;
-            jqUi.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/jquery-ui.css' />";
+            jqUi.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/jquery-ui.min.css' />";
 
             if (Resources.webResources.TextDirection == "rtl")
             {

@@ -2,7 +2,9 @@
     myConfirm(msg, 
         function () {
             $("#__EVENTARGUMENT").val(id);
+            //alert("postback" + btn);
             __doPostBack(btn, id);
+
         }, 
         function () {
         //cancelled so do nothing

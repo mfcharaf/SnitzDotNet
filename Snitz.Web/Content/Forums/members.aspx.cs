@@ -91,7 +91,7 @@ public partial class MembersPage : PageBase
     {
         RowCount = Members.GetMemberCount();
         _memberPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
-        _memberPager.PagerStyle = Enumerators.PagerType.Lnkbutton;
+        _memberPager.PagerStyle = Enumerators.PagerType.Linkbutton;
         _memberPager.UserControlLinkClick += PagerLinkClick;
         _memberPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
         PopulateObject populate = PopulateData;

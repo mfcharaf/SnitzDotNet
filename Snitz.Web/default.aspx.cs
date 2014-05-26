@@ -317,6 +317,7 @@ public partial class Homepage : PageBase
                         break;
                     case "hdnModerators":
                         moderators = formresult[key].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
                         break;
                     case "tbxPassword":
                         password = formresult[key];

@@ -192,4 +192,13 @@
   <data name="wink" xml:space="preserve">
     <value>چشمک زدن</value>
   </data>
+  <data name="dissapprove" xml:space="preserve">
+    <value>dissapprove</value>
+  </data>
+  <data name="dalek" xml:space="preserve">
+    <value>Dalek</value>
+  </data>
+  <data name="test" xml:space="preserve">
+    <value>test</value>
+  </data>
 </root>

@@ -41,11 +41,13 @@ namespace SnitzUI
     public partial class ForumPage : PageBase
     {
         const string session = "FORUMID";
+        private PopulateObject populate;
         protected int _archiveView;
         bool _bGetSelectCount;
         private ForumInfo _currentForum;
         public bool IsForumModerator;
         private GridPager _replyPager;
+        //private GridPager _topicPager;
         private int RowCount
         {
             get
@@ -60,6 +62,21 @@ namespace SnitzUI
                 ViewState["RowCount"] = value;
             }
         }
+        private int PreviousPage
+        {
+            get
+            {
+                if (ViewState["PreviousPage"] == null)
+                    return 0;
+
+                return (int)ViewState["PreviousPage"];
+            }
+            set
+            {
+                ViewState["PreviousPage"] = value;
+            }
+        }
+
         private string Collapsed
         {
             get
@@ -77,8 +94,9 @@ namespace SnitzUI
                     ViewState.Add("Collapsed", value);
                 }
             }
-        }        
-        
+        }
+        public delegate void PopulateObject(int myInt);
+
         protected override void OnInit(EventArgs e)
         {
             
@@ -89,13 +107,21 @@ namespace SnitzUI
             ForumTable.PageSize = Config.TopicPageSize;
 
             if (ForumId != null)
+            {
                 IsForumModerator = Moderators.IsUserForumModerator(HttpContext.Current.User.Identity.Name, ForumId.Value);
+                RowCount = Forums.GetForum(ForumId.Value).TopicCount;
+            }
             if (IsAdministrator || IsForumModerator)
             {
                 ddlShowTopicDays.Items.Add(new ListItem("Unmoderated Posts", "999"));
             }
             if (stickystate.Value != "")
                 Collapsed = stickystate.Value;
+            
+            //_topicPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
+            //_topicPager.PagerStyle = Enumerators.PagerType.Linkbutton;
+            //_topicPager.UserControlLinkClick += PagerLinkClick;
+            //_topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
 
             topicUPD.Triggers.Add(new AsyncPostBackTrigger {ControlID = ddlShowTopicDays.UniqueID, EventName="SelectedIndexChanged"});
             if (Request.QueryString["ARCHIVE"] != null)
@@ -111,11 +137,14 @@ namespace SnitzUI
                 TopicODS.TypeName = "Snitz.BLL.Forums";
                 _archiveView = 0;
             }
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (CurrentPage == -1)
+                CurrentPage = 0;
+
             if (ForumId != null)
             {
                 _currentForum = Forums.GetForum(ForumId.Value);
@@ -177,6 +206,10 @@ namespace SnitzUI
                 else
                     Session["IsAdminOrModerator"] = false;
 
+                populate = PopulateData;
+                
+                //phPager.Controls.Add(_topicPager);
+
                 Page.Title = string.Format(webResources.ttlForumPage, _currentForum.Subject,  Config.ForumTitle);
                 lblHotTopic.Text = string.Format(webResources.lblHotTopics, Config.HotTopicNum);
                 string pagedescription = _currentForum.Description.CleanForumCodeTags();
@@ -196,6 +229,7 @@ namespace SnitzUI
             {
                 try
                 {
+                    //_topicPager.CurrentIndex = Int32.Parse(Request.Params["whichpage"]) - 1;
                     _replyPager.CurrentIndex = Int32.Parse(Request.Params["whichpage"]) - 1;
                 }
                 catch (Exception)
@@ -203,8 +237,9 @@ namespace SnitzUI
                     //Response.Redirect("error.aspx?msg=errInvalidPageNumber",true);
                     throw new HttpException(404, "forum page not found");
                 }
-                
+
             }
+
             if (!IsPostBack)
             {
                 //create CacheKeyDependency if it does not exists
@@ -256,6 +291,8 @@ namespace SnitzUI
 
         private void BindData()
         {
+
+
             _currentForum.StickyTopics = Forums.GetStickyTopics(_currentForum.Id);
 
             StickyGrid.DataSource = _currentForum.StickyTopics;
@@ -271,6 +308,9 @@ namespace SnitzUI
             {
                 Sticky_Panel_CollapsiblePanelExtender.Collapsed = stickystate.Value == "1";
             }
+
+
+
             int numberOfDays = 0;
 
             if (ddlShowTopicDays.SelectedIndex > 0)
@@ -303,10 +343,45 @@ namespace SnitzUI
                     break;
             }
 
-            //TopicODS.Select();
 
         }
-     
+
+        private void PopulateData(int myint)
+        {
+            //RowCount = Forums.GetForum(ForumId.Value).TopicCount;
+            //_topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
+            CurrentPage = myint;
+            ForumTable.PageIndex = CurrentPage;
+            topicUPD.Update();
+        }
+
+        private void PagerLinkClick(object sender, EventArgs e)
+        {
+            var lnk = sender as LinkButton;
+            
+            if (lnk != null)
+            {
+                if (lnk.Text.IsNumeric())
+                    CurrentPage = int.Parse(lnk.Text) - 1;
+                else
+                {
+                    if (lnk.Text.Contains("&gt;"))
+                        CurrentPage += 1;
+                    else if (lnk.Text.Contains("&lt;"))
+                        CurrentPage -= 1;
+                    else if (lnk.Text.Contains("&raquo;"))
+                        CurrentPage = _replyPager.PageCount - 1;
+                    else
+                        CurrentPage = 0;
+                }
+                if (CurrentPage < 0)
+                    CurrentPage = 0;
+                if (CurrentPage >= _replyPager.PageCount)
+                    CurrentPage = _replyPager.PageCount - 1;
+            }
+            _replyPager.CurrentIndex = CurrentPage;
+        }
+
         private void InitializeStickyCollapse()
         {
             ControlPanelExtender(Collapsed == "1");
@@ -322,7 +397,11 @@ namespace SnitzUI
         {
             if (ddlShowTopicDays.SelectedIndex > -1)
             {
+
                 BindData();
+                InvalidateCache();
+                ForumTable.PageIndex = 0;
+                CurrentPage = 0;
             }
         }
 
@@ -355,6 +434,7 @@ namespace SnitzUI
                 var archiveIcon = e.Row.Cells[6].FindControl("hypArchiveTopic") as HyperLink;
                 var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
                 var lastpostdate = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
+                var lastreadpost = e.Row.Cells[5].FindControl("lastreadJump") as HyperLink;
 
                 if(popuplink != null)
                 {
@@ -365,6 +445,16 @@ namespace SnitzUI
                 {
                     lastpostdate.Text = Common.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,
                         Member == null ? Config.TimeAdjust : Member.TimeOffset);
+                }
+                if (lastreadpost != null)
+                {
+                    int lastpage = TopicTracker.LastTopicPage(topic.Id, HttpContext.Current);
+                    if (lastpage > 0)
+                    {
+                        lastreadpost.NavigateUrl = String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}", topic.Id, lastpage+1);
+                        lastreadpost.Visible = true;
+                    }
+
                 }
                 if(subscribe != null)
                 {
@@ -452,11 +542,11 @@ namespace SnitzUI
 
                 if (IsAdministrator || IsForumModerator )
                 {
-                    if (replyIcon != null) replyIcon.Visible = true;
+                    if (replyIcon != null) replyIcon.Visible = !topic.IsArchived;
                     if (delIcon != null) delIcon.Visible = true;
                     if (editIcon != null) editIcon.Visible = true;
                 }
-                else if (topic.Status == (int)Enumerators.PostStatus.Closed ||topic.Forum.Status == (int)Enumerators.PostStatus.Closed)
+                else if (topic.Status == (int)Enumerators.PostStatus.Closed || topic.Forum.Status == (int)Enumerators.PostStatus.Closed || topic.IsArchived)
                 {
                     if (replyIcon != null) replyIcon.Visible = false;
                     if (delIcon != null) delIcon.Visible = false;
@@ -478,6 +568,7 @@ namespace SnitzUI
             else if (e.Row.RowType == DataControlRowType.Pager)
             {
                 _replyPager = (GridPager)e.Row.FindControl("pager");
+                _replyPager.UpdateIndex = populate;
                 _replyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
                 _replyPager.CurrentIndex = CurrentPage;
             }
@@ -491,13 +582,7 @@ namespace SnitzUI
             string locked = "";
             string sticky = "";
 
-            if (topic.LastPostDate > LastVisitDateTime)
-            {
-                image.AlternateText = webResources.lblNewPosts;
-                image.ToolTip = webResources.lblNewPosts;
-                if(topic.ReplyCount >= Config.HotTopicNum)
-                _new = "New";
-            }
+
             if (topic.ReplyCount >= Config.HotTopicNum)
                 hot = "Hot";
             switch ((Enumerators.PostStatus)topic.Status)
@@ -521,13 +606,19 @@ namespace SnitzUI
                     image.ToolTip = webResources.lblTopicLocked;
                     break;
             }
+
             if (topic.IsSticky)
             {
                 sticky = "Sticky";
                 image.AlternateText = webResources.lblStickyTopic;
                 image.ToolTip = locked == "" ? webResources.lblStickyTopic : webResources.lblStickyTopic + ", " + webResources.lblTopicLocked;
             }
-
+            if (topic.LastPostDate > LastVisitDateTime)
+            {
+                image.AlternateText = webResources.lblNewPosts;
+                image.ToolTip = webResources.lblNewPosts;
+                _new = "New";
+            }
             image.SkinID = "Folder" + _new + hot +  sticky + locked;
 
             if (topic.Status == (int)Enumerators.PostStatus.UnModerated)
@@ -550,6 +641,9 @@ namespace SnitzUI
                 image.ToolTip = Polls.lblPoll;
                 image.SkinID = "Poll";
             }
+
+            image.GenerateEmptyAlternateText = true;
+            image.ApplyStyleSheetSkin(Page);
             return image;
         }
 
@@ -587,6 +681,15 @@ namespace SnitzUI
                 //Cancel the event   
                 return;
             }
+            if (CurrentPage == PreviousPage)
+            {
+                if (IsPostBack && CurrentPage != 0)
+                    e.Cancel = true;
+            }
+            else
+            {
+                PreviousPage = CurrentPage;
+            }
         }
 
         protected void TopicOdsSelected(object sender, ObjectDataSourceStatusEventArgs e)
@@ -594,6 +697,7 @@ namespace SnitzUI
             if (_bGetSelectCount)
             {
                 RowCount = (int)e.ReturnValue;
+                //_topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
                 if (CurrentPage != ForumTable.PageIndex)
                     CurrentPage = ForumTable.PageIndex;
             }

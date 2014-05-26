@@ -31,6 +31,24 @@ namespace SnitzUI {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl editorCSS;
         
         /// <summary>
+        /// shareItScripts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal shareItScripts;
+        
+        /// <summary>
+        /// uploadStyle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal uploadStyle;
+        
+        /// <summary>
         /// pbTop control.
         /// </summary>
         /// <remarks>
@@ -65,6 +83,15 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel MessagePanel;
+        
+        /// <summary>
+        /// UpdateProgress1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgress1;
         
         /// <summary>
         /// upd control.
@@ -173,5 +200,17 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder QRPlaceHolder;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new SnitzUI.MasterTemplates.SingleCol Master {
+            get {
+                return ((SnitzUI.MasterTemplates.SingleCol)(base.Master));
+            }
+        }
     }
 }

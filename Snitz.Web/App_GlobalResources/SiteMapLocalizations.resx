@@ -117,17 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountDescription" xml:space="preserve">
+    <value>Member only links</value>
+  </data>
+  <data name="AccountTitle" xml:space="preserve">
+    <value>Account</value>
+  </data>
   <data name="ActivePageDescription" xml:space="preserve">
     <value>View Posts since my last visit</value>
   </data>
   <data name="ActivePageTitle" xml:space="preserve">
     <value>Active Topics</value>
   </data>
+  <data name="AdminDefaultTitle" xml:space="preserve">
+    <value>Forum Settings</value>
+  </data>
   <data name="AdminPageDescription" xml:space="preserve">
     <value>Admin Options</value>
   </data>
   <data name="AdminPageTitle" xml:space="preserve">
     <value>Admin</value>
+  </data>
+  <data name="BookMarkTitle" xml:space="preserve">
+    <value>Bookmarks</value>
   </data>
   <data name="DefaultPageDescription" xml:space="preserve">
     <value>View All Forums</value>
@@ -153,6 +165,9 @@
   <data name="HomePageTitle" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="LanguageTitle" xml:space="preserve">
+    <value>Language Translation</value>
+  </data>
   <data name="LayoutPageDescription" xml:space="preserve">
     <value>Change Forum Layout</value>
   </data>
@@ -164,6 +179,18 @@
   </data>
   <data name="MembersPageTitle" xml:space="preserve">
     <value>Members</value>
+  </data>
+  <data name="ModTitle" xml:space="preserve">
+    <value>Add Ons</value>
+  </data>
+  <data name="MyGalleryTitle" xml:space="preserve">
+    <value>Gallery</value>
+  </data>
+  <data name="PendingTitle" xml:space="preserve">
+    <value>Pending Members</value>
+  </data>
+  <data name="PMTitle" xml:space="preserve">
+    <value>Private Messages</value>
   </data>
   <data name="PolicyPageDescription" xml:space="preserve">
     <value>Registration Rules and Policies Agreement</value>
@@ -182,6 +209,9 @@
   </data>
   <data name="ProfilePageTitle" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="PublicGalleryTitle" xml:space="preserve">
+    <value>Public Galleries</value>
   </data>
   <data name="RegisterPageDescription" xml:space="preserve">
     <value>Registration form</value>

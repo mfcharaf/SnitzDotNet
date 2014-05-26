@@ -30,8 +30,12 @@ using SnitzConfig;
 
 public partial class Login : PageBase
 {
+    private static string returnurl;
     protected void Page_Load(object sender, EventArgs e)
     {
+        if(!IsPostBack)
+            returnurl = Request.UrlReferrer.PathAndQuery;
+ 
         Login1.InstructionText = Resources.extras.lblRegisterLink;
 
             if (Config.RequireRegistration && !Config.ProhibitNewMembers)
@@ -58,6 +62,7 @@ public partial class Login : PageBase
         if (ct != null)
             if (ct.Visible)
                 e.Authenticated = e.Authenticated && ct.IsValid;
-
+        if(e.Authenticated && !String.IsNullOrEmpty(returnurl) && !returnurl.ToLower().Contains("login"))
+            Login1.DestinationPageUrl = returnurl;
     }
 }

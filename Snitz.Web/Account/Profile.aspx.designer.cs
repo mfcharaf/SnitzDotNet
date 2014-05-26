@@ -418,6 +418,15 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
         
         /// <summary>
+        /// showPass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox showPass;
+        
+        /// <summary>
         /// btnChangePass control.
         /// </summary>
         /// <remarks>
@@ -632,24 +641,6 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbxYAHOO;
-        
-        /// <summary>
-        /// lblMSN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMSN;
-        
-        /// <summary>
-        /// tbxMSN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbxMSN;
         
         /// <summary>
         /// TabSig control.

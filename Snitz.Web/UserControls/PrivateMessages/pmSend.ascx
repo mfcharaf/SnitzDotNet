@@ -17,9 +17,9 @@
                         <asp:ImageButton SkinID="CloseModal" runat="server" ID="clB2" CausesValidation="false" EnableViewState="false" />
                     </div>
                 </div>
-                <div class="mainModalContent">
+                <div class="mainModalContent clearfix">
                     <div id="Div3">
-                    <asp:Label ID="Label1" runat="server" Text="Subject" AssociatedControlID="tbxSubject"></asp:Label>&nbps;<asp:TextBox ID="tbxSubject" runat="server"></asp:TextBox>
+                    <asp:Label ID="Label1" runat="server" Text="Subject" AssociatedControlID="tbxSubject"></asp:Label>&nbsp;<asp:TextBox ID="tbxSubject" runat="server"></asp:TextBox>
                     <br />
                     <asp:TextBox ID="qrMessage" runat="server" CssClass="QRMsgArea" Rows="5" 
                         TextMode="MultiLine"></asp:TextBox>

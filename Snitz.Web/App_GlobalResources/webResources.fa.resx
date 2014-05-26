@@ -393,8 +393,8 @@
   <data name="lblMessengerChat" xml:space="preserve">
     <value>بازکردن پنجره چت</value>
   </data>
-  <data name="lblMessengerMSN" xml:space="preserve">
-    <value>آدرس MSN {0}:</value>
+  <data name="lblMessengerSkype" xml:space="preserve">
+    <value>آدرس Skype {0}:</value>
   </data>
   <data name="lblMessengerSend" xml:space="preserve">
     <value>ارسال یک پیغام به ایشان</value>
@@ -462,8 +462,8 @@
   <data name="lblMemberSince" xml:space="preserve">
     <value>تاریخ عضویت</value>
   </data>
-  <data name="lblMSN" xml:space="preserve">
-    <value>شناسه MSN</value>
+  <data name="lblSkype" xml:space="preserve">
+    <value>شناسه Skype</value>
   </data>
   <data name="lblOldPosts" xml:space="preserve">
     <value>هیچ مطلب جدیدی نداریم</value>
@@ -839,5 +839,125 @@
   </data>
   <data name="TextDirectionWord" xml:space="preserve">
     <value>RightToLeft</value>
+  </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btnSaveLink" xml:space="preserve">
+    <value>Save Links</value>
+  </data>
+  <data name="lblEmailMessage" xml:space="preserve">
+    <value>Message to send</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="lblHyperlink" xml:space="preserve">
+    <value>Hyperlink</value>
+  </data>
+  <data name="lblStickyTopic" xml:space="preserve">
+    <value>Sticky Topic</value>
+  </data>
+  <data name="lblSearchDate" xml:space="preserve">
+    <value>Search by Date</value>
+  </data>
+  <data name="ttlTopicPage" xml:space="preserve">
+    <value>{0} : {1}</value>
+  </data>
+  <data name="lblSubscribeForum" xml:space="preserve">
+    <value>Subscribe to posts in this forum</value>
+  </data>
+  <data name="lblUnSubscribeForum" xml:space="preserve">
+    <value>Remove subscription for this forum</value>
+  </data>
+  <data name="lblSubscribeTopic" xml:space="preserve">
+    <value>Notify me when someone replies to this topic</value>
+  </data>
+  <data name="lblUnSubscribeTopic" xml:space="preserve">
+    <value>Remove notifications for this topic</value>
+  </data>
+  <data name="lblMiniStatsTopics" xml:space="preserve">
+    <value>{0} &lt;a class='StatsLnks' href='/Content/Forums/active.aspx' title='View active topics'&gt;active&lt;/a&gt; topic(s) since your last visit.</value>
+  </data>
+  <data name="lblMiniStatsMembers" xml:space="preserve">
+    <value>Total Members: {0} &lt;br/&gt;Total Posts: {1} &lt;br/&gt;Last post {2} by: {3}</value>
+  </data>
+  <data name="lblMiniStatsNewMember" xml:space="preserve">
+    <value>Newest member: {0}</value>
+  </data>
+  <data name="lblPostDate" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="lblDelReply" xml:space="preserve">
+    <value>Delete Reply</value>
+  </data>
+  <data name="lblDelTopic" xml:space="preserve">
+    <value>Delete Topic</value>
+  </data>
+  <data name="lblVisitHomePage" xml:space="preserve">
+    <value>Visit Members Home Page</value>
+  </data>
+  <data name="lblSiteInfo" xml:space="preserve">
+    <value>Forum Settings</value>
+  </data>
+  <data name="lblHideAge" xml:space="preserve">
+    <value>Hide Age from users</value>
+  </data>
+  <data name="lblLockCat" xml:space="preserve">
+    <value>Lock Category</value>
+  </data>
+  <data name="lblUnLockCat" xml:space="preserve">
+    <value>Un-Lock Category</value>
+  </data>
+  <data name="lblDelCategory" xml:space="preserve">
+    <value>Delete Category</value>
+  </data>
+  <data name="lblEditCategory" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="lblDelForum" xml:space="preserve">
+    <value>Delete Forum</value>
+  </data>
+  <data name="lblNewForum" xml:space="preserve">
+    <value>Add Forum</value>
+  </data>
+  <data name="lblEmptyForum" xml:space="preserve">
+    <value>Delete all posts in Forum</value>
+  </data>
+  <data name="lblHideEmail" xml:space="preserve">
+    <value>Hide email address from users</value>
+  </data>
+  <data name="lblAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="Unmoderatedpost" xml:space="preserve">
+    <value>Unmoderated post</value>
+  </data>
+  <data name="OnHold" xml:space="preserve">
+    <value>OnHold</value>
+  </data>
+  <data name="TopicOnHold" xml:space="preserve">
+    <value>Topic is on hold</value>
+  </data>
+  <data name="UnmoderatedPosts" xml:space="preserve">
+    <value>Topic contains unmoderated posts</value>
+  </data>
+  <data name="lblMarkAllRead" xml:space="preserve">
+    <value>Mark all posts as read</value>
+  </data>
+  <data name="NoHomePage" xml:space="preserve">
+    <value>No Home Page specified</value>
+  </data>
+  <data name="lblRequireModeration" xml:space="preserve">
+    <value>!! Awaiting Moderation</value>
+  </data>
+  <data name="ForumIsLocked" xml:space="preserve">
+    <value> (Forum is locked, no posting allowed)</value>
+  </data>
+  <data name="lblNewUrl" xml:space="preserve">
+    <value>Add Url link</value>
+  </data>
+  <data name="EmailValMessage" xml:space="preserve">
+    <value>Your account has been created, but before you can login you must first verify your email address. A message has been sent to the email address you specified. Please check your email inbox and follow the instructions in that email to verify your account</value>
   </data>
 </root>

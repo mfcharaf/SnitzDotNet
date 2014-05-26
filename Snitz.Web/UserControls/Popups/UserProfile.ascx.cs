@@ -57,7 +57,17 @@ namespace SnitzUI.UserControls
         {
             RepeaterItem item = e.Item;
 
-            AuthorInfo author = Members.GetAuthor(UserId);
+            AuthorInfo author;
+            if (Cache["M" + UserId] == null)
+            {
+                author = Members.GetAuthor(UserId);
+                Cache.Insert("M" + UserId, author, null, DateTime.Now.AddMinutes(10d),
+                                System.Web.Caching.Cache.NoSlidingExpiration);
+            }
+            else
+            {
+                author = (AuthorInfo)Cache["M" + UserId];
+            }
             if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
             {
                 if (author != null)

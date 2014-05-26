@@ -145,7 +145,7 @@
     <value>Save Links</value>
   </data>
   <data name="lblLoggedOn" xml:space="preserve">
-    <value>&lt;b&gt;Welcome back {0}.&lt;/b&gt; {1}  You last logged in {2}</value>
+    <value>&lt;b&gt;Welcome back {0}.&lt;/b&gt; {1}  You last visited {2}</value>
   </data>
   <data name="lblThemes" xml:space="preserve">
     <value>Choose a Theme</value>
@@ -441,8 +441,8 @@
   <data name="lblMessengerChat" xml:space="preserve">
     <value>Open Chat window</value>
   </data>
-  <data name="lblMessengerMSN" xml:space="preserve">
-    <value>{0}'s MSN Messenger address:</value>
+  <data name="lblMessengerSkype" xml:space="preserve">
+    <value>{0}'s Skype Messenger address:</value>
   </data>
   <data name="lblMessengerSend" xml:space="preserve">
     <value>Send a message to Member</value>
@@ -518,9 +518,6 @@
   </data>
   <data name="lblMemberSince" xml:space="preserve">
     <value>Joined</value>
-  </data>
-  <data name="lblMSN" xml:space="preserve">
-    <value>MSN Handle</value>
   </data>
   <data name="lblOldPosts" xml:space="preserve">
     <value>No new Posts</value>
@@ -814,7 +811,7 @@
     <value>For</value>
   </data>
   <data name="lblSearch" xml:space="preserve">
-    <value>Search</value>
+    <value>Find</value>
   </data>
   <data name="lblDay" xml:space="preserve">
     <value>Day</value>

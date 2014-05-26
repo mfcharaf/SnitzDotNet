@@ -25,7 +25,7 @@
         }
 
     </style>
-    <script type="text/javascript" src="scripts/jquery.lightbox-0.5.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.lightbox-0.5.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $('.gallerylnk').lightBox();

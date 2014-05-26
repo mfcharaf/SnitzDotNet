@@ -14,7 +14,6 @@
     MaintainScrollPositionOnPostback="true" enableEventValidation="false" viewStateEncryptionMode ="Never" %>
 
 <%@ MasterType TypeName="BaseMasterPage" %>
-<%@ Import Namespace="SnitzCommon" %>
 <%@ Import Namespace="SnitzConfig" %>
 <%@ Register TagPrefix="stats" TagName="Statistics" Src="~/UserControls/Statistics.ascx" %>
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
@@ -25,174 +24,16 @@
 </asp:Content>
 
 <asp:Content ID="head" runat="server" ContentPlaceHolderID="CPHead">
-    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" />
-    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
     <script type="text/javascript">
         var expandedIndex = [];
         var allcpe = [];
+        var pagetheme = '<%= Page.Theme %>';
 
-        function pagebind() {
-            $(document).ready(function () {
-                $(".bbcode").each(function () {
-                    $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
-                });
-                jQuery("abbr.timeago").timeago();
-            });
-        };
+    </script>    
+    <script src="/scripts/common.js" type="text/javascript"></script>
 
-        pagebind();
-        
-        $.fn.serializeNoViewState = function () {
-            return this.find("input,select,hidden,textarea")
-                .not("[type=hidden][name^=__]")
-                .serialize();
-        };
-
-        function UpdateRoleList(ddlid, hdnid, remove) {
-            var rolelist = $get(hdnid).value;
-            var newrole = $("#" + ddlid + " option:selected").text();
-
-            var tbl = $('#roletbl');
-            if (remove) {
-                $("#roletbl td:contains('" + newrole + "')").parent().remove();
-                var regx = new RegExp("\\b" + newrole + "(,|$)", "igm");
-                rolelist = rolelist.replace(regx, "");
-            } else {
-                rolelist = rolelist + ',' + newrole;
-                if (tbl.html() == null) { // no table so create one
-                    $('<table id="roletbl"><tr><td>' + newrole + '</td></tr></table>').appendTo($('#rolelist'));
-                } else {
-                    $('#roletbl tr:last').before('<tr><td>' + newrole + '</td></tr>');
-                }
-            }
-            $get(hdnid).value = rolelist;
-        }
-        function UpdateModerator(ddlid, hdnid, remove) {
-            var modlist = $get(hdnid).value;
-            var newmod = $("#" + ddlid + " option:selected").text();
-
-            var tbl = $('#modtbl');
-            if (remove) {
-                $("#roletbl td:contains('" + newmod + "')").parent().remove();
-                var regx = new RegExp("\\b" + newmod + "(,|$)", "igm");
-                modlist = modlist.replace(regx, "");
-            } else {
-                modlist = modlist + ',' + newmod;
-                if (tbl.html() == null) { // no table so create one
-                    $('<table id="modtbl"><tr><td>' + newmod + '</td></tr></table>').appendTo($('#modlist'));
-                } else {
-                    $('#modtbl tr:last').after('<tr><td>' + newmod + '</td></tr>');
-                }
-            }
-            $get(hdnid).value = modlist;
-        }
-        function SaveForum() {
-            window.PageMethods.SaveForum($("form").serializeNoViewState());
-            var millisecondsToWait = 500;
-            setTimeout(function () {
-                mainScreen.CancelModal();
-                location.reload();
-            }, millisecondsToWait);
-            
-        }
-        function SaveCategory() {
-            window.PageMethods.SaveCategory($("form").serializeNoViewState());
-            var millisecondsToWait = 500;
-            setTimeout(function () {
-                mainScreen.CancelModal();
-                location.reload();
-            }, millisecondsToWait);
-        }
-
-        function pageLoad()
-        {
-            var allBehaviors = window.Sys.Application.getComponents();
-            for (var loopIndex = 0; loopIndex < allBehaviors.length; loopIndex++) {
-                var currentBehavior = allBehaviors[loopIndex];
-                if (currentBehavior.get_name() == "CollapsiblePanelBehavior") {
-                    allcpe.push(currentBehavior);
-                }
-
-            }
-            if (getCookie()) {
-                expandedIndex = getCookie().split(',');;
-                for (var cpeIndex = 0; cpeIndex < expandedIndex.length; cpeIndex++) {
-                    var expandedcpe = expandedIndex[cpeIndex];
-                    $find(expandedcpe).set_Collapsed(false);
-                }
-            }
-        }
-        function pageUnload() {
-            expandedIndex = null;
-            expandedIndex = [];
-            for (var cpeIndex = 0; cpeIndex < allcpe.length; cpeIndex++) {
-                var currentcpe = allcpe[cpeIndex];
-                if (!currentcpe.get_Collapsed()) {
-                    //save the expanded cpe's index
-                    expandedIndex.push(currentcpe.get_id());
-                }
-            }
-            setCookie(expandedIndex);
-        }
-        
-        function setCookie(cookieValue) {
-            var sVar = "cookiename";
-            var theCookie = sVar + '=' + cookieValue + '; expires=Fri, 1 Jul 2019 11:11:11 UTC';
-            document.cookie = theCookie;
-        }
-        function getCookie() {
-            var sVar = "cookiename";
-            var cookies = document.cookie.split('; ');
-            for (var i = 1; i <= cookies.length; i++) {
-                if (cookies[i - 1].split('=')[0] == sVar) {
-                    return cookies[i - 1].split('=')[1];
-                }
-            }
-            return "";
-        }
-        
-        //Sender: Reference to the CollapsiblePanelExtender Client Behavior  
-        //eventArgs: Empty EvenArgs  
-        function onExpand(sender, eventArgs) {
-            //Use sender (instance of CollapsiblePanerExtender client Behavior)  
-            //to get ExpandControlID.  
-            var expander = $get(sender.get_ExpandControlID());
-
-            //Using RegEx to replace pnlCustomer with hdnCustId.  
-            //hdnCustId is a hidden field located within pnlCustomer.  
-            //pnlCustomer is a Panel, and Panels are not Naming Container.  
-            //So hdnCustId will have the same ID as pnlCustomer but with   
-            //'hdnCustId' at the end insted of pnlCustomer.  
-            var custId = $get(sender.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
-
-            //Issue AJAX call to PageMethod, and send sender   
-            //object as userContext Parameter.  
-            PageMethods.GetForums(custId, OnSucceeded, OnFailed, sender);
-            
-        }
-        // Callback function invoked on successful   
-        // completion of the page method.  
-        function OnSucceeded(result, userContext, methodName) {
-            //$get('progress').style.visibility = 'hidden';
-            //userContext is sent while issue AJAX call  
-            //it is an instance of CollapsiblePanelExtender client Behavior.  
-            //Used to get the collapsible element and sent its innerHTML   
-            //to the returned result.             
-            userContext.get_element().innerHTML = result;
-            pagebind();
-        }
-        // Callback function invoked on failure   
-        // of the page method.  
-        function OnFailed(error, userContext, methodName) {
-            //$get('progress').style.visibility = 'hidden';
-            alert(error.get_message());
-        }
-
-        
-        
-    </script>
+    <script src="/scripts/defaultpage.min.js" type="text/javascript"></script>
 </asp:Content>
 
 <asp:Content ID="cph" runat="server" ContentPlaceHolderID="CPHL">

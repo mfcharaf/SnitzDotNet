@@ -51,6 +51,7 @@ table,tr,td,th{border-collapse:collapse; }
     border-radius: 5px;
     background-color: white;
 }
+#maincontainer:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #topsection{background: #ffffff;}
 #topsection h1{margin: 0;padding-top: 15px;border-radius: 5px;}
 

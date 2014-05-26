@@ -23,10 +23,9 @@
 </asp:Content>
 <asp:Content ID="head" ContentPlaceHolderID="CPHead" runat="server">
 
-    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
-    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
+    <script src="/scripts/common.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var urltarget = '<%# Profile.LinkTarget %>';
         var RefreshTimer;
         $(document).ready(function () {
             $(".bbcode").each(function () {
@@ -58,35 +57,35 @@
     <script type="text/javascript" language="javascript">
 <!-- 
 
-    var prm = Sys.WebForms.PageRequestManager.getInstance();
-    var postBackElement;
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        var postBackElement;
 
-    function CancelAsyncPostBack() {
-        if (prm.get_isInAsyncPostBack()) {
-            prm.abortPostBack();
+        function CancelAsyncPostBack() {
+            if (prm.get_isInAsyncPostBack()) {
+                prm.abortPostBack();
+            }
         }
-    }
 
-    prm.add_initializeRequest(InitializeRequest);
-    prm.add_endRequest(EndRequest);
+        prm.add_initializeRequest(InitializeRequest);
+        prm.add_endRequest(EndRequest);
 
-    function InitializeRequest(sender, args) {
-        if (prm.get_isInAsyncPostBack()) {
-            args.set_cancel(true);
+        function InitializeRequest(sender, args) {
+            if (prm.get_isInAsyncPostBack()) {
+                args.set_cancel(true);
+            }
+            postBackElement = args.get_postBackElement();
+            if (postBackElement.id == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
+                $get('<%= UpdateProgress1.ClientID %>').style.display = 'block';
+            }
         }
-        postBackElement = args.get_postBackElement();
-        if (postBackElement.id == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
-            $get('<%= UpdateProgress1.ClientID %>').style.display = 'block';
+        function EndRequest(sender, args) {
+            if (postBackElement.id.search("ucSearch") == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
+                $get('<%= UpdateProgress1.ClientID %>').style.display = 'none';
+            }
         }
-    }
-    function EndRequest(sender, args) {
-        if (postBackElement.id.search("ucSearch") == '<%= ddlTopicsSince.ClientID %>' || postBackElement.id == '<%= ddlPageRefresh.ClientID %>') {
-            $get('<%= UpdateProgress1.ClientID %>').style.display = 'none';
-        }
-    }
 
-    // -->
-</script>       
+        // -->
+    </script>       
 </asp:Content>
 <asp:Content ID="CPHL" ContentPlaceHolderID="CPHL" runat="server">
     <div class="clearfix">
@@ -169,11 +168,9 @@
                         <ItemTemplate>
                             <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="False"
                                 GenerateEmptyAlternateText="true" />
-                            <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>"
-                                target='<%# Eval("Author.LinkTarget") %>'
-                                title="<%# Eval("Subject") %>">
-                                <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>
-                            </a>
+                            <a href='/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>'
+                                title='<%# Eval("Subject")%>'>
+                                <span class="bbcode"><%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></span></a>
                             <br />
                             <%# TopicPageLinks(Eval("ReplyCount"),Eval("Id")) %>
                         </ItemTemplate>
@@ -249,7 +246,7 @@
                     </asp:TemplateField>
                 </Columns>
                 <PagerTemplate>
-                    <uc2:gridpager ID="pager" runat="server" PagerStyle="Lnkbutton" />
+                    <uc2:gridpager ID="pager" runat="server" PagerStyle="Linkbutton" />
                 </PagerTemplate>
                 <HeaderStyle CssClass="category cattitle" />
                 <RowStyle CssClass="row" />

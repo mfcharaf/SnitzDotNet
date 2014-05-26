@@ -56,8 +56,8 @@ public partial class MessageButtonBar : UserControl
         }
     }
 
-    public event EventHandler DeleteClicked; 
-
+    public event EventHandler DeleteClicked;
+    public event EventHandler ReplyDeleteClicked;
 
     protected int ThisId { get; private set; }
 
@@ -119,7 +119,17 @@ public partial class MessageButtonBar : UserControl
 
         if (_post is TopicInfo)
         {
-            _author = Members.GetAuthor(_topic.AuthorId);
+
+            if (Cache["M" + _topic.AuthorId] == null)
+            {
+                _author = Members.GetAuthor(_topic.AuthorId);
+                Cache.Insert("M" + _topic.AuthorId, _author, null, DateTime.Now.AddMinutes(10d),
+                                System.Web.Caching.Cache.NoSlidingExpiration);
+            }
+            else
+            {
+                _author = (AuthorInfo)Cache["M" + _topic.AuthorId];
+            }
             ThisId = _topic.Id;
             if (_topic.ReplyCount > 0)
                 newerreplies = true;
@@ -227,12 +237,18 @@ public partial class MessageButtonBar : UserControl
 
     private void DeleteReply(int replyid)
     {
-        Replies.DeleteReply(replyid);
-        if (DeleteClicked != null)
+
+        try
         {
-            DeleteClicked(this, EventArgs.Empty);
+            Replies.DeleteReply(replyid);
+            InvalidateForumCache();
         }
-        InvalidateForumCache();        
+        catch { }
+        if (ReplyDeleteClicked != null)
+        {
+            ReplyDeleteClicked(this, EventArgs.Empty);
+        }
+        //Request.Form["__EVENTARGUMENT"] = null;
     }
 
     private void BookMarkTopic(int topicid)
@@ -241,7 +257,7 @@ public partial class MessageButtonBar : UserControl
         TopicInfo t = Topics.GetTopic(topicid);
         string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
         List<SnitzLink> bookmarks = page.Profile.BookMarks;
-        bookmarks.Add(new SnitzLink(t.Subject, url));
+        bookmarks.Add(new SnitzLink(t.Subject, url,bookmarks.Count));
         page.Profile.BookMarks = bookmarks;
         page.Profile.Save();        
     }
@@ -253,7 +269,7 @@ public partial class MessageButtonBar : UserControl
         TopicInfo rt = Topics.GetTopic(r.TopicId);
         string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page.CurrentPage + 1, r.Id);
         List<SnitzLink> rbookmarks = page.Profile.BookMarks;
-        rbookmarks.Add(new SnitzLink(rt.Subject, rurl));
+        rbookmarks.Add(new SnitzLink(rt.Subject, rurl,rbookmarks.Count));
         page.Profile.BookMarks = rbookmarks;
         page.Profile.Save();        
     }

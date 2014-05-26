@@ -1,5 +1,5 @@
 b{font-size: 105%;}
-
+img { border: 0px;}
 fieldset{padding:5px;font-size:1.1em;border:1px solid #777;margin:3px;}
 legend{color:#777;}
 
@@ -214,10 +214,11 @@ tr.rowsticky{border-bottom:1px solid #777;}
 }
 .snitzpager a.pagelinkfirst,
 .snitzpager a.pagelinklast{
-    background: #e0e0e0;
+    background: #F5F5F5;
 }
 .snitzpager .currentpagelink{
     background: #dddddd;
+    border: 1px solid #333;
 }
 .snitzpager a.pagelink ,
 .snitzpager a.pagelinkfirst ,
@@ -225,7 +226,11 @@ tr.rowsticky{border-bottom:1px solid #777;}
     text-decoration: none;
     color: #000000;
 }
-
+.snitzpager .pagelink:hover,
+.snitzpager a.pagelinkfirst:hover,
+.snitzpager a.pagelinklast:hover{
+    background: #dddddd;
+}
 
 .tooltip{border:1px solid #777;background-color:White;padding:5px; font-size:small;max-height:350px; overflow:auto;width:650px;}
 
@@ -273,6 +278,8 @@ tr.rowsticky{border-bottom:1px solid #777;}
 .mContent{min-height:120px;height:auto !important;height:120px;width:99% !important;width:95%;padding:4px;}
 .msgIcons{padding: 1px;display:inline; vertical-align:top;width:16px;height:16px;}
 .buttonbar{color:white;height:20px;border-bottom:1px solid #999999;width:100%;background-color:#cccccc;padding-top:2px}
+.pmbuttonbar{height:20px;border-bottom:1px solid #999999;width:100%;padding-top: 2px;}
+.pmtitle{ color: #000000;}
 .buttonbarImg span{height:auto;display:inline;vertical-align:bottom;}
 .buttonbarImg{height:auto;display:inline;vertical-align:bottom;float:right;}
 .buttonbarTxt{float:left; vertical-align:text-top;}
@@ -282,7 +289,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 
 .editedDIV{color:#990033;font-size:0.8em;}
 .editedDIV span {}
-.sigDIV {position: absolute;bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
+.sigDIV {bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
 
 
  
@@ -311,8 +318,8 @@ tr.rowsticky{border-bottom:1px solid #777;}
 
  blockquote.quoteMessage {
    font-size:smaller;
-   border-top: 1px solid #efefef;
-   border-bottom: 1px solid silver;
+   /*border-top: 1px solid #efefef;*/
+   /*border-bottom: 1px solid silver;*/
    margin:1.5em 1em;padding:.5em 1em;
     background-color: #f4f4f4;
    }

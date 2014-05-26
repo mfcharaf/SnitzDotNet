@@ -32,20 +32,7 @@
             var cell = row.insertCell(cellNumber);
             cell.innerHTML = text;
             cell.style.borderBottom = cell.style.borderRight = "solid 1px #aaaaff";
-        }
-//        function hideTooltip() {
-//            var isDisabled = $(".markItUpButton").tooltip("option", "disabled");
-//            if (isDisabled) {
-//                $(".markItUpButton").tooltip("enable");
-//            } else {
-//                $(".markItUpButton").tooltip({ disabled: true });
-//            }
-//            
-//        }
-//        function showTooltip() {
-//            alert("show");
-//            $(".markItUpButton").tooltip("enable");
-//        }        
+        }     
     </script>
     <input type="hidden" id="caretP" />
     <asp:Panel ID="Panel1" runat="server" CssClass="QRBox clearfix">

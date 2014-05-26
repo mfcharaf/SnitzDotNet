@@ -67,20 +67,19 @@ namespace SnitzUI
             else
                 pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/search.css");
             tbxDateCalendarExtender.Format = Config.DateFormat;
-            ddlForum.DataSource = SnitzCachedLists.GetCachedForumList();
+            ddlForum.DataSource = SnitzCachedLists.GetCachedForumList(true);
             ddlForum.DataTextField = "Name";
             ddlForum.DataValueField = "Id";
             ddlForum.DataBind();
             //Grid pager setup
             _replyPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
-            _replyPager.PagerStyle = Enumerators.PagerType.Lnkbutton;
+            _replyPager.PagerStyle = Enumerators.PagerType.Linkbutton;
             _replyPager.UserControlLinkClick += PagerLinkClick;
 
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            PopulateObject populate = PopulateData;
-            _replyPager.UpdateIndex = populate;
+
             lnkAdvanced.Visible = IsAuthenticated;
             if (Request.Form["__EVENTTARGET"] != null)
             {
@@ -90,27 +89,27 @@ namespace SnitzUI
                     if (target.Length > target.IndexOf("lnkPage")) target = target.Substring(target.IndexOf("lnkPage"));
                     target = target.Replace("lnkPage", "");
                     if (target.IsNumeric())
-                        _replyPager.CurrentIndex = Convert.ToInt32(target)-1;
+                        _replyPager.CurrentIndex = Convert.ToInt32(target) - 1;
                     else
                     {
                         switch (target.ToLower())
                         {
-                            case "prev" :
+                            case "prev":
                                 _replyPager.CurrentIndex = CurrentPage - 1;
                                 break;
-                            case "next" :
+                            case "next":
                                 _replyPager.CurrentIndex = CurrentPage + 1;
                                 break;
-                            case "last" :
-                                _replyPager.CurrentIndex = RowCount - 1;
+                            case "last":
+                                _replyPager.CurrentIndex = _replyPager.PageCount - 1;
                                 break;
-                            case "first" :
+                            case "first":
                                 _replyPager.CurrentIndex = 0;
                                 break;
 
                         }
                     }
-
+                    PopulateData(_replyPager.CurrentIndex);
                 }
             }
             if(HttpContext.Current.Items["Subject"] != null)
@@ -131,14 +130,16 @@ namespace SnitzUI
             {
                 if ((bool) ViewState["Extended"])
                 {
-                    EnableSearchForm();
-                    cbxArchive.Checked = true;
+                    if(!IsPostBack)
+                    ExpandSearchForm();
+                    //cbxArchive.Checked = false;
                 }
             }
         }
 
         protected void SearchForums(object sender, EventArgs eventArgs)
         {
+            _replyPager.CurrentIndex = 0;
             FindPosts();
         }
 
@@ -154,6 +155,7 @@ namespace SnitzUI
                                            Author = tbxUserName.Text.Trim(),
                                            SearchFor = searchFor.Text.Trim(),
                                            MessageAndSubject = !cbxSubjectOnly.Checked,
+                                           SubjectOnly = cbxSubjectOnly.Checked,
                                            PageSize = Convert.ToInt32(ddlPageSize.SelectedValue),
                                            Archived = cbxArchive.Checked
                                        };
@@ -175,29 +177,41 @@ namespace SnitzUI
             RowCount = rowcount;
 
             SearchResults.DataSource = searchResults;
-            //GroupByCategoryForum();
             SearchResults.PageSize = sparams.PageSize;
             SearchResults.DataBind();
             if(SearchResults.BottomPagerRow != null)
                 SearchResults.BottomPagerRow.Visible = true;
             SearchResults.Visible = true;
-
-            
+            HideSearchForm();
         }
 
         protected void LinkButton1Click(object sender, EventArgs e)
         {
-            EnableSearchForm();
+            lnkAdvanced.Visible = false;
+            ExpandSearchForm();
             ViewState["Extended"] = true;
         }
 
-        private void EnableSearchForm()
+        private void ExpandSearchForm()
         {
-            extendedSearch.Visible = true;
-            Options.Visible = true;
-            lnkAdvanced.Visible = false;
+            extendedSearch.Attributes.Remove("style");
+            Options.Attributes.Remove("style");
+            pnlSearch.Attributes.Remove("style");
+            btnSearch.Visible = true;
+            
         }
-
+        private void HideSearchForm()
+        {
+            //extendedSearch.Visible = false;
+            //Options.Visible = false;
+            //pnlSearch.Visible = true;
+            extendedSearch.Attributes.Add("style", "display:none;");
+            Options.Attributes.Add("style", "display:none;");
+            pnlSearch.Attributes.Add("style","display:none;");
+            lnkAdvanced.Visible = true;
+            btnSearch.Visible = false;
+            ViewState["Extended"] = false;
+        }
         protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
@@ -262,7 +276,8 @@ namespace SnitzUI
                 var ph = (PlaceHolder)e.Row.FindControl("phPager");
                 
                 _replyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Convert.ToInt32(ddlPageSize.SelectedValue));
-                
+                PopulateObject populate = PopulateData;
+                _replyPager.UpdateIndex = populate;
                 ph.Controls.Add(_replyPager);
             }
         }
@@ -292,6 +307,7 @@ namespace SnitzUI
                     CurrentPage = _replyPager.PageCount - 1;
             }
             _replyPager.CurrentIndex = CurrentPage;
+            PopulateData(_replyPager.CurrentIndex);
         }
 
         protected void SearchResults_Sorting(object sender, GridViewSortEventArgs e)

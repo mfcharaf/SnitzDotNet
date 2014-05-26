@@ -31,6 +31,15 @@ namespace SnitzUI.Content.FAQ {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl faqCSS;
         
         /// <summary>
+        /// shTheme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl shTheme;
+        
+        /// <summary>
         /// addTopic control.
         /// </summary>
         /// <remarks>
@@ -220,6 +229,24 @@ namespace SnitzUI.Content.FAQ {
         protected global::System.Web.UI.WebControls.TextBox tbxQuestion;
         
         /// <summary>
+        /// Label8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label8;
+        
+        /// <summary>
+        /// tbxQorder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbxQorder;
+        
+        /// <summary>
         /// tbxAnswer control.
         /// </summary>
         /// <remarks>
@@ -344,6 +371,24 @@ namespace SnitzUI.Content.FAQ {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox catOrder;
+        
+        /// <summary>
+        /// Label7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label7;
+        
+        /// <summary>
+        /// catRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox catRole;
         
         /// <summary>
         /// btnAddCat control.

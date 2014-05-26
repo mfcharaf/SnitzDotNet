@@ -83,7 +83,7 @@ public partial class GridPager : UserControl
                     url = url.Substring(0, url.IndexOf("&"));
                 litPager.Text = CreatePagerLinks(url);
                 break;
-            case Enumerators.PagerType.Lnkbutton:
+            case Enumerators.PagerType.Linkbutton:
                 linkPager.Visible = true;
                 CreatePagingControl();
                 break;
@@ -121,9 +121,19 @@ public partial class GridPager : UserControl
     {
         object[] aObj = new object[1];
         aObj[0] = _intCurrentIndex;
-        if(_delUpdateIndex != null)
-            _delUpdateIndex.DynamicInvoke(aObj);
-        UpdateControls();
+        try
+        {
+            if (_delUpdateIndex != null)
+                _delUpdateIndex.DynamicInvoke(aObj);
+        }
+        catch (Exception)
+        {
+        }
+        finally
+        {
+            UpdateControls();
+        }
+        
     }
 
     #region dropdown pager controls

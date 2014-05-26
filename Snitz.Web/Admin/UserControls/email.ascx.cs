@@ -48,8 +48,5 @@ public partial class Admin_email : UserControl
             toUpdate.Add("UniqueEmail".GetPropertyDescription(), rblUniqueEmail.SelectedValue);
         Config.UpdateKeys(toUpdate);
 
-        //Config.EmailAuthenticate = (rblSMTPAuth.SelectedValue == "1");
-
-        //Config.EmailAuthUser = tbxMailUser.Text;
     }
 }

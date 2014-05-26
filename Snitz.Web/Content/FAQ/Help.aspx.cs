@@ -32,7 +32,21 @@ namespace SnitzUI.Content.FAQ
 {
     public partial class Help : PageBase
     {
-        private int currentfaq = -1;
+
+        public int currentfaq
+        {
+            get
+            {
+                if (ViewState["currentfaq"] != null)
+                    return (int)ViewState["currentfaq"];
+                return -1;
+            }
+            set
+            {
+                //Filter = value;
+                ViewState.Add("currentfaq", value);
+            }
+        }
         public string Filter
         {
             get
@@ -52,13 +66,16 @@ namespace SnitzUI.Content.FAQ
             base.Page_PreRender(sender, e);
             // Save PageArrayList before the page is rendered.
             ViewState.Add("faqFilter", Filter);
+            ViewState.Add("currentfaq", currentfaq);
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            
             Page.Title = SiteMapLocalizations.FAQPageTitle;
             editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
+            shTheme.Attributes.Add("href","/css/" + Page.Theme + "/shThemeDefault.css");
             if (webResources.TextDirection == "rtl")
             {
                 faqCSS.Attributes.Add("href", "/css/" + Page.Theme + "/faqrtl.css");
@@ -67,22 +84,27 @@ namespace SnitzUI.Content.FAQ
             {
                 faqCSS.Attributes.Add("href", "/css/" + Page.Theme + "/faq.css");
             }
+            addTopic.Visible = IsAuthenticated && (IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin"));
+            manageCats.Visible = IsAuthenticated && (IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin"));
 
-            ddlCategory.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            ddlCategory.DataBind();
+            BindFaqNav();
         }
 
         private void BindFaqNav()
         {
-
-            FaqNav.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            var faqcats = SnitzCachedLists.GetCachedHelpCategories();
+            FaqNav.DataSource = faqcats;
             FaqNav.DataBind();
-
+            ddlCategoryEdit.DataSource = faqcats;
+            ddlCategoryEdit.DataBind();
+            ddlCategoryEdit.Items.Insert(0, "[New]");
+            ddlCategory.DataSource = faqcats;
+            ddlCategory.DataBind();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            BindFaqNav();
+            
             if (!IsPostBack)
             {
                 SetDefaultView();
@@ -91,15 +113,21 @@ namespace SnitzUI.Content.FAQ
             {
                 string postbackbtn = Request.Form["__EVENTTARGET"];
                 string argument = Request.Form["__EVENTARGUMENT"];
-                int id;
                 switch (postbackbtn)
                 {
                     case "DeleteFaq":
-                    id = Convert.ToInt32(argument);
-                    DeleteFaq(id);
+                        int id = Convert.ToInt32(argument);
+                        DeleteFaq(id);
+                        break;
+                    case "ctl00$CPM$ddlCategoryEdit" :
+                        //get round bug if selecting index 0
+                        if (ddlCategoryEdit.SelectedIndex == 0)
+                            SelectCategory(sender, null);
                         break;
                 }
+                
             }
+
         }
 
         private void SetDefaultView()
@@ -109,13 +137,16 @@ namespace SnitzUI.Content.FAQ
 
         protected void ManageCategories(object sender, EventArgs e)
         {
-            ddlCategoryEdit.DataSource = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            ddlCategoryEdit.DataBind();
+            if (!(IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin")))
+                return;
+           
             FaqViews.ActiveViewIndex = 2;
         }
 
         protected void NewTopic(object sender, EventArgs e)
         {
+            if (!(IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin")))
+                return;
             FaqViews.ActiveViewIndex = 1;
             tbxQuestion.Text = "";
             tbxAnswer.Text = "";
@@ -131,6 +162,12 @@ namespace SnitzUI.Content.FAQ
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                FaqCategoryInfo cat = (FaqCategoryInfo) e.Item.DataItem;
+                if (!String.IsNullOrEmpty(cat.Roles) && !Roles.IsUserInRole(cat.Roles) && !IsAdministrator)
+                {
+                    e.Item.Visible = false;
+                    return;
+                }
                 int id = 0;
                 if (e.Item.FindControl("hdnCatId") != null)
                     id = Convert.ToInt32(((HiddenField)e.Item.FindControl("hdnCatId")).Value);
@@ -151,10 +188,10 @@ namespace SnitzUI.Content.FAQ
             int question = Convert.ToInt32(e.CommandArgument);
             faqId.Value = question.ToString();
             FaqInfo faq = SnitzFaq.GetFaqQuestion(question, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            faqQuestion.Text = faq.LinkTitle;
-            faqAnswer.Text = faq.LinkBody.ParseTags();
+            faqQuestion.Text = "<br/>" + faq.LinkTitle + "<br/><br/>";
+            faqAnswer.Text = faq.LinkBody.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
             btnDeleteFaq.OnClientClick =
-"setArgAndPostBack('Do you want to delete QUestion and answer?','DeleteFaq'," + faqId.Value + ");return false;";
+"setArgAndPostBack('Do you want to delete Question and answer?','DeleteFaq'," + faqId.Value + ");return false;";
             btnEdit.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
             btnDeleteFaq.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
         }
@@ -176,16 +213,34 @@ namespace SnitzUI.Content.FAQ
             tbxAnswer.Text = faq.LinkBody;
             FaqViews.ActiveViewIndex = 1;
             hdnEditFaq.Value = id.ToString();
+            tbxQorder.Text = faq.Order.ToString();
+            ddlCategory.SelectedValue = faq.CatId.ToString();
         }
 
         protected void SelectCategory(object sender, EventArgs e)
         {
             FaqCategoryInfo cat = SnitzFaq.GetCategory(ddlCategoryEdit.SelectedItem.Text);
+            
+
             if (cat != null)
             {
+                if (currentfaq == cat.Id)
+                {
+                    return;
+                }
+                currentfaq = cat.Id;
                 catDescription.Text = cat.Description;
                 catLang.Text = cat.Language;
                 catOrder.Text = cat.Order.ToString();
+                catRole.Text = cat.Roles;
+            }
+            else
+            {
+                currentfaq = -1;
+                catDescription.Text = "";
+                catLang.Text = "en";
+                catOrder.Text = "99";
+                catRole.Text = "";                
             }
         }
 
@@ -194,16 +249,20 @@ namespace SnitzUI.Content.FAQ
             SetDefaultView();
         }
 
-
         protected void AddNewCategory(object sender, EventArgs e)
         {
             FaqCategoryInfo cat = SnitzFaq.GetCategory(catDescription.Text) ?? new FaqCategoryInfo();
             cat.Description = catDescription.Text;
             cat.Order = Convert.ToInt32(catOrder.Text);
-
+            cat.Roles = catRole.Text;
             cat.Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            SnitzFaq.AddFaqCategory(cat);
+            if(cat.Id > 0)
+                SnitzFaq.UpdateFaqCategory(cat);
+            else
+                SnitzFaq.AddFaqCategory(cat);
             SetDefaultView();
+            //refresh the category cache
+            Cache.Remove("faqcatlist");
             Response.Redirect(this.Request.RawUrl);
         }
         protected void AddNewQuestion(object sender, EventArgs e)
@@ -227,7 +286,7 @@ namespace SnitzUI.Content.FAQ
                 Link = String.Empty,
                 LinkTitle = question,
                 LinkBody = answer,
-                Order = 99
+                Order = tbxQorder.Text == "" ? 0 : Convert.ToInt32(tbxQorder.Text)
             };
             SnitzFaq.AddFaqQuestion(faq);
             Response.Redirect(this.Request.RawUrl);
@@ -235,11 +294,26 @@ namespace SnitzUI.Content.FAQ
         private void SaveFAQ(object sender, EventArgs eventArgs)
         {
             int id = Convert.ToInt32(hdnEditFaq.Value);
+            string category = ddlCategory.SelectedValue;
+            string question = tbxQuestion.Text;
+            string answer = tbxAnswer.Text;
+            int order = tbxQorder.Text == "" ? 0 : Convert.ToInt32(tbxQorder.Text);
 
-            SnitzFaq.UpdateFaqQuestion(id, tbxQuestion.Text, tbxAnswer.Text, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            FaqInfo faq = SnitzFaq.GetFaqQuestion(id, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+            faq.Order = order;
+            faq.CatId = Convert.ToInt32(category);
+            faq.LinkTitle = question;
+            faq.LinkBody = answer;
+
+            SnitzFaq.UpdateFaqQuestion(faq);
 
             Response.Redirect(this.Request.RawUrl);
 
+        }
+
+        protected void CategoryDataBound(object sender, EventArgs e)
+        {
+            
         }
     }
 }

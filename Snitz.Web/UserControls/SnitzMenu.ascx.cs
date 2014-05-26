@@ -23,6 +23,7 @@ using System;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ModConfig;
 using Snitz.BLL;
 using SnitzCommon;
 using Snitz.Providers;
@@ -105,7 +106,7 @@ public partial class SnitzMenu : UserControl
         }
         if (e.Item.NavigateUrl.ToLower().Contains("events"))
         {
-            if (!Config.ShowEventsCalendar)
+            if (!ConfigHelper.IsModEnabled("EventsConfig"))
             {
                 e.Item.Text = "";
                 e.Item.Enabled = false;
@@ -113,11 +114,23 @@ public partial class SnitzMenu : UserControl
         }
         if(e.Item.NavigateUrl.Contains("gallery.aspx"))
         {
-            if (!Config.ShowGallery)
+            if (e.Item.NavigateUrl.Contains("mygallery.aspx"))
             {
-                e.Item.Text = "";
-                e.Item.Enabled = false;
+                if (!Config.UserGallery)
+                {
+                    e.Item.Text = "";
+                    e.Item.Enabled = false;
+                }
             }
+            else
+            {
+                if (!Config.ShowGallery)
+                {
+                    e.Item.Text = "";
+                    e.Item.Enabled = false;
+                }                
+            }
+
                 
         }
         if (e.Item.NavigateUrl.ToLower().Contains("privatemessage"))

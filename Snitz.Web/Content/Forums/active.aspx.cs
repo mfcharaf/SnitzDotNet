@@ -526,40 +526,72 @@ public partial class ActiveTopicPage : PageBase
 
         private Image GetRecentTopicIcon(TopicInfo topic, int tReplies)
         {
-            var image = new Image { ID = "postIcon", EnableViewState = false};
+            var image = new Image { ID = "postIcon", EnableViewState = false };
+            string _new = "";
+            string hot = "";
+            string locked = "";
+            string sticky = "";
 
+
+            if (topic.ReplyCount >= Config.HotTopicNum)
+                hot = "Hot";
             switch ((Enumerators.PostStatus)topic.Status)
             {
-                case Enumerators.PostStatus.Closed:
-                    image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderNewLocked" : "FolderLocked";
+                case Enumerators.PostStatus.Open:
+                    locked = "";
+                    image.ToolTip = webResources.lblOldPosts;
                     break;
                 case Enumerators.PostStatus.UnModerated:
-                    image.SkinID = "Unmoderated";
+                    image.AlternateText = webResources.Unmoderatedpost;
                     image.ToolTip = webResources.Unmoderatedpost;
                     break;
                 case Enumerators.PostStatus.OnHold:
-                    image.SkinID = "OnHold";
+                    image.AlternateText = webResources.OnHold;
                     image.ToolTip = webResources.OnHold;
                     break;
                 default:
-                    image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderNew" : "Folder";
-                    if (tReplies > Config.HotTopicNum)
-                    {
-                        image.SkinID = topic.LastPostDate > LastVisitDateTime ? "FolderHot" : "FolderNewHot";
-                    }
+                    locked = "Locked";
+                    hot = "";
+                    image.AlternateText = webResources.lblLockedTopic;
+                    image.ToolTip = webResources.lblTopicLocked;
                     break;
             }
-            if(topic.PollId > 0)
+
+            if (topic.IsSticky)
             {
-                image.SkinID = "Poll";
-                image.ToolTip = Polls.lblPoll;
+                sticky = "Sticky";
+                image.AlternateText = webResources.lblStickyTopic;
+                image.ToolTip = locked == "" ? webResources.lblStickyTopic : webResources.lblStickyTopic + ", " + webResources.lblTopicLocked;
             }
-            if (IsAdministrator || IsModerator)
-                if (topic.UnModeratedReplies > 0)
-                {
-                    image.SkinID = "UnmoderatedPosts";
-                    image.ToolTip = webResources.UnmoderatedPosts;
-                }
+            if (topic.LastPostDate > LastVisitDateTime)
+            {
+                image.AlternateText = webResources.lblNewPosts;
+                image.ToolTip = webResources.lblNewPosts;
+                _new = "New";
+            }
+            image.SkinID = "Folder" + _new + hot + sticky + locked;
+
+            if (topic.Status == (int)Enumerators.PostStatus.UnModerated)
+            {
+                image.ToolTip = webResources.Unmoderatedpost;
+                image.SkinID = "UnModerated";
+            }
+            if (topic.Status == (int)Enumerators.PostStatus.OnHold)
+            {
+                image.ToolTip = webResources.TopicOnHold;
+                image.SkinID = "OnHold";
+            }
+            if (topic.UnModeratedReplies > 0)
+            {
+                image.ToolTip = webResources.UnmoderatedPosts;
+                image.SkinID = "UnmoderatedPosts";
+            }
+            if (topic.PollId > 0)
+            {
+                image.ToolTip = Polls.lblPoll;
+                image.SkinID = "Poll";
+            }
+
             image.GenerateEmptyAlternateText = true;
             image.ApplyStyleSheetSkin(Page);
             return image;
@@ -579,7 +611,7 @@ public partial class ActiveTopicPage : PageBase
                 if (rem > 0) pageNum += 1;
 
                 for (int x = 1; x < pageNum + 1; x++)
-                    retVal += "<a href='/Content/Forums/topic.aspx?TOPIC=" + topicId + "&whichpage=" + x + "' target='_new'><span class='topicPageLnk' >" + x + "</span></a> ";
+                    retVal += "<a href='/Content/Forums/topic.aspx?TOPIC=" + topicId + "&whichpage=" + x + "'><span class='topicPageLnk' >" + x + "</span></a> ";
             }
             return retVal;
         }

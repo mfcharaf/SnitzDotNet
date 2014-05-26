@@ -158,10 +158,10 @@
         <asp:Panel ID="PmViewMessage" runat="server" class="clearfix">
 
             <div class="ReplyDiv clearfix">
-                <div class="category cattitle">
-                    <asp:Label ID="pmSubject" runat="server" Text="Label"></asp:Label>
+                <div class="category pmtitle">
+                    <asp:Label ID="pmRecipients" runat="server" Text=""></asp:Label>
                 </div>
-                <div class="leftColumn smalltext">
+                <div class="leftColumn">
                     <asp:Literal ID="pmFrom" runat="server" Text="Username"></asp:Literal><br />
                     <asp:PlaceHolder ID="phAvatar" runat="server"></asp:PlaceHolder>
                     <br />
@@ -170,8 +170,8 @@
                     <asp:Label ID="pmPostcount" runat="server" Text="Username"></asp:Label><br />
                 </div>
                 <div class="MessageDIV">
-                    <div class="buttonbar smalltext">
-                        <asp:Label ID="pmDate" runat="server" Text="Label"></asp:Label>
+                    <div class="pmbuttonbar">
+                        <asp:Label ID="pmDate" runat="server" Text=""></asp:Label>&nbsp;<asp:Label ID="pmSubject" runat="server" Text=""></asp:Label>
                     </div>
                     <div class="mContent">
                         <asp:Label ID="pmBody" runat="server" Text='Message'></asp:Label>
@@ -182,10 +182,10 @@
     </asp:View>
     <asp:View runat="server" ID="view4">
         <asp:Panel ID="PmOptions" runat="server" DefaultButton="btnPmOptions"
-            CssClass="pmoptions">
+            CssClass="pmoptions clearfix">
             <asp:Panel ID="Panel1" runat="server" GroupingText="Enable/Disable Private Messages">
-                <asp:Label ID="Label1" runat="server" Text="private messages are currently turned OFF"></asp:Label>.<br />
-                <asp:Literal ID="Label2" runat="server" Text="You may turn it <b>ON</b> below.  By doing so you will no longer be able to receive private messages"></asp:Literal><br />
+                <%--<asp:Label ID="Label1" runat="server" Text="private messages are currently turned OFF"></asp:Label>.<br />
+                <asp:Literal ID="Label2" runat="server" Text="You may turn it <b>ON</b> below.  By doing so you will no longer be able to receive private messages"></asp:Literal><br />--%>
                 <asp:RadioButtonList ID="rblEnabled" runat="server">
                     <asp:ListItem Value="1">Enable private messages</asp:ListItem>
                     <asp:ListItem Value="0">Disable private messages</asp:ListItem>

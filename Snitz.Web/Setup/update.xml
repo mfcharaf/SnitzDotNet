@@ -17,6 +17,7 @@
       <Column name="FC_DESCRIPTION" type="varchar" size="255" allownulls="false"/>
       <Column name="FC_LANG_ID" type="varchar" size="6" allownulls="true"/>
       <Column name="FC_ORDER" type="int" allownulls="true"/>
+      <Column name="FC_ROLES" type="varchar" size="50" allownulls="tur"/>
       <Index name="PK_FAQ_CATEGORY" columns="FC_ID" direction="ASC" unique="true"/>
     </Table>
     <Table name="FORUM_FAQ_INFO" idfield="FI_ID">
@@ -61,7 +62,7 @@
       <Column name="Role_Id" type="int" allownulls="false"/>
       <Index name="PK_FORUMROLES" columns="Forum_id,Role_id" direction="ASC" unique="true"/>
     </Table>
-    <Table name="ProfileData" >
+    <Table name="FORUM_ProfileData" >
       <Column name="UserId" type="int" allownulls="false"/>
       <Column name="Skype" type="varchar" size="50" allownulls="true"/>
       <Column name="HideAge" type="int" allownulls="true" default="1"/>

@@ -24,12 +24,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Security;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.Services;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ModConfig;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
@@ -134,18 +136,16 @@ namespace SnitzUI
 
             if (TopicId == null)
                 throw new HttpException(404, "Topic not found");
-                //Response.Redirect("~/error.aspx?msg=errInvalidTopicId",true);
+
             if (Request.QueryString["ARCHIVE"] != null)
             {
                 if (Request.QueryString["ARCHIVE"] == "1")
                 {
-                    //TopicODS.TypeName = "Snitz.BLL.Archive";
                     _archiveView = 1;
                 }
             }
             else
             {
-                //TopicODS.TypeName = "Snitz.BLL.Forums";
                 _archiveView = 0;
             }
             try
@@ -171,7 +171,7 @@ namespace SnitzUI
                     _topic.Author = Members.GetAuthor(_topic.AuthorId);
                     //Grid pager setup
                     ReplyPager = (GridPager) LoadControl("~/UserControls/GridPager.ascx");
-                    ReplyPager.PagerStyle = Enumerators.PagerType.Lnkbutton;
+                    ReplyPager.PagerStyle = Enumerators.PagerType.Linkbutton;
                     ReplyPager.UserControlLinkClick += PagerLinkClick;
                     RowCount = _topic.ReplyCount;
                     ReplyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
@@ -185,7 +185,6 @@ namespace SnitzUI
             catch (Exception)
             {
                 throw new HttpException(404, "Topic not found");
-                //Response.Redirect("~/error.aspx?msg=errInvalidTopicId", true);
             }
 
             var meta = new HtmlMeta();
@@ -205,7 +204,22 @@ namespace SnitzUI
             PopulateObject populate = PopulateData;
             ReplyPager.UpdateIndex = populate;
             pager.Controls.Add(ReplyPager);
-            
+
+            if (ConfigHelper.GetBoolValue("UploadConfig", "AllowFileUpload"))
+            {
+                string style = !ConfigHelper.GetBoolValue("UploadConfig", "ShowFileAttach") ? ".upload{display:none;}" : "";
+                if (!Config.UserGallery)
+                    style += ".browse{display:none;}";
+
+                if (!String.IsNullOrEmpty(style))
+                    uploadStyle.Text = "<style>" + style + "</style>";
+                else
+                    uploadStyle.Text = "";
+            }
+            else
+            {
+                uploadStyle.Text = "<style>.upload{display:none;} .browse{display:none;}</style>";
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -213,66 +227,73 @@ namespace SnitzUI
             if (CurrentPage == -1)
                 CurrentPage = 0;
 
+
             if (Request.Form["__EVENTTARGET"] != null)
             {
                 //let's check what async call posted back and see if we need to refresh the page
                 string target = Request.Form["__EVENTTARGET"];
-                var listOfStrings = new List<string> { "TopicSend","TopicDelete","imgPosticon" };
+                var listOfStrings = new List<string> { "TopicSend", "DeleteTopic", "DeleteReply", "imgPosticon", "BookMarkTopic", "BookMarkReply" };
                 bool refreshAfterPostback = listOfStrings.Any(target.EndsWith);
                 if (refreshAfterPostback)
                 {
                     ReplyPager.CurrentIndex = CurrentPage;
                 }
             }
+
             if (!Page.IsPostBack)
             {
                 TopicInfo topic = _topic;
                 string session = "FORUM" + topic.ForumId;
 
-                if (!IsPostBack)
+                if (IsAuthenticated)
                 {
-                    if (IsAuthenticated)
+
+                    //do we have access to this forum
+                    if (!Forums.IsUserInForumRole(Member.Username, topic.Forum.Id))
                     {
-
-                        //do we have access to this forum
-                        if (!Forums.IsUserInForumRole(Member.Username, topic.Forum.Id))
+                        if (Session[session] == null || Session[session].ToString() != "true")
                         {
-                            if (Session[session] == null || Session[session].ToString() != "true")
-                            {
 
-                                if (topic.Forum.Password != null &&
-                                    !String.IsNullOrEmpty(topic.Forum.Password.Trim()))
+                            if (topic.Forum.Password != null &&
+                                !String.IsNullOrEmpty(topic.Forum.Password.Trim()))
+                            {
+                                if (Session[session] == null || Session[session].ToString() == "")
                                 {
-                                    if (Session[session] == null || Session[session].ToString() == "")
-                                    {
-                                        Response.Redirect("~/Content/Forums/forum.aspx?FORUM=" + topic.ForumId);
-                                    }
-                                    else
-                                    {
-                                        if (Session[session].ToString() != "true")
-                                            throw new SecurityException("You are not authorised to view this forum");
-                                    }
+                                    Response.Redirect("~/Content/Forums/forum.aspx?FORUM=" + topic.ForumId);
+                                }
+                                else
+                                {
+                                    if (Session[session].ToString() != "true")
+                                        throw new SecurityException("You are not authorised to view this forum");
                                 }
                             }
                         }
-                        else
+                        if (topic.Forum.Roles.Contains("All") || topic.Forum.Roles.Count == 0)
                         {
-                            Session[session] = "true";
+                            if (String.IsNullOrEmpty(topic.Forum.Password))
+                            {
+                                WriteShareItScriptTags();
+                            }
                         }
                     }
-                    else if(topic.Forum.Roles.Contains("All"))
+                    else
                     {
                         Session[session] = "true";
                     }
-                    else if (topic.Forum.Roles.Count > 0 && !topic.Forum.Roles.Contains("All"))
-                    {
-                        if (Session[session] == null || Session[session].ToString() != "true")
-                            throw new SecurityException("You must be logged in to view this forum");
-                    }
-
+                }
+                else if (topic.Forum.Roles.Contains("All") || topic.Forum.Roles.Count == 0)
+                {
+                    Session[session] = "true";
+                    WriteShareItScriptTags();
+                }
+                else if (topic.Forum.Roles.Count > 0 && !topic.Forum.Roles.Contains("All"))
+                {
+                    if (Session[session] == null || Session[session].ToString() != "true")
+                        throw new SecurityException("You must be logged in to view this forum");
                 }
 
                 Topics.UpdateViewCount(_topic.Id);
+
                 if ((Request.Params["whichpage"] != null))
                 {
                     if (Request.Params["whichpage"] == "-1")
@@ -284,7 +305,6 @@ namespace SnitzUI
                                 pagenum -= 1;
                         CurrentPage = pagenum;
                         ReplyPager.CurrentIndex = pagenum;
-                        
                     }
                     else
                     {
@@ -292,10 +312,14 @@ namespace SnitzUI
                         CurrentPage = pagenum;
                         ReplyPager.CurrentIndex = pagenum;
                     }
-                    
+                    TopicTracker.TrackIt(_topic.Id, CurrentPage,HttpContext.Current);
                 }
                 else
+                {
+                    TopicTracker.TrackIt(_topic.Id, CurrentPage, HttpContext.Current);
                     ReplyPager.CurrentIndex = CurrentPage;
+                    
+                }
             }
 
             if (CurrentPage != 0)
@@ -308,6 +332,33 @@ namespace SnitzUI
                     JumpToReply(reply);
             }
 
+        }
+
+        private void WriteShareItScriptTags()
+        {
+            StringBuilder shareit = new StringBuilder();
+            shareit.AppendLine("<script type=\"text/javascript\">");
+            shareit.AppendFormat("var forumTitle = '{0}'", Config.ForumTitle).AppendLine();
+            shareit.AppendFormat("var forumUrl = '{0}'", Config.ForumUrl).AppendLine();
+            shareit.AppendFormat("var forumName = '{0}'", Config.ForumTitle).AppendLine();
+            shareit.AppendFormat("var forumDesc = '{0}'", Config.ForumDescription).AppendLine();
+            if(IsAuthenticated)
+                shareit.AppendFormat("var urltarget = '{0}'", Profile.LinkTarget).AppendLine();
+            else
+                shareit.AppendLine("var urltarget = '_blank'");
+            shareit.AppendLine("</script>");
+            shareit.AppendLine("<link href=\"/css/" + Page.Theme + "/shThemeDefault.css\" rel=\"stylesheet\" type=\"text/css\" />");
+            shareItScripts.Mode = LiteralMode.PassThrough;
+            shareItScripts.Text = shareit.ToString();
+
+            if (ConfigHelper.IsModEnabled("ShareItConfig"))
+            {
+                StringBuilder shareitscript = new StringBuilder();
+                shareitscript.AppendLine("$('#buttons').jsShare({ maxwidth: 240 });");
+                shareitscript.AppendLine(
+                    "$('#buttons-expanded').jsShare({ initialdisplay: 'expanded', maxwidth: 240 ,messenger: false});");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "shareit", shareitscript.ToString(), true);
+            }
         }
 
         private void JumpToReply(string reply)
@@ -341,6 +392,7 @@ namespace SnitzUI
                 if (CurrentPage >= ReplyPager.PageCount)
                     CurrentPage = ReplyPager.PageCount - 1;
             }
+            TopicTracker.TrackIt(_topic.Id, CurrentPage, HttpContext.Current);
             ReplyPager.CurrentIndex = CurrentPage;
         }
 
@@ -369,6 +421,7 @@ namespace SnitzUI
         
         protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
         {
+            
             SiteMapNode currentNode = null;
             if (SiteMap.CurrentNode == null)
             {
@@ -390,6 +443,7 @@ namespace SnitzUI
             {
                 currentNode = SiteMap.CurrentNode.Clone(true);
             }
+            
             SiteMapNode tempNode = currentNode;
             TopicInfo topic = _topic;
             string strStatus = "";
@@ -400,9 +454,11 @@ namespace SnitzUI
                 strStatus = " (Archived)";
                 topic.Status = 0;
             }
-            tempNode.Title = HttpUtility.HtmlDecode(topic.Subject.CleanForumCodeTags()) + strStatus;
+            
+            tempNode.Title = HttpUtility.HtmlDecode(topic.Subject) + strStatus;
+            
             tempNode = tempNode.ParentNode;
-            tempNode.Title = HttpUtility.HtmlDecode(topic.Forum.Subject.CleanForumCodeTags());
+            tempNode.Title = HttpUtility.HtmlDecode(topic.Forum.Subject);
             tempNode.Url = tempNode.Url + "?FORUM=" + topic.ForumId;
             if (topic.IsArchived)
                 tempNode.Url += "&ARCHIVE=1";
@@ -413,13 +469,14 @@ namespace SnitzUI
         
         protected void RepliesBound(object sender, RepeaterItemEventArgs e)
         {
+            
             RepeaterItem item = e.Item;
             var reply = (ReplyInfo) item.DataItem;
 
             if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
             {
                 var mbar = item.FindControl(@"bbr") as MessageButtonBar;
-                if (mbar != null) mbar.DeleteClicked += TopicDeleted;
+                if (mbar != null) mbar.ReplyDeleteClicked += ReplyDeleteClicked;
                 var popuplink = item.FindControl(@"popuplink") as Literal;
 
                 if (popuplink != null)
@@ -435,6 +492,11 @@ namespace SnitzUI
             }
         }
 
+        private void ReplyDeleteClicked(object sender, EventArgs e)
+        {
+            Response.Redirect(Request.RawUrl);
+        }
+
         private void TopicDeleted(object sender, EventArgs e)
         {
             ReplyPager.CurrentIndex = CurrentPage;
@@ -442,10 +504,9 @@ namespace SnitzUI
 
         protected void TopicBound(object sender, EventArgs e)
         {
-
             var frm = (FormView)sender;
             var currentTopic = ((TopicInfo) frm.DataItem);
-            var mbar = frm.FindControl(@"bbr") as MessageButtonBar;
+            var mbar = frm.FindControl(@"bbT") as MessageButtonBar;
 
             if(!Config.ShowTopicNav || currentTopic.IsArchived)
             {
@@ -459,7 +520,7 @@ namespace SnitzUI
             
             currentTopic.PollId = Topics.GetTopicPollId(currentTopic.Id);
             var msgDisplay = new Literal { Text = currentTopic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls(), Mode = LiteralMode.Encode };
-
+            
             if (currentTopic.PollId > 0)
             {
                 HtmlControl div = (HtmlControl)frm.FindControl(@"msgContent");

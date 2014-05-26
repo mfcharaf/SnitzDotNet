@@ -669,24 +669,6 @@ public partial class Admin_features {
     protected global::System.Web.UI.WebControls.DropDownList ddlShowRank;
     
     /// <summary>
-    /// lblCalendar control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblCalendar;
-    
-    /// <summary>
-    /// rblShowEvents control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblShowEvents;
-    
-    /// <summary>
     /// lblPrivateMessages control.
     /// </summary>
     /// <remarks>

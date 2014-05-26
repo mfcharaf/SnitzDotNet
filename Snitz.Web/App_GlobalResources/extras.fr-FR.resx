@@ -120,4 +120,16 @@
   <data name="ActivePageDescription" xml:space="preserve">
     <value>??</value>
   </data>
+  <data name="ActivePageTitle" xml:space="preserve">
+    <value>Active Topics</value>
+  </data>
+  <data name="AdminPageDescription" xml:space="preserve">
+    <value>Admin Options</value>
+  </data>
+  <data name="AdminPageTitle" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="cbxUseSigbyDefault" xml:space="preserve">
+    <value>Signature checkbox checked by default?</value>
+  </data>
 </root>

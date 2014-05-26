@@ -98,11 +98,9 @@ namespace SnitzUI
             }else
             {
                 _weblinks = (List<SnitzLink>)Session["WEBLINK"];
-            }
-            if(IsPostBack)
-            {
                 SetupDynamicControls();
             }
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -300,9 +298,7 @@ namespace SnitzUI
         private void SaveMemberProfile()
         {
             _profile = ProfileCommon.GetUserProfile(_userProfile);
-            
             _profile.Gravatar = cbxGravatar.Checked;
-            
             _profile.HideAge = cbxHideAge.Checked;
             _profile.Skype = tbxSkype.Text;
             _profile.PublicGallery = cbxPublic.Checked && Config.ShowGallery;
@@ -328,15 +324,10 @@ namespace SnitzUI
                 }                
             }
             
-
-            //tbxName.Text = user.Name;
             if (tbxRealName.Text.Trim() != "")
             {
                 int i = tbxRealName.Text.IndexOf(" ");
-                if (i > 0)
-                    _user.Firstname = tbxRealName.Text.Substring(0, tbxRealName.Text.IndexOf(" ")).Trim();
-                else
-                    _user.Firstname = tbxRealName.Text.Trim();
+                _user.Firstname = i > 0 ? tbxRealName.Text.Substring(0, tbxRealName.Text.IndexOf(" ")).Trim() : tbxRealName.Text.Trim();
 
                 _user.Lastname = tbxRealName.Text.Replace(_user.Firstname, "").Trim();
             }
@@ -360,14 +351,14 @@ namespace SnitzUI
             _user.HideEmail = cbxHideEmail.Checked;
             _user.Yahoo = tbxYAHOO.Text;
             _user.AIM = tbxAIM.Text;
-            _user.MSN = tbxMSN.Text;
+            _user.Skype = tbxSkype.Text;
             _user.ICQ = tbxICQ.Text;
             
             _user.FavouriteQuote = ((TextBox)phQuote.FindControl("tbxQuote")).Text;
             _user.Signature = ((TextBox)phSig.FindControl("tbxSig")).Text;
             _user.Biography = ((TextBox)phBiog.FindControl("tbxBiog")).Text;
             _user.UseSignature = cbxUseSig.Checked;
-            _user.ViewSignatures = (cbxViewSig.Checked ? true : false);
+            _user.ViewSignatures = cbxViewSig.Checked;
 
             _user.LatestNews = ((TextBox)phNews.FindControl("tbxNews")).Text;
             _user.Hobbies = ((TextBox)phHobby.FindControl("tbxHobby")).Text;
@@ -377,8 +368,6 @@ namespace SnitzUI
             //fav links
 
             Members.SaveMember(_user);
-
-
         }
 
         private void SetupTabs()
@@ -400,7 +389,10 @@ namespace SnitzUI
             tbxOccupation.Text = _user.Occupation;
             tbxForumTitle.Text = _user.Rank.Title;
             if(_user.DateOfBirth.Trim() != "")
-                DatePicker1.SetDOB(_user.DateOfBirth.ToDateTime().Value);
+            {
+                var dateTime = _user.DateOfBirth.ToDateTime();
+                if (dateTime != null) DatePicker1.SetDOB(dateTime.Value);
+            }
             ddlTimeZone.SelectedValue = _user.TimeOffset.ToString();
             ddlTheme.SelectedValue = Config.UserTheme;
             if (_profile.Gravatar)
@@ -432,10 +424,9 @@ namespace SnitzUI
             tbxSkype.Text = _profile.Skype;
             tbxYAHOO.Text = _user.Yahoo;
             tbxAIM.Text = _user.AIM;
-            tbxMSN.Text = _user.MSN;
+            tbxSkype.Text = _user.Skype;
             tbxICQ.Text = _user.ICQ;
-
-
+            
             repBookMarks.DataSource = _profile.BookMarks;
             repBookMarks.DataBind();
 
@@ -483,7 +474,7 @@ namespace SnitzUI
             tbxSkype.ReadOnly = !_editmode;
             tbxYAHOO.ReadOnly = !_editmode;
             tbxAIM.ReadOnly = !_editmode;
-            tbxMSN.ReadOnly = !_editmode;
+            tbxSkype.ReadOnly = !_editmode;
             tbxICQ.ReadOnly = !_editmode;
             if(!_editmode)
             {
@@ -498,14 +489,14 @@ namespace SnitzUI
                 tbxSkype.CssClass = "textToLabel";
                 tbxYAHOO.CssClass = "textToLabel";
                 tbxAIM.CssClass = "textToLabel";
-                tbxMSN.CssClass = "textToLabel";
+                tbxSkype.CssClass = "textToLabel";
                 tbxICQ.CssClass = "textToLabel";
+                showPass.Visible = false;
             }
             newemail.Visible = _editmode;
 
             pnlDOB.Visible = _isMyProfile || _editmode;
             pnlSiteInf.Visible = _isMyProfile || _editmode;
-            //pnlButton.Visible = _editmode;
             btnUpdate.Visible = _editmode;
             btnCancel.Visible = _editmode;
             btnEdit.Visible = IsAdministrator && !_editmode;
@@ -636,7 +627,7 @@ namespace SnitzUI
                     if (url != null)
                     {
                         if(!String.IsNullOrEmpty(url.Text))
-                            links.Add(new SnitzLink(name.Text,url.Text));
+                            links.Add(new SnitzLink(name.Text,url.Text,count));
                     }
                 }
             } 
@@ -660,13 +651,13 @@ namespace SnitzUI
                     if (url != null)
                     {
                         if (!String.IsNullOrEmpty(url.Text))
-                            links.Add(new SnitzLink(name.Text, url.Text));
+                            links.Add(new SnitzLink(name.Text, url.Text,count));
                     }
                 }
             }
             if (links.Count == 5)
                 return;
-            links.Add(new SnitzLink("new link", "http://"));
+            links.Add(new SnitzLink("new link", "http://",links.Count));
             if (links.Count == 5)
                 btnAddLink.Enabled = false;
             Session["WEBLINK"] = links;
@@ -710,27 +701,19 @@ namespace SnitzUI
             string filename = e.FileName;
             if (filename == null)
                 return;
-            try
+            string contentType = AsyncFileUpload1.PostedFile.ContentType;
+            if (!contentType.Contains("image"))
+                return;
+            var fileName = Path.GetFileName(filename);
+            if (fileName.Contains(".pdf"))
             {
-                string contentType = AsyncFileUpload1.PostedFile.ContentType;
-                if (!contentType.Contains("image"))
-                    return;
-                var fileName = Path.GetFileName(filename);
-                if (fileName != null && fileName.Contains(".pdf"))
-                {
-                    AsyncFileUpload1.FailedValidation = true;
-                    return;
-                }
-                if (int.Parse(e.FileSize) > 2000000)
-                {
-                    AsyncFileUpload1.FailedValidation = true;
-                    return;
-                }
-
+                AsyncFileUpload1.FailedValidation = true;
+                return;
             }
-            catch (Exception ex)
+            if (int.Parse(e.FileSize) > 2000000)
             {
-                throw ex;
+                AsyncFileUpload1.FailedValidation = true;
+                return;
             }
             string savePath = Page.MapPath(String.Format("~/Avatars/{0}", Path.GetFileName(filename).Replace(" ", "+")));
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
@@ -780,7 +763,6 @@ namespace SnitzUI
 
         protected void GrdSubsRowCommand(object sender, GridViewCommandEventArgs e)
         {
-            //MemberSubscription ms = (MemberSubscription) e.CommandSource;
             if (e.CommandName == "DeleteAll")
             {
                 Subscriptions.RemoveMemberSubscriptions(_user.Id);
@@ -788,13 +770,21 @@ namespace SnitzUI
             else
             {
                 var row = (GridViewRow) ((Control) e.CommandSource).NamingContainer;
-                int topicid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["TopicId"]);
-                int forumid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["ForumId"]);
+                var dataKey = grdSubs.DataKeys[row.RowIndex];
+                if (dataKey != null)
+                {
+                    int topicid = Convert.ToInt32(dataKey["TopicId"]);
+                    int forumid = Convert.ToInt32(dataKey["ForumId"]);
 
-                if (topicid > 0)
-                    Subscriptions.RemoveTopicSubscription(_user.Id, topicid);
-                else if (forumid > 0)
-                    Subscriptions.RemoveForumSubscription(_user.Id, forumid);
+                    if (topicid > 0)
+                    {
+                        Subscriptions.RemoveTopicSubscription(_user.Id, topicid);
+                    }
+                    else if (forumid > 0)
+                    {
+                        Subscriptions.RemoveForumSubscription(_user.Id, forumid);
+                    }
+                }
             }
         }
 
@@ -803,6 +793,45 @@ namespace SnitzUI
             Config.UserTheme = ddlTheme.SelectedValue;
             Session.Add("PageTheme", Config.UserTheme);
             Response.Redirect(Request.RawUrl);
+        }
+
+        protected void DeleteBookMark(object sender, ImageClickEventArgs e)
+        {
+            PageBase page = (PageBase)Page;
+            var id = ((ImageButton)sender).CommandArgument;
+
+            List<SnitzLink> bookmarks = page.Profile.BookMarks;
+            var todelete = bookmarks.Find(i => i.ID == Convert.ToInt32(id));
+            bookmarks.Remove(todelete);
+            _profile.BookMarks = bookmarks;
+            _profile.Save();
+            repBookMarks.DataSource = _profile;
+            repBookMarks.DataBind();
+        }
+
+        protected void ShowPasswordChars(object sender, EventArgs e)
+        {
+            if (!_editmode)
+                return;
+            if(showPass.Checked)
+            {
+                tbxPassword.TextMode = TextBoxMode.SingleLine;
+                tbxNewPass.TextMode = TextBoxMode.SingleLine;
+                tbxConfirmPass.TextMode = TextBoxMode.SingleLine;
+            }
+            else
+            {
+                var pass = tbxPassword.Text;
+                var newpass = tbxNewPass.Text;
+                var confirm = tbxConfirmPass.Text;
+                tbxPassword.TextMode = TextBoxMode.Password;
+                tbxNewPass.TextMode = TextBoxMode.Password;
+                tbxConfirmPass.TextMode = TextBoxMode.Password;
+
+                tbxPassword.Attributes.Add("value", pass);
+                tbxNewPass.Attributes.Add("value", newpass);
+                tbxConfirmPass.Attributes.Add("value", confirm);
+            }
         }
     }
 }

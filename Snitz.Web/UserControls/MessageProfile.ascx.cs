@@ -50,7 +50,16 @@ public partial class MessageProfile : UserControl
         set
         {
             _authorId = value;
-            _author = Members.GetAuthor(_authorId);
+            if (Cache["M" + _authorId] == null)
+            {
+                _author = Members.GetAuthor(_authorId);
+                Cache.Insert("M" + _authorId, _author, null, DateTime.Now.AddMinutes(10d),
+                                System.Web.Caching.Cache.NoSlidingExpiration);
+            }
+            else
+            {
+                _author = (AuthorInfo) Cache["M" + _authorId];
+            }
             SetProperties();
         }
     }
@@ -84,6 +93,7 @@ public partial class MessageProfile : UserControl
 
         }else
         {
+            
             SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Username);
             Literal avatar = new Literal { Text = _author.AvatarUrl };
             if (mu != null && mu.IsActive)
@@ -107,35 +117,30 @@ public partial class MessageProfile : UserControl
         if (!String.IsNullOrEmpty(_author.ICQ))
         {
             hICQ.Visible = _loggedonuser && (_author.ICQ.Trim() != "");
-            hICQ.NavigateUrl = string.Format("http://www.icq.com/people/webmsg.php?to={0}", _author.ICQ);
+            hICQ.NavigateUrl = string.Format("http://www.icq.com/people/webmsg.php?to={0}", _author.ICQ.Trim());
             hICQ.Text = hICQ.ToolTip = webResources.lblICQ;
         }
         if (!String.IsNullOrEmpty(_author.Yahoo))
         {
             hYAHOO.Visible = _loggedonuser && (_author.Yahoo.Trim() != "");
             hYAHOO.NavigateUrl = string.Format("http://edit.yahoo.com/config/send_webmesg?.target={0}&;.src=pg",
-                                               _author.Yahoo);
+                                               _author.Yahoo.Trim());
             hYAHOO.Text = hYAHOO.ToolTip = webResources.lblYAHOO;
         }
 
-        hEmail.Visible = (((_loggedonuser || !Config.LogonForEmail) && _author.ReceiveEmails) || page.IsAdministrator) && Config.UseEmail;
+        hEmail.Visible = (((_loggedonuser || !Config.LogonForEmail) && _author.ReceiveEmails)) && Config.UseEmail;
         hEmail.NavigateUrl = "#";
         hEmail.Attributes.Add("onclick",
                                      string.Format(
                                          "mainScreen.LoadServerControlHtml('Email Member',{{'pageID':10,'data':{0}}},'methodHandlers.BeginRecieve');return false;",
                                          _author.Id));
-        //hEmail.Text = hEmail.ToolTip = Resources.webResources.lblEmail + @" " + _author.Name;
 
-        //hAIM.Visible = _loggedonuser && (_author.AIM.Trim() != "");
-        //hAIM.NavigateUrl = "javascript:openWindow('pop_messengers.aspx?mode=AIM&user=" + _author.UserName + "&id=" + _author.AIM + "')";
-        //hAIM.Text = hAIM.ToolTip = Resources.webResources.lblAIM;
+        hAIM.Visible = _loggedonuser && (_author.AIM.Trim() != "");
+        hAIM.NavigateUrl = string.Format("aim:goim?screenname={0}", _author.AIM.Trim());
+        hAIM.Text = hAIM.ToolTip = webResources.lblAIM;
 
-        hMSN.Visible = false; // (drv.Row.ItemArray[15].ToString().Trim() != "");
-        hMSN.NavigateUrl = "javascript:openWindow('pop_messengers.aspx?mode=MSN&user=" + _author.Username + "&amp;id=" + _author.MSN + "')";
-        hMSN.Text = hMSN.ToolTip = webResources.lblMSN;
-
-        hSKYPE.Visible = false;
-        hSKYPE.NavigateUrl = "";
+        hSKYPE.Visible = true;
+        hSKYPE.NavigateUrl = String.Format("skype:{0}?chat",_author.Skype.Trim());
         hSKYPE.Text = hSKYPE.ToolTip = webResources.lblSkype;
     }
 

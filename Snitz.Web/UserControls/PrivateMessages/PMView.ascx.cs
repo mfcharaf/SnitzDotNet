@@ -340,29 +340,30 @@ namespace SnitzUI.UserControls.PrivateMessaging
         {
             var lnk = (LinkButton)sender;
             PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
-            pm.ToMember = Snitz.BLL.Members.GetMember(pm.ToMemberId);
+            pm.FromMember = Snitz.BLL.Members.GetMember(pm.FromMemberId);
 
-            if (pm.ToMember.ProfileData != null && pm.ToMember.ProfileData.Gravatar == 1)
+            if (pm.FromMember.ProfileData != null && pm.FromMember.ProfileData.Gravatar == 1)
             {
-                string avatar = String.Format("{0}/Avatars/{1}", Common.GetSiteRoot(), String.IsNullOrEmpty(pm.ToMember.Avatar) ? "default.gif" : pm.ToMember.Avatar);
+                string avatar = String.Format("{0}/Avatars/{1}", Common.GetSiteRoot(), String.IsNullOrEmpty(pm.FromMember.Avatar) ? "default.gif" : pm.FromMember.Avatar);
 
-                var gravatar = new Gravatar { Email = pm.ToMember.Email };
+                var gravatar = new Gravatar { Email = pm.FromMember.Email };
                 if (avatar != "")
                     gravatar.DefaultImage = avatar;
                 phAvatar.Controls.Add(gravatar);
             }
             else
             {
-                var avatar = new Literal { Text = pm.ToMember.AvatarUrl };
+                var avatar = new Literal { Text = pm.FromMember.AvatarUrl };
                 phAvatar.Controls.Add(avatar);
             }
             PMViews.ActiveViewIndex = 2;
-
-            pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.ToMemberName);
-            pmTitle.Text = pm.ToMember.Title;
-            pmCountry.Text = pm.ToMember.Country;
-            pmPostcount.Text = pm.ToMember.PostCount.ToString();
-            pmDate.Text = pm.SentDate;
+            pmRecipients.Text = "To: " + pm.ToMemberName;
+            pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.FromMemberName);
+            pmTitle.Text = pm.FromMember.Title;
+            pmCountry.Text = pm.FromMember.Country;
+            pmPostcount.Text = pm.FromMember.PostCount.ToString();
+            pmDate.Text = Common.TimeAgoTag(pm.Sent, true, pm.FromMember.TimeOffset);
+            pmSubject.Visible = true;
             pmSubject.Text = pm.Subject;
             pmBody.Text = pm.Message.ParseTags();
             SetButtonDisplay();
@@ -433,8 +434,8 @@ namespace SnitzUI.UserControls.PrivateMessaging
 
         private void DisplayMessage(PrivateMessageInfo pm)
         {
-            MemberInfo member = Snitz.BLL.Members.GetMember(username);
-            ProfileCommon prof = ProfileCommon.GetUserProfile(username);
+            MemberInfo member = Snitz.BLL.Members.GetMember(pm.FromMemberName);
+            ProfileCommon prof = ProfileCommon.GetUserProfile(pm.FromMemberName);
             if (prof.Gravatar)
             {
                 Gravatar avatar = new Gravatar { Email = member.Email };
@@ -449,14 +450,15 @@ namespace SnitzUI.UserControls.PrivateMessaging
                 Literal avatar = new Literal { Text = member.AvatarUrl };
                 phAvatar.Controls.Add(avatar);
             }
-
+            pmRecipients.Text = pm.Subject;
+            pmSubject.Visible = false;
             pmFrom.Text = String.Format("<a href=\"/Account/profile.aspx?user={0}\">{0}</a>", pm.FromMemberName);
 
             pmTitle.Text = member.Title;
             pmCountry.Text = member.Country;
             pmPostcount.Text = member.PostCount.ToString();
             pmDate.Text = pm.Sent.ToString();
-            pmSubject.Text = pm.Subject;
+
             pmBody.Text = pm.Message.ParseTags();
             PMViews.ActiveViewIndex = 2;
 
@@ -465,34 +467,38 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected void ButtonReply_Click(object sender, ImageClickEventArgs e)
         {
             PmMessage.Visible = true;
-
+            PmMessage.GroupingText = "Reply To Message";
             ImageButton lnk = (ImageButton)sender;
             var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
-            DisplayMessage(pm);
-            tbxRecipient.Text = pm.FromMember.Username;
-            tbxRecipient.Visible = false;
-            lblRecipient.Visible = false;
+            //DisplayMessage(pm);
+            PMViews.ActiveViewIndex = 1;
+            SetButtonDisplay();
+            tbxRecipient.Text = pm.FromMemberName;
+            tbxRecipient.Enabled = false;
+            lblRecipient.Visible = true;
             lblMultiple.Visible = false;
             tbxSubject.Text = Resources.PrivateMessage.PmViewRE + pm.Subject;
-            tbxSubject.Visible = false;
-            lblSubject.Visible = false;
+            tbxSubject.Enabled = false;
+            lblSubject.Visible = true;
             PMControls.Visible = false;
         }
 
         protected void ButtonReplyQuote_Click(object sender, ImageClickEventArgs e)
         {
             PmMessage.Visible = true;
-
+            PmMessage.GroupingText = "Reply To Message";
             ImageButton lnk = (ImageButton)sender;
             var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
-            DisplayMessage(pm);
-            tbxRecipient.Text = pm.FromMember.Username;
-            tbxRecipient.Visible = false;
-            lblRecipient.Visible = false;
+            //DisplayMessage(pm);
+            PMViews.ActiveViewIndex = 1;
+            SetButtonDisplay();
+            tbxRecipient.Text = pm.FromMemberName;
+            tbxRecipient.Enabled = false;
+            lblRecipient.Visible = true;
             lblMultiple.Visible = false;
             qrMessage.Text = string.Format(@"[quote]{0}[/quote]", pm.Message);
-            tbxSubject.Text = "";
-            tbxSubject.Visible = true;
+            tbxSubject.Text = Resources.PrivateMessage.PmViewRE + pm.Subject;
+            tbxSubject.Enabled = true;
             lblSubject.Visible = true;
             PMControls.Visible = false;
         }
@@ -506,14 +512,18 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected void ButtonForward_Click(object sender, ImageClickEventArgs e)
         {
             PmMessage.Visible = true;
-
+            PmMessage.GroupingText = "Forward Message";
             ImageButton lnk = (ImageButton)sender;
             PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
-            DisplayMessage(pm);
+            //DisplayMessage(pm);
+            PMViews.ActiveViewIndex = 1;
+            SetButtonDisplay();
+            tbxRecipient.Text = "";
+            tbxRecipient.Enabled = true;
             qrMessage.Text = Resources.PrivateMessage.PmForwardedMessage + Environment.NewLine + pm.Message;
             tbxSubject.Text = Resources.PrivateMessage.PmViewFwd + pm.Subject;
-            tbxSubject.Visible = false;
-            lblSubject.Visible = false;
+            tbxSubject.Enabled = false;
+            lblSubject.Visible = true;
             PMControls.Visible = false;
         }
 

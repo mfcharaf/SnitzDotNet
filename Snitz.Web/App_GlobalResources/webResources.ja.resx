@@ -396,8 +396,8 @@
   <data name="lblMessengerChat" xml:space="preserve">
     <value>チャットを開窓</value>
   </data>
-  <data name="lblMessengerMSN" xml:space="preserve">
-    <value>{0}のMSN メッセンジャー　アドレス:</value>
+  <data name="lblMessengerSkype" xml:space="preserve">
+    <value>{0}のSkype メッセンジャー　アドレス:</value>
   </data>
   <data name="lblMessengerSend" xml:space="preserve">
     <value>メンバーにメッセージ送信</value>
@@ -465,8 +465,8 @@
   <data name="lblMemberSince" xml:space="preserve">
     <value>メンバー登録日</value>
   </data>
-  <data name="lblMSN" xml:space="preserve">
-    <value>MSN</value>
+  <data name="lblSkype" xml:space="preserve">
+    <value>Skype</value>
   </data>
   <data name="lblOldPosts" xml:space="preserve">
     <value>新投稿無し</value>
@@ -764,5 +764,200 @@
   </data>
   <data name="lblChangeEmail" xml:space="preserve">
     <value>?ChangeEmail</value>
+  </data>
+  <data name="btnDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btnSaveLink" xml:space="preserve">
+    <value>Save Links</value>
+  </data>
+  <data name="lblEmailMessage" xml:space="preserve">
+    <value>Message to send</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="lblHyperlink" xml:space="preserve">
+    <value>Hyperlink</value>
+  </data>
+  <data name="lblStickyTopic" xml:space="preserve">
+    <value>Sticky Topic</value>
+  </data>
+  <data name="lblSearchDate" xml:space="preserve">
+    <value>Search by Date</value>
+  </data>
+  <data name="lblSubscribeForum" xml:space="preserve">
+    <value>Subscribe to posts in this forum</value>
+  </data>
+  <data name="lblUnSubscribeForum" xml:space="preserve">
+    <value>Remove subscription for this forum</value>
+  </data>
+  <data name="lblSubscribeTopic" xml:space="preserve">
+    <value>Notify me when someone replies to this topic</value>
+  </data>
+  <data name="lblUnSubscribeTopic" xml:space="preserve">
+    <value>Remove notifications for this topic</value>
+  </data>
+  <data name="lblMiniStatsTopics" xml:space="preserve">
+    <value>{0} &lt;a class='StatsLnks' href='/Content/Forums/active.aspx' title='View active topics'&gt;active&lt;/a&gt; topic(s) since your last visit.</value>
+  </data>
+  <data name="lblMiniStatsMembers" xml:space="preserve">
+    <value>Total Members: {0} &lt;br/&gt;Total Posts: {1} &lt;br/&gt;Last post {2} by: {3}</value>
+  </data>
+  <data name="lblMiniStatsNewMember" xml:space="preserve">
+    <value>Newest member: {0}</value>
+  </data>
+  <data name="lblPostDate" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="lblDelReply" xml:space="preserve">
+    <value>Delete Reply</value>
+  </data>
+  <data name="lblDelTopic" xml:space="preserve">
+    <value>Delete Topic</value>
+  </data>
+  <data name="lblVisitHomePage" xml:space="preserve">
+    <value>Visit Members Home Page</value>
+  </data>
+  <data name="lblSiteInfo" xml:space="preserve">
+    <value>Forum Settings</value>
+  </data>
+  <data name="lblHideAge" xml:space="preserve">
+    <value>Hide Age from users</value>
+  </data>
+  <data name="lblLockCat" xml:space="preserve">
+    <value>Lock Category</value>
+  </data>
+  <data name="lblUnLockCat" xml:space="preserve">
+    <value>Un-Lock Category</value>
+  </data>
+  <data name="lblDelCategory" xml:space="preserve">
+    <value>Delete Category</value>
+  </data>
+  <data name="lblEditCategory" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="lblDelForum" xml:space="preserve">
+    <value>Delete Forum</value>
+  </data>
+  <data name="lblNewForum" xml:space="preserve">
+    <value>Add Forum</value>
+  </data>
+  <data name="lblEmptyForum" xml:space="preserve">
+    <value>Delete all posts in Forum</value>
+  </data>
+  <data name="lblForumTitle" xml:space="preserve">
+    <value>Snitz Forum</value>
+  </data>
+  <data name="lblCharactersRemaining" xml:space="preserve">
+    <value>Characters Remaining (300 MAX)</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="lblGuests" xml:space="preserve">
+    <value>Guests</value>
+  </data>
+  <data name="lblHideEmail" xml:space="preserve">
+    <value>Hide email address from users</value>
+  </data>
+  <data name="lblMembers" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="lblNotShared" xml:space="preserve">
+    <value>Not Shared</value>
+  </data>
+  <data name="lblShare" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="lblAllowedFileTypes" xml:space="preserve">
+    <value>Allowed File Types</value>
+  </data>
+  <data name="lblMaxAdminUploadSize" xml:space="preserve">
+    <value>Admins have unlimited uploads</value>
+  </data>
+  <data name="lblMaxFileSize" xml:space="preserve">
+    <value>Maximum File Size</value>
+  </data>
+  <data name="lblMaxUserUploadFiles" xml:space="preserve">
+    <value>The maximum allowed file uploads is &lt;b&gt;{0}&lt;/b&gt;.</value>
+  </data>
+  <data name="lblMaxUserUploadSize" xml:space="preserve">
+    <value>The maximum allowed total file size uploads is &lt;b&gt;{0}&lt;/b&gt;.</value>
+  </data>
+  <data name="lblNonEnglishFileNames" xml:space="preserve">
+    <value>Non-english filenames might not work correctly</value>
+  </data>
+  <data name="ErrFileTypeNotAllowed" xml:space="preserve">
+    <value>This file type is not allowed.</value>
+  </data>
+  <data name="ErrMaxFilesExceeded" xml:space="preserve">
+    <value>You have reached the maximum number of files that you are allowed to upload.</value>
+  </data>
+  <data name="ErrMaxSpaceExceeded" xml:space="preserve">
+    <value>The uploading of this file will cause your space allocation to be exceeded.</value>
+  </data>
+  <data name="lblAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="lblViewProfile" xml:space="preserve">
+    <value>View {0}'s Profile</value>
+  </data>
+  <data name="Unmoderatedpost" xml:space="preserve">
+    <value>Unmoderated post</value>
+  </data>
+  <data name="OnHold" xml:space="preserve">
+    <value>OnHold</value>
+  </data>
+  <data name="TopicOnHold" xml:space="preserve">
+    <value>Topic is on hold</value>
+  </data>
+  <data name="UnmoderatedPosts" xml:space="preserve">
+    <value>Topic contains unmoderated posts</value>
+  </data>
+  <data name="lblMarkAllRead" xml:space="preserve">
+    <value>Mark all posts as read</value>
+  </data>
+  <data name="NoHomePage" xml:space="preserve">
+    <value>No Home Page specified</value>
+  </data>
+  <data name="lblRequireModeration" xml:space="preserve">
+    <value>!! Awaiting Moderation</value>
+  </data>
+  <data name="ForumIsLocked" xml:space="preserve">
+    <value> (Forum is locked, no posting allowed)</value>
+  </data>
+  <data name="TextDirectionWord" xml:space="preserve">
+    <value>LeftToRight</value>
+  </data>
+  <data name="lblEnglishLang" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="lblFrenchLang" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="lblGermanLang" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="lblItalianLang" xml:space="preserve">
+    <value>Italian</value>
+  </data>
+  <data name="lblIrishLang" xml:space="preserve">
+    <value>Irish</value>
+  </data>
+  <data name="lblJapaneseLang" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="lblPersianLang" xml:space="preserve">
+    <value>Persian(Farsi)</value>
+  </data>
+  <data name="lblNewUrl" xml:space="preserve">
+    <value>Add Url link</value>
+  </data>
+  <data name="EmailValMessage" xml:space="preserve">
+    <value>Your account has been created, but before you can login you must first verify your email address. A message has been sent to the email address you specified. Please check your email inbox and follow the instructions in that email to verify your account</value>
   </data>
 </root>

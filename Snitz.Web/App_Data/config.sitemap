@@ -34,5 +34,8 @@
     <siteMapNode title="Polls" description="">
       <siteMapNode url="~\admin\default.aspx?action=pollconfig" title="Poll Configuration" description=""/>
     </siteMapNode>
+    <siteMapNode title="Mods" description="">
+      <siteMapNode url="~\admin\default.aspx?action=modconfig" title="Mod Configuration" description=""/>
+    </siteMapNode>    
   </siteMapNode>
 </siteMap>

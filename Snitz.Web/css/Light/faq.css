@@ -32,7 +32,7 @@
         {
             margin: 0px 0px 0px 300px;
             padding: 10px;
-            border-left: 1px solid #0FA1B8;
+            border-left: 1px solid #777;
             border-collapse: collapse;
             background-color: white;
         }
@@ -42,7 +42,7 @@
             float: left;
             width: 300px !important;
             padding: 0px;
-            border-right: 1px solid #0FA1B8;
+            border-right: 1px solid #777;
             border-collapse: collapse;
             height: auto;
             margin-top: 0px;

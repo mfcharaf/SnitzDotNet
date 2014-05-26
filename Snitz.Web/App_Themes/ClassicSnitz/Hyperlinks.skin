@@ -32,6 +32,7 @@
 <asp:HyperLink SkinID="ReplyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/reply.png"></asp:HyperLink>
 <asp:HyperLink SkinID="NewTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
 <asp:HyperLink SkinID="JumpTo" CssClass="msgIcons" runat="server" ImageUrl="Images/page_go.png"></asp:HyperLink>
+<asp:HyperLink SkinID="JumpToLastRead" CssClass="msgIcons" runat="server" ImageUrl="Images/bookmark.png"></asp:HyperLink>
 <asp:HyperLink SkinID="PoweredByLogo" runat="server"></asp:HyperLink>
 <asp:HyperLink SkinID="TitleLogo" runat="server" ImageUrl="Images/ncec.gif" Text="Forum Logo"></asp:HyperLink>
 
@@ -42,11 +43,10 @@
 
 <asp:HyperLink SkinID="Email" runat="server" ImageUrl="Images/message/email.png" cssclass="msgIcons"></asp:HyperLink>
 <asp:HyperLink SkinID="HomePage" runat="server" ImageUrl="Images/message/home.png" cssclass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="AIM" runat="server" ImageUrl="Images/icon_aim.gif" cssclass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="ICQ" runat="server" ImageUrl="Images/icon_icq.gif" cssclass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="MSN" runat="server" ImageUrl="Images/icon_msnm.gif" cssclass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="YAHOO" runat="server" ImageUrl="Images/icon_yahoo.gif" cssclass="msgIcons"></asp:HyperLink>
-<asp:HyperLink SkinID="SKYPE" runat="server" ImageUrl="Images/icon_skype.gif" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="AIM" runat="server" ImageUrl="Images/social/icon_aim.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="ICQ" runat="server" ImageUrl="Images/social/icon_icq.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="YAHOO" runat="server" ImageUrl="Images/social/icon_yahoo.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="SKYPE" runat="server" ImageUrl="Images/social/icon_skype.png" cssclass="msgIcons"></asp:HyperLink>
 
 <asp:HyperLink SkinID="EditPost" runat="server" ImageUrl="Images/message/edit.png" CssClass="msgIcons"></asp:HyperLink>
 <asp:HyperLink SkinID="ReplyQuote" runat="server" ImageUrl="Images/message/quote.png" CssClass="msgIcons"></asp:HyperLink>

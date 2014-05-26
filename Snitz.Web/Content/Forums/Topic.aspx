@@ -8,9 +8,11 @@
 ## http://forum.snitz.com
 ##############################################################################################################
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master"
+<%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" EnableViewState="false"
     AutoEventWireup="true" Culture="auto" UICulture="auto" CodeBehind="Topic.aspx.cs" MaintainScrollPositionOnPostback="true"
     Inherits="SnitzUI.TopicPage" %>
+<%@ MasterType virtualpath="~/MasterTemplates/SingleCol.Master" %>
+
 <%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzConfig" %>
 <%@ Import Namespace="Snitz.Entities" %>
@@ -26,23 +28,29 @@
 </asp:Content>
 <asp:Content runat="server" ID="scripthead" ContentPlaceHolderID="CPHead">
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-    <script type="text/javascript" src="/scripts/jquery.youtube.player.min.js"></script>
-    <script src="/scripts/editor.min.js" type="text/javascript"></script>
-    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
-    <script src="/scripts/postpage.min.js" type="text/javascript"></script>
-    <script src="/Scripts/topic_print.min.js" type="text/javascript"></script>
-    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
+    <link href="/css/jsShare.css" rel="stylesheet" type="text/css" /> 
+    <link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+    <asp:Literal runat="server" ID="shareItScripts"></asp:Literal>
+    <script src="/scripts/topic.js" type="text/javascript"></script>
     <script type="text/javascript">
         function pagebind() {
             $(document).ready(function () {
                 $(".bbcode").each(function () {
                     $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
-                });
+                                });
+                SyntaxHighlighter.autoloader(
+                    'js jscript javascript  /Scripts/syntax/shBrushJScript.min.js',
+                    'c# c-sharp csharp      /Scripts/syntax/shBrushCSharp.min.js',
+                    'css                    /Scripts/syntax/shBrushCss.min.js',
+                    'text plain             /Scripts/syntax/shBrushPlain.min.js',
+                    'sql                    /Scripts/syntax/shBrushSql.min.js',
+                    'vb vbnet               /Scripts/syntax/shBrushVb.min.js',
+                    'xml xhtml xslt html    /Scripts/syntax/shBrushXml.min.js'
+                  );
+
+                SyntaxHighlighter.all();
+
                 $('#ctl00_CPF1_ctl00_emoticons1_DataList1 a').click(function () {
-                    //var emoticon = $(this).attr("title");
-                    //$.markItUp({ replaceWith: emoticon });
                     return false;
                 });
                 $('a.video').player({
@@ -52,16 +60,12 @@
                     showPlaylist: 0,
                     showTitleOverlay: 0
                 });
-
-            });
-            
+            });          
         };
-
         pagebind();
         function pollloaded() { alert("poll loaded");
             pagebind();
-        }
-        
+        }       
         $.fn.serializeNoViewState = function () {
             return this.find("input,select,hidden,textarea")
                 .not("[type=hidden][name^=__]")
@@ -125,7 +129,6 @@
             window.addToClientTable(args.get_fileName(), text);
 
         }
-
         function OnSucceeded(results, userContext, methodName) {
             alert(results);
             mainScreen.CancelModal();
@@ -142,60 +145,25 @@
         }
 
     </script>
-    <style type="text/css">
-        img.avatar
-        {
-            width: 80px;
-            height: 80px;
-            opacity: 0.4;
-
-        }
-        img.online
-        {
-            width: 80px;
-            height: 80px;
-            opacity: 1;
-
-        }
-        .topicSplit label, .topicSplit input
-        {
-            font-size: 0.9em;
-            display: inline-block;
-            width: 120px;
-            margin-bottom: 10px;
-        }
-        .topicSplit input[type="text"]
-        {
-            width: 400px;
-        }
-        .topicSplit input, .topicSplit select
-        {
-            border: 1px solid Silver;
-        }
-        .topicSplit select
-        {
-            max-width: 200px;
-        }
-        .topicSplit label
-        {
-            text-align: right;
-            padding-right: 20px;
-        }
-        .forumtable
-        {
-            border-color: #0FA1B8;
-        }
-        .markItUpEditor
-        {
-            min-height: 140px !important;
-        }
-        #emoticons img{border:0px;margin:2px;}
-        .AspNet-FormView-Data{ padding: 0px;}
-    </style>
+<style type="text/css">
+    img.avatar{width: 80px;height: 80px;opacity: 0.4;}
+    img.online{width: 80px;height: 80px;opacity: 1;}
+    .topicSplit label, .topicSplit input{font-size: 0.9em;display: inline-block;width: 120px;margin-bottom: 10px;}
+    .topicSplit input[type="text"]{width: 400px;}
+    .topicSplit input, .topicSplit select{border: 1px solid Silver;}
+    .topicSplit select{max-width: 200px;}
+    .topicSplit label{text-align: right;padding-right: 20px;}
+    .forumtable{border-color: #0FA1B8;}
+    .markItUpEditor{min-height: 140px !important;}
+    #emoticons img{border:0px;margin:2px;}
+    .AspNet-FormView-Data{ padding: 0px;}
+</style>
+    <asp:Literal runat="server" ID="uploadStyle"></asp:Literal>
 </asp:Content>
-<asp:Content ID="ContentMain" ContentPlaceHolderID="CPM" runat="server">
+<asp:Content ID="ContentMain" ContentPlaceHolderID="CPM" runat="server" EnableViewState="false">
     <div class="POFTop clearfix">
         <topic:PostButtons ID="pbTop" runat="server"></topic:PostButtons>
+        <div id="buttons-expanded"></div>
     </div>
     <div id="MessageList" style="width: 100%;">
         <asp:FormView ID="TopicView" runat="server" Width="100%" CellPadding="0" EnableViewState="False"
@@ -205,11 +173,11 @@
                     <div class="topicPrev">
                         &laquo;
                         <asp:HyperLink ID="prevTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=prev", Eval("Id")) %>'
-                            Text="Prev Topic"></asp:HyperLink>
+                            Text="Prev Topic" EnableViewState="False"></asp:HyperLink>
                     </div>
                     <div class="topicNext">
                         <asp:HyperLink ID="nextTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=next", Eval("Id")) %>'
-                            Text="Next Topic"></asp:HyperLink>
+                            Text="Next Topic" EnableViewState="False"></asp:HyperLink>
                         &raquo;</div>
                 </div>
             </HeaderTemplate>
@@ -225,15 +193,15 @@
                     </div>
                     <div class="MessageDIV">
                         <div class="buttonbar">
-                            <topic:MessageButtonBar ID="bbT" runat="server" Post='<%# Container.DataItem %>' DeleteClick="MessageDeleted" />
+                            <topic:MessageButtonBar ID="bbT" runat="server" Post='<%# Container.DataItem %>' />
                         </div>
                         <div id="msgContent" class="mContent bbcode" runat="server">
-                            <asp:PlaceHolder ID="msgPH" runat="server"></asp:PlaceHolder>
+                            <asp:PlaceHolder EnableViewState="False" ID="msgPH" runat="server"></asp:PlaceHolder>
                         </div>
                         <br />
                         <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
-                            <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
-                            <asp:Literal ID="litDate1" runat="server" Text='<%# Topics.LastEditTimeAgo(Container.DataItem)%>' />
+                            <asp:Label ID="Label2" EnableViewState="False" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
+                            <asp:Literal ID="litDate1" EnableViewState="False" runat="server" Text='<%# Topics.LastEditTimeAgo(Container.DataItem)%>' />
                         </div>
                         <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
                             <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
@@ -252,46 +220,44 @@
             </asp:DropDownList>
         </div>
         <asp:Panel ID="MessagePanel" runat="server">
-            
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upd" >
+    <ProgressTemplate>
+        <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;z-index:5000;"  >
+            <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+        </div>
+    </ProgressTemplate>
+</asp:UpdateProgress>             
             <asp:UpdatePanel ID="upd" runat="server" ChildrenAsTriggers="true">
                 <ContentTemplate>
-                    <script type="text/javascript">
-                        var prm = Sys.WebForms.PageRequestManager.getInstance();
-                        var confirmHandlers = {};
-
-                        prm.add_endRequest(
-
-                            function () {
-
-                            jQuery("abbr.timeago").timeago();
-
-                        });
-
-
-                        confirmHandlers.BeginRecieve = function (_result) {
-
-                            var res = false;
-                            if (_result.customStyle && _result.customStyle != "") {
-                                mainScreen.LoadStyleSheet(_result.customStyle);
-                            }
-                            if (_result.html && _result.html != "") {
-                                mainScreen.mainModalContentsDiv.innerHTML = _result.html;
-                                res = true;
-                            }
-                            if (_result.script && _result.script != "") {
-                                eval(_result.script);
-                            }
-                            if (!res) {
-                                mainScreen.CancelModal();
-                            } else {
-                                mainScreen.mainModalExtender._layout();
-                                setTimeout('mainScreen.mainModalExtender._layout()', 3000);
-                            }
-                        };
-
-                    </script>
-                    <asp:Repeater ID="TopicReplies" runat="server" Visible="true" EnableViewState="false"
-                        OnItemDataBound="RepliesBound">
+<script type="text/javascript">
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var confirmHandlers = {};
+    prm.add_endRequest(
+        function () {
+            pagebind();
+            jQuery("abbr.timeago").timeago();
+        });
+    confirmHandlers.BeginRecieve = function (_result) {
+    var res = false;
+    if (_result.customStyle && _result.customStyle != "") {
+        mainScreen.LoadStyleSheet(_result.customStyle);
+    }
+    if (_result.html && _result.html != "") {
+        mainScreen.mainModalContentsDiv.innerHTML = _result.html;
+        res = true;
+    }
+    if (_result.script && _result.script != "") {
+        eval(_result.script);
+    }
+    if (!res) {
+        mainScreen.CancelModal();
+    } else {
+        mainScreen.mainModalExtender._layout();
+        setTimeout('mainScreen.mainModalExtender._layout()', 3000);
+    }
+};
+</script>
+                    <asp:Repeater ID="TopicReplies" runat="server" Visible="true" EnableViewState="false" OnItemDataBound="RepliesBound">
                         <ItemTemplate>
                             <div class="ReplyDiv clearfix">
                                 <div class="leftColumn">
@@ -328,6 +294,7 @@
                                 <div class="MessageDIV">
                                     <div class="buttonbar">
                                         <asp:HyperLink ID="hypGoUp" rel="nofollow" SkinID="GotoTop" runat="server" EnableViewState="False"
+                                            ToolTip="<%$ Resources:webResources, lblGotoTop %>"
                                             NavigateUrl="#top" style="margin-left:5px;"></asp:HyperLink>
                                         <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
                                     </div>
@@ -393,7 +360,5 @@
     <div class="table-bottom-footer">
         <asp:PlaceHolder ID="QRPlaceHolder" runat="server" EnableViewState="False"></asp:PlaceHolder>
     </div>
-
 </asp:Content>
-<asp:Content ID="ForumFooter" ContentPlaceHolderID="CPF2" runat="server">
-</asp:Content>
+<asp:Content ID="ForumFooter" ContentPlaceHolderID="CPF2" runat="server"></asp:Content>

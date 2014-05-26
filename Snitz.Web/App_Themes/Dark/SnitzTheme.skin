@@ -25,6 +25,7 @@ Default skin template. The following skins are provided as examples only.
 <asp:Image SkinID="FolderNewLocked" ImageUrl="Images/admin/lock.png" runat="server" Width="16" Height="16" />
 <asp:Image SkinID="FolderSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
 <asp:Image SkinID="FolderHotSticky" ImageUrl="Images/message/stick.png" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderNewHotSticky" ImageUrl="Images/message/stick.png" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="FolderNewSticky" ImageUrl="Images/icon_folder_new_sticky.gif" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="FolderNewStickyLocked" ImageUrl="Images/icon_folder_new_sticky_locked.gif" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="FolderStickyLocked" ImageUrl="Images/admin/lock.png" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>

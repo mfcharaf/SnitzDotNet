@@ -52,6 +52,7 @@ public partial class Admin_ManageRoles : UserControl
             errLbl2.Visible = false;
 
             UserListPanel.Visible = (roleid > 1);
+            RefreshUserList();
         }
 
     }

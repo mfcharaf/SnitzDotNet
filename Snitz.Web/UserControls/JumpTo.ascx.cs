@@ -57,7 +57,7 @@ public partial class WebUserControl : UserControl
         string[] rolelist = new SnitzRoleProvider().GetRolesForUser(HttpContext.Current.User.Identity.Name);
         List<ForumJumpto> result = new List<ForumJumpto>();
 
-        foreach (ForumJumpto fo in SnitzCachedLists.GetCachedForumList())
+        foreach (ForumJumpto fo in SnitzCachedLists.GetCachedForumList(false))
         {
             fo.Roles = Forums.GetForumRoles(fo.Id).ToList();
             if (rolelist.Length == 0)

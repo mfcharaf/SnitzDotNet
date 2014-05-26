@@ -214,7 +214,7 @@ namespace SnitzUI.UserControls
                     if (newIcon != null)
                     {
                         newIcon.Visible = IsAuthenticated;
-                        newIcon.ImageUrl = imagedir + "/admin/folder2.png";
+                        newIcon.ImageUrl = imagedir + "/admin/document.png";
                         newIcon.Visible = newIcon.Visible && forum.Status != (int)Enumerators.PostStatus.Closed;
                         newIcon.Visible = newIcon.Visible || (IsAdministrator || isForumModerator);
                         newIcon.NavigateUrl = string.Format("~/Content/Forums/post.aspx?method=topic&FORUM={0}&CAT={1}",

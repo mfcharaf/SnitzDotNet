@@ -26,12 +26,14 @@
 </asp:Content>
 <asp:Content runat="server" ID="head" ContentPlaceHolderID="CPHead">
 
-    <script src="/scripts/bbcode.min.js" type="text/javascript"></script>
-    <script src="/scripts/smilies.min.js" type="text/javascript"></script>
-    <script src="/scripts/confirmdialog.js" type="text/javascript"></script>
+    <script src="/scripts/common.js" type="text/javascript"></script>
     <script type="text/javascript">
         //Parse the bbcode
+        var urltarget = '<%# Profile.LinkTarget %>';
         $(document).ready(function () {
+            $(".minibbcode").each(function () {
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+                        });
             $(".bbcode").each(function () {
                 var test = $(this).text();
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
@@ -195,6 +197,13 @@
                             <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
                             <HeaderStyle Width="60px"></HeaderStyle>
                         </asp:TemplateField>
+<%--                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
+                        <HeaderStyle Width="60px" />
+                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        <ItemTemplate>
+                            <%# Eval("ReplyCount") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>--%>
                         <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount" Visible="true">
                             <ItemTemplate>
                                 <%# Common.TranslateNumerals(Eval("Views"))%>
@@ -207,6 +216,8 @@
                                 <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
                                     CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
+                                <%--<br />
+                                <asp:Literal runat="server" ID="lastpostdate"></asp:Literal>--%>    
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Left" Width="122px" VerticalAlign="Top" CssClass="nowrap" />
                             <HeaderStyle Width="120px" HorizontalAlign="Left"></HeaderStyle>
@@ -266,8 +277,8 @@
         SelectMethod="GetForumTopicsSince" 
         SelectCountMethod="GetForumTopicsSinceCount" 
         TypeName="Snitz.BLL.Forums"
-        EnablePaging="True" OnSelected="TopicOdsSelected" EnableCaching="True" EnableViewState="False"
-        OnSelecting="TopicOdsSelecting" CacheKeyDependency="RefreshKey">
+        EnablePaging="True" OnSelected="TopicOdsSelected" EnableCaching="False" EnableViewState="False"
+        OnSelecting="TopicOdsSelecting" >
         <SelectParameters>
             <asp:SessionParameter Name="isAdminOrModerator" DefaultValue="false" SessionField="IsAdminOrModerator" Type="Boolean" />
             <asp:SessionParameter Name="forumid" DefaultValue="-1" SessionField="ForumId" Type="Int32" />
@@ -286,12 +297,20 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
     <br style="clear: both;" class="seperator" />
-    <asp:UpdatePanel ID="topicUPD" runat="server" ChildrenAsTriggers="true" UpdateMode="Always">
+    <asp:UpdatePanel ID="topicUPD" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
         <ContentTemplate>
             <script type="text/javascript">
 
                 Sys.Application.add_load(BindEvents);
+                var prm = Sys.WebForms.PageRequestManager.getInstance();
 
+                prm.add_endRequest(
+                    function () {
+                        $(".bbcode").each(function () {
+                            $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+                                    });
+                        jQuery("abbr.timeago").timeago();
+                    });
             </script>
             <asp:GridView ID="ForumTable" runat="server" AllowPaging="true"
                 AutoGenerateColumns="False" Width="100%" DataKeyNames="Id" CellPadding="3" CssClass="forumtable"
@@ -313,10 +332,10 @@
                             <span style="width: 100%; overflow: hidden;">
                                 <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="true"
                                     GenerateEmptyAlternateText="true" />
-                                &nbsp;<asp:HyperLink ID="tLink" runat="server" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&ARCHIVE={1}", Eval("Id"),_archiveView) %>'
+                                &nbsp;<asp:HyperLink CssClass="bbcode" ID="tLink" runat="server" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&ARCHIVE={1}", Eval("Id"),_archiveView) %>'
                                     ToolTip='<%# Eval("Subject")%>' Text='<%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>' /></span>
                             <br />
-                            <span class="smallText"><%# Eval("PageCount")%> page(s)</span>
+                            <span class="smallText"><%# Eval("PageCount")%> page<asp:Label runat="server" ID="plural" Visible='<%# Convert.ToInt32(Eval("PageCount")) > 1 %>' Text="s"></asp:Label></span>
                         </ItemTemplate>
                         <HeaderTemplate>
                             <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopic %>"></asp:Label>
@@ -352,13 +371,10 @@
                         <HeaderStyle Width="90px" />
                         <ItemStyle HorizontalAlign="Center" CssClass="nowrap"></ItemStyle>
                         <ItemTemplate>
-                            <span class="smallText">by:<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>
-                                &nbsp;<asp:HyperLink ID="lpLnk" runat="server"
+                            <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>
+                                <br /><asp:Literal runat="server" ID="lastpostdate"></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
                                     CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                     ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
-                            <br />
-                            <asp:Literal runat="server" ID="lastpostdate"></asp:Literal>
-                            
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField InsertVisible="False">
@@ -395,6 +411,8 @@
                             <asp:HyperLink ID="hypArchiveTopic" EnableViewState="false" SkinID="ArchiveTopic"
                                 runat="server" Text="<%$ Resources:webResources, lblArchive %>" ToolTip="<%$ Resources:webResources, lblArchive %>"></asp:HyperLink>
                             <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Approve Topic" />
+                            <asp:HyperLink ID="lastreadjump" runat="server" Visible="false"
+                                    CssClass="profilelnk" SkinID="JumpToLastRead" ToolTip="Last read message" Text="Last read"></asp:HyperLink>
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />
                         <HeaderStyle Width="40px" />
@@ -404,12 +422,14 @@
                 <RowStyle CssClass="row" />
                 <AlternatingRowStyle CssClass="altrow" />
                 <EmptyDataRowStyle HorizontalAlign="Center" CssClass="NoBorder"></EmptyDataRowStyle>
-                <PagerTemplate>
-                    <uc4:GridPager ID="pager" runat="server" PagerStyle="Lnkbutton" />
-                </PagerTemplate>
+                <PagerStyle />
+                <PagerTemplate><uc4:gridpager ID="pager" runat="server" PagerStyle="Linkbutton" /></PagerTemplate>
             </asp:GridView>
-
+            <asp:PlaceHolder ID="phPager" runat="server"></asp:PlaceHolder>
         </ContentTemplate>
+        <Triggers>
+            
+        </Triggers>
     </asp:UpdatePanel>
     <!-- Profile popup -->
     <asp:Panel ID="MPanel" runat="server" Style="display: none" EnableViewState="false">

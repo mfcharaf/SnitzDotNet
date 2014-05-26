@@ -114,7 +114,7 @@ td.category, .row td.categorylink{background-color: #191970; height: 24px;paddin
     background-color: transparent;
 }
 .tableheader, th.tableheader, .tableheader th,  td.tableheader {
-    color: #333333;
+    color: #fff;
     font-weight: normal;
     background-color: #6a5acd;
     font-size: smaller;

@@ -17,13 +17,10 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/UserControls/DatePicker.ascx" TagName="DatePicker" TagPrefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
-
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS" />
     <link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" />
-
-    <script src="/scripts/editor.min.js" type="text/javascript"></script>
-
+    <script type="text/javascript" src="/scripts/editor.min.js"></script>
     <script type="text/javascript" src="/scripts/jquery.lightbox-0.5.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -171,19 +168,21 @@
                             </div>
                             <asp:Panel runat="server" ID="pnlPassword" GroupingText="Password" Style="float: right; width: 49%; height: auto; min-height: 100px;">
                                 <asp:Label ID="lblOldPass" runat="server" Text="Old Password" AssociatedControlID="tbxPassword"></asp:Label><asp:TextBox
-                                    ID="tbxPassword" runat="server" ValidationGroup="passChange"></asp:TextBox><asp:RequiredFieldValidator
+                                    ID="tbxPassword" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox><asp:RequiredFieldValidator
                                         ID="RequiredFieldValidator1" runat="server" ErrorMessage="You must supply your  existing password"
-                                        ControlToValidate="tbxPassword" SetFocusOnError="True" ValidationGroup="passChange">*</asp:RequiredFieldValidator><br />
+                                        ControlToValidate="tbxPassword" SetFocusOnError="True" ValidationGroup="passChange">*</asp:RequiredFieldValidator><br /><br />
                                 <asp:Label ID="lblNewPass" runat="server" Text="New Password" AssociatedControlID="tbxNewPass"></asp:Label><asp:TextBox
-                                    ID="tbxNewPass" runat="server" ValidationGroup="passChange"></asp:TextBox><asp:RequiredFieldValidator
-                                        ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxNewPass" ErrorMessage="New Password is required"
+                                    ID="tbxNewPass" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox>
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxNewPass" ErrorMessage="New Password is required"
                                         ValidationGroup="passChange">*</asp:RequiredFieldValidator><br />
                                 <asp:Label ID="lblConfirm" runat="server" Text="Confirm Password" AssociatedControlID="tbxConfirmPass"></asp:Label><asp:TextBox
-                                    ID="tbxConfirmPass" runat="server" ValidationGroup="passChange"></asp:TextBox><asp:CompareValidator
+                                    ID="tbxConfirmPass" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox><asp:CompareValidator
                                         ID="CompareValidator1" runat="server" ControlToCompare="tbxNewPass" ControlToValidate="tbxConfirmPass"
                                         ErrorMessage="Passwords do not match" ValidationGroup="passChange">*</asp:CompareValidator><br />
+                                <asp:CheckBox runat="server" ID="showPass" Text="Show Passwords" CausesValidation="False" OnCheckedChanged="ShowPasswordChars" AutoPostBack="True"/><br/>
                                 <asp:LinkButton ID="btnChangePass" runat="server" ValidationGroup="passChange" Text="Change Password"
                                     OnClick="BtnChangePassClick" /><br />
+                                
                                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="passChange" />
                             </asp:Panel>
                             <asp:Panel runat="server" ID="pnlDOB" GroupingText="Date of Birth" Style="float: right; width: 49%; height: auto; min-height: 130px;">
@@ -237,8 +236,6 @@
                                         EnableViewState="False"></asp:Label><asp:TextBox ID="tbxICQ" runat="server" EnableViewState="False"></asp:TextBox><br />
                                     <asp:Label ID="lblYAHOO" AssociatedControlID="tbxYAHOO" runat="server" Text="<%$ Resources:webResources, lblYAHOO %>"
                                         EnableViewState="False"></asp:Label><asp:TextBox ID="tbxYAHOO" runat="server" EnableViewState="False"></asp:TextBox><br />
-                                    <asp:Label ID="lblMSN" AssociatedControlID="tbxMSN" runat="server" Text="<%$ Resources:webResources, lblMSN %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxMSN" runat="server" EnableViewState="False"></asp:TextBox><br />
                                 </asp:Panel>
                             </div>
 
@@ -352,7 +349,7 @@
                             <asp:Panel ID="Panel1" runat="server" GroupingText="Bookmarks">
                                 <asp:Repeater ID="repBookMarks" runat="server">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="ImageButton1" SkinID="DeleteMessage" Width="16px" Height="16px"
+                                        <asp:ImageButton ID="ImageButton1" SkinID="DeleteMessage" Width="16px" Height="16px" OnClick="DeleteBookMark"
                                             runat="server" ToolTip="Delete BookMark" /><asp:HyperLink ID="hypLink" runat="server"
                                                 Text='<%# Eval("Name").ToString().ParseTags() %>' NavigateUrl='<%# Eval("Url") %>'></asp:HyperLink><br />
                                     </ItemTemplate>
@@ -432,7 +429,7 @@
                     </div>
                 </div>
                 <div class="mainModalContent">
-                    <div id="mainModalContents">
+                    <div id="mainModalContents" class="clearfix">
                         <div class="demoarea">
                             <div class="demoheading">
                                 Avatar Upload

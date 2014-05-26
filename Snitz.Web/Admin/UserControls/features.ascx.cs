@@ -48,7 +48,7 @@ public partial class Admin_features : UserControl
         rblSmilieTable.SelectedValue = Config.EmoticonTable ? "1" : "0";
         rblQuickReply.SelectedValue = Config.ShowQuickReply ? "1" : "0";
         rblSignatures.SelectedValue = Config.AllowSignatures ? "1" : "0";
-        rblShowEvents.SelectedValue = Config.ShowEventsCalendar ? "1" : "0";
+
         rblPrivateMessages.SelectedValue = Config.PrivateMessaging ? "1" : "0";
         ddlShowRank.SelectedValue = ((int)Config.ShowRankType).ToString();
     }
@@ -123,8 +123,7 @@ public partial class Admin_features : UserControl
             toUpdate.Add("Archive".GetPropertyDescription(),rblArchive.SelectedValue);
         if (Config.PrivateMessaging != (rblPrivateMessages.SelectedValue == "1"))
             toUpdate.Add("PrivateMessaging".GetPropertyDescription(), rblPrivateMessages.SelectedValue);
-        if (Config.ShowEventsCalendar != (rblShowEvents.SelectedValue == "1"))
-            toUpdate.Add("ShowEventsCalendar".GetPropertyDescription(), rblShowEvents.SelectedValue);
+
         Config.UpdateKeys(toUpdate);
 
     }

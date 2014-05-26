@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CategoryForums.ascx.cs" Inherits="SnitzUI.UserControls.CategoryForums" EnableViewState="false" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CategoryForums.ascx.cs" Inherits="SnitzUI.UserControls.CategoryForums" EnableViewState="false" EnableTheming="true" %>
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Import Namespace="SnitzConfig" %>
 
@@ -53,30 +53,30 @@
 
                             &nbsp;<a href='/Content/Forums/topic.aspx?TOPIC=<%# Eval("LastPostTopicId") %>&amp;whichpage=-1#<%# Eval("LastPostReplyId") %>'><asp:Image
                                 ID="imgLastPost" Visible='<%# (Config.ShowLastPostLink && (Eval("LastPostTopicId") != null && (int)Eval("LastPostTopicId") > 0)) %>'
-                                SkinID="Lastpost" ImageAlign="Bottom" runat="server" AlternateText='<%$ Resources:webResources, lblLastPostJump %>'
+                                ImageAlign="Bottom" runat="server" AlternateText='<%$ Resources:webResources, lblLastPostJump %>'
                                 ToolTip='<%$ Resources:webResources, lblLastPostJump  %>' EnableViewState="False" /></a>
                         </td>
                         <td id="adminBtn" runat="server" valign="top" width="50px">
-                            <asp:HyperLink ID="hypNewTopic" SkinID="NewTopic" runat="server" Text="<%$ Resources:webResources, lblNewTopic %>"
+                            <asp:HyperLink ID="hypNewTopic" runat="server" Text="<%$ Resources:webResources, lblNewTopic %>"
                                 ToolTip="<%$ Resources:webResources, lblNewTopic %>" EnableViewState="False"></asp:HyperLink>
-                            <asp:ImageButton ID="ForumEdit" SkinID="Properties" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                            <asp:ImageButton ID="ForumEdit" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                 runat="server" ToolTip="<%$ Resources:webResources, lblEditForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="ForumLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                            <asp:ImageButton ID="ForumLock" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lbllockForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="ForumUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                            <asp:ImageButton ID="ForumUnLock" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="ForumDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                            <asp:ImageButton ID="ForumDelete" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lblDelForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False"  />
-                            <asp:ImageButton ID="ForumEmpty" SkinID="EmptyForum" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                            <asp:ImageButton ID="ForumEmpty" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lblEmptyForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="ArchiveForum" SkinID="archiveTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
+                            <asp:ImageButton ID="ArchiveForum" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
                                     runat="server" ToolTip="Archive" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                             
-                            <asp:ImageButton ID="ForumSub" SkinID="Subscribe" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
+                            <asp:ImageButton ID="ForumSub" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
                                     runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="ForumUnSub" SkinID="UnSubscribe" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
+                            <asp:ImageButton ID="ForumUnSub" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>' 
                                     runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                            <asp:HyperLink ID="hypViewArchive" SkinID="ViewArchive" runat="server" Text="A"
+                            <asp:HyperLink ID="hypViewArchive" runat="server" Text="A"
                                     ToolTip="Show Archived topics" EnableViewState="False"></asp:HyperLink>
                         </td>
                     </tr>

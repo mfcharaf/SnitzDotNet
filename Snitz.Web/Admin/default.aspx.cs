@@ -16,6 +16,7 @@ public partial class AdminHome : PageBase
         if (action != "")
         {
             Panel1.Visible = false;
+            CP1.Controls.Clear();
             switch (action)
             {
                 case "system":
@@ -109,6 +110,10 @@ public partial class AdminHome : PageBase
                 case "profile" :
                     var adminManageProfile = (Admin_ManageProfile)Page.LoadControl("UserControls/ManageProfile.ascx");
                     CP1.Controls.Add(adminManageProfile);
+                    break;
+                case "modconfig" :
+                    var modmanager = (Admin_ModConfiguration)Page.LoadControl("UserControls/ModConfiguration.ascx");
+                    CP1.Controls.Add(modmanager);
                     break;
             }
         }
