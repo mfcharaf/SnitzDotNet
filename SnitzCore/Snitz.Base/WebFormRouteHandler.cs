@@ -68,6 +68,7 @@ namespace SnitzCommon
 				requestContext.HttpContext.Request.HttpMethod ) )
 			{
 				throw new SecurityException();
+			    return null;
 			}
 
 			var page = BuildManager.CreateInstanceFromVirtualPath(

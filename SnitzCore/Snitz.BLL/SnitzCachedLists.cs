@@ -20,6 +20,9 @@
 */
 
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 using Snitz.Entities;
 using Snitz.Providers;
@@ -49,7 +52,7 @@ namespace Snitz.BLL
             return result;
         }
 
-        public static List<ForumJumpto> GetCachedForumList()
+        public static List<ForumJumpto> GetCachedForumList(bool search)
         {
             List<ForumJumpto> fullforumlist;
             if (HttpContext.Current.Cache["forumjumplist"] != null)
@@ -59,12 +62,14 @@ namespace Snitz.BLL
             else
             {
                 fullforumlist = Forums.ListForumJumpTo();
-                if (Config.AllowSearchAllForums)
+                if (search && Config.AllowSearchAllForums)
                 {
                     fullforumlist.Insert(0, new ForumJumpto { Name = "[All Forums]", Id = -1, Category = "" });
+                }else if (fullforumlist[0].Id != -1)
+                {
+                    
+                        fullforumlist.Insert(0, new ForumJumpto { Name = "[Select Forum]", Id = -99, Category = "" });
                 }
-                if (fullforumlist[0].Id != -1)
-                    fullforumlist.Insert(0, new ForumJumpto { Name = "[Select Forum]", Id = -99, Category = "" });
                 HttpContext.Current.Cache["forumjumplist"] = fullforumlist;
             }
             return fullforumlist;
@@ -83,6 +88,47 @@ namespace Snitz.BLL
                 HttpContext.Current.Cache["badwordlist"] = badwordlist;
             }
             return badwordlist;            
+        }
+
+        public static List<FaqCategoryInfo> GetCachedHelpCategories()
+        {
+            List<FaqCategoryInfo> faqcatlist;
+            if (HttpContext.Current.Cache["faqcatlist"] != null)
+            {
+                faqcatlist = (List<FaqCategoryInfo>)HttpContext.Current.Cache["faqcatlist"];
+            }
+            else
+            {
+                faqcatlist = SnitzFaq.GetFaqCategories(CultureInfo.CurrentCulture.TwoLetterISOLanguageName).ToList();
+                HttpContext.Current.Cache["faqcatlist"] = faqcatlist;
+            }
+            return faqcatlist; 
+
+        }
+        /// <summary>
+        /// Method to populate a list with all the class
+        /// in the namespace provided by the user
+        /// </summary>
+        /// <param name="nameSpace">The namespace the user wants searched</param>
+        /// <returns></returns>
+        public static List<string> GetAllClasses(string nameSpace)
+        {
+            //create an Assembly and use its GetExecutingAssembly Method
+            //http://msdn2.microsoft.com/en-us/library/system.reflection.assembly.getexecutingassembly.aspx
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+
+            //create a list for the namespaces
+            //create a list that will hold all the classes
+            //the suplied namespace is executing
+            //loop through all the "Types" in the Assembly using
+            //the GetType method:
+            //http://msdn2.microsoft.com/en-us/library/system.reflection.assembly.gettypes.aspx
+
+            List<string> namespaceList = (from type in asm.GetTypes() where type.Namespace == nameSpace select type.Name).ToList();
+
+            //return the list
+            return namespaceList.ToList();
         }
     }
 }

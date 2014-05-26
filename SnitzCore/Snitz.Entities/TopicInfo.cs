@@ -20,8 +20,6 @@
 */
 
 using System;
-using System.Web;
-using SnitzCommon;
 using SnitzConfig;
 
 namespace Snitz.Entities
@@ -74,6 +72,8 @@ namespace Snitz.Entities
             {
                 int extra = 0;
                 if (this.ReplyCount % Config.TopicPageSize > 0)
+                    extra = 1;
+                if (this.ReplyCount == 0)
                     extra = 1;
                 return (this.ReplyCount / Config.TopicPageSize) + extra;
             }

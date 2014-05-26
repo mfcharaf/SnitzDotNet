@@ -20,7 +20,6 @@
 */
 
 using System;
-using System.Web;
 
 
 namespace Snitz.Entities
@@ -74,7 +73,7 @@ namespace Snitz.Entities
         public string AIM { get; set; }
         public string Yahoo { get; set; }
         public string ICQ { get; set; }
-        public string MSN { get; set; }
+        public string Skype { get; set; }
         public string Biography { get; set; }
         public string HomePage { get; set; }
         public string Hobbies { get; set; }

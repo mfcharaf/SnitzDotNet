@@ -38,23 +38,18 @@ namespace Snitz.Membership.Helpers
         public static T Create(string name)
         {
             // Look up the DAL implementation we should be using
-            string path = ConfigurationManager.AppSettings["MembershipDAL"];
-            string className = path + "." + name;
-            return (T)Assembly.Load(path).CreateInstance(className);
+            string dal = "Snitz.Membership." + ConfigurationManager.AppSettings["SnitzDAL"];
+            string className = dal + "." + name;
+            return (T)Assembly.Load(dal).CreateInstance(className);
         }
 
-        /// <summary>
-        /// Loads a dataclass using custom data access interfaces
-        /// </summary>
-        /// <param name="name">Name of the Class to load</param>
-        /// <param name="config">Name of the appsettings key which points to the data library</param>
-        /// <returns>Instance of the data access class</returns>
-        public static T Create(string name, string config)
-        {
-            // Look up the DAL implementation we should be using
-            string path = ConfigurationManager.AppSettings[config];
-            string className = path + "." + name;
-            return (T)Assembly.Load(path).CreateInstance(className);
-        }
+
+        //public static T Create(string name, string config)
+        //{
+        //    // Look up the DAL implementation we should be using
+        //    string dal = ConfigurationManager.AppSettings[config];
+        //    string className = dal + "." + name;
+        //    return (T)Assembly.Load(dal).CreateInstance(className);
+        //}
     }
 }

@@ -60,25 +60,7 @@ public class GoogleSitemap : IHttpHandler {
         }
 
         #endregion
-        #region Write out forums
-        //if (showForums)
-        //{
-        //    strSql = "select FORUM_ID, F_LAST_POST from " + strTablePrefix +
-        //        "FORUM where (F_URL is null or len(F_URL) < 7) and (F_PRIVATEFORUMS = 0)" +
-        //        " and F_STATUS = 1 order by FORUM_ID ASC";
-
-        //    sqlCommand = new SqlCommand(strSql, sqlConnection);
-        //    sqlReader = sqlCommand.ExecuteReader();
-
-        //    while (sqlReader.Read())
-        //    {
-        //        int Forum_ID = Convert.ToInt32(sqlReader["FORUM_ID"]);
-        //        string Forum_Last_Post = (string)sqlReader["F_LAST_POST"];
-        //        urlCollection.Add(new Url(new Uri(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}forum.aspx?FORUM_ID={1}", config.forumUrl, Forum_ID)), Formatting.StringToDateTime(Topic_Last_Post), ChangeFrequency.Daily, 0.0M));
-        //    }
-        //    sqlReader.Close();
-        //}
-        #endregion        
+       
         
         //urlCollection.Add(new Url(new Uri(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}policy.aspx", config.forumUrl)), DateTime.Today, ChangeFrequency.Never, 0.0M));
         urlCollection.Add(new Url(new Uri(string.Format(CultureInfo.InvariantCulture, "{0}/Content/Faq/faq.aspx", Config.ForumUrl.TrimEnd('/'))), DateTime.Today, ChangeFrequency.Never, 0.0M));

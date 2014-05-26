@@ -29,13 +29,16 @@ namespace Snitz.Entities
     [Serializable]
     public class SnitzLink
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
 
+
         public SnitzLink(){}
 
-        public SnitzLink (string name, string url)
+        public SnitzLink (string name, string url, int id)
         {
+            ID = id;
             Name = name;
             Url = url;
         }

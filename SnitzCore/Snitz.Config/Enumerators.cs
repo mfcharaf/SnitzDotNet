@@ -135,7 +135,7 @@ namespace SnitzConfig
             [Description("Pager using Hyperlinks")]
             Text,
             [Description("Pager using LinkButtons")]
-            Lnkbutton
+            Linkbutton
         };
 
         /// <summary>

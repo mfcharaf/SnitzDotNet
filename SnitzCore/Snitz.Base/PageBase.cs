@@ -40,6 +40,9 @@ namespace SnitzCommon
 	public class PageBase : Page
 	{
         private ScriptManager _pageScriptManager;
+        /// <summary>
+        /// Private property to handle the lastvisit cookie
+        /// </summary>
         private string LastVisitCookie 
         { 
             get
@@ -49,7 +52,7 @@ namespace SnitzCommon
             }
             set
             {
-                HttpCookie cookie = new HttpCookie("LastVisit", value) {Expires = DateTime.UtcNow.AddDays(61)};
+                HttpCookie cookie = new HttpCookie("LastVisit", value) {Expires = DateTime.UtcNow.AddYears(1)};
                 Response.Cookies.Add(cookie);
             }
         }
@@ -92,8 +95,18 @@ namespace SnitzCommon
         public int? CatId;
 	    public int? ForumId;
 	    public int? TopicId;
+
+        /// <summary>
+        /// Profile of current user
+        /// </summary>
         public readonly ProfileCommon Profile = ProfileCommon.GetProfile();
+        /// <summary>
+        /// True if current user is logged in
+        /// </summary>
 	    public readonly bool IsAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
+        /// <summary>
+        /// True if current user is a moderator
+        /// </summary>
         public bool IsModerator
         {
             get
@@ -107,6 +120,9 @@ namespace SnitzCommon
                 return false;
             }
         }
+        /// <summary>
+        /// True if the current user
+        /// </summary>
         public bool IsAdministrator
         {
             get
@@ -121,7 +137,13 @@ namespace SnitzCommon
             }
            
         }
+        /// <summary>
+        /// Membership object for current user
+        /// </summary>
 	    public readonly MemberInfo Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
+        /// <summary>
+        /// Value of the _LastVisit cookie, or the current datetime if no cookie exists
+        /// </summary>
         public DateTime LastVisitDateTime
 	    {
             get
@@ -142,6 +164,10 @@ namespace SnitzCommon
         {
             get { return _pageScriptManager ?? (_pageScriptManager = ScriptManager.GetCurrent(this)); }
         }
+
+        /// <summary>
+        /// Sitemap page handler
+        /// </summary>
 		public event SiteMapResolveEventHandler SiteMapResolve;
         
         protected override void OnPreInit(EventArgs e)
@@ -180,42 +206,42 @@ namespace SnitzCommon
             //Check for the _LastVisit Session
             if (current.Session["_LastVisit"] == null)
             {
-                //Our session is empty, reset everything
-                if (IsAuthenticated)
+                //Is there a last vist cookie
+                if (LastVisitCookie != null)
                 {
-                    //we are logged in so get the lastheredate from the db and update the session
-                    current.Session.Add("_LastVisit", LastLoggedOn.ToForumDateStr());
-                    //update lastactivitydate
-                    MembershipUser mu = Membership.GetUser(current.User.Identity.Name, true);
-                    if (mu != null)
+                    current.Session.Add("_LastVisit", LastVisitCookie);
+                    if (IsAuthenticated)
                     {
-                        mu.LastActivityDate = mu.LastLoginDate;
-                        mu.LastLoginDate = DateTime.UtcNow;
-                        Membership.UpdateUser(mu);
+                        //we are logged in so update lastheredate in the db and update the session
+
+                        //update lastactivitydate
+                        MembershipUser mu = Membership.GetUser(current.User.Identity.Name, true);
+                        if (mu != null)
+                        {
+                            mu.LastActivityDate = mu.LastLoginDate;
+                            mu.LastLoginDate = LastVisitCookie.ToDateTime().Value;
+                            Membership.UpdateUser(mu);
+                        }
                     }
                 }
-                else
-                {
-                    //we are not logged in, so check the cookie for our lastheredate
-                    current.Session.Add("_LastVisit", LastLoggedOn.ToForumDateStr());
-                }
-                
+                //set the last visit cookie now 
+                LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
                 
             }
             else
             {
                 //we have a session so just update LastVisit
-                if (IsAuthenticated)
-                {
-                    Membership.GetUser(current.User.Identity.Name, true);
-                    //we are logged in so get the lastheredate from the db and update the session
-                    LastVisitCookie = LastLoggedOn.ToForumDateStr();
-                }
-                else
-                {
-                    //we are not logged in, so set cookie for our lastheredate
-                    LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
-                }
+                //if (IsAuthenticated)
+                //{
+                //    Membership.GetUser(current.User.Identity.Name, true);
+                //    //we are logged in so get the lastheredate from the db and update the session
+                //    LastVisitCookie = LastLoggedOn.ToForumDateStr();
+                //}
+                //else
+                //{
+                //    //we are not logged in, so set cookie for our lastheredate
+                //    LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
+                //}
             }
             current.Session.Add("_IsAdminOrModerator", IsModerator || IsAdministrator);
         }
@@ -287,7 +313,7 @@ namespace SnitzCommon
         {
             stopWatch.Stop();
             BaseMasterPage master = (BaseMasterPage) this.Master;
-            //TODO: fix this later
+            
             if (master != null)
                 master.PageTimer = string.Format(Resources.webResources.lblTimer, ((float)stopWatch.ElapsedMilliseconds / 1000));
         }
@@ -297,9 +323,19 @@ namespace SnitzCommon
             if (!IsAdministrator)
             {
                 Exception objErr = Server.GetLastError().GetBaseException();
-                string err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
+                string err = "";
+                if (objErr.Message == "FloodCheck")
+                {
+                    err = "<b>Flood control enabled</b><hr><br/>" +
+                             "<br/><b>Please try later</b>";   
+                }
+                else
+                {
+                    err = "<b>Error Caught in Page_Error event</b><hr><br/>" +
                              "<br/><b>Error in: </b>" + Request.Url.ToString() +
-                             "<br/><b>Error Message: </b>" + objErr.Message.ToString();
+                             "<br/><b>Error Message: </b>" + objErr.Message.ToString();                    
+                }
+
 
                 if (IsAdministrator && Config.DebugMode)
                     err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
@@ -315,7 +351,10 @@ namespace SnitzCommon
             }
         }
 
-
+	    public void ReloadPage()
+	    {
+            Response.Redirect(Request.RawUrl);
+	    }
 
 		SiteMapNode SiteMapSiteMapResolve(object sender, SiteMapResolveEventArgs e)
 		{

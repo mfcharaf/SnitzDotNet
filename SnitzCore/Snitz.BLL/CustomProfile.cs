@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using Snitz.Entities;
 using Snitz.IDAL;
-using SnitzMembership;
 
 namespace Snitz.BLL
 {

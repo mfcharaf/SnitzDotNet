@@ -20,14 +20,19 @@
 */
 
 
-
-
+using System;
+using Snitz.Entities;
 
 /// <summary>
 /// Summary description for SnitzMod
 /// </summary>
-public interface SnitzMod
+public interface ISnitzModConfig
 {
     string Name { get;}
     string Description { get; }
+    bool Enabled { get; set; }
+    Version Version { get; }
+
+    bool ShowOnMenu { get; }
+    ModMenuItem Menu { get; }
 }

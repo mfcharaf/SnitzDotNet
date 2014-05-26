@@ -35,7 +35,7 @@ namespace Snitz.BLL
     /// </summary>
     public static class PostExtensions
     {
-        private const RegexOptions matchOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline;
+        private const RegexOptions MATCH_OPTIONS = RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline;
 
         public static string ReplaceSmileTags(this string text)
         {
@@ -44,7 +44,7 @@ namespace Snitz.BLL
             foreach (Emoticon emoticon in Emoticons.GetEmoticons())
             {
                 if (text.Contains(emoticon.Code))
-                    text = Regex.Replace(text, Regex.Escape(emoticon.Code), GetSmileImage(emoticon.Image, emoticon.Description, "align='middle'"), matchOptions);
+                    text = Regex.Replace(text, Regex.Escape(emoticon.Code), GetSmileImage(emoticon.Image, emoticon.Description, "align='middle'"), MATCH_OPTIONS);
             }
             return text;
         }
@@ -89,136 +89,136 @@ namespace Snitz.BLL
             string matchstring;
 
             matchstring = @"((\[mail]|\[mail]mailto:)(?<email>\b[A-z0-9a-z._%-]+@[A-Z0-9a-z.-]+\.[A-Za-z]{2,4}\b|\[)(\[/mail]))";
-            text = Regex.Replace(text, matchstring, "<a href='mailto:${email}'>${email}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='mailto:${email}'>${email}</a> ", MATCH_OPTIONS);
             matchstring = @"((\[mail=\x22|\[mail=\x22mailto:)(?<email>\b[A-z0-9a-z._%-]+@[A-Z0-9a-z.-]+\.[A-Za-z]{2,4})(\b|\x22)](?<linkText>.*)\[/mail])";
-            text = Regex.Replace(text, matchstring, "<a href='mailto:${email}'>${linkText}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='mailto:${email}'>${linkText}</a> ", MATCH_OPTIONS);
             matchstring = @"((\[url=\x22)(?:https?://|telnet://|file://|ftp://)(?<url>[\w/#~:.?+=&%@;!\-]+?)\x22](?<linkText>.+?)(\[/url]))";
-            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${linkText}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${linkText}</a> ", MATCH_OPTIONS);
             matchstring = @"((\[url=\x22)(?<url>([A-Z0-9a-z.-]+\.)([\w/#~:.?+=&%@;!\-]+?))\x22](?<linkText>.+?)(\[/url]))";
-            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${linkText}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${linkText}</a> ", MATCH_OPTIONS);
             matchstring = @"(\[url])(((https?://)(?<url>[\w/#~:.?+=&%@;!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@;!\-\[]|$|\[)))|(?<url>([a-zA-Z0-9]+[a-zA-Z0-9\-\.]+?\.[com|uk|org|net|mil|edu|gov]).*))(\[/url])";
-            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${url}</a>", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='http://${url}' rel='nofollow' target='_blank'>${url}</a>", MATCH_OPTIONS);
 
             matchstring = @"((\[rurl=\x22)(?<url>([/A-Z0-9a-z.\-_+]+\.)([\w/#~:.?+=&%@;!\-]+?))\x22](?<linkText>.+?)(\[/rurl]))";
-            text = Regex.Replace(text, matchstring, "<a href='${url}' rel='follow' target='_blank'>${linkText}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='${url}' rel='follow' target='_blank'>${linkText}</a> ", MATCH_OPTIONS);
             matchstring = @"((\[rurl])(?<url>([/A-Z0-9a-z.-_+]+\.)([\w/#~:.?+=&%@;!\-]+?))(\[/rurl]))";
-            text = Regex.Replace(text, matchstring, "<a href='${url}' rel='follow' target='_blank'>${url}</a> ", matchOptions);
+            text = Regex.Replace(text, matchstring, "<a href='${url}' rel='follow' target='_blank'>${url}</a> ", MATCH_OPTIONS);
 
             return text;
         }
 
-        public static string ReplaceCodeTags(this string text, int postId, string type)
-        {
-            if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
-                return text;
+        //public static string ReplaceCodeTags(this string text, int postId, string type)
+        //{
+        //    if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
+        //        return text;
 
-            if (type == null || !Config.AllowForumCode)
-                return text;
+        //    if (type == null || !Config.AllowForumCode)
+        //        return text;
 
-            string strCodeText;
-            string strTempString = text;
-            string strResultString = "";
+        //    string strCodeText;
+        //    string strTempString = text;
+        //    string strResultString = "";
 
-            string DownloadLink = "";
+        //    string DownloadLink = "";
 
-            string[] strArray;
+        //    string[] strArray;
 
-            const string oTag = "[code]";
-            const string roTag = "<div class='codebox'>";
-            const string cTag = "[/code]";
-            const string rcTag = "</code></li></ol></div></div>";
+        //    const string oTag = "[code]";
+        //    const string roTag = "<div class='codebox'>";
+        //    const string cTag = "[/code]";
+        //    const string rcTag = "</code></li></ol></div></div>";
 
-            int oTagPos = strTempString.IndexOf(oTag, 0, StringComparison.CurrentCultureIgnoreCase);
-            int cTagPos = strTempString.IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase);
-            int TagCount = 1;
-            if ((oTagPos >= 0) && (cTagPos > 0))
-            {
-                strArray = Regex.Split(strTempString, Regex.Escape(oTag), matchOptions);
-                for (int counter2 = 0; counter2 < strArray.Length; counter2++)
-                {
-                    if (strArray[counter2].IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase) > 0)
-                    {
-                        string[] strArray2 = Regex.Split(strArray[counter2], Regex.Escape(cTag), matchOptions);
-                        strCodeText = HttpUtility.HtmlDecode(strArray2[0]);
-                        if (strCodeText != null)
-                        {
-                            strCodeText.Trim();
-                            strCodeText = Regex.Replace(strCodeText, @"<br>", Environment.NewLine, matchOptions);
-                            strCodeText = Regex.Replace(strCodeText, @"<br />", Environment.NewLine, matchOptions);
-                            if (type != "")
-                            {
-                                DownloadLink = "<div class='codehead'>Code: [<a href='/handlers/code_download.ashx?id=" + postId +
-                                               "&amp;type=" + type + "&amp;codenum=" + TagCount +
-                                               "'>download</a>]</div><div class='scrollcode'><ol><li><code>";
-                            }
-                        }
-                        strCodeText = HttpUtility.HtmlEncode(strCodeText);
-                        strCodeText = Regex.Replace(strCodeText, @"\r\n", "</code></li><li><code>", matchOptions);
-                        strResultString = strResultString + roTag + DownloadLink + strCodeText + rcTag + strArray2[1];
-                        TagCount++;
-                    }
-                    else
-                    {
-                        strResultString += strArray[counter2];
-                    }
-                }
+        //    int oTagPos = strTempString.IndexOf(oTag, 0, StringComparison.CurrentCultureIgnoreCase);
+        //    int cTagPos = strTempString.IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase);
+        //    int TagCount = 1;
+        //    if ((oTagPos >= 0) && (cTagPos > 0))
+        //    {
+        //        strArray = Regex.Split(strTempString, Regex.Escape(oTag), MATCH_OPTIONS);
+        //        for (int counter2 = 0; counter2 < strArray.Length; counter2++)
+        //        {
+        //            if (strArray[counter2].IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase) > 0)
+        //            {
+        //                string[] strArray2 = Regex.Split(strArray[counter2], Regex.Escape(cTag), MATCH_OPTIONS);
+        //                strCodeText = HttpUtility.HtmlDecode(strArray2[0]);
+        //                if (strCodeText != null)
+        //                {
+        //                    strCodeText.Trim();
+        //                    strCodeText = Regex.Replace(strCodeText, @"<br>", Environment.NewLine, MATCH_OPTIONS);
+        //                    strCodeText = Regex.Replace(strCodeText, @"<br />", Environment.NewLine, MATCH_OPTIONS);
+        //                    if (type != "")
+        //                    {
+        //                        DownloadLink = "<div class='codehead'>Code: [<a href='/handlers/code_download.ashx?id=" + postId +
+        //                                       "&amp;type=" + type + "&amp;codenum=" + TagCount +
+        //                                       "'>download</a>]</div><div class='scrollcode'><ol><li><code>";
+        //                    }
+        //                }
+        //                strCodeText = HttpUtility.HtmlEncode(strCodeText);
+        //                strCodeText = Regex.Replace(strCodeText, @"\r\n", "</code></li><li><code>", MATCH_OPTIONS);
+        //                strResultString = strResultString + roTag + DownloadLink + strCodeText + rcTag + strArray2[1];
+        //                TagCount++;
+        //            }
+        //            else
+        //            {
+        //                strResultString += strArray[counter2];
+        //            }
+        //        }
 
-                strTempString = strResultString;
-            }
+        //        strTempString = strResultString;
+        //    }
 
-            return strTempString;
-        }
+        //    return strTempString;
+        //}
 
-        private static string ReplaceCodeTags(this string text)
-        {
-            if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
-                return text;
+        //public static string ReplaceCodeTags(this string text)
+        //{
+        //    if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
+        //        return text;
 
-            string strCodeText;
-            string strTempString = text;
-            string strResultString = "";
+        //    string strCodeText;
+        //    string strTempString = text;
+        //    string strResultString = "";
 
-            string DownloadLink = "";
+        //    string DownloadLink = "";
 
-            const string oTag = "[code]";
-            const string roTag = "<div class='codebox'><div class='scrollcode'><ol><li><code class='prettyprint'>";
-            const string cTag = "[/code]";
-            const string rcTag = "</code></li></ol></div></div>";
+        //    const string oTag = "[code]";
+        //    const string roTag = "<pre class='brush: csharp'>";
+        //    const string cTag = "[/code]";
+        //    const string rcTag = "</pre>";
 
-            int oTagPos = strTempString.IndexOf(oTag, 0, StringComparison.CurrentCultureIgnoreCase);
-            int cTagPos = strTempString.IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase);
-            int TagCount = 1;
-            if ((oTagPos >= 0) && (cTagPos > 0))
-            {
-                string[] strArray = Regex.Split(strTempString, Regex.Escape(oTag), matchOptions);
-                for (int counter2 = 0; counter2 < strArray.Length; counter2++)
-                {
-                    if (strArray[counter2].IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase) > 0)
-                    {
-                        string[] strArray2 = Regex.Split(strArray[counter2], Regex.Escape(cTag), matchOptions);
-                        strCodeText = HttpUtility.HtmlDecode(strArray2[0]);
-                        if (strCodeText != null)
-                        {
-                            strCodeText.Trim();
-                            strCodeText = Regex.Replace(strCodeText, @"<br>", Environment.NewLine, matchOptions);
-                            strCodeText = Regex.Replace(strCodeText, @"<br />", Environment.NewLine, matchOptions);
-                        }
-                        strCodeText = HttpUtility.HtmlEncode(strCodeText);
-                        strCodeText = Regex.Replace(strCodeText, @"\n", "</code></li><li><code class='prettyprint'>", matchOptions);
-                        strResultString = strResultString + roTag + DownloadLink + strCodeText + rcTag + strArray2[1];
-                        TagCount++;
-                    }
-                    else
-                    {
-                        strResultString += strArray[counter2];
-                    }
-                }
+        //    int oTagPos = strTempString.IndexOf(oTag, 0, StringComparison.CurrentCultureIgnoreCase);
+        //    int cTagPos = strTempString.IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase);
+        //    int TagCount = 1;
+        //    if ((oTagPos >= 0) && (cTagPos > 0))
+        //    {
+        //        string[] strArray = Regex.Split(strTempString, Regex.Escape(oTag), MATCH_OPTIONS);
+        //        for (int counter2 = 0; counter2 < strArray.Length; counter2++)
+        //        {
+        //            if (strArray[counter2].IndexOf(cTag, 0, StringComparison.CurrentCultureIgnoreCase) > 0)
+        //            {
+        //                string[] strArray2 = Regex.Split(strArray[counter2], Regex.Escape(cTag), MATCH_OPTIONS);
+        //                strCodeText = HttpUtility.HtmlDecode(strArray2[0]);
+        //                if (strCodeText != null)
+        //                {
+        //                    strCodeText.Trim();
+        //                    strCodeText = Regex.Replace(strCodeText, @"<br>", Environment.NewLine, MATCH_OPTIONS);
+        //                    strCodeText = Regex.Replace(strCodeText, @"<br />", Environment.NewLine, MATCH_OPTIONS);
+        //                }
+        //                strCodeText = HttpUtility.HtmlEncode(strCodeText);
+        //                strCodeText = Regex.Replace(strCodeText, @"\n", "", MATCH_OPTIONS);
+        //                strResultString = strResultString + roTag + DownloadLink + strCodeText + rcTag + strArray2[1];
+        //                TagCount++;
+        //            }
+        //            else
+        //            {
+        //                strResultString += strArray[counter2];
+        //            }
+        //        }
 
-                strTempString = strResultString;
-            }
+        //        strTempString = strResultString;
+        //    }
 
-            return strTempString;
-        }
+        //    return strTempString;
+        //}
 
         public static string ReplaceImageTags(this string text)
         {
@@ -233,22 +233,22 @@ namespace Snitz.BLL
                 switch (thismatch)
                 {
                     case "[img]":
-                        text = Regex.Replace(text, @"(\[img])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img])", "<a href='$2' title='Click to open full size Image' target='_blank'><img src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[img])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img])", "<a href='$2' title='Click to open full size Image' target='_blank'><img src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                     case "[image]":
-                        text = Regex.Replace(text, @"(\[image])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image])", "<a href='$2' title='Click to open full size Image' target='_blank'><img src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[image])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image])", "<a href='$2' title='Click to open full size Image' target='_blank'><img src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                     case "[img=right]":
-                        text = Regex.Replace(text, @"(\[img=right])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img=right])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='right' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[img=right])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img=right])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='right' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                     case "[image=right]":
-                        text = Regex.Replace(text, @"(\[image=right])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image=right])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='right' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[image=right])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image=right])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='right' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                     case "[img=left]":
-                        text = Regex.Replace(text, @"(\[img=left])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img=left])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='left' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[img=left])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/img=left])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='left' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                     case "[image=left]":
-                        text = Regex.Replace(text, @"(\[image=left])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image=left])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='left' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", matchOptions);
+                        text = Regex.Replace(text, @"(\[image=left])([\w/~:.?+=5@ \(\)!\-]+?)(?=[.:?\-]*(?:[^\w/#~:.?+=&%@!\-]|$))(\[\/image=left])", "<a href='$2' title='Click to open full size Image' target='_blank'><img align='left' src='$2' class='mImg NoBorder' alt='Click to open full size Image' /></a>", MATCH_OPTIONS);
                         break;
                 }
             }
@@ -281,7 +281,7 @@ namespace Snitz.BLL
                 midPart.AppendLine("<tr>");
                 midPart.AppendLine("<td class='row' colspan='2'>");
 
-                string fileUrlLocation = UploadConfig.fileUploadLocation.Replace("~/", "") + memberFldrID + "/";
+                string fileUrlLocation = ConfigHelper.GetStringValue("UploadConfig,SnitzConfig", "FileUploadLocation").Replace("~/", "") + memberFldrID + "/";
                 switch (fileNameExt.ToUpper())
                 {
                     //                        case ".JPG", ".JPEG", ".GIF", ".PNG"
@@ -320,15 +320,15 @@ namespace Snitz.BLL
             if (!Config.AllowForumCode || String.IsNullOrEmpty(text))
                 return text;
 
-            text = Regex.Replace(text, @"\[pencil\]", GetImage("admin/write.png", "edit icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[subscribe\]", GetImage("admin/subscribe.png", "subscribe icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[unsubscribe\]", GetImage("admin/unsubscribe.png", "unsubscribe icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[edit\]", GetImage("message/edit.png", "edit icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[lock\]", GetImage("admin/lock.png", "edit icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[delete\]", GetImage("admin/trash.png", "trash icon", "align='middle'"), matchOptions);
-            text = Regex.Replace(text, @"\[quote\]", "<blockquote class='quoteMessage'><span>", matchOptions);
-            text = Regex.Replace(text, @"\[quote=\x22([\w/#~:.?+=&%@!\-]+?)(?=[\x22]+])\x22\]", "<blockquote class='quoteMessage'><span><em>Originally posted by $1</em><br/>", matchOptions);
-            text = Regex.Replace(text, @"\[\/quote\]", "</span></blockquote>", matchOptions);
+            text = Regex.Replace(text, @"\[pencil\]", GetImage("admin/write.png", "edit icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[subscribe\]", GetImage("admin/subscribe.png", "subscribe icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[unsubscribe\]", GetImage("admin/unsubscribe.png", "unsubscribe icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[edit\]", GetImage("message/edit.png", "edit icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[lock\]", GetImage("admin/lock.png", "edit icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[delete\]", GetImage("admin/trash.png", "trash icon", "align='middle'"), MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[quote\]", "<blockquote class='quoteMessage'><span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[quote=\x22([\w/#~:.?+=&%@!\-]+?)(?=[\x22]+])\x22\]", "<blockquote class='quoteMessage'><span><em>Originally posted by $1</em><br/>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[\/quote\]", "</span></blockquote>", MATCH_OPTIONS);
 
             Regex colourregex = new Regex(@"\[(#[a-fA-F0-9]{2,6})\]");
             MatchCollection MatchList = colourregex.Matches(text);
@@ -336,41 +336,41 @@ namespace Snitz.BLL
             foreach (Match m in MatchList)
             {
                 string thismatch = m.Groups[1].Value;
-                text = Regex.Replace(text, @"\[(" + thismatch + @")\](.*?)\[\/" + thismatch + @"\]", "<span style='color:$1'>$2</span>", matchOptions);
+                text = Regex.Replace(text, @"\[(" + thismatch + @")\](.*?)\[\/" + thismatch + @"\]", "<span style='color:$1'>$2</span>", MATCH_OPTIONS);
             }
 
-            text = Regex.Replace(text, @"\[(strike|del|s)\](.*?)\[\/(strike|del|s)]", "<del>$2</del>", matchOptions);
+            text = Regex.Replace(text, @"\[(strike|del|s)\](.*?)\[\/(strike|del|s)]", "<del>$2</del>", MATCH_OPTIONS);
 
-            text = Regex.Replace(text, @"\[(red|green|blue|white|purple|yellow|violet|brown|black|pink|orange|gold|beige|teal|navy|maroon|limegreen)](.*?)\[\/\1]", "<span style='color:$1'>$2</span>", matchOptions);
+            text = Regex.Replace(text, @"\[(red|green|blue|white|purple|yellow|violet|brown|black|pink|orange|gold|beige|teal|navy|maroon|limegreen)](.*?)\[\/\1]", "<span style='color:$1'>$2</span>", MATCH_OPTIONS);
 
-            text = Regex.Replace(text, @"\[size=1](.*?)\[\/size=1]", "<span style='font-size:xx-small'>$1</span>", matchOptions);
-            text = Regex.Replace(text, @"\[size=2](.*?)\[\/size=2]", "<span style='font-size:x-small'>$1</span>", matchOptions);
-            text = Regex.Replace(text, @"\[size=3](.*?)\[\/size=3]", "<span style='font-size:small'>$1</span>", matchOptions);
-            text = Regex.Replace(text, @"\[size=4](.*?)\[\/size=4]", "<span style='font-size:large'>$1</span>", matchOptions);
-            text = Regex.Replace(text, @"\[size=5](.*?)\[\/size=5]", "<span style='font-size:x-large'>$1</span>", matchOptions);
-            text = Regex.Replace(text, @"\[size=6](.*?)\[\/size=6]", "<span style='font-size:xx-large'>$1</span>", matchOptions);
+            text = Regex.Replace(text, @"\[size=1](.*?)\[\/size=1]", "<span style='font-size:xx-small'>$1</span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[size=2](.*?)\[\/size=2]", "<span style='font-size:x-small'>$1</span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[size=3](.*?)\[\/size=3]", "<span style='font-size:small'>$1</span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[size=4](.*?)\[\/size=4]", "<span style='font-size:large'>$1</span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[size=5](.*?)\[\/size=5]", "<span style='font-size:x-large'>$1</span>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[size=6](.*?)\[\/size=6]", "<span style='font-size:xx-large'>$1</span>", MATCH_OPTIONS);
 
-            text = Regex.Replace(text, @"\[list]", "<ul>", matchOptions);
-            text = Regex.Replace(text, @"\[\/list]", "</ul>", matchOptions);
-            text = Regex.Replace(text, @"\[list=(?<type>[1iIaA])(,(?<start>[0-9]*))*\]", "<ol type='${type}' start='${start}'>", matchOptions);
-            text = Regex.Replace(text, @"\[\/list=[1iIaAo]\]", "</ol>", matchOptions);
-            text = Regex.Replace(text, @"\[\*]", "<li>", matchOptions);
-            text = Regex.Replace(text, @"\[/\*]", "</li>", matchOptions);
-            text = Regex.Replace(text, @"\[left](.*?)\[\/left]", "<div align='left'>$1</div>", matchOptions);
-            text = Regex.Replace(text, @"\[center](.*?)\[\/center]", "<div align='center'>$1</div>", matchOptions);
-            text = Regex.Replace(text, @"\[right](.*?)\[\/right]", "<div align='right'>$1</div>", matchOptions);
-            text = Regex.Replace(text, @"\[br]", "<br />", matchOptions);
-            text = Regex.Replace(text, @"\[hr]", "<hr class='message'/>", matchOptions);
-            text = Regex.Replace(text, @"\[ltr](.*?)\[\/ltr]", "<div dir='ltr'>$1</div>", matchOptions);
-            text = Regex.Replace(text, @"\[rtl](.*?)\[\/rtl]", "<div dir='rtl'>$1</div>", matchOptions);
+            text = Regex.Replace(text, @"\[list]", "<ul>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[\/list]", "</ul>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[list=(?<type>[1iIaA])(,(?<start>[0-9]*))*\]", "<ol type='${type}' start='${start}'>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[\/list=[1iIaAo]\]", "</ol>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[\*]", "<li>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[/\*]", "</li>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[left](.*?)\[\/left]", "<div align='left'>$1</div>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[center](.*?)\[\/center]", "<div align='center'>$1</div>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[right](.*?)\[\/right]", "<div align='right'>$1</div>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[br]", "<br />", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[hr]", "<hr class='message'/>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[ltr](.*?)\[\/ltr]", "<div dir='ltr'>$1</div>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"\[rtl](.*?)\[\/rtl]", "<div dir='rtl'>$1</div>", MATCH_OPTIONS);
             //[i],[b] etc
-            text = Regex.Replace(text, @"\[((?>(?!\[|\]).|\[(?<Depth>)|\] (?<-Depth>))*(?(Depth)(?!)))\]", "<$1>", matchOptions);
+            text = Regex.Replace(text, @"\[((?>(?!\[|\]).|\[(?<Depth>)|\] (?<-Depth>))*(?(Depth)(?!)))\]", "<$1>", MATCH_OPTIONS);
 
             // cleanup
-            text = Regex.Replace(text, Regex.Escape(Environment.NewLine), "<br />", matchOptions);
-            text = Regex.Replace(text, Regex.Escape("\n"), "<br />", matchOptions);
-            text = Regex.Replace(text, @"<ul><br \/>", "<ul>", matchOptions);
-            text = Regex.Replace(text, @"<\/li><br \/>", "</li>", matchOptions);
+            text = Regex.Replace(text, Regex.Escape(Environment.NewLine), "<br />", MATCH_OPTIONS);
+            text = Regex.Replace(text, Regex.Escape("\n"), "<br />", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"<ul><br \/>", "<ul>", MATCH_OPTIONS);
+            text = Regex.Replace(text, @"<\/li><br \/>", "</li>", MATCH_OPTIONS);
 
             return text;
         }
@@ -378,7 +378,7 @@ namespace Snitz.BLL
         public static string ParseTags(this string text)
         {
             return text.ReplaceNoParseTags().ReplaceBadWords().ReplaceSmileTags().ReplaceImageTags().ReplaceURLs().ReplaceTableTags()
-                .ReplaceFileTags().ReplaceCodeTags().ReplaceTags();
+                .ReplaceFileTags().ReplaceTags();
         }
 
 

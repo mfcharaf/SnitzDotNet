@@ -22,11 +22,11 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
+using System.Xml;
 using SnitzConfig;
 
 namespace SnitzCommon
@@ -119,7 +119,7 @@ namespace SnitzCommon
         public static string CleanForumCodeTags(this string fstring)
         {
             //fstring = Regex.Replace(fstring, @"\[code].*[/code]", "", RegexOptions.Multiline);
-            return Regex.Replace(fstring, @"(\[[^\[]*\])", "", RegexOptions.Multiline);
+            return Regex.Replace(fstring, @"\[(?<tag>.+)\](?<content>.*?)\[\/\k<tag>\]", "${content}", RegexOptions.Multiline);
         }
         
         /// <summary>
@@ -152,6 +152,7 @@ namespace SnitzCommon
             }
             catch (Exception)
             {
+                
                 forumAdjust = new TimeSpan(Config.TimeAdjust, 0, 0); //Forum TimeZone adjustment
             }
             string plusminus = "+";
@@ -298,6 +299,39 @@ namespace SnitzCommon
             var attribute = property.GetCustomAttributes(typeof(DescriptionAttribute), true)[0];
             var description = (DescriptionAttribute)attribute;
             return description.Description;
+        }
+
+        /// <summary>
+        /// Return the [Description] attribute of a property
+        /// </summary>
+        /// <param name="propertyname"></param>
+        /// <param name="modconfig"></param>
+        /// <returns></returns>
+        public static string GetModPropertyDescription(this string propertyname, object modconfig)
+        {
+            
+            //Get property descriptor for current property
+            var property = modconfig.GetType().GetProperty(propertyname);
+            var attribute = property.GetCustomAttributes(typeof(DescriptionAttribute), true)[0];
+            var description = (DescriptionAttribute)attribute;
+            return description.Description;
+        }
+
+        public static string GetFileNameWithoutExtensions(this string path)
+        {
+            string result = path;
+            while (result.Contains("."))
+            {
+                result = Path.GetFileNameWithoutExtension(result);
+            }
+            return result;
+        }
+
+        public static XmlElement GetXmlElement(this string xml)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            return doc.DocumentElement;
         }
     }
 }

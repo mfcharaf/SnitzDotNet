@@ -13,6 +13,10 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,9 +56,6 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Enumerators.cs" />
-    <Compile Include="modconfig\newmod.config.cs" />
-    <Compile Include="modconfig\SnitzMod.cs" />
-    <Compile Include="modconfig\upload.config.cs" />
     <Compile Include="PMConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\emoticons.Designer.cs">

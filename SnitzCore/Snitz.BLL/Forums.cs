@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Caching;
 using System.Web.Security;
 using Snitz.Entities;
 using Snitz.IDAL;
@@ -154,14 +153,22 @@ namespace Snitz.BLL
         {
             //todo: needs testing
             IForumModerator dal = Factory<IForumModerator>.Create("ForumModerator");
-            foreach (string moderator in moderators)
+
+            //get rid of any duplicates
+            string[] mods = moderators.Distinct().ToArray();
+
+            foreach (string moderator in mods)
             {
-                ForumModeratorInfo mod = new ForumModeratorInfo
-                    {
-                        ForumId = forumid,
-                        MemberId = Convert.ToInt32(moderator)
-                    };
-                dal.Add(mod);
+                int modid = Convert.ToInt32(moderator);
+                if (!dal.IsUserForumModerator(modid, forumid))
+                {
+                    ForumModeratorInfo mod = new ForumModeratorInfo
+                                             {
+                                                 ForumId = forumid,
+                                                 MemberId = modid
+                                             };
+                    dal.Add(mod);
+                }
             }
         }
 
@@ -184,7 +191,7 @@ namespace Snitz.BLL
                 return new List<TopicInfo>();
             
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus));
+            return new List<TopicInfo>(dal.GetTopics(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false));
         }
 
         public static int GetForumTopicsSinceCount(bool isAdminOrModerator, int forumid, int? topicstatus, string fromdate, int startRowIndex, int maximumRows)
@@ -192,7 +199,7 @@ namespace Snitz.BLL
             if (maximumRows == 0)
                 return 0;
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return dal.GetTopicCount(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus);
+            return dal.GetTopicCount(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false);
         }
         
         public static List<ForumJumpto> ListForumJumpTo()
@@ -211,7 +218,7 @@ namespace Snitz.BLL
         public static List<TopicInfo> GetForumTopics(int forumid, int startrec, int maxrecs)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(null, startrec, maxrecs, forumid,false,-1));
+            return new List<TopicInfo>(dal.GetTopics(null, startrec, maxrecs, forumid,false,-1,false));
         }
 
         public static List<int> AllowedForums(MemberInfo member)

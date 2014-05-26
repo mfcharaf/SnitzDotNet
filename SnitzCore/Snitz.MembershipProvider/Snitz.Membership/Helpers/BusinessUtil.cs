@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Snitz.Entities;
-using Snitz.IDAL;
-using Snitz.Membership;
 using Snitz.Membership.IDal;
 
 namespace SnitzMembership.Helpers

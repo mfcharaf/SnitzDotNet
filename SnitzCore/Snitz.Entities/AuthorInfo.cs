@@ -47,6 +47,12 @@ namespace Snitz.Entities
             this.Status = member.Status;
             this.Rank = new RankInfo(member.Username, ref title, member.PostCount);
             this.Title = title;
+            this.Yahoo = member.Yahoo;
+            this.AIM = member.AIM;
+            this.Skype = member.Skype;
+            this.ICQ = member.ICQ;
+            //this.FaceBook = member.FaceBook;
+            //this.GooglePlus = member.GooglePlus;
         }
 
         public string ProfilePopup

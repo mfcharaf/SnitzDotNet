@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
-using SnitzMembership.Helpers;
 
 namespace Snitz.BLL
 {

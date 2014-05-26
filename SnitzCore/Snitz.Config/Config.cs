@@ -118,6 +118,29 @@ namespace SnitzConfig
             }
         }
 
+        [Description("imageDirectory")]
+        public static string ImageDirectory
+        {
+            get
+            {
+                return String.Format("~/App_Themes/{0}/Images/", UserTheme);
+            }
+        }
+        
+        [Description("CultureSpecificImageDirectory")]
+        public static string CultureSpecificImageDirectory
+        {
+            get
+            {
+                string imagepath = String.Format("~/App_Themes/{0}/Images/{1}/", HttpContext.Current.Session["_theme"], CultureInfo.CurrentCulture.ToString().Trim());
+                if (!Directory.Exists(HttpContext.Current.Server.MapPath(imagepath)))
+                {
+                    imagepath = ImageDirectory;
+                }
+                return imagepath;
+            }
+        }
+
         [Description("strForumTitle")]
         public static string ForumTitle
         {
@@ -169,14 +192,6 @@ namespace SnitzConfig
                 themecookie.Path = "/";
                 themecookie.Expires = DateTime.Now.AddYears(1);
                 HttpContext.Current.Response.Cookies.Add(themecookie);
-            }
-        }
-        [Description("imageDirectory")]
-        public static string ImageDirectory
-        {
-            get
-            {
-                return String.Format("~/App_Themes/{0}/Images/", UserTheme);
             }
         }
 
@@ -398,20 +413,6 @@ namespace SnitzConfig
             set { UpdateConfig("intSearchPageSize", value.ToString()); }
         }
 
-        [Description("CultureSpecificImageDirectory")]
-        public static string CultureSpecificImageDirectory
-        {
-            get
-            {
-                string imagepath = String.Format("~/App_Themes/{0}/Images/{1}/", HttpContext.Current.Session["_theme"], CultureInfo.CurrentCulture.ToString().Trim());
-                if (!Directory.Exists(HttpContext.Current.Server.MapPath(imagepath)))
-                {
-                    imagepath = String.Format("~/App_Themes/{0}/Images/", HttpContext.Current.Session["_theme"]);
-                }
-                return imagepath;
-            }
-        }
-
         [Description("intPagerType")]
         public static Enumerators.PagerType PagerStyle
         {
@@ -457,7 +458,6 @@ namespace SnitzConfig
         {
             get
             {
-
                 return ((ShowRankType == Enumerators.RankType.StarsOnly) || (ShowRankType == Enumerators.RankType.Both));
             }
         }
@@ -717,7 +717,7 @@ namespace SnitzConfig
         {
             get
             {
-                return (ConfigurationManager.AppSettings["boolMoveNotify"] == "1" && Config.UseEmail);
+                return (ConfigurationManager.AppSettings["boolMoveNotify"] == "1" && UseEmail);
             }
             set
             {
@@ -930,13 +930,6 @@ namespace SnitzConfig
             set { UpdateConfig("intAdminUserId", value.ToString()); }
         }
 
-        [Description("boolShowEvents")]
-        public static bool ShowEventsCalendar
-        {
-            get { return ConfigurationManager.AppSettings["boolShowEvents"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolShowEvents"]) == 1; }
-            set { UpdateConfig("boolShowEvents", value ? "1" : "0"); }
-        }
-
         [Description("boolPrivateMessaging")]
         public static bool PrivateMessaging
         {
@@ -958,17 +951,28 @@ namespace SnitzConfig
             set { UpdateConfig("boolAllowSearchAllForums", value ? "1" : "0"); }
         }
 
-        public static string strTablePrefix
+        public static string ForumTablePrefix
         {
             get { return ConfigurationManager.AppSettings["strTablePrefix"]; }
 
         }
-        public static string strMemberTablePrefix
+        public static string MemberTablePrefix
         {
             get { return ConfigurationManager.AppSettings["strMemberTablePrefix"]; }
 
         }
+        public static string FilterTablePrefix
+        {
+            get { return ConfigurationManager.AppSettings["strFilterTablePrefix"]; }
 
+        }
+
+        [Description("strCookiePath")]
+        public static string CookiePath
+        {
+            get { return ConfigurationManager.AppSettings["boolAllowSearchAllForums"]; }
+            set { UpdateConfig("boolAllowSearchAllForums", value ); }
+        }
 
         #endregion
 

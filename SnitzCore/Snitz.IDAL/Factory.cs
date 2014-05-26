@@ -38,9 +38,9 @@ namespace Snitz.IDAL
         public static T Create(string name)
         {
             // Look up the DAL implementation we should be using
-            string path = ConfigurationManager.AppSettings["SnitzDAL"];
-            string className = path + "." + name;
-            return (T)Assembly.Load(path).CreateInstance(className);
+            string dal = "Snitz." + ConfigurationManager.AppSettings["SnitzDAL"];
+            string className = dal + "." + name;
+            return (T)Assembly.Load(dal).CreateInstance(className);
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Snitz.IDAL
         public static T Create(string name, string config)
         {
             // Look up the DAL implementation we should be using
-            string path = ConfigurationManager.AppSettings[config];
-            string className = path + "." + name;
-            return (T)Assembly.Load(path).CreateInstance(className);
+            string dal = ConfigurationManager.AppSettings[config];
+            string className = dal + "." + name;
+            return (T)Assembly.Load(dal).CreateInstance(className);
         }
     }
 }

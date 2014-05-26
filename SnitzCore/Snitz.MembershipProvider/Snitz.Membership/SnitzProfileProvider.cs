@@ -26,18 +26,14 @@
 
     using System;
     using System.Web.Profile;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Data;
     using System.Data.SqlClient;
-    using System.Text;
     using System.Configuration.Provider;
     using System.Configuration;
-    using Snitz.Entities;
     using Snitz.Membership.IDal;
-    using ProfileInfo = System.Web.Profile.ProfileInfo;
 
-    public class SnitzProfileProvider : ProfileProvider
+public class SnitzProfileProvider : ProfileProvider
     {
         private string _appName;
         private Guid _appId;

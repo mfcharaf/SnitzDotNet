@@ -7,7 +7,6 @@
 // É altamente desejável que essa mensagem não seja removida.
 //------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 
 /// <summary>

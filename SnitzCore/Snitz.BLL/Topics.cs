@@ -113,6 +113,7 @@ namespace Snitz.BLL
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
             dal.UpdateViewCount(topicid);
+            
         }
 
         public static IEnumerable<TopicInfo> GetTopicsForSiteMap(int maxRecords)
@@ -219,13 +220,13 @@ namespace Snitz.BLL
         public static int GetNewTopicCount(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null);
+            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null,true);
         }
 
         public static List<TopicInfo> GetNewTopics(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null));
+            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null, true));
         }
 
         public static void Dispose()
