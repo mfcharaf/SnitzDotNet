@@ -54,21 +54,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\Dependency\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Cryptos">
-      <HintPath>..\Dependency\Cryptos.dll</HintPath>
+      <HintPath>..\..\Dependency\Cryptos.dll</HintPath>
     </Reference>
     <Reference Include="CSSFriendly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\CSSFriendly.dll</HintPath>
+      <HintPath>..\..\Dependency\CSSFriendly.dll</HintPath>
     </Reference>
     <Reference Include="jquery.spellchecker">
-      <HintPath>..\Dependency\jquery.spellchecker.dll</HintPath>
+      <HintPath>..\..\Dependency\jquery.spellchecker.dll</HintPath>
     </Reference>
     <Reference Include="RealWorld.Grids, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
+      <HintPath>..\..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.BLL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,23 +84,23 @@
     </Reference>
     <Reference Include="Snitz.Membership.IDal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\Snitz.Membership.IDal.dll</HintPath>
+      <HintPath>..\..\Dependency\Snitz.Membership.IDal.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.ThirdParty">
-      <HintPath>..\Dependency\Snitz.ThirdParty.dll</HintPath>
+      <HintPath>..\..\Dependency\Snitz.ThirdParty.dll</HintPath>
     </Reference>
     <Reference Include="SnitzBase">
-      <HintPath>..\Dependency\SnitzBase.dll</HintPath>
+      <HintPath>..\..\Dependency\SnitzBase.dll</HintPath>
     </Reference>
     <Reference Include="SnitzCommon">
-      <HintPath>..\Dependency\SnitzCommon.dll</HintPath>
+      <HintPath>..\..\Dependency\SnitzCommon.dll</HintPath>
     </Reference>
     <Reference Include="SnitzConfig">
-      <HintPath>..\Dependency\SnitzConfig.dll</HintPath>
+      <HintPath>..\..\Dependency\SnitzConfig.dll</HintPath>
     </Reference>
     <Reference Include="SnitzMembership, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\SnitzMembership.dll</HintPath>
+      <HintPath>..\..\Dependency\SnitzMembership.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -123,11 +123,11 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="Validators">
-      <HintPath>..\Dependency\Validators.dll</HintPath>
+      <HintPath>..\..\Dependency\Validators.dll</HintPath>
     </Reference>
     <Reference Include="WebOptimizer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5660f4b37e89cc19, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\WebOptimizer.dll</HintPath>
+      <HintPath>..\..\Dependency\WebOptimizer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -899,6 +899,7 @@
     <Content Include="images\twitter.png" />
     <Content Include="images\upload.png" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\SnitzWeb.pubxml" />
     <None Include="Scripts\bbcode.yui.js" />
     <None Include="Scripts\bbcode.min.js">
       <DependentUpon>bbcode.yui.js</DependentUpon>
@@ -2327,9 +2328,9 @@
   </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)WWW\bin\"
+    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)www\bin\"
 
-xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)..\Published\bin\"
+xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)..\PublishedWWW\bin\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
