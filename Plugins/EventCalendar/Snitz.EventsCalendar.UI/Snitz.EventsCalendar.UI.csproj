@@ -20,6 +20,10 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +48,9 @@
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
       <HintPath>..\..\..\Dependency\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Snitz.BLL">
+      <HintPath>..\..\..\Dependency\Snitz.BLL.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -182,13 +189,13 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(ProjectDir)UserControls\Events\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Events\"
+    <PostBuildEvent>xcopy /s /y "$(ProjectDir)UserControls\Events\*.ascx" "$(SolutionDir)..\..\Web Site\www\UserControls\Events\"
 
-xcopy /s /y "$(ProjectDir)UserControls\Popups\*.ascx" "$(SolutionDir)Snitz.Web\UserControls\Popups\"
+xcopy /s /y "$(ProjectDir)UserControls\Popups\*.ascx" "$(SolutionDir)..\..\Web Site\www\UserControls\Popups\"
 
-xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.*" "$(SolutionDir)Snitz.Web\bin\"
+xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.*" "$(SolutionDir)..\..\Web Site\www\bin\"
 
-xcopy /s /y "$(ProjectDir)Content\Events\*.aspx" "$(SolutionDir)Snitz.Web\Content\Events\"
+xcopy /s /y "$(ProjectDir)Content\Events\*.aspx" "$(SolutionDir)..\..\Web Site\www\Content\Events\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -40,6 +40,6 @@ namespace Snitz.Entities
 
         public string Description { get; set; }
 
-        public AuthorInfo Author { get; private set; }
+        public AuthorInfo Author { get; set; }
     }
 }

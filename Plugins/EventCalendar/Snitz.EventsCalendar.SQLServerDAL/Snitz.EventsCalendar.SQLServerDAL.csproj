@@ -11,6 +11,10 @@
     <AssemblyName>Snitz.EventsCalendar.SQLServerDAL</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,7 +63,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "$(SolutionDir)Snitz.Web\bin\"
+    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "..\..\Web Site\www\bin\"
 
 </PostBuildEvent>
   </PropertyGroup>

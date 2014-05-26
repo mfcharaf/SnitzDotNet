@@ -441,8 +441,8 @@
   <data name="lblMessengerChat" xml:space="preserve">
     <value>Open Chat window</value>
   </data>
-  <data name="lblMessengerMSN" xml:space="preserve">
-    <value>{0}'s MSN Messenger address:</value>
+  <data name="lblMessengerSkype" xml:space="preserve">
+    <value>{0}'s Skype Email address:</value>
   </data>
   <data name="lblMessengerSend" xml:space="preserve">
     <value>Send a message to Member</value>
@@ -513,8 +513,8 @@
   <data name="lblMemberSince" xml:space="preserve">
     <value>Joined</value>
   </data>
-  <data name="lblMSN" xml:space="preserve">
-    <value>MSN Handle</value>
+  <data name="lblSkype" xml:space="preserve">
+    <value>Skype Address</value>
   </data>
   <data name="lblOldPosts" xml:space="preserve">
     <value>No new Posts</value>

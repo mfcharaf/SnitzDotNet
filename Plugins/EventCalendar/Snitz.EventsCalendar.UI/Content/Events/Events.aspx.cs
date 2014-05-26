@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using ModConfig;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
@@ -37,7 +38,7 @@ namespace EventsCalendar
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Config.ShowEventsCalendar)
+            if (!ConfigHelper.IsModEnabled("EventsConfig"))
             {
                 throw new NotSupportedException("Events Calendar not enabled");
                 Response.End();

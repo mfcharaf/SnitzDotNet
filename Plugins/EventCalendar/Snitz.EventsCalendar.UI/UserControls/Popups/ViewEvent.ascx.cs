@@ -20,6 +20,7 @@
 */
 
 using System;
+using ModConfig;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
@@ -33,7 +34,7 @@ namespace EventsCalendar.UserControls.Popups
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Config.ShowEventsCalendar)
+            if (!ConfigHelper.IsModEnabled("EventsConfig"))
                 return;
 
             if (Data != null)

@@ -6,13 +6,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\SnitzDev\Published</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_GlobalResources/webResources.resx">
-      <publishTime>09/30/2013 09:13:34</publishTime>
+      <publishTime>05/10/2014 19:02:38</publishTime>
     </File>
     <File Include="bin/AjaxControlToolkit.dll">
-      <publishTime>09/30/2013 09:13:34</publishTime>
+      <publishTime>01/04/2014 22:54:18</publishTime>
+    </File>
+    <File Include="bin/AjaxMin.dll">
+      <publishTime>01/04/2014 22:54:19</publishTime>
     </File>
     <File Include="bin/Cryptos.dll">
       <publishTime>09/30/2013 09:13:34</publishTime>
@@ -23,50 +27,53 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/EventsCalendar.UI.dll">
       <publishTime>07/21/2013 22:12:31</publishTime>
     </File>
+    <File Include="bin/HtmlAgilityPack.dll">
+      <publishTime>01/04/2014 22:55:24</publishTime>
+    </File>
     <File Include="bin/RealWorld.Grids.dll">
       <publishTime>09/30/2013 09:13:34</publishTime>
     </File>
     <File Include="bin/Snitz.BLL.dll">
-      <publishTime>10/01/2013 21:14:39</publishTime>
+      <publishTime>05/25/2014 13:33:05</publishTime>
     </File>
     <File Include="bin/Snitz.Entities.dll">
-      <publishTime>10/01/2013 21:14:37</publishTime>
+      <publishTime>05/25/2014 13:33:03</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.BLL.dll">
-      <publishTime>10/01/2013 21:16:37</publishTime>
+      <publishTime>05/25/2014 14:27:12</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.Common.dll">
       <publishTime>09/12/2013 12:17:22</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.Enitities.dll">
-      <publishTime>10/01/2013 21:16:35</publishTime>
+      <publishTime>05/25/2014 14:27:11</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.IDAL.dll">
-      <publishTime>10/01/2013 21:16:37</publishTime>
+      <publishTime>05/25/2014 14:27:12</publishTime>
     </File>
     <File Include="bin/Snitz.EventsCalendar.UI.dll">
-      <publishTime>10/01/2013 21:16:38</publishTime>
+      <publishTime>05/25/2014 14:27:13</publishTime>
     </File>
     <File Include="bin/Snitz.IDAL.dll">
-      <publishTime>10/01/2013 21:14:38</publishTime>
+      <publishTime>05/25/2014 13:33:04</publishTime>
     </File>
     <File Include="bin/Snitz.Membership.IDal.dll">
-      <publishTime>10/01/2013 21:15:11</publishTime>
+      <publishTime>05/25/2014 13:33:04</publishTime>
     </File>
     <File Include="bin/Snitz.ThirdParty.dll">
-      <publishTime>10/01/2013 21:14:35</publishTime>
+      <publishTime>05/25/2014 13:33:02</publishTime>
     </File>
     <File Include="bin/SnitzBase.dll">
-      <publishTime>10/01/2013 21:14:40</publishTime>
+      <publishTime>05/25/2014 13:33:06</publishTime>
     </File>
     <File Include="bin/SnitzCommon.dll">
-      <publishTime>10/01/2013 21:14:36</publishTime>
+      <publishTime>05/25/2014 13:33:03</publishTime>
     </File>
     <File Include="bin/SnitzConfig.dll">
-      <publishTime>10/01/2013 21:14:36</publishTime>
+      <publishTime>05/25/2014 13:33:02</publishTime>
     </File>
     <File Include="bin/SnitzMembership.dll">
-      <publishTime>10/01/2013 21:15:12</publishTime>
+      <publishTime>05/25/2014 13:33:04</publishTime>
     </File>
     <File Include="bin/SnitzSQLData.dll">
       <publishTime>07/21/2013 13:02:15</publishTime>

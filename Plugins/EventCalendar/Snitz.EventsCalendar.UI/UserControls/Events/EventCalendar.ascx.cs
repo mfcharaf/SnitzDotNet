@@ -254,6 +254,7 @@ namespace EventsCalendar.UserControls
                 temp = "";
             foreach (EventInfo Item in TodaysEvents)
             {
+                Item.Author = Members.GetAuthor(Item.MemberId);
                 switch (Item.Type)
                 {
 			        case 1 :
