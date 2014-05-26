@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Web", "WWW\Snitz.Web.csproj", "{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://snitzforums.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WWW\\Snitz.Web.csproj
+		SccProjectName1 = WWW
+		SccLocalPath1 = WWW
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91868391-3B20-4A10-9DD7-AB2C2EE9B3A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
