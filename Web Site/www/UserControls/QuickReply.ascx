@@ -47,7 +47,7 @@
                 <asp:CheckBox ID="cbxSig" runat="server" Text="<%$ Resources:webResources, lblQRSig %>" Visible="<%# Config.AllowSignatures %>" />
             </asp:Panel>
             <asp:Panel id="QRR" runat="server" CssClass="QRRight">
-                <asp:TextBox ID="qrMessage" ValidationGroup="qreply" runat="server" TextMode="MultiLine" Rows="6" CssClass="QRMsgArea" ></asp:TextBox>
+                <asp:TextBox ID="qrMessage" ValidationGroup="qreply" runat="server" TextMode="MultiLine" CssClass="QRMsgArea" ></asp:TextBox>
             </asp:Panel>   
         </div>  
     </asp:Panel>

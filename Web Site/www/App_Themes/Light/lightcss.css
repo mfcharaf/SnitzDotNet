@@ -7,11 +7,13 @@ table,tr,td,th{border-collapse:collapse}
 #TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:white}
 #MenuDIV{display:block;background-color:silver;padding-top:1px;margin:1px 0 1px 0;width:auto;height:24px;border-top:1px solid #fff;border-bottom:1px solid #777;clear:both;border-radius:5px}
 #mainDIV{margin:auto;width:98%}
-#breadcrumbDIV{margin:1px;background-color:#f8f8f8;border:1px solid #777;border-radius:5px}
+#breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color:#eee;border:1px solid #777;border-radius:5px;padding:0}
+.breadcrumb span{line-height:22px;vertical-align:top}
 #HdrDIV{margin:1px}
 #RightHdrDIV{margin-left:0;float:right;width:49%;text-align:right}
 #LeftHdrDIV{float:left;width:49%}
 #contentDIV{width:auto;margin:1px;clear:both}
+#MessageList{width:100%}
 #contentfooterDIV{margin:1px;width:auto}
 #pagefooterDIV{width:100%;margin:auto;background-color:transparent}
 #LoginBox{float:right}
@@ -22,6 +24,10 @@ table,tr,td,th{border-collapse:collapse}
 #topsection h1{margin:0;padding-top:15px;border-radius:5px}
 #contentwrapper{width:100%;float:left;margin-right:-325px}
 #rightcolumn{float:right;width:320px}
+.clearmargin{margin-right:0}
+.hide{display:none}
+.rightmargin{margin-right:325px}
+.show{display:block}
 #footer{clear:both;width:100%}
 #PostOptionsDIV{padding-right:5px;text-align:center}
 #PagerPanel{margin-top:3px}
@@ -47,6 +53,9 @@ h1{font-weight:bold;font-size:1.2em;text-decoration:none;line-height:120%;color:
 h2{font-weight:bold;font-size:1em;text-decoration:none;line-height:1em;color:#777}
 h3{font-weight:bold;font-size:.9em;padding-left:4px;text-decoration:none;line-height:1em;color:#777}
 p{font-size:.9em;padding:0 4px 0 4px}
+.bbcode h1{font-weight:bold;font-size:1.1em;text-decoration:none;line-height:1em;color:#111}
+.bbcode h2{font-weight:bold;font-size:.9em;text-decoration:none;line-height:1em;color:#444}
+.bbcode h3{font-weight:bold;font-size:.8em;padding-left:4px;text-decoration:none;line-height:.8em;color:#777}
 input,textarea,select{color:#000;border-color:#777;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-radius:3px}
 input{text-indent:2px}
 a:link,a:active{color:#777;text-decoration:none}
@@ -119,7 +128,7 @@ tr.rowsticky{border-bottom:1px solid #777}
 .topictitle{margin:8px;font-weight:bold;line-height:1.3em}
 .usertitle{font-weight:bold;color:#777;line-height:1.2em}
 .ReplyDiv{width:100%;border:1px solid #777;background-color:#efefef;color:Teal;overflow:hidden!important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left}
-.AltReplyDiv{width:100%;border:1px solid #777;background-color:White;color:Navy;overflow:hidden!important;overflow:hidden}
+.AltReplyDiv{width:100%;border:1px solid #777;background-color:White;color:Navy;overflow:hidden!important;overflow:hidden;float:left}
 .leftColumn{float:left;min-height:160px;width:181px;padding:3px;height:auto!important;height:160px}
 .leftColumn .smallText{color:#999}
 .leftColumn .profilelnk{color:#009}
@@ -227,6 +236,9 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 #__asptrace{position:relative}
 .mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#fff;padding:0;max-height:90%;line-height:1em;font-size:.8em}
 .mainModalPopup fieldset{font-size:inherit}
+.mainModalPopup fieldset input[type="text"]{margin-bottom:2px}
+.mainModalPopup fieldset label{line-height:120%;padding-right:3px}
+.mainModalPopup fieldset textarea{width:99%;margin-bottom:2px}
 .mainModalBorder{border-left:1px solid #ECE9D8;border-right:1px solid #716F64;border-top:1px solid #ECE9D8;border-bottom:1px solid #716F64}
 .mainModalInnerDiv{background-color:#fff;border-width:0;width:auto}
 .mainModalInnerBorder{border-left:1px solid #FFF;border-right:1px solid #ACA899;border-top:1px solid #FFF;border-bottom:1px solid #ACA899}

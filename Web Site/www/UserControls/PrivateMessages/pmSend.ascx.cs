@@ -33,81 +33,44 @@ using SnitzMembership;
 
 namespace SnitzUI.UserControls.PrivateMessaging
 {
-    public partial class PmSend : UserControl
+
+    public partial class PmSend : TemplateUserControl
     {
+
         public int ToUser { get; set; }
+        public string Layout { get { return _layout; } set { _layout = value; } }
+
         private string _layout;
         private const string StrCookieUrl = "pmMod";
         private readonly string username = HttpContext.Current.User.Identity.Name;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var cookie = Request.Cookies[StrCookieUrl + "paging"];
-            if (cookie != null && (cookie["outbox"] == null))
+            if (Data != null)
             {
-                var httpCookie = Response.Cookies[StrCookieUrl + "paging"];
-                if (httpCookie != null)
-                {
-                    httpCookie["outbox"] = "double";
-                    httpCookie.Expires = DateTime.UtcNow.AddYears(1);
-                }
+                //$(".QRMsgArea").markItUp(mySettings);
+                ToUser = Convert.ToInt32(Data);
+
+            }
+            this.StartupScript = "$('.QRMsgArea').markItUp(mySettings)";
+
+            var pmcookies = SnitzCookie.GetPMCookie();
+
+            if (pmcookies.ContainsKey("outbox"))
+            {
+                pmcookies["outbox"] = "double";
                 _layout = "double";
             }
             else
             {
-                if (cookie != null)
-                    _layout = cookie["outbox"];
+                _layout = pmcookies["outbox"];
             }
         }
 
         protected void SendPm(object sender, EventArgs e)
         {
-            MembershipUser currentUser = Membership.GetUser(username);
-            ProfileCommon profile = ProfileCommon.GetUserProfile(username);
-            if (currentUser == null || currentUser.ProviderUserKey == null)
-                return;
 
-            var pm = new PrivateMessageInfo
-                         {
-                             Subject = tbxSubject.Text,
-                             Message = qrMessage.Text,
-                             ToMemberId = ToUser,
-                             FromMemberId = (int) currentUser.ProviderUserKey,
-                             Read = 0,
-                             OutBox = _layout != "none" ? 1 : 0,
-                             SentDate = DateTime.UtcNow.ToForumDateStr(),
-                             Mail = profile.PMEmail == null ? 0 : profile.PMEmail.Value
-                         };
-            PrivateMessages.SendPrivateMessage(pm);
-            pmSuccess.Text = PrivateMessage.PmSent;
-            //do we need to send an email
-            MembershipUser toUser = Membership.GetUser(ToUser);
-            if (toUser != null)
-            {
-                ProfileCommon toprofile = ProfileCommon.GetUserProfile(toUser.UserName);
-                if(toprofile.PMEmail.HasValue)
-                    if (toprofile.PMEmail.Value == 1)
-                    {
-                        snitzEmail notification = new snitzEmail
-                        {
-                            toUser = new MailAddress(toUser.Email),
-                            subject = Config.ForumTitle + " - New Private message"
-                        };
-                        string strMessage = "Hello " + toUser.UserName;
-                        strMessage = strMessage + username + " has sent you a private message at " + Config.ForumTitle + "." + Environment.NewLine;
-                        if (String.IsNullOrEmpty(tbxSubject.Text))
-                        {
-                            strMessage = strMessage + "Regarding - " + tbxSubject.Text + "." + Environment.NewLine + Environment.NewLine;
-                        }
-                        else
-                        {
-                            strMessage = strMessage + "With the subject entitled - " + tbxSubject.Text + "." + Environment.NewLine + Environment.NewLine; 
-                        }
-
-                        notification.msgBody = strMessage;
-                        notification.send();
-                    }
-            }
+ 
         }
     }
 

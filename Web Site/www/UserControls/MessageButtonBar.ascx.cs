@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -257,9 +258,12 @@ public partial class MessageButtonBar : UserControl
         TopicInfo t = Topics.GetTopic(topicid);
         string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
         List<SnitzLink> bookmarks = page.Profile.BookMarks;
-        bookmarks.Add(new SnitzLink(t.Subject, url,bookmarks.Count));
-        page.Profile.BookMarks = bookmarks;
-        page.Profile.Save();        
+        if (!bookmarks.Contains(new SnitzLink(t.Subject, url, 0)))
+        {
+            bookmarks.Add(new SnitzLink(t.Subject, url, bookmarks.Count));
+            page.Profile.BookMarks = bookmarks;
+            page.Profile.Save();
+        }
     }
 
     private void BookMarkReply(int replyid)
@@ -269,9 +273,12 @@ public partial class MessageButtonBar : UserControl
         TopicInfo rt = Topics.GetTopic(r.TopicId);
         string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page.CurrentPage + 1, r.Id);
         List<SnitzLink> rbookmarks = page.Profile.BookMarks;
-        rbookmarks.Add(new SnitzLink(rt.Subject, rurl,rbookmarks.Count));
-        page.Profile.BookMarks = rbookmarks;
-        page.Profile.Save();        
+        if (!rbookmarks.Contains(new SnitzLink(rt.Subject, rurl, 0)))
+        {
+            rbookmarks.Add(new SnitzLink(rt.Subject, rurl, rbookmarks.Count));
+            page.Profile.BookMarks = rbookmarks;
+            page.Profile.Save();
+        }
     }
 
     private void InvalidateForumCache()

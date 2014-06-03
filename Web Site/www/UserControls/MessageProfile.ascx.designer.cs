@@ -57,13 +57,13 @@ public partial class MessageProfile {
     protected global::System.Web.UI.WebControls.ImageButton hProf;
     
     /// <summary>
-    /// phPrivateSend control.
+    /// hSendPm control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder phPrivateSend;
+    protected global::System.Web.UI.WebControls.HyperLink hSendPm;
     
     /// <summary>
     /// hHome control.

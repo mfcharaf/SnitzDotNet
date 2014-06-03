@@ -91,7 +91,7 @@ namespace Snitz.Entities
             }
         }
         public string AuthorName { get; set; }
-        public string AuthorProfile
+        public string AuthorProfileLink
         {
             get { return String.Format("/Account/profile.aspx?user={0}", this.AuthorName); }
         }

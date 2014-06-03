@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
@@ -108,7 +109,22 @@ namespace Snitz.OLEDbDAL
             }
             return stickytopics;
         }
+        public IEnumerable<TopicInfo> GetUserBlogTopics(int forumid, int memberid)
+        {
+            List<TopicInfo> blogtopics = new List<TopicInfo>();
+            List<OleDbParameter> parms = new List<OleDbParameter>();
+            parms.Add(new OleDbParameter("@Forum", OleDbType.Numeric) { Value = forumid });
+            parms.Add(new OleDbParameter("@MemberId", OleDbType.Numeric) { Value = memberid });
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + Topic.TopicCols + Topic.TopicFrom + " WHERE T.FORUM_ID = @Forum AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC", parms.ToArray()))
+            {
+                while (rdr.Read())
+                {
+                    blogtopics.Add(BoHelper.CopyTopicToBO(rdr));
+                }
 
+            }
+            return blogtopics;
+        }
         public void UpdateLastForumPost(object post)
         {
             string updateForumSql = "UPDATE " + Config.ForumTablePrefix + "FORUM SET F_COUNT=F_COUNT+1 [INCTOPIC], F_LAST_POST_TOPIC_ID=@TopicId, ";

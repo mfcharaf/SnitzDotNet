@@ -78,6 +78,7 @@ namespace SnitzUI.UserControls.Popups
                 cbxCountPost.Checked = forum.UpdatePostCount.Value;
             cbxAllowPolls.Checked = forum.AllowPolls;
 
+            cbxBugReport.Checked = (forum.Type == 3);
             if (Config.Moderation)
             {
                 if (forum.ModerationLevel != null) ddlMod.SelectedValue = ((int) forum.ModerationLevel).ToString();
@@ -110,8 +111,6 @@ namespace SnitzUI.UserControls.Popups
                 ddlSub.SelectedValue = "0";
             }
             #endregion
-
-            ddlAuthType.SelectedValue = forum.AuthType.ToString();
 
             if (forum.Id > 0)
             {

@@ -31,6 +31,7 @@ using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
 using SnitzMembership;
+using SnitzUI.UserControls.PrivateMessaging;
 
 
 public partial class MessageProfile : UserControl
@@ -50,6 +51,7 @@ public partial class MessageProfile : UserControl
         set
         {
             _authorId = value;
+            if (value == 0) return;
             if (Cache["M" + _authorId] == null)
             {
                 _author = Members.GetAuthor(_authorId);
@@ -142,16 +144,19 @@ public partial class MessageProfile : UserControl
         hSKYPE.Visible = true;
         hSKYPE.NavigateUrl = String.Format("skype:{0}?chat",_author.Skype.Trim());
         hSKYPE.Text = hSKYPE.ToolTip = webResources.lblSkype;
+
+        hSendPm.Visible = (_loggedonuser || !Config.PrivateMessaging) && prof.PMReceive == 1;
+        hSendPm.NavigateUrl = "#";
+        hSendPm.Attributes.Add("onclick",
+                                     string.Format(
+                                         "mainScreen.LoadServerControlHtml('Send Private Message',{{'pageID':13,'data':{0}}},'methodHandlers.BeginRecieve');return false;",
+                                         _author.Id));
     }
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (_loggedonuser)
-        {
-            var privateSend = LoadControl("~/UserControls/PrivateMessages/pmSend.ascx");
-            phPrivateSend.Controls.Add(privateSend);
-        }
+
     }
 
 }

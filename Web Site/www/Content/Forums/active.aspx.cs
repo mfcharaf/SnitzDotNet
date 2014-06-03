@@ -60,13 +60,14 @@ public partial class ActiveTopicPage : PageBase
             ActiveTable.PageSize = Config.TopicPageSize;
             if (!Page.IsPostBack)
             {
-                HttpCookie sincecookie = Request.Cookies.Get("SinceDate");
-                HttpCookie refreshcookie = Request.Cookies.Get("ActiveRefresh");
-                if (sincecookie != null)
-                    ddlTopicsSince.SelectedIndex = Int32.Parse(sincecookie.Value);
-                if (refreshcookie != null)
+                var TopicSinceIndex = SnitzCookie.GetTopicSince();
+                var refreshIndex = SnitzCookie.GetActiveRefresh();
+
+                if (TopicSinceIndex != null)
+                    ddlTopicsSince.SelectedIndex = Int32.Parse(TopicSinceIndex);
+                if (refreshIndex != null)
                 {
-                    ddlPageRefresh.SelectedIndex = Int32.Parse(refreshcookie.Value);
+                    ddlPageRefresh.SelectedIndex = Int32.Parse(refreshIndex);
                     if (ddlPageRefresh.SelectedValue != "")
                     {
                         int reloadTime = 60000 * Convert.ToInt32(ddlPageRefresh.SelectedValue);
@@ -130,8 +131,7 @@ public partial class ActiveTopicPage : PageBase
             }
             if (ddlPageRefresh.SelectedIndex == 0)
             {
-                var refresh = new HttpCookie("ActiveRefresh", "0") { Expires = DateTime.UtcNow.AddDays(30) };
-                Response.Cookies.Set(refresh);
+                SnitzCookie.SetActiveRefresh("0");
                 ScriptManager.RegisterStartupScript(this, GetType(), "clearrefresh", "cancelRefresh();", true);
             }
             BindActiveTopics();
@@ -300,41 +300,16 @@ public partial class ActiveTopicPage : PageBase
         
         protected void DdlTopicsSinceSelectedIndexChanged(object sender, EventArgs e)
         {
-            var sincecookie = Request.Cookies.Get("SinceDate");
-            if (sincecookie != null)
-            {
-                sincecookie.Value = ddlTopicsSince.SelectedIndex.ToString();
-                sincecookie.Expires = DateTime.UtcNow.AddMinutes(30);
-                Response.Cookies.Add(sincecookie);
-            }
-            else
-            {
-                var newcookie = new HttpCookie("SinceDate", ddlTopicsSince.SelectedIndex.ToString());
-                Response.Cookies.Add(newcookie);
-            }
-
-
+            SnitzCookie.SetTopicSince(ddlTopicsSince.SelectedIndex.ToString());
         }
 
         protected void DdlPageRefreshSelectedIndexChanged(object sender, EventArgs e)
         {
             //store the variable in a cookie.
-            var active = Request.Cookies.Get("ActiveRefresh");
-            if (active != null)
-            {
-                active.Value = ddlPageRefresh.SelectedIndex.ToString();
-                active.Expires = DateTime.UtcNow.AddDays(30);
-                Response.Cookies.Set(active);
-            }
-            else
-            {
-                var refresh = new HttpCookie("ActiveRefresh", ddlPageRefresh.SelectedIndex.ToString()) { Expires = DateTime.UtcNow.AddDays(30) };
-                Response.Cookies.Add(refresh);
-            }
+            SnitzCookie.SetActiveRefresh(ddlPageRefresh.SelectedIndex.ToString());
+
             if (ddlPageRefresh.SelectedIndex == 0)
             {
-                var refresh = new HttpCookie("ActiveRefresh", "0") { Expires = DateTime.UtcNow.AddDays(30) };
-                Response.Cookies.Set(refresh);
                 ScriptManager.RegisterStartupScript(this, GetType(), "clearrefresh", "cancelRefresh();", true);
 
             }
@@ -629,12 +604,10 @@ public partial class ActiveTopicPage : PageBase
                     Session["_LastVisit"] = hdnLastOpened.Value;
                     Session["_LastVisit"] = hdnLastOpened.Value;
                 }
-                HttpCookie since = Response.Cookies.Get("SinceDate");
+                var since = SnitzCookie.GetLastVisitDate();
                 if (since != null)
                 {
-                    since.Value = "0";
-                    since.Expires = DateTime.UtcNow.AddMinutes(30);
-                    Response.Cookies.Set(since);
+                    SnitzCookie.SetLastVisitCookie("0");
                 }
 
                 Response.Redirect(Request.RawUrl);

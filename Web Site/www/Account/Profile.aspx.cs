@@ -572,7 +572,7 @@ namespace SnitzUI
                 var mailsender = new snitzEmail
                                             {
                                                 toUser = new MailAddress(newemail.Text, sender.UserName),
-                                                fromUser = "Administrator",
+                                                FromUser = "Administrator",
                                                 subject = strSubject,
                                                 msgBody = msgBody
                                             };

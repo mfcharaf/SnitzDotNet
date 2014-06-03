@@ -45,7 +45,7 @@ namespace Snitz.Entities
         public AuthorInfo LastEditedBy { get; set; }
 
         public string AuthorName { get; set; }
-        public string AuthorPopup
+        public string AuthorProfilePopup
         {
             get
             {
@@ -54,6 +54,10 @@ namespace Snitz.Entities
                         "<a href=\"#\" onclick=\"mainScreen.LoadServerControlHtml('Public Profile',{{'pageID':1,'data':{0}}}, 'methodHandlers.BeginRecieve');\" title=\"[!{1}!]\">{2}</a>",
                         this.AuthorId, this.AuthorName, this.AuthorName);
             }
+        }
+        public string AuthorProfileLink
+        {
+            get { return String.Format("/Account/profile.aspx?user={0}", this.AuthorName); }
         }
         public string EditorName { get; set; }
 

@@ -45,15 +45,10 @@ namespace SnitzCommon
         /// </summary>
         private string LastVisitCookie 
         { 
-            get
-            {
-                HttpCookie cookie = Request.Cookies.Get("LastVisit");
-                return cookie != null ? cookie.Value : null;
-            }
+            get { return SnitzCookie.GetLastVisitDate(); }
             set
             {
-                HttpCookie cookie = new HttpCookie("LastVisit", value) {Expires = DateTime.UtcNow.AddYears(1)};
-                Response.Cookies.Add(cookie);
+                SnitzCookie.SetLastVisitCookie(value);
             }
         }
         private DateTime? _lastLoggedOn;
@@ -142,7 +137,7 @@ namespace SnitzCommon
         /// </summary>
 	    public readonly MemberInfo Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
         /// <summary>
-        /// Value of the _LastVisit cookie, or the current datetime if no cookie exists
+        /// Value of the _LastVisit session, or the current datetime if no cookie exists
         /// </summary>
         public DateTime LastVisitDateTime
 	    {
@@ -228,21 +223,7 @@ namespace SnitzCommon
                 LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
                 
             }
-            else
-            {
-                //we have a session so just update LastVisit
-                //if (IsAuthenticated)
-                //{
-                //    Membership.GetUser(current.User.Identity.Name, true);
-                //    //we are logged in so get the lastheredate from the db and update the session
-                //    LastVisitCookie = LastLoggedOn.ToForumDateStr();
-                //}
-                //else
-                //{
-                //    //we are not logged in, so set cookie for our lastheredate
-                //    LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
-                //}
-            }
+
             current.Session.Add("_IsAdminOrModerator", IsModerator || IsAdministrator);
         }
         
@@ -389,10 +370,9 @@ namespace SnitzCommon
         
         protected override void InitializeCulture()
         {
-            HttpCookie cookie = Request.Cookies.Get("ddlLang");
-            if (cookie != null && cookie.Value != null)
+            string lang = SnitzCookie.GetDefaultLanguage();
+            if (lang != null)
             {
-                string lang = cookie.Value;//default to the invariant culture
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(lang);
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(lang);
 
@@ -404,7 +384,7 @@ namespace SnitzCommon
                     Thread.CurrentThread.CurrentCulture = info;
                 }
             base.InitializeCulture();
-            //Response.Charset = CultureInfo.CurrentCulture.TextInfo.ANSICodePage.ToString();
+
         }
 
         #region Page methods

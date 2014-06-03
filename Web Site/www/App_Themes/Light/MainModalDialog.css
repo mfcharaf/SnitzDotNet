@@ -12,6 +12,9 @@
     font-size: 0.8em;
 }
 .mainModalPopup fieldset{ font-size: inherit;}
+.mainModalPopup fieldset input[type="text"]{margin-bottom: 2px;}
+.mainModalPopup fieldset label{line-height: 120%;padding-right: 3px;}
+.mainModalPopup fieldset textarea{ width: 99%;margin-bottom: 2px;}
 .mainModalBorder
 {
 	border-left: 1px solid #ECE9D8; 

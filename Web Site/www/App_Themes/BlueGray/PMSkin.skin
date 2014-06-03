@@ -25,7 +25,7 @@ Default skin template. The following skins are provided as examples only.
 <asp:ImageButton SkinID="PMReplyQuote" runat="server" AlternateText="Check Messages" ImageUrl="pm/pmreplyquote.jpg"/>
 <asp:ImageButton SkinID="PMForward" runat="server" AlternateText="Member List" ImageUrl="pm/pmforward.jpg"/>
 <asp:ImageButton SkinID="PMDelete" runat="server" AlternateText="Preferences" ImageUrl="pm/pmdelete.jpg"/>
-<asp:ImageButton SkinID="PMSend" runat="server" AlternateText="Preferences" ImageUrl="images/message/pm.png"/>
+<asp:HyperLink SkinID="PMSend" runat="server" AlternateText="Preferences" ImageUrl="images/message/pm.png"/>
 
 
 

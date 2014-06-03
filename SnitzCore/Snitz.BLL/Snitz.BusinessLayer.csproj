@@ -76,7 +76,6 @@
     <Compile Include="Statistics.cs" />
     <Compile Include="Subscriptions.cs" />
     <Compile Include="Topics.cs" />
-    <Compile Include="TopicTracker.cs" />
     <Compile Include="UrlCollection.cs" />
   </ItemGroup>
   <ItemGroup>

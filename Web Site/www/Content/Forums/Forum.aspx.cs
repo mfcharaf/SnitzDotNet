@@ -448,7 +448,7 @@ namespace SnitzUI
                 }
                 if (lastreadpost != null)
                 {
-                    int lastpage = TopicTracker.LastTopicPage(topic.Id, HttpContext.Current);
+                    int lastpage = SnitzCookie.LastTopicPage(topic.Id);
                     if (lastpage > 0)
                     {
                         lastreadpost.NavigateUrl = String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}", topic.Id, lastpage+1);

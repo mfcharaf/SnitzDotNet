@@ -8,20 +8,20 @@
 ## http://forum.snitz.com
 ##############################################################################################################
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" EnableViewState="false"
+<%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master" EnableViewState="false"
     AutoEventWireup="true" Culture="auto" UICulture="auto" CodeBehind="Topic.aspx.cs" MaintainScrollPositionOnPostback="true"
     Inherits="SnitzUI.TopicPage" %>
-<%@ MasterType virtualpath="~/MasterTemplates/SingleCol.Master" %>
-
-<%@ Import Namespace="Snitz.BLL" %>
-<%@ Import Namespace="SnitzConfig" %>
-<%@ Import Namespace="Snitz.Entities" %>
+<%@ MasterType virtualpath="~/MasterTemplates/MainMaster.Master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
-<%@ Reference Control="~/UserControls/Polls/Poll.ascx" %>
-<%@ Register TagPrefix="topic" Src="~/UserControls/MessageButtonBar.ascx" TagName="MessageButtonBar" %>
-<%@ Register TagPrefix="topic" Src="~/UserControls/MessageProfile.ascx" TagName="MessageProfile" %>
+<%@ Reference Control="~/UserControls/Post Templates/ReplyTemplate.ascx" %>
+<%@ Reference Control="~/UserControls/Post Templates/BlogReplyTemplate.ascx" %>
 <%@ Register TagPrefix="topic" Src="~/UserControls/PagePostButtons.ascx" TagName="PostButtons" %>
+<%@ Register Src="~/UserControls/Post Templates/TopicTemplate.ascx" TagPrefix="topic" TagName="TopicTemplate" %>
+<%@ Register Src="~/UserControls/Post Templates/PollTemplate.ascx" TagPrefix="topic" TagName="PollTemplate" %>
+<%@ Register Src="~/UserControls/Post Templates/BlogTemplate.ascx" TagPrefix="topic" TagName="BlogTemplate" %>
+<%@ Register Src="~/UserControls/Sidebar/MinWeblog.ascx" TagPrefix="topic" TagName="MinWeblog" %>
+
 
 <asp:Content runat="server" ID="metatag" ContentPlaceHolderID="CPMeta">
     <asp:Literal ID="metadescription" runat="server"></asp:Literal>
@@ -63,7 +63,7 @@
             });          
         };
         pagebind();
-        function pollloaded() { alert("poll loaded");
+        function pollloaded() { 
             pagebind();
         }       
         $.fn.serializeNoViewState = function () {
@@ -77,6 +77,13 @@
             var message = $get("MessageTextBox").value;
             var subject = $get("SubjectTextBox").value;
             PageMethods.SendEmail(name, email, message, subject, OnSucceeded, OnFailed);
+        }
+        function SendPM() {
+            var touser = $get("toUser").value;
+            var layout = $get("layout").value;
+            var message = $get("MessageTextBox").value;
+            var subject = $get("SubjectTextBox").value;
+            PageMethods.SendPM(touser, message, subject, layout, OnSucceeded, OnFailed);
         }
         function SplitTopic() {
             PageMethods.SplitTopic($("form").serializeNoViewState(), OnSucceeded, OnFailed);
@@ -157,15 +164,17 @@
     .markItUpEditor{min-height: 140px !important;}
     #emoticons img{border:0px;margin:2px;}
     .AspNet-FormView-Data{ padding: 0px;}
+
 </style>
     <asp:Literal runat="server" ID="uploadStyle"></asp:Literal>
 </asp:Content>
 <asp:Content ID="ContentMain" ContentPlaceHolderID="CPM" runat="server" EnableViewState="false">
+
     <div class="POFTop clearfix">
         <topic:PostButtons ID="pbTop" runat="server"></topic:PostButtons>
         <div id="buttons-expanded"></div>
     </div>
-    <div id="MessageList" style="width: 100%;">
+    <div id="MessageList" >
         <asp:FormView ID="TopicView" runat="server" Width="100%" CellPadding="0" EnableViewState="False"
             OnItemCommand="TopicViewItemCommand" OnDataBound="TopicBound" style="padding: 0px;">
             <HeaderTemplate>
@@ -186,28 +195,9 @@
             </FooterTemplate>
             <ItemTemplate>
                 <input type="hidden" id="TopicSubject" value='<%# Eval("Subject") %>' />
-                <div class="TopicDiv clearfix">
-                    <div class="leftColumn">
-                        <a href='<%# Eval("Author.ProfileLink") %>' title='<%# Eval("Author.Username") %>'><%# Eval("Author.Username") %></a>
-                        <topic:MessageProfile runat="server" ID="TopicAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
-                    </div>
-                    <div class="MessageDIV">
-                        <div class="buttonbar">
-                            <topic:MessageButtonBar ID="bbT" runat="server" Post='<%# Container.DataItem %>' />
-                        </div>
-                        <div id="msgContent" class="mContent bbcode" runat="server">
-                            <asp:PlaceHolder EnableViewState="False" ID="msgPH" runat="server"></asp:PlaceHolder>
-                        </div>
-                        <br />
-                        <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
-                            <asp:Label ID="Label2" EnableViewState="False" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
-                            <asp:Literal ID="litDate1" EnableViewState="False" runat="server" Text='<%# Topics.LastEditTimeAgo(Container.DataItem)%>' />
-                        </div>
-                        <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                            <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
-                        </div>
-                    </div>
-                </div>
+                <topic:TopicTemplate runat="server" ID="topicTemplate" Visible="false" />
+                <topic:PollTemplate runat="server" ID="pollTemplate" Visible="false" />
+                <topic:BlogTemplate runat="server" ID="blogTemplate" Visible="false" />
             </ItemTemplate>
         </asp:FormView>
         <div id="replyHeader">
@@ -220,97 +210,50 @@
             </asp:DropDownList>
         </div>
         <asp:Panel ID="MessagePanel" runat="server">
-    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upd" >
-    <ProgressTemplate>
-        <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;z-index:5000;"  >
-            <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
-        </div>
-    </ProgressTemplate>
-</asp:UpdateProgress>             
+        <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upd" >
+            <ProgressTemplate>
+                <div style="position:fixed;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;z-index:5000;"  >
+                    <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>             
             <asp:UpdatePanel ID="upd" runat="server" ChildrenAsTriggers="true">
                 <ContentTemplate>
-<script type="text/javascript">
-    var prm = Sys.WebForms.PageRequestManager.getInstance();
-    var confirmHandlers = {};
-    prm.add_endRequest(
-        function () {
-            pagebind();
-            jQuery("abbr.timeago").timeago();
-        });
-    confirmHandlers.BeginRecieve = function (_result) {
-    var res = false;
-    if (_result.customStyle && _result.customStyle != "") {
-        mainScreen.LoadStyleSheet(_result.customStyle);
-    }
-    if (_result.html && _result.html != "") {
-        mainScreen.mainModalContentsDiv.innerHTML = _result.html;
-        res = true;
-    }
-    if (_result.script && _result.script != "") {
-        eval(_result.script);
-    }
-    if (!res) {
-        mainScreen.CancelModal();
-    } else {
-        mainScreen.mainModalExtender._layout();
-        setTimeout('mainScreen.mainModalExtender._layout()', 3000);
-    }
-};
-</script>
-                    <asp:Repeater ID="TopicReplies" runat="server" Visible="true" EnableViewState="false" OnItemDataBound="RepliesBound">
+                    <script type="text/javascript">
+                        var prm = Sys.WebForms.PageRequestManager.getInstance();
+                        var confirmHandlers = {};
+                        prm.add_endRequest(
+                            function () {
+                                pagebind();
+                                jQuery("abbr.timeago").timeago();
+                            });
+                        confirmHandlers.BeginRecieve = function (_result) {
+                        var res = false;
+                        if (_result.customStyle && _result.customStyle != "") {
+                            mainScreen.LoadStyleSheet(_result.customStyle);
+                        }
+                        if (_result.html && _result.html != "") {
+                            mainScreen.mainModalContentsDiv.innerHTML = _result.html;
+                            res = true;
+                        }
+                        if (_result.script && _result.script != "") {
+                            eval(_result.script);
+                        }
+                        if (!res) {
+                            mainScreen.CancelModal();
+                        } else {
+                            mainScreen.mainModalExtender._layout();
+                            setTimeout('mainScreen.mainModalExtender._layout()', 3000);
+                        }
+                    };
+                    </script>
+                    <asp:Repeater ID="TopicReplies" runat="server" Visible="true" EnableViewState="false" OnItemCreated="BindReply">
                         <ItemTemplate>
-                            <div class="ReplyDiv clearfix">
-                                <div class="leftColumn">
-                                    <asp:HiddenField ID="hdnAuthor" runat="server" />
-                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "AuthorPopup")%>'></asp:Literal>
-                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
-                                </div>
-                                <div class="MessageDIV">
-                                    <div class="buttonbar">
-                                        <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
-                                    </div>
-                                    <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Eval("Message").ToString().ReplaceNoParseTags().ParseVideoTags().ParseWebUrls() %>' Mode="Encode"></asp:Literal>
-                                    </div>
-                                    <br />
-                                    <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
-                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
-                                    </div>
-                                    <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                                        <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
-                                    </div>
-                                </div>
-                            </div>
-                            <br class="clearfix" style="height: 2px;" />
+                            <asp:PlaceHolder runat="server" ID="PostHolder"></asp:PlaceHolder>
+                            
                         </ItemTemplate>
                         <AlternatingItemTemplate>
-                            <div class="AltReplyDiv clearfix">
-                                <div class="leftColumn">
-                                    <asp:HiddenField ID="hdnAuthor" runat="server" Value='<%# DataBinder.Eval(Container.DataItem, "AuthorName")%>' />
-                                    <asp:Literal ID="popuplink" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "AuthorPopup")%>'></asp:Literal>
-                                    <topic:MessageProfile runat="server" ID="ReplyAuthor" AuthorId='<%# DataBinder.Eval(Container.DataItem, "AuthorId")%>' />
-                                </div>
-                                <div class="MessageDIV">
-                                    <div class="buttonbar">
-                                        <asp:HyperLink ID="hypGoUp" rel="nofollow" SkinID="GotoTop" runat="server" EnableViewState="False"
-                                            ToolTip="<%$ Resources:webResources, lblGotoTop %>"
-                                            NavigateUrl="#top" style="margin-left:5px;"></asp:HyperLink>
-                                        <topic:MessageButtonBar ID="bbR" runat="server" Post='<%# Container.DataItem %>' />
-                                    </div>
-                                    <div class="mContent bbcode">
-                                        <asp:Literal ID="msgBody" runat="server" Text='<%# Eval("Message").ToString().ReplaceNoParseTags().ParseVideoTags().ParseWebUrls() %>' Mode="Encode"></asp:Literal>
-                                    </div>
-                                    <br />
-                                    <div id="editbyDiv" runat="server" class="editedDIV" visible='<%# Eval("LastEditedById") != null && Config.ShowEditBy %>'>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# String.Format("Edited by {0} - ", Eval("EditorName")) %>'></asp:Label>
-                                        <asp:Literal ID="litDate1" runat="server" Text='<%# Replies.LastEditTimeAgo(Container.DataItem)%>' />
-                                    </div>
-                                    <div id="r1" runat="server" class="sigDIV bbcode" visible="<%# ShowSig(Container.DataItem) %>">
-                                        <%# DataBinder.Eval(Container.DataItem, "AuthorSignature")%>
-                                    </div>
-                                </div>
-                            </div>
+                            <asp:PlaceHolder runat="server" ID="PostHolder"></asp:PlaceHolder>
                         </AlternatingItemTemplate>
                     </asp:Repeater>
                     <asp:PlaceHolder ID="pager" runat="server"></asp:PlaceHolder>
@@ -360,5 +303,8 @@
     <div class="table-bottom-footer">
         <asp:PlaceHolder ID="QRPlaceHolder" runat="server" EnableViewState="False"></asp:PlaceHolder>
     </div>
+</asp:Content>
+<asp:Content ID="rightcol" ContentPlaceHolderID="RightCol" runat="server" >
+    <topic:MinWeblog runat="server" id="MinWeblog" Visible="False" />
 </asp:Content>
 <asp:Content ID="ForumFooter" ContentPlaceHolderID="CPF2" runat="server"></asp:Content>

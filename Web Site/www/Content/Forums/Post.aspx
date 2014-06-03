@@ -33,6 +33,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="CPH1" runat="server">
     <script type="text/javascript" src="/scripts/editor.min.js"></script>
     <script type="text/javascript" src="/Scripts/postpage.min.js"></script>
+    <script type="text/javascript" src="/Scripts/bbcode.min.js"></script>
+    <script type="text/javascript" src="/Scripts/smilies.min.js"></script>
     <script type="text/javascript">
         var messageId = '<%= Message.ClientID %>';
         var clientMsgId = '<%= clientSide.ClientID %>';

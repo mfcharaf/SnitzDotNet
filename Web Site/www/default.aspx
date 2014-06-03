@@ -29,10 +29,8 @@
         var expandedIndex = [];
         var allcpe = [];
         var pagetheme = '<%= Page.Theme %>';
-
     </script>    
     <script src="/scripts/common.js" type="text/javascript"></script>
-
     <script src="/scripts/defaultpage.min.js" type="text/javascript"></script>
 </asp:Content>
 

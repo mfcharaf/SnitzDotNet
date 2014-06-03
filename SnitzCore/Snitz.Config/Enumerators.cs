@@ -101,26 +101,18 @@ namespace SnitzConfig
         }
 
         /// <summary>
-        /// Forum authorisation enumerators
+        /// Forum types
         /// </summary>
-        public enum ForumAuthType
+        public enum ForumType
         {
-            [Description("All Visitors")]
-            AllVisitors = 0,
-            [Description("Allowed Member List")]
-            AllowedMembers,
-            [Description("Password Protected")]
-            Password,
-            [Description("Allowed Member List & Password Protected")]
-            AllowedMemberPassword,
-            [Description("Members Only")]
-            Members,
-            [Description("Members Only (Hidden)")]
-            MembersHidden,
-            [Description("Allowed Member List (Hidden)")]
-            AllowedMemberHidden,
-            [Description("Members Only & Password Protected")]
-            MembersPassword
+            [Description("Standar Forum")]
+            Topics = 0,
+            [Description("Url Forum")]
+            WebLink = 1,
+            [Description("Bug Forum")]
+            BugReports = 3,
+            [Description("Blog Forum")]
+            BlogPosts = 4
         }
 
         /// <summary>

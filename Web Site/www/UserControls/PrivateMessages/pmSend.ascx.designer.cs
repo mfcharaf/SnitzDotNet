@@ -13,15 +13,6 @@ namespace SnitzUI.UserControls.PrivateMessaging {
     public partial class PmSend {
         
         /// <summary>
-        /// ImageButton1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
-        
-        /// <summary>
         /// sendPM control.
         /// </summary>
         /// <remarks>
@@ -31,24 +22,6 @@ namespace SnitzUI.UserControls.PrivateMessaging {
         protected global::System.Web.UI.WebControls.Panel sendPM;
         
         /// <summary>
-        /// MPD2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel MPD2;
-        
-        /// <summary>
-        /// clB2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton clB2;
-        
-        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -56,59 +29,5 @@ namespace SnitzUI.UserControls.PrivateMessaging {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-        
-        /// <summary>
-        /// tbxSubject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbxSubject;
-        
-        /// <summary>
-        /// qrMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox qrMessage;
-        
-        /// <summary>
-        /// pmSuccess control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label pmSuccess;
-        
-        /// <summary>
-        /// btnSend control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSend;
-        
-        /// <summary>
-        /// btnCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCancel;
-        
-        /// <summary>
-        /// Panel1_ModalPopupExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender Panel1_ModalPopupExtender;
     }
 }

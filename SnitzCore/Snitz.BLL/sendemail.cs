@@ -47,7 +47,7 @@ namespace Snitz.BLL
                 _toUser = value;
             }
         }
-        public string fromUser
+        public string FromUser
         {
             set
             {

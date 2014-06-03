@@ -27,7 +27,8 @@ namespace Snitz.Entities
     /// Favourites and Bookmark Url's
     /// </summary>
     [Serializable]
-    public class SnitzLink
+    public class SnitzLink : IEquatable<SnitzLink>
+
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -41,6 +42,13 @@ namespace Snitz.Entities
             ID = id;
             Name = name;
             Url = url;
+        }
+
+        public bool Equals(SnitzLink other)
+        {
+            if (other == null) return false;
+            return (this.Name.Equals(other.Name) && this.Url.Equals(other.Url));
+
         }
     }
 }

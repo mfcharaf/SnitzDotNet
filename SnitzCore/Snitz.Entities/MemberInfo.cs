@@ -101,7 +101,7 @@ namespace Snitz.Entities
         {
             get
             {
-                return String.IsNullOrEmpty(this.Avatar) ? "<img src='/Avatars/default.gif' alt='no avatar img' class='avatar' /><br />" : String.Format("<img src='/Avatars/{0}' alt='avatar img' class='avatar' /><br />", this.Avatar);
+                return String.IsNullOrEmpty(this.Avatar) ? "<img src='/Avatars/default.gif' alt='no avatar img' class='avatar' />" : String.Format("<img src='/Avatars/{0}' alt='avatar img' class='avatar' />", this.Avatar);
             }
             set { this.Avatar = value; }
         }

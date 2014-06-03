@@ -1,0 +1,23 @@
+﻿[h1]REQUIRED INFO[/h1]
+
+[h2]General description of problem:[/h2]
+
+[h2]Timezone and locale (if applicable):[/h2]
+
+[h2]Extensible version(s) tested:[/h2]
+[list]
+[*][/*][/list]
+[h2]OS + Browser  name/version(s) tested:[/h2]
+[list]
+[*][/*][/list]
+[h2]Detailed steps to reproduce:[/h2]
+[list=1]
+[*]step 1 ...[/*]
+[*]step 2 ...[/*][/list]
+
+[h1]OTHER HELPFUL INFO[/h1]
+
+[h2]Research or debugging notes:[/h2]
+
+[h2]Suggested fix:[/h2]
+[code]Your proposed fix or workaround[/code]

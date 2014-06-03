@@ -28,14 +28,15 @@ table,tr,td,th{border-collapse:collapse; }
 
 #mainDIV{margin:auto;width:98%;}
 #subheadDIV{}
-#breadcrumbDIV{margin:1px;background-color: #f8f8f8;border: 1px solid #777;border-radius: 5px;}
-
+#breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color: #eee;border: 1px solid #777;border-radius: 5px;padding:0px;}
+.breadcrumb span {line-height:22px;vertical-align:top;}
 #HdrDIV{margin:1px;}
 
 #RightHdrDIV{margin-left:0px;float:right;width:49%;text-align:right;}
 #LeftHdrDIV{float:left;width:49%;}
 
 #contentDIV{width:auto;margin:1px;clear:both;}
+#MessageList{width: 100%;}
 #contentfooterDIV{margin:1px;width:auto;}
 
 #pagefooterDIV{width:100%;margin:auto;background-color: transparent;}
@@ -55,13 +56,12 @@ table,tr,td,th{border-collapse:collapse; }
 #topsection{background: #ffffff;}
 #topsection h1{margin: 0;padding-top: 15px;border-radius: 5px;}
 
-#contentwrapper{width: 100%;float: left;
-	margin-right: -325px;
-}
-
-/*#contentcolumn{margin-right:325px;} Set right margin to RightColumnWidth*/
+#contentwrapper{width: 100%;float: left;margin-right: -325px;}
 #rightcolumn{float: right;width: 320px; }
-
+.clearmargin { margin-right: 0px;}
+.hide{ display: none;}
+.rightmargin { margin-right: 325px;}
+.show{ display: block;}
 #footer{clear: both;width: 100%;}
 
 #PostOptionsDIV{padding-right:5px;text-align:center;}

@@ -12,7 +12,12 @@ h2	{ 	font-weight: bold; font-size: 1em;
 h3	{ 	font-weight: bold; font-size: 0.9em; padding-left:4px;
 	text-decoration: none; line-height : 1em; color : #777; }
 p   {font-size:0.9em;padding:0px 4px 0px 4px;}
-
+.bbcode h1	{ 	font-weight: bold; font-size: 1.1em;
+	text-decoration: none; line-height : 1em; color : #111; }
+.bbcode h2	{ 	font-weight: bold; font-size: 0.9em;
+	text-decoration: none; line-height : 1em; color : #444; }
+.bbcode h3	{ 	font-weight: bold; font-size: 0.8em; padding-left:4px;
+	text-decoration: none; line-height : 0.8em; color : #777; }
 input,textarea, select {
 	color : #000000;
 	border-color : #777;
@@ -250,7 +255,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 .topictitle	{ margin:8px;font-weight:bold; line-height:1.3em; }
 .usertitle	{ font-weight:bold; color:#777; line-height:1.2em; }
 .ReplyDiv{width:100%;border:1px solid #777;background-color:#efefef;color:Teal;overflow:hidden !important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left;}
-.AltReplyDiv{width:100%;border:1px solid #777;background-color:White;color:Navy;overflow:hidden !important;overflow:hidden;}
+.AltReplyDiv{width:100%;border:1px solid #777;background-color:White;color:Navy;overflow:hidden !important;overflow:hidden;float:left;}
 .leftColumn{float:left;
     min-height:160px;
     width:181px;

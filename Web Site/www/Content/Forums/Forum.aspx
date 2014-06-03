@@ -35,7 +35,6 @@
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
                         });
             $(".bbcode").each(function () {
-                var test = $(this).text();
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
         });
@@ -185,7 +184,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Username">
                             <ItemTemplate>
-                                <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
+                                <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Left" Width="80px" VerticalAlign="Top" />
                             <HeaderStyle Width="80px" HorizontalAlign="Left"></HeaderStyle>
@@ -350,7 +349,7 @@
                         <HeaderStyle Width="80px" />
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         <ItemTemplate>
-                            <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName") %></a>
+                            <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">

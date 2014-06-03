@@ -79,8 +79,8 @@ namespace SnitzControlAdapters
             LinkButton linkButton = this.Control as LinkButton;
             if (linkButton != null)
             {
-                if(String.IsNullOrEmpty(linkButton.CssClass))
-                    linkButton.CssClass = "Snitzbutton";
+                if (String.IsNullOrEmpty(linkButton.CssClass))
+                    linkButton.CssClass = "Snitzbutton ";
                 linkButton.Text = String.Concat("<span>", linkButton.Text, "</span>");
             }
 

@@ -9,8 +9,7 @@
     </span>
         <div class="userlinks">
             <asp:ImageButton CssClass="profBtn" Visible="false" runat="server" ID="hProf" SkinID="Profile" OnClientClick="" CausesValidation="false" EnableViewState="False" />
-            
-            <asp:PlaceHolder runat="server" ID="phPrivateSend" EnableViewState="False"></asp:PlaceHolder>
+            <asp:HyperLink EnableViewState="False" CssClass="profBtn" rel="nofollow" Visible="false" runat="server" ID="hSendPm" SkinID="PMSend"></asp:HyperLink>
             <asp:HyperLink EnableViewState="False" CssClass="profBtn" rel="nofollow" Visible="false" runat="server" ID="hHome" SkinID="HomePage"></asp:HyperLink>
             <asp:HyperLink EnableViewState="False" CssClass="profBtn" rel="nofollow" Visible="false" runat="server" ID="hEmail" SkinID="Email"></asp:HyperLink>
             <br/>

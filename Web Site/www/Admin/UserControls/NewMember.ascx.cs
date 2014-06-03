@@ -97,7 +97,7 @@ public partial class Admin_NewMember : UserControl
         snitzEmail mailsender = new snitzEmail
                                     {
                                         toUser = new MailAddress(mu.Email, mu.UserName),
-                                        fromUser = "Administrator",
+                                        FromUser = "Administrator",
                                         subject = strSubject,
                                         msgBody = msgBody
                                     };

@@ -49,6 +49,8 @@ public partial class Poll : UserControl
     protected void Page_Load(object sender, EventArgs e)
     {
         PollFormView.Visible = (Config.ActivePoll > 0 || ViewState["PollID"] != null);
+        if (PollId == 0) return;
+
         var polls = new List<PollInfo> {Polls.GetTopicPoll(PollId)};
         PollFormView.DataSource = polls;
         PollFormView.DataBind();

@@ -202,14 +202,23 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.PlaceHolder QRPlaceHolder;
         
         /// <summary>
+        /// MinWeblog control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SnitzUI.UserControls.MiniWebLog MinWeblog;
+        
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new SnitzUI.MasterTemplates.SingleCol Master {
+        public new MainMaster Master {
             get {
-                return ((SnitzUI.MasterTemplates.SingleCol)(base.Master));
+                return ((MainMaster)(base.Master));
             }
         }
     }

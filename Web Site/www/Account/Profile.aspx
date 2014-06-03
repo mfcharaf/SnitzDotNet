@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS" />
     <script type="text/javascript" src="/scripts/editor.min.js"></script>
+    <script type="text/javascript" src="/scripts/confirmdialog.js"></script>
     <script type="text/javascript" src="/scripts/jquery.lightbox-0.5.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {

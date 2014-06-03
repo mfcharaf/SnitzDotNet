@@ -14,6 +14,7 @@ namespace SnitzCommon.Account
                     public const string EmailTopic = "~/usercontrols/popups/emailtopic.ascx";
                     public const string EmailMember = "~/usercontrols/popups/emailMember.ascx";
                     public const string ViewEvent = "~/usercontrols/popups/ViewEvent.ascx";
+                    public const string BugReport = "~/usercontrols/popups/BugReport.ascx";
                 }
                 public static class Modules
                 {
@@ -27,6 +28,7 @@ namespace SnitzCommon.Account
 
                     public static class Profile
                     {
+                        public const string SendPrivateMessage = "~/usercontrols/privatemessages/pmsend.ascx";
                         public const string SnitzProfile = "~/usercontrols/popups/UserProfile.ascx";
                         public const string IPLookup = "~/usercontrols/popups/IPLookup.ascx";
                         public const string RetrievePassword = "~/usercontrols/popups/PasswordRetrieve.ascx";

@@ -1,3 +1,7 @@
 ﻿<asp:SiteMapPath runat="server" SkinID="TopicBreadCrumb">   
+    <PathSeparatorTemplate>
+    <asp:Image ID="Image1" Runat="Server" style="height:22px;padding:0px;margin:0;"
+        ImageUrl="Images/breadcrumb-Seperator.png" />
+    </PathSeparatorTemplate>
     <CurrentNodeStyle CssClass="bbcode"/>
 </asp:SiteMapPath>  

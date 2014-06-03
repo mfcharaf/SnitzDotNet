@@ -21,7 +21,9 @@
         <asp:TextBox ID="tbxOrder" CssClass="testClass" runat="server" Width="20px" EnableViewState="False"></asp:TextBox>
         <br/>
         <asp:CheckBox ID="cbxAllowPolls" Text="Allow user polls in forum" runat="server" /><br />
-        <asp:CheckBox ID="cbxCountPost" CssClass="cbx"  runat="server" Text="Increase user Post Count" />
+        <asp:CheckBox ID="cbxCountPost" CssClass="cbx"  runat="server" Text="Increase user Post Count" /><br />
+        <asp:CheckBox ID="cbxBugReport" CssClass="cbx"  runat="server" Text="Bug Forum" />
+        <asp:CheckBox ID="cbxBlogPosts" CssClass="cbx" runat="server" Text="Blog Posts" />
         <br />
         <asp:Label ID="lblMod" runat="server" Text="Moderation level" 
             EnableViewState="False"></asp:Label>
@@ -45,19 +47,6 @@
         <asp:Label ID="lblPassword" runat="server" Text="Forum Password" AssociatedControlID="tbxPassword"></asp:Label>&nbsp;
         <asp:TextBox ID="tbxPassword" runat="server" Width="120px" ></asp:TextBox>
         <br />
-        <asp:Label ID="Label6" runat="server" Text="AuthType" EnableViewState="False" 
-            Enabled="False"></asp:Label>
-        <asp:DropDownList ID="ddlAuthType" runat="server"  
-            Enabled="False">
-            <asp:ListItem Value="0">All Visitors</asp:ListItem>
-            <asp:ListItem Value="4">Members Only</asp:ListItem>
-            <asp:ListItem Value="5">Members Only (Hidden)</asp:ListItem>
-            <asp:ListItem Value="2">Password Protected</asp:ListItem>
-            <asp:ListItem Value="7">Members Only & Password Protected</asp:ListItem>
-            <asp:ListItem Value="3">Allowed Member List & Password Protected</asp:ListItem>
-            <asp:ListItem Value="1">Allowed Member List</asp:ListItem>
-            <asp:ListItem Value="6">Allowed Member List (Hidden)</asp:ListItem>
-        </asp:DropDownList><asp:Label ID="Label7" runat="server" Text="(deprecated)" ForeColor="#66FF33" style="text-align: left;width:80px;"></asp:Label><br />
         <asp:Panel ID="Panel3" runat="server" GroupingText="Moderators"
             Width="49%" Style="float: left;">
             <asp:HiddenField ID="hdnModerators" runat="server"/>

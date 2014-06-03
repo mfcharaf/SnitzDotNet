@@ -49,7 +49,7 @@ namespace SnitzUI
             bookmarks.Remove(todelete);
             _profile.BookMarks = bookmarks;
             _profile.Save();
-            repBookMarks.DataSource = _profile;
+            repBookMarks.DataSource = _profile.BookMarks;
             repBookMarks.DataBind();
         }
     }

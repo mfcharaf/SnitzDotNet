@@ -25,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
@@ -157,6 +158,17 @@ namespace SnitzUI
                     ForumDropDown.SelectedValue = ForumId.ToString();
                     cbxSticky.Visible = (IsAdministrator || _inModeratedList);
                     cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                    if (ForumId.HasValue)
+                    {
+                        if (_forum.Type == 3 && String.IsNullOrEmpty(Message.Text))
+                        {
+                            var file = new StreamReader(Server.MapPath(Config.CultureSpecificDataDirectory + "bugtemplate.txt"));
+                            string content = file.ReadToEnd();
+                            Message.Text = content;
+                            file.Close();
+                            file.Dispose();
+                        }                        
+                    }
                     break;
                 case "reply":
                     SubjectDiv.Visible = false;
@@ -209,6 +221,13 @@ namespace SnitzUI
             {
                 _inModeratedList = Moderators.IsUserForumModerator(User.Identity.Name, ForumId.Value);
                 _forum = Forums.GetForum(ForumId.Value);
+                if (_forum.Type == 3 && String.IsNullOrEmpty(Message.Text))
+                {
+                        var file = new StreamReader(Server.MapPath(Config.CultureSpecificDataDirectory + "bugtemplate.txt"));
+                        Message.Text = file.ReadToEnd();
+                        file.Close();
+                        file.Dispose();
+                }
             }
             if (TopicId != null)
             {
@@ -413,7 +432,7 @@ namespace SnitzUI
                     var mailsender = new snitzEmail
                     {
                         toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.AuthorName),
-                        fromUser = "Forum Administrator",
+                        FromUser = "Forum Administrator",
                         subject = strSubject,
                         msgBody = msgBody
                     };
@@ -466,6 +485,7 @@ namespace SnitzUI
             {
                 topic.Forum = Forums.GetForum(ForumId.Value);
                 topic.ForumId = ForumId.Value;
+                
             }
             if (cbxLock.Checked)
                 topic.Status = (int)Enumerators.PostStatus.Closed;

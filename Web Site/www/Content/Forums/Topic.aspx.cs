@@ -37,6 +37,8 @@ using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
+using SnitzMembership;
+using SnitzUI.UserControls.Post_Templates;
 
 
 namespace SnitzUI
@@ -44,6 +46,7 @@ namespace SnitzUI
     public partial class TopicPage : PageBase, IRoutablePage
     {
         private TopicInfo _topic;
+        private ForumInfo _forum;
         protected int _archiveView;
         protected internal GridPager ReplyPager;
         private int RowCount
@@ -163,6 +166,17 @@ namespace SnitzUI
                         skip = Request.Params["dir"];
                     }
                     _topic = Topics.GetTopic(TopicId.Value);
+                    _forum = Forums.GetForum(_topic.ForumId);
+                    if (_forum.Type == (int) Enumerators.ForumType.BlogPosts)
+                    {
+                        MinWeblog.MemberId = _topic.AuthorId;
+                        MinWeblog.ForumId = _topic.ForumId;
+                        MinWeblog.Visible = true;
+                    }
+                    else
+                    {
+                        MinWeblog.Visible = false;
+                    }
                     if (skip != "")
                     {
                         _topic = Topics.GetNextPrevTopic(_topic.Id, skip);
@@ -232,7 +246,7 @@ namespace SnitzUI
             {
                 //let's check what async call posted back and see if we need to refresh the page
                 string target = Request.Form["__EVENTTARGET"];
-                var listOfStrings = new List<string> { "TopicSend", "DeleteTopic", "DeleteReply", "imgPosticon", "BookMarkTopic", "BookMarkReply" };
+                var listOfStrings = new List<string> { "TopicSend", "DeleteTopic", "DeleteReply", "imgPosticon", "BookMarkTopic", "BookMarkReply", "BookMarkBlog" };
                 bool refreshAfterPostback = listOfStrings.Any(target.EndsWith);
                 if (refreshAfterPostback)
                 {
@@ -312,11 +326,11 @@ namespace SnitzUI
                         CurrentPage = pagenum;
                         ReplyPager.CurrentIndex = pagenum;
                     }
-                    TopicTracker.TrackIt(_topic.Id, CurrentPage,HttpContext.Current);
+                    SnitzCookie.TrackIt(_topic.Id, CurrentPage);
                 }
                 else
                 {
-                    TopicTracker.TrackIt(_topic.Id, CurrentPage, HttpContext.Current);
+                    SnitzCookie.TrackIt(_topic.Id, CurrentPage);
                     ReplyPager.CurrentIndex = CurrentPage;
                     
                 }
@@ -392,7 +406,7 @@ namespace SnitzUI
                 if (CurrentPage >= ReplyPager.PageCount)
                     CurrentPage = ReplyPager.PageCount - 1;
             }
-            TopicTracker.TrackIt(_topic.Id, CurrentPage, HttpContext.Current);
+            SnitzCookie.TrackIt(_topic.Id, CurrentPage);
             ReplyPager.CurrentIndex = CurrentPage;
         }
 
@@ -445,53 +459,32 @@ namespace SnitzUI
             }
             
             SiteMapNode tempNode = currentNode;
-            TopicInfo topic = _topic;
+
             string strStatus = "";
-            if (topic.Status == 0)
+            if (_topic.Status == 0)
                 strStatus = " (locked) ";
-            if (topic.IsArchived)
+            if (_topic.IsArchived)
             {
                 strStatus = " (Archived)";
-                topic.Status = 0;
+                _topic.Status = 0;
+            }
+            tempNode.Title = HttpUtility.HtmlDecode(_topic.Subject) + strStatus;
+            if (_forum.Type == (int) Enumerators.ForumType.BlogPosts)
+            {
+                tempNode.Title = String.Format(webResources.lblBlogTitle, _topic.AuthorName) + " : " + HttpUtility.HtmlDecode(_topic.Subject);
             }
             
-            tempNode.Title = HttpUtility.HtmlDecode(topic.Subject) + strStatus;
             
             tempNode = tempNode.ParentNode;
-            tempNode.Title = HttpUtility.HtmlDecode(topic.Forum.Subject);
-            tempNode.Url = tempNode.Url + "?FORUM=" + topic.ForumId;
-            if (topic.IsArchived)
+            tempNode.Title = HttpUtility.HtmlDecode(_topic.Forum.Subject);
+            tempNode.Url = tempNode.Url + "?FORUM=" + _topic.ForumId;
+            if (_topic.IsArchived)
                 tempNode.Url += "&ARCHIVE=1";
-            //TopicView.Visible = Pager1.CurrentIndex < 1;
+
             return currentNode;
 
         }
         
-        protected void RepliesBound(object sender, RepeaterItemEventArgs e)
-        {
-            
-            RepeaterItem item = e.Item;
-            var reply = (ReplyInfo) item.DataItem;
-
-            if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
-            {
-                var mbar = item.FindControl(@"bbr") as MessageButtonBar;
-                if (mbar != null) mbar.ReplyDeleteClicked += ReplyDeleteClicked;
-                var popuplink = item.FindControl(@"popuplink") as Literal;
-
-                if (popuplink != null)
-                {
-                    string title = String.Format(webResources.lblViewProfile, "$1");
-                    popuplink.Text = Regex.Replace(reply.AuthorPopup, @"\[!(.*)!]", title);
-                }
-            }
-            var editdiv = item.FindControl(@"editbyDiv");
-            if (editdiv != null)
-            {
-                editdiv.Visible = (reply.LastEditDate.HasValue && reply.LastEditDate.Value != DateTime.MinValue) && Config.ShowEditBy;
-            }
-        }
-
         private void ReplyDeleteClicked(object sender, EventArgs e)
         {
             Response.Redirect(Request.RawUrl);
@@ -506,46 +499,51 @@ namespace SnitzUI
         {
             var frm = (FormView)sender;
             var currentTopic = ((TopicInfo) frm.DataItem);
-            var mbar = frm.FindControl(@"bbT") as MessageButtonBar;
 
-            if(!Config.ShowTopicNav || currentTopic.IsArchived)
+            if (!Config.ShowTopicNav || currentTopic.IsArchived || (currentTopic.Forum.Type == (int)Enumerators.ForumType.BlogPosts))
             {
                 frm.HeaderRow.Visible = false;
             }
-            
-            if (mbar != null)
-                mbar.DeleteClicked += TopicDeleted;
-
-            var ph = frm.FindControl(@"msgPH") as PlaceHolder; 
-            
+        
             currentTopic.PollId = Topics.GetTopicPollId(currentTopic.Id);
-            var msgDisplay = new Literal { Text = currentTopic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls(), Mode = LiteralMode.Encode };
-            
-            if (currentTopic.PollId > 0)
+
+            var poll = (PollTemplate)frm.FindControl("pollTemplate");
+            var topic = (TopicTemplate)frm.FindControl("topicTemplate");
+            var blog = (BlogTemplate)frm.FindControl("blogTemplate");
+            if (currentTopic.Forum.Type == (int) Enumerators.ForumType.BlogPosts)
             {
-                HtmlControl div = (HtmlControl)frm.FindControl(@"msgContent");
-                if (div != null)
+                topic.Visible = false;
+                poll.Visible = false;
+                blog.Visible = true;
+                blog.Post = currentTopic;
+            }
+            else if (currentTopic.PollId != null && currentTopic.PollId.Value > 0)
+            {
+                topic.Visible = false;
+                blog.Visible = false;
+                poll.Visible = true;
+                poll.Post = currentTopic;
+                var bBar = poll.FindControl("buttonBar");
+                if (bBar != null)
                 {
-                    div.Attributes["class"] = "mContent";
+                    ((MessageButtonBar) bBar).ReplyDeleteClicked += TopicDeleted;
                 }
-                var poll = (Poll)Page.LoadControl(@"~/UserControls/Polls/Poll.ascx");
-                if (currentTopic.PollId != null) poll.PollId = currentTopic.PollId.Value;
-                if (ph != null)
+                poll.PollId = currentTopic.PollId.Value;
+            }
+            else
+            {
+                poll.Visible = false;
+                blog.Visible = false;
+                topic.Visible = true;
+                topic.Post = currentTopic;
+                var bBar = topic.FindControl("buttonBar");
+                if (bBar != null)
                 {
-                    ph.Controls.Add(poll);
+                    ((MessageButtonBar)bBar).ReplyDeleteClicked += TopicDeleted;
                 }
-                msgDisplay.Mode = LiteralMode.Transform;
-                msgDisplay.Text = msgDisplay.Text.ParseTags();
+                if (currentTopic != null) topic.Post = currentTopic;             
             }
-            var editdiv = frm.FindControl(@"editbyDiv");
-            if (editdiv != null)
-            {
-                editdiv.Visible = (currentTopic.LastEditDate.HasValue && currentTopic.LastEditDate.Value != DateTime.MinValue) && Config.ShowEditBy;
-            }
-            if (ph != null)
-            {
-                ph.Controls.Add(msgDisplay);
-            }
+
         }
 
         [WebMethod]
@@ -596,13 +594,67 @@ namespace SnitzUI
             var mailsender = new snitzEmail
             {
                 toUser = new MailAddress(email, name),
-                fromUser = HttpContext.Current.User.Identity.Name,
+                FromUser = HttpContext.Current.User.Identity.Name,
                 subject = strSubject,
                 msgBody = message
             };
 
             mailsender.send();
             return "Your Email has been sent successfully";
+        }
+
+        [WebMethod]
+        public static string SendPM(string touser, string message, string subject, string layout)
+        {
+            string username = HttpContext.Current.User.Identity.Name;
+            MembershipUser currentUser = Membership.GetUser(username);
+            ProfileCommon profile = ProfileCommon.GetUserProfile(username);
+            if (currentUser == null || currentUser.ProviderUserKey == null)
+                return null;
+
+            var pm = new PrivateMessageInfo
+            {
+                Subject = subject,
+                Message = message,
+                ToMemberId = Convert.ToInt32(touser),
+                FromMemberId = (int)currentUser.ProviderUserKey,
+                Read = 0,
+                OutBox = layout != "none" ? 1 : 0,
+                SentDate = DateTime.UtcNow.ToForumDateStr(),
+                Mail = profile.PMEmail == null ? 0 : profile.PMEmail.Value
+            };
+            PrivateMessages.SendPrivateMessage(pm);
+
+            //do we need to send an email
+            MembershipUser toUser = Membership.GetUser(Convert.ToInt32(touser));
+            if (toUser != null && Config.UseEmail)
+            {
+                ProfileCommon toprofile = ProfileCommon.GetUserProfile(toUser.UserName);
+                if (toprofile.PMEmail.HasValue)
+                    if (toprofile.PMEmail.Value == 1)
+                    {
+                        snitzEmail notification = new snitzEmail
+                        {
+                            FromUser = "Administrator",
+                            toUser = new MailAddress(toUser.Email),
+                            subject = Config.ForumTitle + " - New Private message"
+                        };
+                        string strMessage = "Hello " + toUser.UserName;
+                        strMessage = strMessage + username + " has sent you a private message at " + Config.ForumTitle + "." + Environment.NewLine;
+                        if (String.IsNullOrEmpty(subject))
+                        {
+                            strMessage = strMessage + "Regarding - " + subject + "." + Environment.NewLine + Environment.NewLine;
+                        }
+                        else
+                        {
+                            strMessage = strMessage + "With the subject entitled - " + message + "." + Environment.NewLine + Environment.NewLine;
+                        }
+
+                        notification.msgBody = strMessage;
+                        notification.send();
+                    }
+            }
+            return PrivateMessage.PmSent; 
         }
 
         [WebMethod]
@@ -672,7 +724,39 @@ namespace SnitzUI
             return "Selected replies were moved to a new topic";
         }
 
-
         public RoutingHelper Routing { get; set; }
+
+        protected void BindReply(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                ReplyInfo reply = (ReplyInfo) e.Item.DataItem;
+
+                var postctrl = e.Item.FindControl("PostHolder");
+                if (_topic != null)
+                {
+                    if (_topic.Forum.Type == (int) Enumerators.ForumType.BlogPosts)
+                    {
+                        var btemplate =
+                            (BlogReplyTemplate) LoadControl("~/UserControls/Post Templates/BlogReplyTemplate.ascx");
+                        btemplate.Post = e.Item.DataItem;
+                        
+                        if (postctrl != null)
+                            postctrl.Controls.Add(btemplate);
+                    }
+                    else
+                    {
+                        var template = (ReplyTemplate)LoadControl("~/UserControls/Post Templates/ReplyTemplate.ascx");
+
+                        template.CssClass = e.Item.ItemType == ListItemType.Item ? "ReplyDiv clearfix" : "AltReplyDiv clearfix";
+                        template.Alternate = e.Item.ItemType == ListItemType.AlternatingItem;
+                        template.Post = e.Item.DataItem;
+                        if (postctrl != null)
+                            postctrl.Controls.Add(template);    
+                    }            
+                }
+
+            }
+        }
     }
 }

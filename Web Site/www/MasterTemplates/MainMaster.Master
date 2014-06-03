@@ -28,8 +28,8 @@
                 var current_width = $(window).width();
                 //do something with the width value here!
                 if (current_width < 1024) {
-                    $(".maincolumn").css('margin-right', '0');
-                    $(".rightcolumn").css('display', 'none');
+                    $(".maincolumn").addClass('clearmargin');
+                    $(".rightcolumn").addClass('hide');
                     if (current_width < 600) {
                         $("body").css('font-size', '0.7em');
                     } else {
@@ -37,8 +37,8 @@
                     }
                     
                 } else {
-                    $(".maincolumn").css('margin-right', '325px');
-                    $(".rightcolumn").css('display', 'block');
+                    $(".maincolumn").removeClass('clearmargin').addClass('rightmargin');
+                    $(".rightcolumn").removeClass('hide').addClass('show');
                     $("body").css('font-size', '');
                 }
             });
@@ -101,8 +101,8 @@
     </div>
     <div id="subheadDIV" class="clearfix">
         <div id="breadcrumbDIV" class="clearfix">
-            <asp:SiteMapPath SkinID="TopicBreadCrumb" CssClass="breadcrumb" runat="server" ID="SiteMap"
-                EnableViewState="true" />
+            <asp:SiteMapPath SkinID="TopicBreadCrumb" CssClass="breadcrumb" runat="server" ID="SiteMap" EnableViewState="true" >
+            </asp:SiteMapPath>
         </div>
         <div class="innertube">
             <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">

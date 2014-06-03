@@ -108,7 +108,22 @@ namespace Snitz.SQLServerDAL
             }
             return stickytopics;
         }
+        public IEnumerable<TopicInfo> GetUserBlogTopics(int forumid, int memberid)
+        {
+            List<TopicInfo> blogtopics = new List<TopicInfo>();
+            List<SqlParameter> parms = new List<SqlParameter>();
+            parms.Add(new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid});
+            parms.Add(new SqlParameter("@MemberId", SqlDbType.Int) { Value = memberid });
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + Topic.TopicCols + Topic.TopicFrom + " WHERE T.FORUM_ID = @Forum AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC", parms.ToArray()))
+            {
+                while (rdr.Read())
+                {
+                    blogtopics.Add(BoHelper.CopyTopicToBO(rdr));
+                }
 
+            }
+            return blogtopics;
+        }
         public void UpdateLastForumPost(object post)
         {
             string updateForumSql = "UPDATE " + Config.ForumTablePrefix + "FORUM SET F_COUNT=F_COUNT+1 [INCTOPIC],F_LAST_POST_TOPIC_ID=@TopicId, ";

@@ -117,7 +117,7 @@ public partial class Admin_PendingMembers : UserControl
         snitzEmail mailsender = new snitzEmail
                                     {
                                         toUser = new MailAddress(mu.Email, mu.UserName),
-                                        fromUser = Resources.extras.lblAdministrator,
+                                        FromUser = Resources.extras.lblAdministrator,
                                         subject = Resources.extras.RegApproval,
                                         msgBody =
                                             String.Format(

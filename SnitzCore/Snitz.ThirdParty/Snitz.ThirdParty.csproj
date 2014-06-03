@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BulkEditGridViewEx.cs" />
+    <Compile Include="DummyDataSource.cs" />
+    <Compile Include="GroupingRepeater.cs" />
     <Compile Include="PersianCulture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResXUnified.cs" />

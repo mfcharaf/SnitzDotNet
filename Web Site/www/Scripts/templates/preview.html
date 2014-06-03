@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Post preview</title>
+    <script type="text/javascript" src="/scripts/master.js"></script> 
+    <link href="/App_Themes/Light/lightcss.css" rel="stylesheet" />
+    <link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="/css/Light/shThemeDefault.css" rel="stylesheet" />
+    
+    <script src="/scripts/topic.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".bbcode").each(function () {
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), 'Light')));
+            });
+            SyntaxHighlighter.autoloader(
+                'js jscript javascript  /Scripts/syntax/shBrushJScript.min.js',
+                'c# c-sharp csharp      /Scripts/syntax/shBrushCSharp.min.js',
+                'css                    /Scripts/syntax/shBrushCss.min.js',
+                'text plain             /Scripts/syntax/shBrushPlain.min.js',
+                'sql                    /Scripts/syntax/shBrushSql.min.js',
+                'vb vbnet               /Scripts/syntax/shBrushVb.min.js',
+                'xml xhtml xslt html    /Scripts/syntax/shBrushXml.min.js'
+            );
+        });
+    </script>
+</head>
+    <body onblur="self.focus();" onload="self.focus();">
+        <div class="forumtable" style="margin:6px;width:auto;">
+            <div class="mContent bbcode">
+                <!-- content -->
+            </div>
+        </div>
+        <script type="text/javascript">
+            SyntaxHighlighter.all();
+        </script>
+    </body>
+</html>

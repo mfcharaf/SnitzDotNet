@@ -270,10 +270,11 @@ public partial class Homepage : PageBase
         var moderators = new string[] { };
         string password = "";
 
-        if (!formresult.AllKeys.Contains("ctl00$CountPost"))
+        if (!formresult.AllKeys.Contains("ctl00$cbxCountPost"))
             forum.UpdatePostCount = false;
-        if (!formresult.AllKeys.Contains("ctl00$AllowPolls"))
+        if (!formresult.AllKeys.Contains("ctl00$cbxAllowPolls"))
             forum.AllowPolls = false;
+        forum.Type = 0;
         try
         {
             foreach (string key in formresult.AllKeys)
@@ -287,6 +288,8 @@ public partial class Homepage : PageBase
                         break;
                     case "tbxUrl":
                         forum.Url = formresult[key];
+                        if (!String.IsNullOrEmpty(forum.Url))
+                            forum.Type = 1;
                         break;
                     case "tbxSubject":
                         forum.Subject = formresult[key];
@@ -306,24 +309,27 @@ public partial class Homepage : PageBase
                     case "ddlSub":
                         forum.SubscriptionLevel = Convert.ToInt32(formresult[key]);
                         break;
-                    case "ddlAuthType":
-                        forum.AuthType = Convert.ToInt32(formresult[key]);
-                        break;
                     case "hdnRoleList":
                         roles = formresult[key].ToLower().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         break;
                     case "cbxAllowPolls":
                         forum.AllowPolls = formresult[key] == "on";
                         break;
+                    case "cbxBugReport":
+                        if (formresult[key] == "on")
+                            forum.Type = (int)Enumerators.ForumType.BugReports;
+                        break;
+                    case "cbxBlogPosts":
+                        if (formresult[key] == "on")
+                            forum.Type = (int) Enumerators.ForumType.BlogPosts;
+                        break;
                     case "hdnModerators":
                         moderators = formresult[key].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
                         break;
                     case "tbxPassword":
                         password = formresult[key];
                         break;
                 }
-
             }
         }
         catch (Exception)

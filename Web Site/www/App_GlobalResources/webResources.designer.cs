@@ -628,6 +628,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}&apos;s Weblog.
+        /// </summary>
+        internal static string lblBlogTitle {
+            get {
+                return ResourceManager.GetString("lblBlogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Edit.
         /// </summary>
         internal static string lblCancel {

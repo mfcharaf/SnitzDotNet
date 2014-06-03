@@ -214,7 +214,11 @@ namespace Snitz.BLL
             IForum dal = Factory<IForum>.Create("Forum");
             return new List<TopicInfo>(dal.GetStickyTopics(id));
         }
-
+        public static List<TopicInfo> GetUserBlogTopics(int id, int member)
+        {
+            IForum dal = Factory<IForum>.Create("Forum");
+            return new List<TopicInfo>(dal.GetUserBlogTopics(id,member));
+        }
         public static List<TopicInfo> GetForumTopics(int forumid, int startrec, int maxrecs)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");

@@ -109,7 +109,7 @@ namespace Snitz.BLL
                     subject = strSubject,
                     msgBody = String.Format(Message.ToString(), member.Username),
                     toUser = new MailAddress(member.Email, member.Username),
-                    fromUser = "Forum Administrator"
+                    FromUser = "Forum Administrator"
                 };
                 email.send();
             }

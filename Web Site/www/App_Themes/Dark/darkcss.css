@@ -13,6 +13,7 @@ table,tr,td,th{border-collapse:collapse}
 #RightHdrDIV{margin-left:0;float:right;width:49%;text-align:right}
 #LeftHdrDIV{float:left;width:49%}
 #contentDIV{width:auto;margin:1px;clear:both}
+#MessageList{width:100%}
 #contentfooterDIV{margin:1px;width:auto}
 #pagefooterDIV{width:100%;margin:auto}
 #LoginBox{float:right}

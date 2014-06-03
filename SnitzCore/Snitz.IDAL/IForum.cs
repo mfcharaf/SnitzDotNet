@@ -32,6 +32,7 @@ namespace Snitz.IDAL
         IEnumerable<string> Roles(int forumId);
         //IEnumerable<TopicInfo> GetTopics(int forumid);
         IEnumerable<TopicInfo> GetStickyTopics(int forumid);
+        IEnumerable<TopicInfo> GetUserBlogTopics(int forumid, int memberid);
         IEnumerable<ForumJumpto> ListForumJumpTo();
 
         void UpdateLastForumPost(object post);

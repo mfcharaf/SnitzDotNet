@@ -54,48 +54,50 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\Dependency\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Cryptos">
-      <HintPath>..\..\Dependency\Cryptos.dll</HintPath>
+      <HintPath>..\Dependency\Cryptos.dll</HintPath>
     </Reference>
     <Reference Include="CSSFriendly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\CSSFriendly.dll</HintPath>
+      <HintPath>..\Dependency\CSSFriendly.dll</HintPath>
     </Reference>
-    <Reference Include="jquery.spellchecker">
+    <Reference Include="jquery.spellchecker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\jquery.spellchecker.dll</HintPath>
     </Reference>
     <Reference Include="RealWorld.Grids, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\RealWorld.Grids.dll</HintPath>
+      <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.BLL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Snitz.BLL">
       <HintPath>..\..\Dependency\Snitz.BLL.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Snitz.Entities">
       <HintPath>..\..\Dependency\Snitz.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.IDAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Snitz.IDAL">
       <HintPath>..\..\Dependency\Snitz.IDAL.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.Membership.IDal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\Snitz.Membership.IDal.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.ThirdParty">
+    <Reference Include="Snitz.ThirdParty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\Snitz.ThirdParty.dll</HintPath>
     </Reference>
-    <Reference Include="SnitzBase">
+    <Reference Include="SnitzBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\SnitzBase.dll</HintPath>
     </Reference>
-    <Reference Include="SnitzCommon">
+    <Reference Include="SnitzCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\SnitzCommon.dll</HintPath>
     </Reference>
-    <Reference Include="SnitzConfig">
+    <Reference Include="SnitzConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\SnitzConfig.dll</HintPath>
     </Reference>
     <Reference Include="SnitzMembership, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -123,11 +125,11 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="Validators">
-      <HintPath>..\..\Dependency\Validators.dll</HintPath>
+      <HintPath>..\Dependency\Validators.dll</HintPath>
     </Reference>
     <Reference Include="WebOptimizer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5660f4b37e89cc19, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependency\WebOptimizer.dll</HintPath>
+      <HintPath>..\Dependency\WebOptimizer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +145,7 @@
     <Content Include="Admin\UserControls\ManageCategories.ascx" />
     <Content Include="Admin\UserControls\ManageModerators.ascx" />
     <Content Include="Admin\UserControls\ModConfiguration.ascx" />
+    <Content Include="App_Data\BugTemplate.txt" />
     <Content Include="App_Themes\BlueGray\bluegreycss.css">
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
@@ -581,6 +584,7 @@
     <Content Include="App_Themes\Light\images\activity.gif" />
     <Content Include="App_Themes\Light\images\admin\archive.png" />
     <Content Include="App_Themes\Light\images\admin\book.png" />
+    <Content Include="App_Themes\Light\images\admin\bug.png" />
     <Content Include="App_Themes\Light\images\admin\calendar.png" />
     <Content Include="App_Themes\Light\images\admin\Cancel.png" />
     <Content Include="App_Themes\Light\images\admin\Discuss.png" />
@@ -610,6 +614,7 @@
     <Content Include="App_Themes\Light\images\admin\weblink.png" />
     <Content Include="App_Themes\Light\images\admin\Write.png" />
     <Content Include="App_Themes\Light\images\bookmark.png" />
+    <Content Include="App_Themes\Light\images\breadcrumb-seperator.png" />
     <Content Include="App_Themes\Light\images\buttons\button_left.png" />
     <Content Include="App_Themes\Light\images\buttons\button_right.png" />
     <Content Include="App_Themes\Light\images\close.gif" />
@@ -715,6 +720,7 @@
     <Content Include="App_Themes\Light\images\message\Up.png" />
     <Content Include="App_Themes\Light\images\message\User.png" />
     <Content Include="App_Themes\Light\images\message\weblink.png" />
+    <Content Include="App_Themes\Light\images\note.png" />
     <Content Include="App_Themes\Light\images\page_go.png" />
     <Content Include="App_Themes\Light\images\editor\pictureUp.png" />
     <Content Include="App_Themes\Light\images\poll.png" />
@@ -750,6 +756,7 @@
     <Content Include="App_Themes\Light\images\valid-xhtml10.png" />
     <Content Include="App_Themes\Light\images\vcss.gif" />
     <Content Include="App_Themes\Light\images\editor\youtube.png" />
+    <Content Include="App_Themes\Light\Blog.skin" />
     <None Include="App_Themes\Light\light.css" />
     <None Include="App_Themes\Light\jquery.alerts.css" />
     <Content Include="App_Themes\Light\lightcss.css">
@@ -899,11 +906,10 @@
     <Content Include="images\twitter.png" />
     <Content Include="images\upload.png" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\SnitzWeb.pubxml" />
     <None Include="Scripts\bbcode.yui.js" />
-    <None Include="Scripts\bbcode.min.js">
+    <Content Include="Scripts\bbcode.min.js">
       <DependentUpon>bbcode.yui.js</DependentUpon>
-    </None>
+    </Content>
     <Content Include="Scripts\bundle.chirp.config">
       <SubType>Designer</SubType>
     </Content>
@@ -949,10 +955,6 @@
     <Content Include="Scripts\postpage.min.js">
       <DependentUpon>postpage.yui.js</DependentUpon>
     </Content>
-    <None Include="Scripts\shBrushCSharp.min.js">
-      <DependentUpon>shBrushCSharp.yui.js</DependentUpon>
-    </None>
-    <None Include="Scripts\shBrushCSharp.yui.js" />
     <Content Include="Scripts\singlemaster.js">
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
@@ -1001,6 +1003,7 @@
       <DependentUpon>smilies.yui.js</DependentUpon>
     </None>
     <None Include="Scripts\swfobject.js" />
+    <Content Include="Scripts\templates\preview.html" />
     <Content Include="Scripts\topic.js">
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
@@ -1266,9 +1269,16 @@
     <Content Include="ResourceEditor\images\tick.png" />
     <Content Include="ResourceEditor\Default.aspx" />
     <Content Include="ResourceEditor\ResXEditor.ascx" />
+    <Content Include="UserControls\Popups\BugReport.ascx" />
+    <Content Include="UserControls\Post Templates\BlogTemplate.ascx" />
+    <Content Include="UserControls\Post Templates\BlogReplyTemplate.ascx" />
+    <Content Include="UserControls\Post Templates\PollTemplate.ascx" />
+    <Content Include="UserControls\Post Templates\ReplyTemplate.ascx" />
+    <Content Include="UserControls\Post Templates\TopicTemplate.ascx" />
     <Content Include="UserControls\PrivateMessages\PMAlert.ascx" />
     <Content Include="UserControls\PrivateMessages\pmSend.ascx" />
     <Content Include="UserControls\PrivateMessages\PMView.ascx" />
+    <Content Include="UserControls\Sidebar\MinWeblog.ascx" />
     <Content Include="UserControls\Sidebar\MiniActiveTopics.ascx" />
     <Content Include="UserControls\Polls\Poll.ascx" />
     <Content Include="UserControls\Popups\EmailMember.ascx" />
@@ -1361,9 +1371,7 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="SnitzConnections.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="SnitzConnections.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Activate.aspx.cs">
@@ -1890,6 +1898,48 @@
     <Compile Include="UserControls\CaptchaControl.ascx.designer.cs">
       <DependentUpon>CaptchaControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Popups\BugReport.ascx.cs">
+      <DependentUpon>BugReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Popups\BugReport.ascx.designer.cs">
+      <DependentUpon>BugReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\BlogTemplate.ascx.cs">
+      <DependentUpon>BlogTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\BlogTemplate.ascx.designer.cs">
+      <DependentUpon>BlogTemplate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\BlogReplyTemplate.ascx.cs">
+      <DependentUpon>BlogReplyTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\BlogReplyTemplate.ascx.designer.cs">
+      <DependentUpon>BlogReplyTemplate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\PollTemplate.ascx.cs">
+      <DependentUpon>PollTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\PollTemplate.ascx.designer.cs">
+      <DependentUpon>PollTemplate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\ReplyTemplate.ascx.cs">
+      <DependentUpon>ReplyTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\ReplyTemplate.ascx.designer.cs">
+      <DependentUpon>ReplyTemplate.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\TopicTemplate.ascx.cs">
+      <DependentUpon>TopicTemplate.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Post Templates\TopicTemplate.ascx.designer.cs">
+      <DependentUpon>TopicTemplate.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\PrivateMessages\PMAlert.ascx.cs">
       <DependentUpon>PMAlert.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1910,6 +1960,13 @@
     </Compile>
     <Compile Include="UserControls\PrivateMessages\PMView.ascx.designer.cs">
       <DependentUpon>PMView.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Sidebar\MinWeblog.ascx.cs">
+      <DependentUpon>MinWeblog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Sidebar\MinWeblog.ascx.designer.cs">
+      <DependentUpon>MinWeblog.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Sidebar\MiniActiveTopics.ascx.cs">
       <DependentUpon>MiniActiveTopics.ascx</DependentUpon>
@@ -2330,9 +2387,9 @@
   </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)www\bin\"
+    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)WWW\bin\"
 
-xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)..\PublishedWWW\bin\"
+xcopy /s /y "$(SolutionDir)..\Dependency\*.dll" "$(SolutionDir)..\Published\bin\"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

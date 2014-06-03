@@ -255,7 +255,7 @@ namespace SnitzUI.UserControls
                     {
                         editIcon.ImageUrl = imagedir + "/admin/properties.png";
                         editIcon.OnClientClick = string.Format(
-                            "mainScreen.LoadServerControlHtml(' Edit Properties',{{'pageID':8,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
+                            "mainScreen.LoadServerControlHtml('Edit Properties',{{'pageID':8,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
                             forum.Id, forum.CatId, forum.Type);
                         editIcon.Visible = (IsAdministrator || isForumModerator);
                     }

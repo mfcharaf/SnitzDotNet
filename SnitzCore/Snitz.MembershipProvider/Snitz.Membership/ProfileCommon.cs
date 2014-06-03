@@ -180,7 +180,7 @@ namespace SnitzMembership
                     var value = this.GetPropertyValue("BookMarks");
                     if (value is DBNull)
                         return null;
-                    List<SnitzLink> links = (List<SnitzLink>) this.GetPropertyValue("BookMarks");
+                    List<SnitzLink> links = (List<SnitzLink>)value;
                     return links;
                 }catch(SettingsPropertyNotFoundException)
                 {
