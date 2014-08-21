@@ -1,8 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_features" Codebehind="features.ascx.cs" %>
     <%@ Register src="AdminRadioButton.ascx" tagname="AdminRadioButton" tagprefix="uc1" %>
-    <asp:Panel ID="Panel1" runat="server" CssClass="clearfix forumtable" 
+    <asp:Panel ID="Panel1" runat="server" CssClass="clearfix adminform" 
     DefaultButton="btnSubmit">
     <h2 class="category">Feature Configuration</h2>
+        <div id="content">
         <asp:Panel ID="Panel2" runat="server" GroupingText="General Features" 
             CssClass="featuresform" meta:resourcekey="Panel2Resource1">
             <asp:Label ID="lblIPLogging" runat="server" Text="IP Logging" 
@@ -35,9 +36,9 @@
             <asp:Label ID="lblBadWords" runat="server" Text="Bad Word Filter" 
                 AssociatedControlID="rblBadWords" meta:resourcekey="lblBadWordsResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblBadWords" runat="server" /> <br />
-            <asp:Label ID="Label3" runat="server" Text="Use CAPTCHA for login/Registration" 
-                AssociatedControlID="rblCaptcha" meta:resourcekey="Label3Resource1"></asp:Label>
-            <uc1:AdminRadioButton ID="rblCaptcha" runat="server" /> 
+            <asp:Label ID="Label6" runat="server" Text="Use CAPTCHA for login" 
+                AssociatedControlID="rblCaptchaLogin" meta:resourcekey="Label3Resource1"></asp:Label>
+            <uc1:AdminRadioButton ID="rblCaptchaLogin" runat="server" /> <br/>
         </asp:Panel>
         <asp:Panel ID="Panel9" runat="server" GroupingText="Galleries" CssClass="featuresform" 
             meta:resourcekey="Panel9Resource1">
@@ -50,6 +51,7 @@
         </asp:Panel>
         <asp:Panel ID="Panel3" runat="server" GroupingText="Moderation Features" 
             CssClass="featuresform" meta:resourcekey="Panel3Resource1">
+            
             <asp:Label ID="lblTopicModeration" runat="server" 
                 Text="Allow Topic Moderation" AssociatedControlID="rblTopicMod" 
                 meta:resourcekey="lblTopicModerationResource1"></asp:Label>
@@ -72,6 +74,7 @@
         </asp:Panel>
         <asp:Panel ID="Panel4" runat="server" GroupingText="Forum Features" 
             CssClass="featuresform" meta:resourcekey="Panel4Resource1">
+
             <asp:Label ID="lblArchive" runat="server" 
                 Text="Archive Functions" AssociatedControlID="rblArchive" 
                 meta:resourcekey="lblArchiveResource1"></asp:Label>
@@ -87,6 +90,7 @@
         </asp:Panel>
         <asp:Panel ID="Panel5" runat="server" GroupingText="Topic Features" 
             CssClass="featuresform" meta:resourcekey="Panel5Resource1">
+
             <asp:Label ID="lblEditedBy" runat="server" Text="Show Edited By on Date" 
                 AssociatedControlID="rblEditedBy" meta:resourcekey="lblEditedByResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblEditedBy" runat="server" /> 
@@ -122,6 +126,7 @@
         </asp:Panel>
         <asp:Panel ID="Panel6" runat="server" GroupingText="Posting Features" 
             CssClass="featuresform" meta:resourcekey="Panel6Resource1">
+
             <asp:Label ID="lblForumCode" runat="server" Text="Allow Forum Code" 
                 AssociatedControlID="rblForumCode" 
                 meta:resourcekey="lblForumCodeResource1"></asp:Label>
@@ -153,6 +158,7 @@
         </asp:Panel>
         <asp:Panel ID="Panel7" runat="server" GroupingText="Misc Features" 
             CssClass="featuresform" meta:resourcekey="Panel7Resource1">
+
             <asp:Label ID="lblTimer" runat="server" Text="Show Page Timer" 
                 AssociatedControlID="rblPageTimer" meta:resourcekey="lblTimerResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblPageTimer" runat="server" /> 
@@ -160,8 +166,13 @@
             <asp:Label ID="lblAnnouncement" runat="server" Text="Show Announcement" 
                 AssociatedControlID="rblPageTimer"></asp:Label>
             <uc1:AdminRadioButton ID="rblAnnouncement" runat="server" /> <br />
-            <asp:TextBox runat="server" ID="tbxAnnouncement" TextMode="MultiLine" Rows="4" ReadOnly='<%# rblAnnouncement.SelectedValue == "1" %>'></asp:TextBox>
+            <asp:Label ID="Label4" runat="server" Text="Member Announcement" 
+                AssociatedControlID="tbxAnnouncement"></asp:Label>
+            <asp:TextBox runat="server" ID="tbxAnnouncement" TextMode="MultiLine" Rows="4" ReadOnly='<%# rblAnnouncement.SelectedValue == "0" %>' Width="80%"></asp:TextBox>
             <br />
+            <asp:Label ID="Label5" runat="server" Text="Non Member Announcement" 
+                AssociatedControlID="tbxAnonAnnouncement"></asp:Label>
+            <asp:TextBox runat="server" ID="tbxAnonAnnouncement" TextMode="MultiLine" Rows="4" ReadOnly='<%# rblAnnouncement.SelectedValue == "0" %>' Width="80%"></asp:TextBox>
             <asp:Label ID="lblEmailMode" runat="server" Text="Show Ranking" 
                 AssociatedControlID="ddlShowRank" meta:resourcekey="lblEmailModeResource1"></asp:Label>
             <asp:DropDownList ID="ddlShowRank" runat="server">
@@ -182,5 +193,5 @@
             <asp:LinkButton ID="btnReset" runat="server" Text="Reset" 
                 meta:resourcekey="btnResetResource1" />
         </asp:Panel>
-
+        </div>
     </asp:Panel>

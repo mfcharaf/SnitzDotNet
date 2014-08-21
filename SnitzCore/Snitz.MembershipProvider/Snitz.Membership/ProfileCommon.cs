@@ -217,30 +217,6 @@ namespace SnitzMembership
             }
         }
         
-        [CustomProviderData("TimeOffset;int")]
-        public virtual int TimeOffset
-        {
-            get
-            {
-                try
-                {
-                    object timeoffset = this.GetPropertyValue("TimeOffset");
-                    if (timeoffset != null)
-                        return Convert.ToInt32(timeoffset);
-                    return 0;
-                }
-                catch (SettingsPropertyNotFoundException)
-                {
-
-                    return 0;
-                }
-            }
-            set
-            {
-                this.SetPropertyValue("TimeOffset", value);
-            }
-        }
-
         [CustomProviderData("PMEmail;smallint")]
         public virtual int? PMEmail
         {

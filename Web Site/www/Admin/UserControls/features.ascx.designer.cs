@@ -129,22 +129,22 @@ public partial class Admin_features {
     protected global::SnitzUI.Admin.AdminRadioButton rblBadWords;
     
     /// <summary>
-    /// Label3 control.
+    /// Label6 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label Label3;
+    protected global::System.Web.UI.WebControls.Label Label6;
     
     /// <summary>
-    /// rblCaptcha control.
+    /// rblCaptchaLogin control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblCaptcha;
+    protected global::SnitzUI.Admin.AdminRadioButton rblCaptchaLogin;
     
     /// <summary>
     /// Panel9 control.
@@ -642,6 +642,15 @@ public partial class Admin_features {
     protected global::SnitzUI.Admin.AdminRadioButton rblAnnouncement;
     
     /// <summary>
+    /// Label4 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label4;
+    
+    /// <summary>
     /// tbxAnnouncement control.
     /// </summary>
     /// <remarks>
@@ -649,6 +658,24 @@ public partial class Admin_features {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox tbxAnnouncement;
+    
+    /// <summary>
+    /// Label5 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label5;
+    
+    /// <summary>
+    /// tbxAnonAnnouncement control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox tbxAnonAnnouncement;
     
     /// <summary>
     /// lblEmailMode control.

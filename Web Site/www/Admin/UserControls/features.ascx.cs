@@ -18,10 +18,10 @@ public partial class Admin_features : UserControl
         ddlFlood.SelectedValue = Config.FloodTimeout.ToString();
         rblGroups.SelectedValue = Config.ShowGroups ? "1" : "0";
         rblBadWords.SelectedValue = Config.FilterBadWords ? "1" : "0";
-        rblCaptcha.SelectedValue = Config.UseCaptcha ? "1" : "0";
+        rblCaptchaLogin.SelectedValue = Config.UseCaptchaLogin ? "1" : "0";
         rblUserGallery.SelectedValue = Config.UserGallery ? "1" : "0";
         rblShowGallery.SelectedValue = Config.ShowGallery ? "1" : "0";
-        //todo: implement moderation & subscription check
+        
         ddlSubs.SelectedValue = ((int)Config.SubscriptionLevel).ToString();
         rblTopicMod.SelectedValue = Config.Moderation ? "1" : "0";
 
@@ -31,7 +31,7 @@ public partial class Admin_features : UserControl
         rblArchive.SelectedValue = Config.Archive ? "1" : "0";
         rblStats.SelectedValue = Config.ShowStats ? "1" : "0";
         rblSearchAllForums.SelectedValue = Config.AllowSearchAllForums ? "1" : "0";
-        //rblHotTopics.SelectedValue = Config.
+
         rblEditedBy.SelectedValue = Config.ShowEditBy ? "1" : "0";
         rblPrevNext.SelectedValue = Config.ShowTopicNav ? "1" : "0";
         rblSend.SelectedValue = Config.SendTopic ? "1" : "0";
@@ -51,6 +51,10 @@ public partial class Admin_features : UserControl
 
         rblPrivateMessages.SelectedValue = Config.PrivateMessaging ? "1" : "0";
         ddlShowRank.SelectedValue = ((int)Config.ShowRankType).ToString();
+
+        rblAnnouncement.SelectedValue = Config.Announcement ? "1" : "0";
+        tbxAnnouncement.Text = Config.AuthMessage.StripCData();
+        tbxAnonAnnouncement.Text = Config.AnonMessage.StripCData();
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
@@ -66,8 +70,9 @@ public partial class Admin_features : UserControl
             toUpdate.Add("ShowGroups".GetPropertyDescription(), rblGroups.SelectedValue);
         if (Config.FilterBadWords != (rblBadWords.SelectedValue == "1"))
             toUpdate.Add("FilterBadWords".GetPropertyDescription(), rblBadWords.SelectedValue);
-        if (Config.UseCaptcha != (rblCaptcha.SelectedValue == "1"))
-            toUpdate.Add("UseCaptcha".GetPropertyDescription(), rblCaptcha.SelectedValue);
+        
+        if (Config.UseCaptchaLogin != (rblCaptchaLogin.SelectedValue == "1"))
+            toUpdate.Add("UseCaptchaLogin".GetPropertyDescription(), rblCaptchaLogin.SelectedValue);
         if (Config.UserGallery != (rblUserGallery.SelectedValue == "1"))
             toUpdate.Add("UserGallery".GetPropertyDescription(), rblUserGallery.SelectedValue);
         if (Config.ShowGallery != (rblShowGallery.SelectedValue == "1"))
@@ -119,6 +124,14 @@ public partial class Admin_features : UserControl
             toUpdate.Add("ShowRankType".GetPropertyDescription(), ddlShowRank.SelectedValue);
         if (Config.Announcement != (rblAnnouncement.SelectedValue == "1"))
             toUpdate.Add("Announcement".GetPropertyDescription(), rblAnnouncement.SelectedValue);
+        if (Config.AnonMessage != tbxAnonAnnouncement.Text)
+        {
+            toUpdate.Add("AnonMessage".GetPropertyDescription(),tbxAnonAnnouncement.Text.WrapCData());
+        }
+        if (Config.AuthMessage != tbxAnnouncement.Text)
+        {
+            toUpdate.Add("AuthMessage".GetPropertyDescription(), tbxAnnouncement.Text.WrapCData());
+        }
         if(Config.Archive != (rblArchive.SelectedValue == "1"))
             toUpdate.Add("Archive".GetPropertyDescription(),rblArchive.SelectedValue);
         if (Config.PrivateMessaging != (rblPrivateMessages.SelectedValue == "1"))

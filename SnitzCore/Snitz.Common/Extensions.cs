@@ -20,22 +20,46 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI;
 using System.Xml;
 using SnitzConfig;
 
 namespace SnitzCommon
 {
+//DaylightTime dtt = TimeZone.CurrentTimeZone.GetDaylightChanges(DateTime.Now.Year);
+//    If (dtt.Start < PostDate || dtt.End > PostDate) & AdjustForDaylightSavings == true
+//        // adjust time, maybe something like this:
+//        // DisplayPostDate = PostDate.ToUniversalTime().AddHours(GMToffset - 1).ToLocalTime()
+
     /// <summary>
     /// Extension Methods
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Fetches a list of controls
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static IEnumerable<Control> GetAllControls(this Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                yield return control;
+                foreach (Control descendant in control.GetAllControls())
+                {
+                    yield return descendant;
+                }
+            }
+        }
+
         public static object ConvertDBNull(this object obj)
         {
             return obj ?? DBNull.Value;
@@ -112,6 +136,30 @@ namespace SnitzCommon
         }
 
         /// <summary>
+        /// surrounds a string with CDATA tags
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string WrapCData(this string value)
+        {
+            if (value == null)
+                return value;
+            
+            return String.Format("<![CDATA[{0}]]>", value);
+        }
+
+        /// <summary>
+        /// Removes CDATA tags which wrap a string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string StripCData(this string value)
+        {
+            if (value == null)
+                return value;
+            return value.Replace("<![CDATA[", "").Replace("]]>", "");
+        }
+        /// <summary>
         /// Removes all bb code tags from a string
         /// </summary>
         /// <param name="fstring"></param>
@@ -153,7 +201,7 @@ namespace SnitzCommon
             catch (Exception)
             {
                 
-                forumAdjust = new TimeSpan(Config.TimeAdjust, 0, 0); //Forum TimeZone adjustment
+                forumAdjust = new TimeSpan((int) Config.TimeAdjust, 0, 0); //Forum TimeZone adjustment
             }
             string plusminus = "+";
             if (forumAdjust.TotalHours < 0)
@@ -173,48 +221,13 @@ namespace SnitzCommon
 
         }
 
+      
         /// <summary>
-        /// Converts a forum date string to an ISO 8601 format for Xml
-        /// </summary>
-        /// <param name="fDate"></param>
-        /// <param name="authenticated"> </param>
-        /// <param name="timeDiff">Users TimeZone difference</param>
-        /// <returns></returns>
-        public static string ToISO8601Date(this DateTime fDate, bool authenticated, int timeDiff)
-        {
-            double offset = 0.0;
-            TimeSpan forumAdjust = new TimeSpan(0);
-
-            try
-            {
-                if ((authenticated) && (timeDiff != 99))
-                {
-                    offset = timeDiff;
-                    forumAdjust = DoubleToHours(offset);
-                }
-            }
-            catch (Exception)
-            {
-                offset = Config.TimeAdjust;
-                forumAdjust = DoubleToHours(offset);
-            }
-            string plusminus = "+";
-            if (offset < 0)
-                plusminus = "-";
-
-            DateTime dtForum = fDate + forumAdjust;
-            string datestr = String.Format("{0}-{1:00}-{2:00}T{3:00}:{4:00}:{5:00}", dtForum.Year, dtForum.Month, dtForum.Day, dtForum.Hour, dtForum.Minute, dtForum.Second);
-            datestr = datestr + plusminus + Math.Abs(forumAdjust.Hours).ToString().PadLeft(2, '0') + ":" + forumAdjust.Minutes.ToString().PadLeft(2, '0');
-            string iso8601date = dtForum.ToString("yyyy-MM-ddTHH:mm:ss") + plusminus + Math.Abs(forumAdjust.Hours).ToString().PadLeft(2,'0') + ":" + forumAdjust.Minutes.ToString().PadLeft(2,'0');
-            return datestr;
-        }
-        
-        /// <summary>
-        /// Converts Double hours int hours and minutes Timespan
+        /// Converts Double hours into hours and minutes Timespan
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        private static TimeSpan DoubleToHours(double val)
+        public static TimeSpan DoubleToHours(this double val)
         {
 
             double hours = Math.Floor(val);
@@ -236,54 +249,6 @@ namespace SnitzCommon
         {
             string datestr = String.Format("{0}{1:00}{2:00}{3:00}{4:00}{5:00}",date.Year,date.Month,date.Day,date.Hour,date.Minute,date.Second);
             return datestr;
-        }
-
-        /// <summary>
-        /// Formats a DateTime value into the correct forum date + Time display format
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="seperator">string to place between the date and time</param>
-        /// <param name="showtime">flag to indicate if time is displayed</param>
-        /// <param name="authenticated">Is the user authenticated</param>
-        /// <param name="timediff">Users time difference</param>
-        /// <returns></returns>
-        public static string ToForumDateDisplay(this DateTime date, string seperator, bool showtime, bool authenticated, int timediff)
-        {
-            string dateFormat = Config.DateFormat;
-            string timeFormat = Config.TimeFormat;
-
-            TimeSpan forumAdjust = new TimeSpan();
-
-            try
-            {
-                if ((authenticated) && (timediff != 99))
-                    forumAdjust = new TimeSpan(timediff, 0, 0); //User TimeZone adjustment
-            }
-            catch (Exception)
-            {
-                forumAdjust = new TimeSpan(Config.TimeAdjust, 0, 0); //Forum TimeZone adjustment
-            }
-
-            DateTime? dtForum = date + forumAdjust;
-            if (showtime)
-            {
-                //if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fa")
-                //{
-                //    PersianDate dtPersianForum = new PersianDate(dtForum.Value);
-                //    string test = String.Format("<span dir='rtl'>{0} {1} {2}</span>", Common.TranslateNumerals(dtPersianForum.Day), dtPersianForum.MonthPersianName,
-                //                        Common.TranslateNumerals(dtPersianForum.Year));
-                //    return test + " " + Common.TranslateNumerals(dtForum.Value.ToString(timeFormat)); 
-                //}
-                return Common.TranslateNumerals(dtForum.Value.ToString(dateFormat + seperator + timeFormat));
-
-            }
-            //if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fa")
-            //{
-            //    PersianDate dtPersianForum = new PersianDate(dtForum.Value);
-            //    return String.Format("<span dir='rtl'>{0} {1} {2}</span>", Common.TranslateNumerals(dtPersianForum.Day), dtPersianForum.MonthPersianName,
-            //                            Common.TranslateNumerals(dtPersianForum.Year));
-            //}
-            return Common.TranslateNumerals(dtForum.Value.ToString(dateFormat));
         }
 
         /// <summary>

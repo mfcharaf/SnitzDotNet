@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.MobileControls;
 using System.Web.UI.WebControls;
-using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzMembership;

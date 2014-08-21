@@ -1,0 +1,11 @@
+﻿<p>Items available for display are :</p>
+
+    <ol><li>facebook:</li>
+    <li>twitter:</li>
+    <li>digg:</li>
+    <li>reddit:</li>
+    <li>stumbleupon:</li>
+    <li>delicious:</li>
+    <li>linkedin:</li>
+	<li>googlebuzz:</li>
+	<li>messenger:</li></ol>

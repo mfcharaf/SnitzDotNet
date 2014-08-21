@@ -1,5 +1,12 @@
 ﻿body {
 }
+.adminform {
+    background-color: #FFF;
+}
+.adminform #content {
+    padding: 6px;
+}
+.defaultform label{width:160px;display:inline-block;}
 .pollForm{background-color:White;border:1px solid #0FA1B8;padding:4px;}
 .pollForm .AspNet-DetailsView-Name{width:150px;display:inline-block;}
 
@@ -8,3 +15,9 @@
 .emailform label {width:250px;display:inline-block;}
 .emailserverform label {width:250px;display:inline-block;}
 span.cbx label{width:50px;display:inline-block;}
+.help-panel {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #0FA1B8;
+    background-color: #FFFFCC;
+}

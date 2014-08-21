@@ -1,6 +1,7 @@
 using System;
 using SnitzUI.Admin;
 using SnitzCommon;
+using SnitzUI.Admin.UserControls;
 
 public partial class AdminHome : PageBase
 {
@@ -73,6 +74,11 @@ public partial class AdminHome : PageBase
                     CP1.Controls.Add(manageUsers);
 
                     break;
+                case "registration":
+                    var manageReg = (Admin_Registration)Page.LoadControl("UserControls/Registration.ascx");
+                    CP1.Controls.Add(manageReg);
+
+                    break;
                 case "counts":
                     var adminUpdateCounts = (Admin_UpdateCounts)Page.LoadControl("UserControls/UpdateCounts.ascx");
                     CP1.Controls.Add(adminUpdateCounts);
@@ -111,10 +117,10 @@ public partial class AdminHome : PageBase
                     var adminManageProfile = (Admin_ManageProfile)Page.LoadControl("UserControls/ManageProfile.ascx");
                     CP1.Controls.Add(adminManageProfile);
                     break;
-                case "modconfig" :
-                    var modmanager = (Admin_ModConfiguration)Page.LoadControl("UserControls/ModConfiguration.ascx");
-                    CP1.Controls.Add(modmanager);
-                    break;
+                //case "modconfig" :
+                //    var modmanager = (Admin_ModConfiguration)Page.LoadControl("UserControls/ModConfiguration.ascx");
+                //    CP1.Controls.Add(modmanager);
+                //    break;
             }
         }
     }

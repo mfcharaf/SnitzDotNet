@@ -20,29 +20,37 @@
 */
 
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
-using System.Web.Profile;
+using System.Threading;
 using System.Web.Security;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using System.Xml.Linq;
+using AjaxControlToolkit;
 using Snitz.BLL;
-using SnitzUI.UserControls;
+using Snitz.Entities;
+using SnitzCommon.Controls;
 using Resources;
 using SnitzCommon;
 using Snitz.Providers;
 using SnitzConfig;
+using MemberInfo = Snitz.Entities.MemberInfo;
 
 
 namespace SnitzUI
 {
     public partial class RegisterPage : PageBase
     {
+        private string _regsettings;
+        private XDocument _memberFields;
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -61,25 +69,36 @@ namespace SnitzUI
             policy.Text = content.Replace("[MinAge]", Config.MinAge.ToString());
             //Set the newly created user disabled until they validate their email
             CreateUserWizard1.DisableCreatedUser = Config.RestrictRegistration || Config.EmailValidation;
+
             if(Config.EmailValidation)
                 CreateUserWizard1.CompleteSuccessText = webResources.EmailValMessage;
             var ltl = (Literal)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("domain");
+            PasswordStrength passwordStrength = (PasswordStrength)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("Password_PasswordStrength");
+            if (passwordStrength != null)
+            {
+                passwordStrength.PreferredPasswordLength = Config.PreferredPasswordLength;
+                passwordStrength.MinimumNumericCharacters = Config.MinimumNumericCharacters;
+                passwordStrength.MinimumSymbolCharacters = Config.MinimumSymbolCharacters;
+                if (Config.RequiresUpperAndLowerCaseCharacters)
+                {
+                    passwordStrength.RequiresUpperAndLowerCaseCharacters = Config.RequiresUpperAndLowerCaseCharacters;
+                    passwordStrength.MinimumUpperCaseCharacters = Config.MinimumUpperCaseCharacters;
+                    passwordStrength.MinimumLowerCaseCharacters = Config.MinimumLowerCaseCharacters;
+                }
+            }
             string[] emailDom = Config.AdminEmail.Split('@');
             ltl.Text = emailDom[1];
             if (!Page.IsPostBack)
             {
-                CreateUserWizard1.MailDefinition.From = Config.AdminEmail;
-                if(Config.EmailValidation)
-                    CreateUserWizard1.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory + "ValidationMail.html";
-                else
-                    CreateUserWizard1.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory +"RegisterMail.html";
-                CreateUserWizard1.MailDefinition.Subject = "Welcome";
-
                 var smp = (SnitzMembershipProvider)Membership.Providers["SnitzMembershipProvider"];
                 //we set the .Net password question to a random string for use as the activation key.
                 if (smp != null) CreateUserWizard1.Question = smp.GeneratePassword(12);
-                BindCountry();
             }
+            CreateUserWizard1.MailDefinition.From = Config.AdminEmail;
+            if (Config.EmailValidation)
+                CreateUserWizard1.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory + "ValidationMail.html";
+            else
+                CreateUserWizard1.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory + "RegisterMail.html";
 
         }
 
@@ -89,10 +108,11 @@ namespace SnitzUI
         {
             e.Cancel = false; 
 
-            //generate a random password and update the hiden password control
+            
             var smp = (SnitzMembershipProvider)Membership.Providers["SnitzMembershipProvider"];
             var tb = (TextBox)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("Password");
-            if (smp != null) tb.Text = smp.GeneratePassword(12);
+            //generate a random password and update the hiden password control
+            if (smp != null && String.IsNullOrEmpty(tb.Text)) tb.Text = smp.GeneratePassword(12);
 
             //check UserName filter
             if (Config.FilterUsernames)
@@ -107,21 +127,19 @@ namespace SnitzUI
                     ltl.Text = extras.ErrSpamCheck;
                     e.Cancel = true;
                 }
-            //check wwe are the requird age
-            if(Config.MinAge > 0)
+            if (Config.MinAge > 0 && !e.Cancel)
             {
-                var dp = (DatePicker)CreateUserWizard1.WizardSteps[1].FindControl("DatePicker1");
-
-                 string dateOfBirth = dp.DOBStr;
-                 int age = Convert.ToInt32(Common.GetAgeFromDOB(dateOfBirth));
-                 if (age < Config.MinAge)
-                     e.Cancel = true;
+                e.Cancel = !IsMinAge();
             }
             //check the visible captcha if used, if it fails cancel registration
-            var ct = (SnitzCaptchaControl)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("CaptchaControl1");
-            if (ct != null)
-                if (!ct.IsValid)
-                    e.Cancel = true;
+            if (!e.Cancel)
+            {
+                var ct = (SnitzCaptchaControl)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("CaptchaControl1");
+                if (ct != null)
+                    if (!ct.IsValid)
+                        e.Cancel = true;                
+            }
+
         }
 
         protected void CreateUserWizard1SendingMail(object sender, MailMessageEventArgs e)
@@ -138,7 +156,7 @@ namespace SnitzUI
             if (mp != null)
             {
                 string validationCode = SnitzMembershipProvider.CreateValidationCode(newUser);
-                mp.ChangePasswordQuestionAndAnswer(cuw.UserName, "Registration", validationCode, "validationcode");
+                mp.ChangePasswordQuestionAndAnswer(cuw.UserName, cuw.Password, validationCode, "validationcode");
                 //And build the url for the validation page. 
                 var builder = new UriBuilder("http",
                                                     Request.Url.DnsSafeHost,
@@ -154,44 +172,51 @@ namespace SnitzUI
         protected void CreateUserWizard1CreatedUser(object sender, EventArgs e)
         {
             var newMember = Members.GetMember(CreateUserWizard1.UserName);
-            string[] fname = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("fullname")).Text.Split(' ');
 
-            newMember.Firstname = fname[0];
-            newMember.Lastname = "";
-            if (fname.Length > 1)
+            XElement root = _memberFields.Root;
+            var properties = RegHelper.GetProperties(newMember);
+            var fields = root.Elements().Where(a => a.Attribute("Show").Value == "true" && a.Attribute("Group").Value == "Member");
+            foreach (XElement field in fields)
             {
-                for (int i = 1; i < fname.Length; i++)
+                var prop = properties.SingleOrDefault(p => p.Name == field.Name);
+                Registration attr = (Registration)prop.GetCustomAttributes(false)[0];
+                switch (attr.Control)
                 {
-                    newMember.Lastname += fname[i] + " ";
+                    case "Text" :
+                    case "LongText":
+                        var tfinder = new ControlFinder<TextBox>();
+                        tfinder.FindChildControlsRecursive(CreateUserWizard1.CreateUserStep.ContentTemplateContainer);
+                        var tinfo = tfinder.FoundControls.ToList();
+                        
+                        if (tinfo.Any(t => t.ID == field.Name))
+                            prop.SetValue(newMember, Convert.ChangeType(tinfo.Single(t => t.ID == field.Name).Text, prop.PropertyType), null);
+                        break;
+                    case "DatePicker" :
+                        var dfinder = new ControlFinder<DobPicker>();
+                        dfinder.FindChildControlsRecursive(CreateUserWizard1.CreateUserStep.ContentTemplateContainer);
+                        var dinfo = dfinder.FoundControls.ToList();
+                        if (dinfo.Any(t => t.ID == field.Name))
+                        {
+                            newMember.DateOfBirth = dinfo.Single(t => t.ID == field.Name).DOBStr;
+                            newMember.Age = Common.GetAgeFromDOB(newMember.DateOfBirth);
+                        }                        
+                        break;
+                    case "GenderLookup" :
+                        var cfinder = new ControlFinder<GenderDropDownList>();
+                        cfinder.FindChildControlsRecursive(CreateUserWizard1.CreateUserStep.ContentTemplateContainer);
+                        var cinfo = cfinder.FoundControls.ToList();
+                        if (cinfo.Any(t => t.ID == field.Name))
+                            newMember.Gender = cinfo.Single(t => t.ID == field.Name).SelectedValue;
+                        break;
                 }
-                
             }
-            newMember.City = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("city")).Text;
-            newMember.State = ((TextBox)CreateUserWizard1.WizardSteps[1].FindControl("state")).Text;
-            newMember.Country = ((DropDownList)CreateUserWizard1.WizardSteps[1].FindControl("Country")).SelectedValue;
-            newMember.Gender = ((DropDownList)CreateUserWizard1.WizardSteps[1].FindControl("Gender")).SelectedValue;
-            
-            var dp = (DatePicker)CreateUserWizard1.WizardSteps[1].FindControl("DatePicker1");
-            newMember.DateOfBirth = dp.DOBStr;
-            newMember.Age = Common.GetAgeFromDOB(newMember.DateOfBirth);
 
-            newMember.Occupation = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("occupation")).Text;
-            newMember.Biography = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("biography")).Text;
-            newMember.Hobbies = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("hobbies")).Text;
-            newMember.LatestNews = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("lnews")).Text;
-            newMember.FavouriteQuote = ((TextBox)CreateUserWizard1.WizardSteps[2].FindControl("quote")).Text;
-
-            newMember.ViewSignatures = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("viewsig")).SelectedValue);
-            newMember.UseSignature = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("usesig")).SelectedValue);
-            newMember.ReceiveEmails = bool.Parse(((RadioButtonList)CreateUserWizard1.WizardSteps[3].FindControl("recemail")).SelectedValue);
-
-            newMember.Signature = ((TextBox)CreateUserWizard1.WizardSteps[3].FindControl("signature")).Text;
             newMember.MembersIP = Common.GetIP4Address();
             newMember.LastIP = newMember.MembersIP;
             // Save the profile - must be done since we explicitly created this profile instance
             Members.SaveMember(newMember);
 
-            Membership.GetUser(newMember.UseSignature, true);
+            Membership.GetUser(newMember.Username,true);
         }
 
         protected void CreateUserWizard1CreateUserError(object sender, CreateUserErrorEventArgs e)
@@ -212,7 +237,7 @@ namespace SnitzUI
                     sMessage = CreateUserWizard1.InvalidEmailErrorMessage;
                     break;
                 case MembershipCreateStatus.InvalidPassword:
-                    sMessage = string.Format(CreateUserWizard1.InvalidPasswordErrorMessage, Membership.Provider.MinRequiredPasswordLength, Membership.Provider.MinRequiredNonAlphanumericCharacters);
+                    sMessage = String.Format(CreateUserWizard1.InvalidPasswordErrorMessage, Membership.Provider.MinRequiredPasswordLength, Membership.Provider.MinRequiredNonAlphanumericCharacters);
                     break;
                 case MembershipCreateStatus.InvalidQuestion:
                     sMessage = CreateUserWizard1.InvalidQuestionErrorMessage;
@@ -228,17 +253,77 @@ namespace SnitzUI
                     break;
             }
 
-            var phStuff = (PlaceHolder) CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("phCustomStuff");
             var cvError = new CustomValidator
-                                          {
-                                              ValidationGroup = "CreateUserWizard1",
-                                              ErrorMessage = sMessage,
-                                              IsValid = false
-                                          };
-            phStuff.Controls.Add(cvError);
-
+                            {
+                                ValidationGroup = "CreateUserWizard1",
+                                ErrorMessage = sMessage,
+                                IsValid = false
+                            };
+            CreateUserWizard1.CreateUserStep.ContentTemplateContainer.Controls.Add(cvError);
         }
         
+        protected void SaveOptions(object sender, EventArgs e)
+        {
+            var newMember = Members.GetMember(CreateUserWizard1.UserName);
+            XElement root = _memberFields.Root;
+            var properties = RegHelper.GetProperties(newMember);
+            var fields = root.Elements().Where(a => a.Attribute("Show").Value == "true" && a.Attribute("Group").Value != "Member");
+
+            foreach (XElement field in fields)
+            {
+                var prop = properties.SingleOrDefault(p => p.Name == field.Name);
+                Registration attr = (Registration)prop.GetCustomAttributes(false)[0];
+                switch (attr.Control)
+                {
+                    case "Text":
+                    case "LongText" :
+                        var tfinder = new ControlFinder<TextBox>();
+                        tfinder.FindChildControlsRecursive(CreateUserWizard1.WizardSteps[2]);
+                        var tinfo = tfinder.FoundControls.ToList();
+                        if (tinfo.Any(t => t.ID == field.Name))
+                            prop.SetValue(newMember, Convert.ChangeType(tinfo.Single(t => t.ID == field.Name).Text, prop.PropertyType), null);
+                        break;   
+                    case "CheckBox" :
+                        var cfinder = new ControlFinder<CheckBox>();
+                        cfinder.FindChildControlsRecursive(CreateUserWizard1.WizardSteps[2]);
+                        var cinfo = cfinder.FoundControls.ToList();
+                        if (cinfo.Any(t => t.ID == field.Name))
+                            prop.SetValue(newMember, Convert.ChangeType(cinfo.Single(t => t.ID == field.Name).Checked, prop.PropertyType), null);
+                        break;
+                    case "CountryLookup" :
+                        var dfinder = new ControlFinder<CountryDropDownList>();
+                        dfinder.FindChildControlsRecursive(CreateUserWizard1.WizardSteps[2]);
+                        var dinfo = dfinder.FoundControls.ToList();
+                        if (dinfo.Any(t => t.ID == field.Name))
+                            prop.SetValue(newMember, Convert.ChangeType(dinfo.Single(t => t.ID == field.Name).SelectedValue, prop.PropertyType), null);
+                        break;
+                    case "TimeZoneLookup" :
+                        var tzfinder = new ControlFinder<TimeZoneListBox>();
+                        tzfinder.FindChildControlsRecursive(CreateUserWizard1.WizardSteps[2]);
+                        var tzinfo = tzfinder.FoundControls.ToList();
+                        if (tzinfo.Any(t => t.ID == field.Name))
+                        {
+                            string tZone = tzinfo.Single(t => t.ID == field.Name).SelectedValue;
+                            prop.SetValue(newMember, Convert.ChangeType(tZone, prop.PropertyType), null);
+
+                            TimeZoneInfo tzoneInfo = TimeZoneInfo.FindSystemTimeZoneById(tZone);
+                            newMember.TimeOffset = tzoneInfo.BaseUtcOffset.TotalHours;
+                        }
+                        break;
+                    case "Lookup":
+                        var lfinder = new ControlFinder<DropDownList>();
+                        lfinder.FindChildControlsRecursive(CreateUserWizard1.WizardSteps[2]);
+                        var linfo = lfinder.FoundControls.ToList();
+                        if (linfo.Any(t => t.ID == field.Name))
+                            prop.SetValue(newMember, Convert.ChangeType(linfo.Single(t => t.ID == field.Name).SelectedValue, prop.PropertyType), null);
+                        break;
+                }
+                
+            }
+
+            Members.SaveMember(newMember);
+        }        
+
         #endregion
 
         #region Validation Methods
@@ -251,7 +336,7 @@ namespace SnitzUI
             string memberIP = "ip=" + Common.GetIP4Address();
 
             var client = new WebClient();
-            byte[] data = client.DownloadData(string.Format("{0}?{1}&{2}&{3}", stopforumspamurl, email, username, memberIP));
+            byte[] data = client.DownloadData(String.Format("{0}?{1}&{2}&{3}", stopforumspamurl, email, username, memberIP));
             string strPageData = Encoding.ASCII.GetString(data);
             var xml = new XmlDocument();
             xml.LoadXml(strPageData);
@@ -272,56 +357,40 @@ namespace SnitzUI
             return username.ReplaceBadWords() == username;
         }
 
-        private void SetVisiblity()
+        private bool IsMinAge()
         {
-            SettingsPropertyCollection spc = ProfileBase.Properties;
-
-            if(Config.MinAge > 0)
+            if (Config.MinAge > 0)
             {
-                var rfv = (RequiredFieldValidator)CreateUserWizard1.WizardSteps[1].FindControl("RFV_Bio_DOB");
-                rfv.Enabled = true;
-                var dp = (UserControl)CreateUserWizard1.WizardSteps[1].FindControl("DatePicker1");
-                var lbl = (Label)dp.FindControl("lbl_Bio_DOB");
-                lbl.CssClass = rfv.Enabled ? "label_mandatory" : "label_not_mandatory";
-            }
+                //find the Date of birth control
+                var cfinder = new ControlFinder<DobPicker>();
+                cfinder.FindChildControlsRecursive(CreateUserWizard1.CreateUserStep.ContentTemplateContainer);
 
-            foreach (SettingsProperty prop in spc)
-            {
-                var persistenceData = prop.Attributes["CustomProviderData"] as string;
-                // If we can't find the table/column info we will ignore this data
-                if (String.IsNullOrEmpty(persistenceData))
-                {
-                    // REVIEW: Perhaps we should throw instead?
-                    continue;
-                }
-                string[] chunk = persistenceData.Split(new char[] { ';' });
-                if (chunk.Length < 3)
-                {
-                    // REVIEW: Perhaps we should throw instead?
-                    continue;
-                }
-                //prop.Attributes.Values;
-                var rfv = (RequiredFieldValidator)CreateUserWizard1.WizardSteps[1].FindControl("RFV_" + prop.Name.Replace(".", "_"));
-                var lbl = (Label)CreateUserWizard1.WizardSteps[1].FindControl("lbl_" + prop.Name.Replace(".", "_"));
-                if (rfv != null)
-                {
-                    rfv.Enabled = (chunk[0] == "1");
-                    if(lbl != null)
-                    lbl.CssClass = rfv.Enabled ? "label_mandatory" : "label_not_mandatory";
-                }
-            }
-        }
+                var vfinder = new ControlFinder<RequiredFieldValidator>();
+                vfinder.FindChildControlsRecursive(CreateUserWizard1.CreateUserStep.ContentTemplateContainer);
 
-        private void BindCountry()
-        {
-            var doc = new XmlDocument();
-            doc.Load(Server.MapPath(Config.CultureSpecificDataDirectory + "countries.xml"));
-            var xmlNodeList = doc.SelectNodes("//country");
-            if (xmlNodeList != null)
-                foreach (XmlNode node in xmlNodeList)
+                var dobCtl = cfinder.FoundControls.SingleOrDefault(c => c.ID == "DateOfBirth");
+                if (dobCtl != null)
                 {
-                    Country.Items.Add(new ListItem(node.InnerText, node.InnerText));
+                    if (Convert.ToInt32(Common.GetAgeFromDOB(dobCtl.DOBStr)) < Config.MinAge)
+                    {
+                        RequiredFieldValidator req = new RequiredFieldValidator
+                                                     {
+                                                         ValidationGroup = CreateUserWizard1.ID,
+                                                         ErrorMessage =
+                                                             String.Format(
+                                                                 webResources.lblMinAge,
+                                                                 Config.MinAge),
+                                                         IsValid = false
+                                                     };
+                        Page.Validators.Add(req);
+                        //req.Visible = false;
+
+                        return false;
+                    }
                 }
+                return Convert.ToInt32(Common.GetAgeFromDOB(dobCtl.DOBStr)) > Config.MinAge;
+            }
+            return true;
         }
 
         #endregion
@@ -331,8 +400,9 @@ namespace SnitzUI
         [WebMethod]
         public static bool CheckUserName(string userName)
         {
-            System.Threading.Thread.Sleep(2000);
-            if ((Membership.GetUser(userName) != null))
+            Thread.Sleep(1000);
+            var membercheck = Membership.GetUser(userName);
+            if ((membercheck != null) && membercheck.UserName.ToLower() != "guest")
             {
                 return true;
             }
@@ -344,7 +414,7 @@ namespace SnitzUI
         [WebMethod]
         public static bool CheckEmail(string email)
         {
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(1000);
             if (!String.IsNullOrEmpty(Membership.GetUserNameByEmail(email)))
             {
                 return true;
@@ -353,5 +423,114 @@ namespace SnitzUI
         } 
 
         #endregion
+
+        private void SetVisiblity()
+        {
+            _regsettings = Server.MapPath("~/App_Data/regcontrols.xml");
+            if (File.Exists(_regsettings))
+            {
+                LoadControls();
+            }
+        }
+        private void LoadControls()
+        {
+            // Member, Member:Info, Member:Other, Member:Social Media, Settings
+            Panel grpPanel = LoadGroupControls("Member");
+            grpPanel.GroupingText = String.Empty;
+            var phStuff = (PlaceHolder)CreateUserWizard1.CreateUserStep.ContentTemplateContainer.FindControl("phCustomStuff");
+            phStuff.Controls.Add(grpPanel);
+
+            mInfoControls.Controls.Add(LoadGroupControls("Member:Social Media"));
+            mInfoControls.Controls.Add(LoadGroupControls("Member:Info"));
+            mPostingControls.Controls.Add(LoadGroupControls("Settings"));
+        }
+        private Panel LoadGroupControls(string groupname)
+        {
+            var properties = RegHelper.GetProperties(new MemberInfo());
+            Panel grpPanel = null;
+            _memberFields = XDocument.Load(_regsettings);
+            XElement root = _memberFields.Root;
+
+            //get all the controls to be shown and order by groupname so we can arrange on the wizard
+            grpPanel = new Panel { ID = "pnl" + groupname, GroupingText = RegHelper.SplitCamelCase(groupname) };
+            foreach (XElement elem in root.Elements().Where(a => a.Attribute("Show").Value == "true" && a.Attribute("Group").Value == groupname))
+            {
+                //get the custom attributes for the current property so we can get the control to use
+                var prop = properties.SingleOrDefault(p => p.Name == elem.Name.LocalName);
+                Registration attr = (Registration)prop.GetCustomAttributes(false)[0];
+
+                //var isVisible = Convert.ToBoolean(elem.Attribute("Show").Value);
+                var isRequired = Convert.ToBoolean(elem.Attribute("Require").Value);
+                RegControl ctl = new RegControl()
+                {
+                    ValidationGroup = CreateUserWizard1.ID,
+                    LabelText = RegHelper.SplitCamelCase(elem.Name.LocalName),
+                    ControlID = elem.Name.LocalName,
+                    ControlType = attr.Control,
+                    InvalidMessage = isRequired ? elem.Name.LocalName + " Is required" : "",
+                    Show = true,
+                    Required = isRequired,
+                    ClientScript = "true",
+                    CssClass = isRequired ? "label_mandatory" : "label_not_mandatory"
+                };
+                //add the new control to the panel
+                grpPanel.Controls.Add(ctl);
+
+            }
+
+            return grpPanel;
+        }
+        
+        protected void CheckContinue(object sender, WizardNavigationEventArgs e)
+        {
+            //check we are the requird age
+            //if(e.CurrentStepIndex == 1)
+
+        }
+
+        private class ControlFinder<T> where T : Control
+        {
+            private readonly List<T> _foundControls = new List<T>();
+            public IEnumerable<T> FoundControls
+            {
+                get { return _foundControls; }
+            }
+
+            public void FindChildControlsRecursive(Control control)
+            {
+                foreach (Control childControl in control.Controls)
+                {
+                    if (childControl.GetType() == typeof(T))
+                    {
+                        _foundControls.Add((T)childControl);
+                    }
+                    else
+                    {
+                        FindChildControlsRecursive(childControl);
+                    }
+                }
+            }
+        }
     }
+
+    public static class RegHelper
+    {
+        public static string SplitCamelCase(string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+        }
+        public static IEnumerable<PropertyInfo> GetProperties<T>(T item) where T : new()
+        {
+            var type = item.GetType();
+            var properties = type.GetProperties();
+
+            var propertyList = properties
+                .Where(p => p.GetCustomAttributes(false).Any(a => a.GetType() == typeof(Registration) && ((Registration)a).Display));
+
+            var res = from info in propertyList
+                      select new { info.Name, Required = false, Show = false };
+            return propertyList;
+        }
+    }
+
 }

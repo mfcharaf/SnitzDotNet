@@ -59,6 +59,12 @@ namespace Snitz.BLL
             return dal.GetFaqItem(faqid, lang);
         }
 
+        public static IEnumerable<FaqInfo> GetQuestion(string path, string lang)
+        {
+            IFaqQuestion dal = Factory<IFaqQuestion>.Create("Faq");
+            return dal.GetByName(path);
+        }
+
         public static int AddFaqCategory(FaqCategoryInfo category)
         {
             IFaqCategory dal = Factory<IFaqCategory>.Create("Faq");

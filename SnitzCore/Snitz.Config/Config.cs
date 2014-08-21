@@ -286,19 +286,31 @@ namespace SnitzConfig
             }
         }
 
-        [Description("boolCaptcha")]
-        public static bool UseCaptcha
+        [Description("boolCaptchaReg")]
+        public static bool UseCaptchaReg
         {
             get
             {
-                return (ConfigurationManager.AppSettings["boolCaptcha"] == "1");
+                return (ConfigurationManager.AppSettings["boolCaptchaReg"] == "1");
             }
             set
             {
-                UpdateConfig("boolCaptcha", value ? "1" : "0");
+                UpdateConfig("boolCaptchaReg", value ? "1" : "0");
             }
         }
 
+        [Description("boolCaptchaLogin")]
+        public static bool UseCaptchaLogin
+        {
+            get
+            {
+                return (ConfigurationManager.AppSettings["boolCaptchaLogin"] == "1");
+            }
+            set
+            {
+                UpdateConfig("boolCaptchaLogin", value ? "1" : "0");
+            }
+        }
         [Description("boolShowTimer")]
         public static bool ShowTimer
         {
@@ -385,13 +397,40 @@ namespace SnitzConfig
             set { UpdateConfig("strTimeType", value); }
         }
 
-        [Description("intTimeAdjust")]
-        public static int TimeAdjust
+        [Description("dblTimeAdjust")]
+        public static double TimeAdjust
         {
-            get { return ConfigurationManager.AppSettings["intTimeAdjust"] == null ? 0 : Convert.ToInt32(ConfigurationManager.AppSettings["intTimeAdjust"]); }
+            get { return ConfigurationManager.AppSettings["dblTimeAdjust"] == null ? 0 : Convert.ToDouble(ConfigurationManager.AppSettings["dblTimeAdjust"]); }
             set { UpdateConfig("intTimeAdjust", value.ToString()); }
         }
+        [Description("strTimeZone")]
+        public static string TimeZoneString
+        {
+            get { return ConfigurationManager.AppSettings["strTimeZone"] ?? "00:00:00"; }
+            set { UpdateConfig("strTimeZone", value.ToString()); }
+        }
+        //DayLightSavingAdjust
+        [Description("boolDayLightSavingAdjust")]
+        public static bool DayLightSavingAdjust
+        {
+            get
+            {
+                return (ConfigurationManager.AppSettings["boolDayLightSavingAdjust"] == "1");
+            }
+            set
+            {
+                UpdateConfig("boolDayLightSavingAdjust", value ? "1" : "0");
+            }
+        }
+        public static bool IsDayLightSaving
+        {
+            get
+            {
+                DaylightTime dtt = TimeZone.CurrentTimeZone.GetDaylightChanges(DateTime.Now.Year);
+                return (dtt.Start < DateTime.Now || dtt.End > DateTime.Now);
+            }
 
+        }
         [Description("intHotTopicNum")]
         public static int HotTopicNum
         {
@@ -484,11 +523,11 @@ namespace SnitzConfig
             }
         }
 
-        [Description("intShowRank")]
+        [Description("intShowRankType")]
         public static Enumerators.RankType ShowRankType
         {
-            get { return ConfigurationManager.AppSettings["intShowRank"] == null ? Enumerators.RankType.Both : (Enumerators.RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRank"]); }
-            set { UpdateConfig("intShowRank", ((int)value).ToString()); }
+            get { return ConfigurationManager.AppSettings["intShowRankType"] == null ? Enumerators.RankType.Both : (Enumerators.RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRank"]); }
+            set { UpdateConfig("intShowRankType", ((int)value).ToString()); }
         }
 
         [Description("intMinAge")]
@@ -811,11 +850,11 @@ namespace SnitzConfig
             }
         }
 
-        [Description("intSubscription")]
+        [Description("intSubscriptionLevel")]
         public static Enumerators.SubscriptionLevel SubscriptionLevel
         {
-            get { return ConfigurationManager.AppSettings["intSubscription"] == null ? 0 : (Enumerators.SubscriptionLevel)Convert.ToInt32(ConfigurationManager.AppSettings["intSubscription"]); }
-            set { UpdateConfig("intSubscription", ((int)value).ToString()); }
+            get { return ConfigurationManager.AppSettings["intSubscriptionLevel"] == null ? 0 : (Enumerators.SubscriptionLevel)Convert.ToInt32(ConfigurationManager.AppSettings["intSubscriptionLevel"]); }
+            set { UpdateConfig("intSubscriptionLevel", ((int)value).ToString()); }
         }
 
         [Description("boolModeration")]
@@ -970,9 +1009,61 @@ namespace SnitzConfig
         [Description("strCookiePath")]
         public static string CookiePath
         {
-            get { return ConfigurationManager.AppSettings["boolAllowSearchAllForums"]; }
-            set { UpdateConfig("boolAllowSearchAllForums", value ); }
+            get { return ConfigurationManager.AppSettings["strCookiePath"]; }
+            set { UpdateConfig("strCookiePath", value); }
         }
+        [Description("strAnnounceAnon")]
+        public static string AnonMessage
+        {
+            get { return ConfigurationManager.AppSettings["strAnnounceAnon"]; }
+            set { UpdateConfig("strAnnounceAnon", value); }
+        }
+        [Description("strAnnounceAuth")]
+        public static string AuthMessage
+        {
+            get { return ConfigurationManager.AppSettings["strAnnounceAuth"]; }
+            set { UpdateConfig("strAnnounceAuth", value); }
+        }
+
+
+        [Description("intPreferredPasswordLength")]
+        public static int PreferredPasswordLength
+        {
+            get { return ConfigurationManager.AppSettings["intPreferredPasswordLength"] == null ? 10 : Convert.ToInt32(ConfigurationManager.AppSettings["intPreferredPasswordLength"]); }
+            set { UpdateConfig("intPreferredPasswordLength", value.ToString()); }
+        }
+        [Description("intMinimumNumericCharacters")]
+        public static int MinimumNumericCharacters
+        {
+            get { return ConfigurationManager.AppSettings["intMinimumNumericCharacters"] == null ? 0 : Convert.ToInt32(ConfigurationManager.AppSettings["intMinimumNumericCharacters"]); }
+            set { UpdateConfig("intMinimumNumericCharacters", value.ToString()); }
+        }
+        [Description("intMinimumSymbolCharacters")]
+        public static int MinimumSymbolCharacters
+        {
+            get { return ConfigurationManager.AppSettings["intMinimumSymbolCharacters"] == null ? 0 : Convert.ToInt32(ConfigurationManager.AppSettings["intMinimumSymbolCharacters"]); }
+            set { UpdateConfig("intMinimumSymbolCharacters", value.ToString()); }
+        }
+        [Description("intMinimumLowerCaseCharacters")]
+        public static int MinimumLowerCaseCharacters
+        {
+            get { return ConfigurationManager.AppSettings["intMinimumLowerCaseCharacters"] == null ? 0 : Convert.ToInt32(ConfigurationManager.AppSettings["intMinimumLowerCaseCharacters"]); }
+            set { UpdateConfig("intMinimumLowerCaseCharacters", value.ToString()); }
+        }
+        [Description("intMinimumUpperCaseCharacters")]
+        public static int MinimumUpperCaseCharacters
+        {
+            get { return ConfigurationManager.AppSettings["intMinimumUpperCaseCharacters"] == null ? 0 : Convert.ToInt32(ConfigurationManager.AppSettings["intMinimumUpperCaseCharacters"]); }
+            set { UpdateConfig("intMinimumUpperCaseCharacters", value.ToString()); }
+        }
+
+        [Description("boolRequiresUpperAndLowerCaseCharacters")]
+        public static bool RequiresUpperAndLowerCaseCharacters
+        {
+            get { return ConfigurationManager.AppSettings["boolAllowSearchAllForums"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolRequiresUpperAndLowerCaseCharacters"]) == 1; }
+            set { UpdateConfig("boolRequiresUpperAndLowerCaseCharacters", value ? "1" : "0"); }
+        }
+
 
         #endregion
 

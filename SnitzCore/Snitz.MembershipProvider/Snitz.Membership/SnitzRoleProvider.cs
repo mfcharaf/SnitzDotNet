@@ -57,6 +57,10 @@ namespace Snitz.Providers
             return BusinessUtil.GetAllRoles();
         }
 
+        public int GetRoleCount()
+        {
+            return BusinessUtil.TotalRoles;
+        }
         /// <summary>
         /// Gets the assigned roles for a particular user.
         /// </summary>
@@ -261,17 +265,15 @@ namespace Snitz.Providers
 
             return configValue;
         }
-        
-
 
         public static RoleInfo GetRoleFull(int roleid)
         {
             return BusinessUtil.GetRoleFull(roleid);
         }
 
-        public static IEnumerable<RoleInfo> GetAllRolesFull()
+        public static IEnumerable<RoleInfo> GetAllRolesFull(int maximumRows, int startRowIndex)
         {
-            return BusinessUtil.GetAllRolesFull();
+            return BusinessUtil.GetAllRolesFull().Skip(startRowIndex).Take(maximumRows);
         }
 
         public static void AddRolesToForum(int forumId, string[] newroles)

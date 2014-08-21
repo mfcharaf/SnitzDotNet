@@ -45,7 +45,7 @@ public partial class Admin_email {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RadioButtonList rblEmail;
+    protected global::SnitzUI.Admin.AdminRadioButton rblEmail;
     
     /// <summary>
     /// lblAdminEmail control.
@@ -91,6 +91,24 @@ public partial class Admin_email {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox tbxMailServer;
+    
+    /// <summary>
+    /// lblPort control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblPort;
+    
+    /// <summary>
+    /// tbxPort control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox tbxPort;
     
     /// <summary>
     /// Label2 control.
@@ -145,69 +163,6 @@ public partial class Admin_email {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox tbxMailPwd;
-    
-    /// <summary>
-    /// Panel3 control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel Panel3;
-    
-    /// <summary>
-    /// lblUniqueEmail control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblUniqueEmail;
-    
-    /// <summary>
-    /// rblUniqueEmail control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblUniqueEmail;
-    
-    /// <summary>
-    /// lblEmailVal control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblEmailVal;
-    
-    /// <summary>
-    /// rblEmailVal control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblEmailVal;
-    
-    /// <summary>
-    /// lblRestrict control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblRestrict;
-    
-    /// <summary>
-    /// rblRestrictReg control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::SnitzUI.Admin.AdminRadioButton rblRestrictReg;
     
     /// <summary>
     /// lblRequireLogon control.

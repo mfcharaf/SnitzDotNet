@@ -15,11 +15,22 @@
             <asp:LinkButton ID="delSel" runat="server" Text="Delete Selected Pending Members" Width="250px" OnClick="delSel_Click" />
         </td>
     </tr>
+    <tr>
+        <td align="center">
+            <asp:LinkButton ID="resend" runat="server" Text="Resend Activation email" Width="250px" OnClick="resend_Click" style="float:right"/>
+        </td>
+        <td>
+            <asp:TextBox ID="txtCheckEmail" runat="server"></asp:TextBox>
+            <asp:Button ID="btnCheck" runat="server" OnClick="btnCheck_Click" Text="Button" />
+            <asp:Label ID="lblCheckResult" runat="server" Text=""></asp:Label>
+        </td>
+    </tr>
 </table>
 <br />
 <asp:GridView Width="100%" ID="GridViewMemberUser" runat="server" 
 DataSourceID="ObjectDataSourceMembershipUser"
-CssClass="forumtable white" AutoGenerateColumns="False" 
+CssClass="forumtable" AutoGenerateColumns="False" 
+    OnRowDataBound="RowBound"
 DataKeyNames="Id" EmptyDataText="No pending registrations" AllowPaging="True">
     <Columns>
         <asp:BoundField DataField="Id" HeaderText="ID" ShowHeader="False" Visible="False" />
@@ -32,27 +43,28 @@ DataKeyNames="Id" EmptyDataText="No pending registrations" AllowPaging="True">
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Date">
             <ItemTemplate>
-                <asp:Label ID="Label2" runat="server" Text='<%# Eval("MemberSince").ToString().ToDateTime() %>'></asp:Label>
+                <asp:Label ID="Label2" runat="server" Text='<%# Eval("MemberSince") %>'></asp:Label>
             </ItemTemplate>
             <HeaderStyle Width="80px" />
         </asp:TemplateField>
         <asp:TemplateField HeaderText="Email Validated">
             <EditItemTemplate>
-                <asp:TextBox ID="email" runat="server" Text='<%# Eval("IsValid") %>'></asp:TextBox>
+                <asp:TextBox ID="email" runat="server" Text='<%# Eval("Status") %>'></asp:TextBox>
             </EditItemTemplate>
             <ItemTemplate>
-                <asp:Label ID="Lemail" runat="server" Text='<%# (Eval("IsValid").ToString() == "1") ? "Yes" : "No" %>'></asp:Label>
+                <asp:Label ID="Lemail" runat="server" Text='<%# (Eval("Status").ToString() == "0") ? "No" : "Yes" %>'></asp:Label>
             </ItemTemplate>
             <HeaderStyle Width="60px" />
         </asp:TemplateField>
         <asp:BoundField DataField="Age" HeaderText="Age" HeaderStyle-Width="50px" />
-        <asp:BoundField DataField="FirstName" HeaderText="Firstname" />
-        <asp:BoundField DataField="LastName" HeaderText="Lastname" />
+        <asp:BoundField DataField="FirstName" HeaderText="Firstname" HeaderStyle-Width="120px"/>
+        <asp:BoundField DataField="LastName" HeaderText="Lastname" HeaderStyle-Width="180px"/>
         <asp:TemplateField HeaderText="IP">
             <ItemTemplate>
-                <asp:Label ID="Label1" runat="server" Text='<%# Bind("LastIP") %>'></asp:Label><br />
-                <asp:HyperLink ID="spamcheck" runat="server" Text="Spam Check" NavigateUrl='<%# string.Format("http://www.stopforumspam.com/ipcheck/{0}",Eval("LastIP")) %>'></asp:HyperLink>
+                <asp:Label ID="Label1" runat="server" Text='<%# Bind("MembersIP") %>'></asp:Label><br />
+                <asp:HyperLink ID="spamcheck" runat="server" Text="Spam Check" NavigateUrl='<%# string.Format("http://www.stopforumspam.com/ipcheck/{0}",Eval("MembersIP")) %>'></asp:HyperLink>
             </ItemTemplate>
+            <HeaderStyle Width="90px" />
         </asp:TemplateField>
         <asp:TemplateField>
             <ItemTemplate>

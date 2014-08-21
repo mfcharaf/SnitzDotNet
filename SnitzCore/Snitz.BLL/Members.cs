@@ -42,31 +42,21 @@ namespace Snitz.BLL
         public static string MemberSinceTimeAgo(object member)
         {
             MemberInfo m = (MemberInfo) member;
-            int offset = SnitzConfig.Config.TimeAdjust;
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
-            if (profile != null)
-                offset = profile.TimeOffset;
-            return SnitzCommon.Common.TimeAgoTag(m.MemberSince, HttpContext.Current.User.Identity.IsAuthenticated, offset);
+
+            return SnitzTime.TimeAgoTag(m.MemberSince, HttpContext.Current.User.Identity.IsAuthenticated, m);
         }
 
         public static string LastVisitTimeAgo(object member)
         {
             MemberInfo m = (MemberInfo)member;
-            int offset = SnitzConfig.Config.TimeAdjust;
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
-            if (profile != null)
-                offset = profile.TimeOffset;
-            return !m.LastVisitDate.HasValue ? "" : SnitzCommon.Common.TimeAgoTag(m.LastVisitDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, offset);
+            return !m.LastVisitDate.HasValue ? "" : SnitzTime.TimeAgoTag(m.LastVisitDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, m);
         }
 
         public static string LastPostTimeAgo(object member)
         {
             MemberInfo m = (MemberInfo)member;
-            int offset = SnitzConfig.Config.TimeAdjust;
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
-            if (profile != null)
-                offset = profile.TimeOffset;
-            return !m.LastPostDate.HasValue ? "" : SnitzCommon.Common.TimeAgoTag(m.LastPostDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, offset);
+
+            return !m.LastPostDate.HasValue ? "" : SnitzTime.TimeAgoTag(m.LastPostDate.Value, HttpContext.Current.User.Identity.IsAuthenticated, m);
         }
 
         public static MemberInfo GetMember(string username)

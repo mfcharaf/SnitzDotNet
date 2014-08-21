@@ -94,14 +94,15 @@ public partial class Admin_NewMember : UserControl
         msgBody = msgBody.Replace("<%ForumUrl%>", Config.ForumUrl);
 
         MembershipUser mu = Membership.GetUser(user, false);
-        snitzEmail mailsender = new snitzEmail
+        SnitzEmail mailsender = new SnitzEmail
                                     {
                                         toUser = new MailAddress(mu.Email, mu.UserName),
                                         FromUser = "Administrator",
                                         subject = strSubject,
+                                        IsHtml = true,
                                         msgBody = msgBody
                                     };
-        mailsender.send();
+        mailsender.Send();
 
     }
 

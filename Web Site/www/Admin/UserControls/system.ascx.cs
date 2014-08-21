@@ -17,7 +17,7 @@ public partial class Admin_system : UserControl
         tbxCopyright.Text = Config.Copyright;
         tbxHomeUrl.Text = Config.HomeUrl;
         tbxForumUrl.Text = Config.ForumUrl;
-        tbxTheme.Text = Config.UserTheme;
+        ddTheme.SelectedValue = Config.DefaultTheme;
         tbxVersion.Text = SnitzBase.Version.Current;
         chkRightColum.Checked = Config.ShowRightColumn;
         chkShowHeaderAds.Checked = Config.ShowHeaderAds;
@@ -27,6 +27,7 @@ public partial class Admin_system : UserControl
         rblNoNewMembers.SelectedValue = Config.ProhibitNewMembers ? "1" : "0";
         rblRequireReg.SelectedValue = Config.RequireRegistration ? "1" : "0";
         rblUserFilter.SelectedValue = Config.FilterUsernames ? "1" : "0";
+
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
@@ -52,8 +53,8 @@ public partial class Admin_system : UserControl
             toUpdate.Add("HomeUrl".GetPropertyDescription(), tbxHomeUrl.Text);
         if (Config.ForumUrl != tbxForumUrl.Text)
             toUpdate.Add("ForumUrl".GetPropertyDescription(), tbxForumUrl.Text);
-        if (Config.DefaultTheme != tbxTheme.Text)
-            toUpdate.Add("DefaultTheme".GetPropertyDescription(), tbxTheme.Text);
+        if (Config.DefaultTheme != ddTheme.SelectedValue)
+            toUpdate.Add("DefaultTheme".GetPropertyDescription(), ddTheme.SelectedValue);
 
         if (Config.ProhibitNewMembers != (rblNoNewMembers.SelectedValue == "1"))
             toUpdate.Add("ProhibitNewMembers".GetPropertyDescription(), rblNoNewMembers.SelectedValue);
@@ -61,6 +62,7 @@ public partial class Admin_system : UserControl
             toUpdate.Add("RequireRegistration".GetPropertyDescription(), rblRequireReg.SelectedValue);
         if (Config.FilterUsernames != (rblUserFilter.SelectedValue == "1"))
             toUpdate.Add("FilterUsernames".GetPropertyDescription(), rblUserFilter.SelectedValue);
+
 
         Config.UpdateKeys(toUpdate);
     }

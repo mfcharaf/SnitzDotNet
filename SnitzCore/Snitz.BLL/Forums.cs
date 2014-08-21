@@ -184,22 +184,27 @@ namespace Snitz.BLL
             }
             return forum.Id;
         }
+        public static void MoveForumPosts(ForumInfo forum)
+        {
+            IForum dal = Factory<IForum>.Create("Forum");
+            dal.MoveForumPosts(forum.Id, forum.CatId);
 
-        public static List<TopicInfo> GetForumTopicsSince(bool isAdminOrModerator, int? forumid, int? topicstatus, string fromdate, int startRowIndex, int maximumRows)
+        }
+        public static List<TopicInfo> GetForumTopicsSince(bool isAdminOrModerator, int? forumid, int? topicstatus, string fromdate, int? userid, int startRowIndex, int maximumRows)
         {
             if (maximumRows == 0)
                 return new List<TopicInfo>();
             
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false));
+            return new List<TopicInfo>(dal.GetTopics(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false,userid ));
         }
 
-        public static int GetForumTopicsSinceCount(bool isAdminOrModerator, int forumid, int? topicstatus, string fromdate, int startRowIndex, int maximumRows)
+        public static int GetForumTopicsSinceCount(bool isAdminOrModerator, int forumid, int? topicstatus, string fromdate, int? userid, int startRowIndex, int maximumRows)
         {
             if (maximumRows == 0)
                 return 0;
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return dal.GetTopicCount(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false);
+            return dal.GetTopicCount(fromdate, startRowIndex, maximumRows, forumid, isAdminOrModerator, topicstatus,false,userid);
         }
         
         public static List<ForumJumpto> ListForumJumpTo()
@@ -222,7 +227,7 @@ namespace Snitz.BLL
         public static List<TopicInfo> GetForumTopics(int forumid, int startrec, int maxrecs)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(null, startrec, maxrecs, forumid,false,-1,false));
+            return new List<TopicInfo>(dal.GetTopics(null, startrec, maxrecs, forumid,false,-1,false,null));
         }
 
         public static List<int> AllowedForums(MemberInfo member)

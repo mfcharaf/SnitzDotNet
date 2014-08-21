@@ -190,7 +190,7 @@ namespace SnitzUI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlGender;
+        protected global::SnitzCommon.Controls.GenderDropDownList ddlGender;
         
         /// <summary>
         /// lblState control.
@@ -454,13 +454,22 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.Panel pnlDOB;
         
         /// <summary>
-        /// DatePicker1 control.
+        /// lblDOb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SnitzUI.UserControls.DatePicker DatePicker1;
+        protected global::System.Web.UI.WebControls.Label lblDOb;
+        
+        /// <summary>
+        /// DobPicker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SnitzCommon.Controls.DobPicker DobPicker;
         
         /// <summary>
         /// L2 control.
@@ -505,7 +514,25 @@ namespace SnitzUI {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTimeZone;
+        protected global::SnitzCommon.Controls.TimeZoneListBox ddlTimeZone;
+        
+        /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        /// <summary>
+        /// cbxDaylightSaving control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbxDaylightSaving;
         
         /// <summary>
         /// lblTheme control.
@@ -517,13 +544,13 @@ namespace SnitzUI {
         protected global::System.Web.UI.WebControls.Label lblTheme;
         
         /// <summary>
-        /// ddlTheme control.
+        /// ddTheme control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTheme;
+        protected global::SnitzCommon.Controls.ThemeDropDownList ddTheme;
         
         /// <summary>
         /// lblLanguage control.

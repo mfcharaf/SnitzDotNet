@@ -37,15 +37,12 @@ namespace Snitz.BLL
         public static string LastEditTimeAgo(object topic)
         {
             TopicInfo thistopic = (TopicInfo) topic;
-
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
-
+            MemberInfo mi = Members.GetMember(HttpContext.Current.User.Identity.Name);
             if (thistopic.LastEditDate.HasValue && !(thistopic.LastEditDate.Value == DateTime.MinValue))
                 return String.Format("<abbr class='timeago' title='{0}'>{1}</abbr>",
-                                     thistopic.LastEditDate.Value.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset),
-                                     thistopic.LastEditDate.Value.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset));
-            else
-                return String.Empty;
+                                     thistopic.LastEditDate.Value.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, mi),
+                                     thistopic.LastEditDate.Value.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, mi));
+            return String.Empty;
         }
 
         public static TopicInfo GetTopic(int topicid)
@@ -220,13 +217,13 @@ namespace Snitz.BLL
         public static int GetNewTopicCount(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null,true);
+            return dal.GetTopicCount(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null,true,null);
         }
 
         public static List<TopicInfo> GetNewTopics(string lastHereDate, bool isAdminOrModerator, int startRowIndex, int maximumRows)
         {
             ITopic dal = Factory<ITopic>.Create("Topic");
-            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null, true));
+            return new List<TopicInfo>(dal.GetTopics(lastHereDate, startRowIndex, maximumRows, null, isAdminOrModerator, null, true,null));
         }
 
         public static void Dispose()
@@ -242,6 +239,7 @@ namespace Snitz.BLL
             {
                 MessageAndSubject = false,
                 SearchFor = topicSubject,
+                PageSize = 10,
                 Match = null
             };
             return new List<SearchResult>(dal.FindTopics(bysubject, 0, "", ref rowcount));

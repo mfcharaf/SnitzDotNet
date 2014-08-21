@@ -8,12 +8,12 @@
   <asp:Panel id="NavigationPanel" Visible="false" runat="server">
     <table border="0" cellpadding="3" cellspacing="3">
       <tr>
-        <td style="width:100">Page <asp:Label id="CurrentPageLabel" runat="server" />
+        <td style="width:100px">Page <asp:Label id="CurrentPageLabel" runat="server" />
             of <asp:Label id="TotalPagesLabel" runat="server" /></td>
-        <td style="width:60"><asp:LinkButton id="PreviousButton" Text="< Prev"
+        <td style="width:60px"><asp:LinkButton id="PreviousButton" Text="< Prev"
                             OnClick="PreviousButton_OnClick" runat="server" 
                 CausesValidation="False" /></td>
-        <td style="width:60"><asp:LinkButton id="NextButton" Text="Next >"
+        <td style="width:60px"><asp:LinkButton id="NextButton" Text="Next >"
                             OnClick="NextButton_OnClick" runat="server" 
                 CausesValidation="False" /></td>
       </tr>

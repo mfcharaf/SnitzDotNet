@@ -129,13 +129,13 @@ public partial class Admin_system {
     protected global::System.Web.UI.WebControls.Label Label1;
     
     /// <summary>
-    /// tbxTheme control.
+    /// ddTheme control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox tbxTheme;
+    protected global::SnitzCommon.Controls.ThemeDropDownList ddTheme;
     
     /// <summary>
     /// Label2 control.

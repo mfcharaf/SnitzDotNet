@@ -15,7 +15,7 @@
 
 <%@ Import Namespace="Snitz.BLL" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-<%@ Register Src="~/UserControls/DatePicker.ascx" TagName="DatePicker" TagPrefix="uc2" %>
+<%@ Register TagPrefix="a" Namespace="SnitzCommon.Controls" Assembly="SnitzCommon" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS" />
     <link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="/scripts/jquery.lightbox-0.5.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#ctl00_CPM_TabContainer1_TabSig_tbxSig").markItUp(mySettings);
-            $("#ctl00_CPM_TabContainer1_TabSig_tbxQuote").markItUp(mySettings);
+            $("#ctl00_CPM_TabContainer1_TabSig_tbxSig").markItUp(miniSettings);
+            $("#ctl00_CPM_TabContainer1_TabSig_tbxQuote").markItUp(miniSettings);
             $("#ctl00_CPM_TabContainer1_TabSig_tbxBiog").markItUp(mySettings);
             $("#ctl00_CPM_TabContainer1_TabHobby_tbxHobby").markItUp(mySettings);
             $("#ctl00_CPM_TabContainer1_TabHobby_tbxNews").markItUp(mySettings);
@@ -137,12 +137,8 @@
                                             <asp:ListItem Value="Withheld" meta:resourcekey="ddlWithheld">Withheld</asp:ListItem>
                                         </asp:DropDownList></li>
                                     <li><asp:Label ID="lblGender" AssociatedControlID="ddlGender" runat="server" Text="<%$ Resources:webResources, lblGender %>"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlGender" runat="server"
-                                            SkinID="sknGenderList">
-                                            <asp:ListItem Text="[Select Gender]" meta:resourcekey="ddlGender" />
-                                            <asp:ListItem Value="Male" meta:resourcekey="ddlMale">Male</asp:ListItem>
-                                            <asp:ListItem Value="Female" meta:resourcekey="ddlFemale">Female</asp:ListItem>
-                                        </asp:DropDownList>
+                                        EnableViewState="False"></asp:Label>
+                                        <a:GenderDropDownList runat="server" ID="ddlGender" SkinID="sknGenderList"/>
                                     </li>
                                     <li><asp:Label ID="lblState" AssociatedControlID="tbxState" runat="server" Text="<%$ Resources:webResources, lblState %>"
                                         EnableViewState="False"></asp:Label><asp:TextBox ID="tbxState" runat="server" EnableViewState="False"></asp:TextBox></li>
@@ -187,7 +183,8 @@
                                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="passChange" />
                             </asp:Panel>
                             <asp:Panel runat="server" ID="pnlDOB" GroupingText="Date of Birth" Style="float: right; width: 49%; height: auto; min-height: 130px;">
-                                <uc2:DatePicker ID="DatePicker1" runat="server" />
+                                <asp:Label runat="server" ID="lblDOb" AssociatedControlID="DobPicker" Text="<%$ Resources:webResources, lblDOB %>"></asp:Label>
+                                <a:DobPicker runat="server" ID="DobPicker"></a:DobPicker>
                                 <br />
                                 <p>
                                     <asp:Literal ID="L2" runat="server" Text="
@@ -198,17 +195,14 @@
                             </asp:Panel>
                             <div style="z-index: 101; float: right; width: 49%; margin-right: 0px;">
                                 <asp:Panel ID="pnlSiteInf" runat="server" GroupingText="<%$ Resources:webResources, lblSiteInfo %>">
-                                    <asp:Label ID="lblTimeOffset" AssociatedControlID="ddlTimeZone" runat="server" Text="<%$ Resources:webResources, lblTimeOffset %>"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlTimeZone" runat="server">
-                                        </asp:DropDownList>
+                                    <asp:Label ID="lblTimeOffset" AssociatedControlID="ddlTimeZone" runat="server" Text="<%$ Resources:webResources, lblTimeOffset %>" EnableViewState="False"></asp:Label>
+                                    <a:TimeZoneListBox runat="server" ID="ddlTimeZone"/>
                                     <br />
-                                    <asp:Label ID="lblTheme" AssociatedControlID="ddlTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlTheme" runat="server" OnSelectedIndexChanged="ChangeTheme" AutoPostBack="True" >
-                                            <asp:ListItem Value="ClassicSnitz" Text="Classic Snitz" />
-                                            <asp:ListItem Value="BlueGray" Text="BlueGray" />
-                                            <asp:ListItem Value="Dark" Text="Dark" />
-                                            <asp:ListItem Value="Light" Text="Light" />
-                                        </asp:DropDownList>
+                                    <asp:Label ID="Label1" AssociatedControlID="cbxDaylightSaving" runat="server" Text="Use daylight saving" EnableViewState="False"></asp:Label>
+                                    <asp:CheckBox ID="cbxDaylightSaving" CssClass="email" runat="server" Text="" /><br/>
+                                    <asp:Label ID="lblTheme" AssociatedControlID="ddTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
+                                        EnableViewState="False"></asp:Label>
+                                    <a:ThemeDropDownList ID="ddTheme" runat="server" AutoPostBack="True"></a:ThemeDropDownList>
                                     <br />
                                     <asp:Label ID="lblLanguage" runat="server" Text="Default Language:" AssociatedControlID="ddlLang"
                                         EnableViewState="False"></asp:Label><asp:DropDownList runat="server" ID="ddlLang">

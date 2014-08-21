@@ -12,22 +12,22 @@
 public partial class Admin_dateTime {
     
     /// <summary>
-    /// Panel1 control.
+    /// Panel2 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel Panel1;
+    protected global::System.Web.UI.WebControls.Panel Panel2;
     
     /// <summary>
-    /// Label1 control.
+    /// pnl2 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label Label1;
+    protected global::System.Web.UI.WebControls.Panel pnl2;
     
     /// <summary>
     /// lblTimeType control.
@@ -57,13 +57,58 @@ public partial class Admin_dateTime {
     protected global::System.Web.UI.WebControls.Label lblTimeZone;
     
     /// <summary>
-    /// ddlTimeZone control.
+    /// lbTimeZone control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList ddlTimeZone;
+    protected global::SnitzCommon.Controls.TimeZoneListBox lbTimeZone;
+    
+    /// <summary>
+    /// lblDaylightSaving control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblDaylightSaving;
+    
+    /// <summary>
+    /// rblDaylightSaving control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblDaylightSaving;
+    
+    /// <summary>
+    /// lblDateType control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblDateType;
+    
+    /// <summary>
+    /// ddlDateType control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlDateType;
+    
+    /// <summary>
+    /// pnl3 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnl3;
     
     /// <summary>
     /// lblCurrentDate control.
@@ -102,22 +147,13 @@ public partial class Admin_dateTime {
     protected global::System.Web.UI.WebControls.Label Label3;
     
     /// <summary>
-    /// lblDateType control.
+    /// Panel5 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblDateType;
-    
-    /// <summary>
-    /// ddlDateType control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList ddlDateType;
+    protected global::System.Web.UI.WebControls.Panel Panel5;
     
     /// <summary>
     /// btnSubmit control.

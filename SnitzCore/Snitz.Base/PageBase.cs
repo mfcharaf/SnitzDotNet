@@ -24,9 +24,11 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PersianCulture;
@@ -44,8 +46,11 @@ namespace SnitzCommon
         /// Private property to handle the lastvisit cookie
         /// </summary>
         private string LastVisitCookie 
-        { 
-            get { return SnitzCookie.GetLastVisitDate(); }
+        {
+            get
+            {
+                return SnitzCookie.GetLastVisitDate();
+            }
             set
             {
                 SnitzCookie.SetLastVisitCookie(value);
@@ -318,7 +323,7 @@ namespace SnitzCommon
                 }
 
 
-                if (IsAdministrator && Config.DebugMode)
+                if (Config.DebugMode)
                     err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
                 Response.Write(
                     "<div style=\"width:auto;margin:100px;border:1px solid red;color:DarkBlue;font-family:Tahoma,Arial,Helvetica;padding:4px;\">");
@@ -389,7 +394,7 @@ namespace SnitzCommon
 
         #region Page methods
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static object[] ExecuteCommand(string commandName, string targetMethod, object data)
         {
             try
@@ -406,22 +411,22 @@ namespace SnitzCommon
             }
         }
 
-        [System.Web.Services.WebMethod]
-        public static string CastVote(string responseid)
-        {
-            //var test = HttpUtility.UrlDecode(jsonform);
-            //System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
-            //ctl00$rblPollAnswer
-            string answerid = responseid;
-            if (answerid != null)
-            {
-                bool res = Polls.CastVote(Membership.GetUser().ProviderUserKey, Convert.ToInt32(answerid));
-                if (res)
-                    return "Your vote was cast";
-            }
-            throw new Exception("Error casting vote");
+        //[WebMethod]
+        //public static string CastVote(string responseid)
+        //{
+        //    //var test = HttpUtility.UrlDecode(jsonform);
+        //    //System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
+        //    //ctl00$rblPollAnswer
+        //    string answerid = responseid;
+        //    if (answerid != null)
+        //    {
+        //        bool res = Polls.CastVote(Membership.GetUser().ProviderUserKey, Convert.ToInt32(answerid));
+        //        if (res)
+        //            return "Your vote was cast";
+        //    }
+        //    throw new Exception("Error casting vote");
 
-        }
+        //}
 
         #endregion
     }

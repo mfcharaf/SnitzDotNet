@@ -160,7 +160,7 @@ namespace SnitzBase
                 if (xmlElement.Name == SiteMapNodeName)
                 {
                     SiteMapNode childNode = GetSiteMapNodeFromElement((XmlElement)xmlElement);
-
+                    
                     AddNode(childNode, parentNode);
                     CreateChildNodes((XmlElement)xmlElement, childNode);
                 }
@@ -189,20 +189,26 @@ namespace SnitzBase
         private void AddDynamicChildElement(XmlElement parentElement, ModMenuItem element)
         {
             XmlNode copy = parentElement.OwnerDocument.ImportNode(element.MenuXml.GetXmlElement(), true);
-
-            if (!String.IsNullOrEmpty(element.InsertAfter))
+            if (!String.IsNullOrEmpty(element.Parent))
+            {
+                XmlNode parentNode =
+                    parentElement.OwnerDocument.SelectSingleNode("descendant::siteMapNode[@key='" +
+                                                                 element.Parent + "']");
+                if (!String.IsNullOrEmpty(element.InsertAfter))
+                {
+                    XmlNode afterNode =
+                    parentElement.SelectSingleNode("descendant::siteMapNode[@key='" +
+                                                                 element.InsertAfter + "']");
+                    parentNode.InsertAfter(copy, afterNode);
+                }else
+                    parentNode.AppendChild(copy);
+            }
+            else if (!String.IsNullOrEmpty(element.InsertAfter))
             {
                 XmlNode afterNode =
                     parentElement.OwnerDocument.SelectSingleNode("descendant::siteMapNode[@key='" +
                                                                  element.InsertAfter + "']");
                 parentElement.InsertAfter(copy, afterNode);
-            }
-            else if (!String.IsNullOrEmpty(element.Parent))
-            {
-                XmlNode parentNode =
-                    parentElement.OwnerDocument.SelectSingleNode("descendant::siteMapNode[@key='" +
-                                                                 element.Parent + "']");
-                parentNode.AppendChild(copy);
             }
             else
             {

@@ -26,7 +26,7 @@ using System.Web;
 using Snitz.Entities;
 using Snitz.IDAL;
 using SnitzCommon;
-using SnitzMembership;
+
 
 namespace Snitz.BLL
 {
@@ -35,11 +35,11 @@ namespace Snitz.BLL
         public static string LastEditTimeAgo(object reply)
         {
             ReplyInfo thisreply = (ReplyInfo) reply;
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
+            MemberInfo mi = Members.GetMember(HttpContext.Current.User.Identity.Name);
             if (thisreply.LastEditDate.HasValue && !(thisreply.LastEditDate.Value == DateTime.MinValue))
                 return String.Format("<abbr class='timeago' title='{0}'>{1}</abbr>",
-                                     thisreply.LastEditDate.Value.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset),
-                                     thisreply.LastEditDate.Value.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset));
+                                     thisreply.LastEditDate.Value.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, mi),
+                                     thisreply.LastEditDate.Value.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, mi));
             else
                 return String.Empty;
         }
@@ -47,10 +47,10 @@ namespace Snitz.BLL
         public static string DateTimeAgo(object reply)
         {
             ReplyInfo thisreply = (ReplyInfo)reply;
-            ProfileCommon profile = ProfileCommon.GetUserProfile(HttpContext.Current.User.Identity.Name);
+            MemberInfo mi = Members.GetMember(HttpContext.Current.User.Identity.Name);
             return String.Format("<abbr class='timeago' title='{0}'>{1}</abbr>",
-                                 thisreply.Date.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset),
-                                 thisreply.Date.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, profile.TimeOffset));
+                                 thisreply.Date.ToISO8601Date(HttpContext.Current.User.Identity.IsAuthenticated, mi),
+                                 thisreply.Date.ToForumDateDisplay(" ", true, HttpContext.Current.User.Identity.IsAuthenticated, mi));
         }
 
         public static void MoveReplies(int newtopicid, List<int> replyIDs)

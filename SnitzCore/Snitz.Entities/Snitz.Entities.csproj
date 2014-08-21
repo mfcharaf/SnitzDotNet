@@ -57,6 +57,7 @@
     <Compile Include="ForumTotalsInfo.cs" />
     <Compile Include="MemberInfo.cs" />
     <Compile Include="MemberSearchInfo.cs" />
+    <Compile Include="ModInfo.cs" />
     <Compile Include="ModMenuItem.cs" />
     <Compile Include="NameFilterInfo.cs" />
     <Compile Include="PollsInfo.cs" />

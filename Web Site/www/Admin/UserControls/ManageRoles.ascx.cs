@@ -5,15 +5,34 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Snitz.Entities;
 using Snitz.Providers;
-using SnitzMembership;
+using SnitzCommon;
+using SnitzConfig;
 
 public partial class Admin_ManageRoles : UserControl
 {
-    
+    private GridPager _replyPager;
+    private bool _bGetSelectCount;
+    public int CurrentPage { get; set; }
+
+    private int RowCount
+    {
+        get
+        {
+            if (ViewState["RowCount"] == null)
+                return 0;
+            return (int)ViewState["RowCount"];
+        }
+        set
+        {
+            ViewState["RowCount"] = value;
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
             RoleView.SetActiveView(viewNewRole);
+        RoleTable.PageSize = Config.TopicPageSize;
     }
 
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -34,7 +53,7 @@ public partial class Admin_ManageRoles : UserControl
                 errLbl2.Visible = true;
             }
 
-            GridView1.DataBind();
+            RoleTable.DataBind();
         }
 
         if (e.CommandName == "EditClick")
@@ -60,7 +79,7 @@ public partial class Admin_ManageRoles : UserControl
     {
         SnitzRoleProvider.UpdateRoleInfo(Convert.ToInt32(txtRoleID.Text), txtName.Text, txtDescription.Text);
 
-        GridView1.DataBind();
+        RoleTable.DataBind();
         RoleView.SetActiveView(viewNewRole);
         errLbl2.Visible = false;
 
@@ -166,5 +185,33 @@ public partial class Admin_ManageRoles : UserControl
         errLbl.Visible = false;
         //  btnSubmit.Enabled = true;
         Response.Redirect("default.aspx?action=roles");
+    }
+    protected void RolesOdsSelecting(object sender, ObjectDataSourceSelectingEventArgs e)
+    {
+        _bGetSelectCount = e.ExecutingSelectCount;
+    }
+
+    protected void RolesOdsSelected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+
+        if (_bGetSelectCount)
+        {
+            RowCount = (int)e.ReturnValue;
+            if (CurrentPage != RoleTable.PageIndex)
+                CurrentPage = RoleTable.PageIndex;
+        }
+
+    }
+
+    
+
+    protected void BindRoles(object sender, GridViewRowEventArgs e)
+    {
+            if (e.Row.RowType == DataControlRowType.Pager)
+            {
+                _replyPager = (GridPager)e.Row.FindControl("pager");
+                _replyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
+                _replyPager.CurrentIndex = CurrentPage;
+            }
     }
 }

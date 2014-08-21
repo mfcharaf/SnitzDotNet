@@ -62,9 +62,11 @@ namespace Snitz.BLL
 
         public static void UpdateTopicPoll(int pollId, string question, SortedList<int, string> choices)
         {
-            PollInfo poll = new PollInfo {Id = pollId, DisplayText = question, Choices = new List<PollChoiceInfo>()};
+            PollInfo poll = new PollInfo {Id = pollId, DisplayText = question,Choices = null};
             foreach (var choice in choices)
             {
+                if (poll.Choices == null)
+                    poll.Choices = new List<PollChoiceInfo>();
                 poll.Choices.Add(new PollChoiceInfo {DisplayText = choice.Value,Order = choice.Key,PollId = pollId});
             }
             IPoll dal = Factory<IPoll>.Create("Poll");

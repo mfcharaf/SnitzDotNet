@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_system" Codebehind="system.ascx.cs" %>
-    <%@ Register src="AdminRadioButton.ascx" tagname="AdminRadioButton" tagprefix="uc1" %>
-    <asp:Panel ID="Panel1" runat="server" CssClass="clearfix" DefaultButton="btnSubmit">
+    <%@ Register src="AdminRadioButton.ascx" tagname="AdminRadioButton" tagprefix="uc1" %>    
+<%@ Register TagPrefix="a" Namespace="SnitzCommon.Controls" Assembly="SnitzCommon" %>
+<asp:Panel ID="Panel1" runat="server" CssClass="clearfix" DefaultButton="btnSubmit">
         <table border="0" cellpadding="3" cellspacing="0" style="width: 100%;" class="forumtable white">
             <tr>
                 <td colspan="2" class="category">
@@ -11,13 +12,13 @@
                 <td style="width: 50%; text-align: right">
                     <asp:Label ID="L3" runat="server" Text="Forum's Title"></asp:Label>&nbsp;:&nbsp;</td>
                 <td align="left" valign="top">
-                    <asp:TextBox ID="tbxTitle" runat="server"></asp:TextBox></td>
+                    <asp:TextBox ID="tbxTitle" runat="server" Width="80%"></asp:TextBox></td>
             </tr>
             <tr>
                 <td style="width: 50%;text-align:right;">
                     <asp:Label ID="L2" runat="server" Text="Forum's Copyright"></asp:Label>&nbsp;:&nbsp;</td>
                 <td align="left" valign="top">
-                    <asp:TextBox ID="tbxCopyright" runat="server" Width="95%"></asp:TextBox></td>
+                    <asp:TextBox ID="tbxCopyright" runat="server" Width="55%"></asp:TextBox></td>
             </tr>            
             <tr>
                 <td style="width: 50%;text-align:right;">
@@ -54,7 +55,8 @@
                     :&nbsp;
                 </td>
                 <td style="width: 50%; text-align: left">
-                    <asp:TextBox ID="tbxTheme" runat="server" Width="30%"></asp:TextBox></td>
+                    <a:ThemeDropDownList ID="ddTheme" runat="server" AutoPostBack="False"></a:ThemeDropDownList>
+                </td>
             </tr>
             <tr>
                 <td style="width: 50%;text-align:right;">
@@ -125,12 +127,7 @@
                     <uc1:AdminRadioButton ID="rblUserFilter" runat="server" />
                 </td>
             </tr>
-            <tr>
-                <td style="width: 50%;text-align:right;">&nbsp;</td>
-                <td style="width: 50%;text-align:left">
-                    
-                </td>
-            </tr>
+
             <tr>
                 <td style="width: 50%;text-align:right;">
                 </td>

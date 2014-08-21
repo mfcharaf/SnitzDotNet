@@ -52,6 +52,7 @@
     <Compile Include="ICustomProfile.cs" />
     <Compile Include="IFaq.cs" />
     <Compile Include="IForum.cs" />
+    <Compile Include="IForumMod.cs" />
     <Compile Include="IForumModerator.cs" />
     <Compile Include="IGroup.cs" />
     <Compile Include="IMember.cs" />

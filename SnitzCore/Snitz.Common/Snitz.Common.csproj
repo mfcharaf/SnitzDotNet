@@ -60,11 +60,16 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bdev.Net.Dns, Version=1.0.0.0, Culture=neutral, PublicKeyToken=217d47f649bccd2c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependency\Bdev.Net.Dns.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -73,11 +78,22 @@
   <ItemGroup>
     <Compile Include="Captcha\CaptchaImage.cs" />
     <Compile Include="Captcha\CaptchaImageHandler.cs" />
+    <Compile Include="Controls\AdminRadioButtonList.cs" />
+    <Compile Include="Controls\AdminRegControl.cs" />
+    <Compile Include="Controls\CountryDropDownList.cs" />
+    <Compile Include="Controls\DOBPicker.cs" />
+    <Compile Include="Controls\GenderDropDownList.cs" />
     <Compile Include="Controls\GridViewGroup.cs" />
     <Compile Include="Controls\GridViewGroupList.cs" />
     <Compile Include="Controls\GridViewHelper.cs" />
     <Compile Include="Controls\GridViewSummary.cs" />
     <Compile Include="Controls\GridViewSummaryList.cs" />
+    <Compile Include="Controls\RegControl.cs" />
+    <Compile Include="Controls\RolesListBox.cs" />
+    <Compile Include="Controls\ThemeDropDownList.cs" />
+    <Compile Include="Controls\TimeZoneDropDownList.cs" />
+    <Compile Include="Controls\TimeZoneListBox.cs" />
+    <Compile Include="EmailValidator.cs" />
     <Compile Include="PopupForm Handler\Command.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="PopupForm Handler\ContentsResponse.cs" />

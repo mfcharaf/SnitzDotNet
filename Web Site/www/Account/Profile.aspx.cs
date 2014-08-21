@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using System.Security;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -63,18 +64,6 @@ namespace SnitzUI
             else
                 pageCSS.Attributes.Add("href", "/css/" + Page.Theme + "/profilepage.css");
 
-            for (int tZone = -12; tZone < 13; tZone++)
-            {
-                var li = new ListItem
-                                  {
-                                      Text =
-                                          tZone < 0
-                                              ? string.Format("GMT {0} hour(s)", tZone)
-                                              : string.Format("GMT +{0} hour(s)", tZone),
-                                      Value = tZone.ToString()
-                                  };
-                ddlTimeZone.Items.Add(li);
-            }
             TabContainer1.ActiveTabIndex = 0;
             if (HttpContext.Current.Items["user"] != null)
             {
@@ -303,7 +292,6 @@ namespace SnitzUI
             _profile.Skype = tbxSkype.Text;
             _profile.PublicGallery = cbxPublic.Checked && Config.ShowGallery;
             _profile.LinkTarget = ddlTarget.SelectedValue;
-            _profile.TimeOffset = Convert.ToInt32(ddlTimeZone.SelectedValue);
             _profile.Save();
 
             string folderPath = "/gallery/";
@@ -331,8 +319,8 @@ namespace SnitzUI
 
                 _user.Lastname = tbxRealName.Text.Replace(_user.Firstname, "").Trim();
             }
-            _user.Age = Common.GetAgeFromDOB(DatePicker1.DOBStr);
-            _user.DateOfBirth = DatePicker1.DOBStr;
+            _user.Age = Common.GetAgeFromDOB(DobPicker.DOBStr);
+            _user.DateOfBirth = DobPicker.DOBStr;
             if(ddlMarStatus.SelectedIndex >= 0)
                 _user.MaritalStatus = ddlMarStatus.SelectedValue;
             if (ddlGender.SelectedIndex >= 0)
@@ -343,9 +331,13 @@ namespace SnitzUI
             _user.Country = tbxCountry.Text;
             _user.Occupation = tbxOccupation.Text;
             _user.Title = tbxForumTitle.Text;
-            if(ddlTimeZone.SelectedIndex >= 0)
-                _user.TimeOffset = Convert.ToInt32(ddlTimeZone.SelectedValue);
-            
+            if (ddlTimeZone.SelectedIndex >= 0)
+            {
+                TimeZoneInfo tzone = TimeZoneInfo.FindSystemTimeZoneById(ddlTimeZone.SelectedValue);
+                _user.TimeZone = ddlTimeZone.SelectedValue;
+                _user.TimeOffset = tzone.BaseUtcOffset.TotalHours;
+            }
+            _user.UseDaylightSaving = cbxDaylightSaving.Checked;
             //email
             _user.ReceiveEmails = cbxReceiveEmail.Checked;
             _user.HideEmail = cbxHideEmail.Checked;
@@ -363,7 +355,7 @@ namespace SnitzUI
             _user.LatestNews = ((TextBox)phNews.FindControl("tbxNews")).Text;
             _user.Hobbies = ((TextBox)phHobby.FindControl("tbxHobby")).Text;
             _user.HomePage = ((TextBox)phHomePage.FindControl("tbxHomePage")).Text;
-            _user.Theme = ddlTheme.Text;
+            _user.Theme = ddTheme.Text;
             Config.UserTheme = _user.Theme;
             //fav links
 
@@ -391,10 +383,14 @@ namespace SnitzUI
             if(_user.DateOfBirth.Trim() != "")
             {
                 var dateTime = _user.DateOfBirth.ToDateTime();
-                if (dateTime != null) DatePicker1.SetDOB(dateTime.Value);
+                if (dateTime != null) DobPicker.SetDOB(dateTime.Value);
             }
-            ddlTimeZone.SelectedValue = _user.TimeOffset.ToString();
-            ddlTheme.SelectedValue = Config.UserTheme;
+            cbxDaylightSaving.Checked = _user.UseDaylightSaving;
+            if (!String.IsNullOrEmpty(_user.TimeZone))
+            {
+                ddlTimeZone.SelectedValue = _user.TimeZone;
+            }
+            ddTheme.SelectedValue = Config.UserTheme;
             if (_profile.Gravatar)
             {
                 var grav = new Gravatar
@@ -457,9 +453,9 @@ namespace SnitzUI
 
             ddlMarStatus.Enabled = _editmode;
             ddlGender.Enabled = _editmode;
-            DatePicker1.Enabled = _editmode;
+            DobPicker.Enabled = _editmode;
             ddlTimeZone.Enabled = _editmode;
-            ddlTheme.Enabled = _editmode;
+            ddTheme.Enabled = _editmode;
             ddlLang.Enabled = _editmode;
             ddlTarget.Enabled = _editmode;
 
@@ -556,8 +552,9 @@ namespace SnitzUI
 
         private void SendEmail(MembershipUser sender)
         {
-            string mailFile = Server.MapPath("~/App_Data/ChangeMail.txt");
-            string strSubject = "Sent From " + Config.ForumTitle + ": Email change request";
+            string mailFile = Server.MapPath("~/App_Data/ChangeMail.html");
+
+            string strSubject = "Sent From " + Regex.Replace(Config.ForumTitle, @"&\w+;", "") + ": Email change request";
 
                 var builder = new UriBuilder("http",
                                                     Request.Url.DnsSafeHost,
@@ -569,14 +566,14 @@ namespace SnitzUI
                 msgBody = msgBody.Replace("<%ForumTitle%>", Config.ForumTitle);
                 msgBody = msgBody.Replace("<%validationURL%>", builder.Uri.AbsoluteUri);
 
-                var mailsender = new snitzEmail
+                var mailsender = new SnitzEmail
                                             {
                                                 toUser = new MailAddress(newemail.Text, sender.UserName),
                                                 FromUser = "Administrator",
                                                 subject = strSubject,
                                                 msgBody = msgBody
                                             };
-                mailsender.send();
+                mailsender.Send();
 
         }
         
@@ -786,13 +783,6 @@ namespace SnitzUI
                     }
                 }
             }
-        }
-
-        protected void ChangeTheme(object sender, EventArgs e)
-        {
-            Config.UserTheme = ddlTheme.SelectedValue;
-            Session.Add("PageTheme", Config.UserTheme);
-            Response.Redirect(Request.RawUrl);
         }
 
         protected void DeleteBookMark(object sender, ImageClickEventArgs e)

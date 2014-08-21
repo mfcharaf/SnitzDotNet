@@ -20,6 +20,8 @@
 */
 
 
+using System;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -68,7 +70,6 @@ namespace SnitzCommon
 				requestContext.HttpContext.Request.HttpMethod ) )
 			{
 				throw new SecurityException();
-			    return null;
 			}
 
 			var page = BuildManager.CreateInstanceFromVirtualPath(
@@ -86,24 +87,90 @@ namespace SnitzCommon
 				if ( webForm != null ) webForm.Load += delegate { webForm.Form.Action = requestContext.HttpContext.Request.RawUrl; };
 			}
 
+		    if (VirtualPath.EndsWith("Faq.asp"))
+		    {
+                if (requestContext.RouteData.Values.ContainsKey("category") && requestContext.RouteData.Values.ContainsKey("subject"))
+		        {
+		            
+		        }
+		    }
             if(VirtualPath.EndsWith("Topic.aspx"))
             {
+                if (requestContext.RouteData.Values.ContainsKey("username"))
+                {
+                    var m = Membership.GetUser(requestContext.RouteData.GetRequiredString("username"));
+                    if (m != null)
+                    {
+                        var blogs = Forums.GetUserBlogTopics(-1, (int) m.ProviderUserKey);
+                        if (blogs.Count > 0)
+                        {
+                            int topicId = 0;
+                            if (requestContext.RouteData.Values.ContainsKey("subject"))
+                            {
+                                var topic =
+                                    blogs.SingleOrDefault(
+                                        t => t.Subject == requestContext.RouteData.GetRequiredString("subject"));
+                                if (topic != null)
+                                    topicId = topic.Id;
+                            }
+                            else
+                                topicId = blogs[0].Id;
+                            if (topicId != 0)
+                                requestContext.HttpContext.Items.Add("TopicId", topicId);
+                        }
+                    }
+                    return page;
+                }
+                else
+                {
+                    var m = Membership.GetUser(requestContext.HttpContext.User.Identity.Name);
+                    if (m != null)
+                    {
+                        var blogs = Forums.GetUserBlogTopics(-1, (int)m.ProviderUserKey);
+                        if (blogs.Count > 0)
+                        {
+                            int topicId = 0;
+                            if (requestContext.RouteData.Values.ContainsKey("subject"))
+                            {
+                                var topic =
+                                    blogs.SingleOrDefault(
+                                        t => t.Subject == requestContext.RouteData.GetRequiredString("subject"));
+                                if (topic != null)
+                                    topicId = topic.Id;
+                            }
+                            else
+                                topicId = blogs[0].Id;
+                            if (topicId != 0)
+                                requestContext.HttpContext.Items.Add("TopicId", topicId);
+                        }
+                    }
+                    return page;                    
+                }
                 string topicSubject = requestContext.RouteData.GetRequiredString("subject");
 
                 if (topicSubject != "")
                 {
-                    var topic = Topics.GetTopicsBySubject(topicSubject);
-                    if (topic.Count == 1)
+                    if (topicSubject.IsNumeric())
                     {
-                        int topicId = ((SearchResult)topic[0]).Id;
+                        int topicId = Convert.ToInt32(topicSubject);
                         requestContext.HttpContext.Items.Add("TopicId", topicId);
                     }
                     else
                     {
-                        requestContext.HttpContext.Items.Add("Subject", topicSubject);
-                        return
-                            (Page)
-                            BuildManager.CreateInstanceFromVirtualPath("~/Content/Forums/Search.aspx", typeof (Page));
+                        var topic = Topics.GetTopicsBySubject(topicSubject);
+                        if (topic.Count == 1)
+                        {
+                            int topicId = ((SearchResult) topic[0]).Id;
+                            requestContext.HttpContext.Items.Add("TopicId", topicId);
+                        }
+                        else
+                        {
+                            requestContext.HttpContext.Items.Add("Subject", topicSubject);
+                            return
+                                (Page)
+                                    BuildManager.CreateInstanceFromVirtualPath("~/Content/Forums/Search.aspx",
+                                        typeof (Page));
+                        }
                     }
                 }
             }

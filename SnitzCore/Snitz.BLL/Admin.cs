@@ -26,8 +26,10 @@ using Snitz.IDAL;
 
 namespace Snitz.BLL
 {
+    
     public static class Admin
     {
+        private static int _pendingmemberCount;
         public static IEnumerable<SubscriptionInfo> GetAllSubscriptions()
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
@@ -99,13 +101,16 @@ namespace Snitz.BLL
 
         public static int GetPendingMemberCount()
         {
-            IMember dal = Factory<IMember>.Create("Member");
-            return dal.GetPendingMemberCount();
+            return _pendingmemberCount;
+            //IMember dal = Factory<IMember>.Create("Member");
+            //return dal.GetPendingMemberCount();
         }
         public static IEnumerable<MemberInfo> GetPendingMembers(int startrecord, int maxrecords)
         {
             IMember dal = Factory<IMember>.Create("Member");
-            return dal.GetPendingMembers(startrecord, maxrecords);
+            var pending = dal.GetPendingMembers(startrecord, maxrecords);
+            _pendingmemberCount = dal.GetPendingMemberCount();
+            return pending;
         }
     }
 }

@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Net.Configuration;
+using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using SnitzCommon;
 using SnitzConfig;
@@ -15,10 +19,7 @@ public partial class Admin_email : UserControl
     void GetValues()
     {
         rblEmail.SelectedValue = Config.UseEmail ? "1" : "0";
-        rblEmailVal.SelectedValue = Config.EmailValidation ? "1" : "0";
         rblLogonForEmail.SelectedValue = Config.LogonForEmail ? "1" : "0";
-        rblRestrictReg.SelectedValue = Config.RestrictRegistration ? "1" : "0";
-        rblUniqueEmail.SelectedValue = Config.UniqueEmail ? "1" : "0";
 
         rblSMTPAuth.SelectedValue = Config.EmailAuthenticate ? "1" : "0";
 
@@ -26,11 +27,12 @@ public partial class Admin_email : UserControl
         tbxMailPwd.Text = Config.EmailAuthPwd;
         tbxMailServer.Text = Config.EmailHost;
         tbxAdminEmail.Text = Config.AdminEmail;
-        tbxMailServer.Enabled = false;
-        tbxMailPwd.Enabled = false;
-        tbxMailUser.Enabled = false;
-        tbxAdminEmail.Enabled = false;
-        rblSMTPAuth.Enabled = "false";
+        tbxPort.Text = Config.EmailPort.ToString();
+        tbxMailServer.Enabled = true;
+        tbxMailPwd.Enabled = true;
+        tbxMailUser.Enabled = true;
+        tbxAdminEmail.Enabled = true;
+        
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
@@ -38,15 +40,31 @@ public partial class Admin_email : UserControl
 
         if (Config.UseEmail != (rblEmail.SelectedValue == "1"))
             toUpdate.Add("UseEmail".GetPropertyDescription(), rblEmail.SelectedValue);
-        if (Config.EmailValidation != (rblEmailVal.SelectedValue == "1"))
-            toUpdate.Add("EmailValidation".GetPropertyDescription(), rblEmailVal.SelectedValue);
         if (Config.LogonForEmail != (rblLogonForEmail.SelectedValue == "1"))
             toUpdate.Add("LogonForEmail".GetPropertyDescription(), rblLogonForEmail.SelectedValue);
-        if (Config.RestrictRegistration != (rblRestrictReg.SelectedValue == "1"))
-            toUpdate.Add("RestrictRegistration".GetPropertyDescription(), rblRestrictReg.SelectedValue);
-        if (Config.UniqueEmail != (rblUniqueEmail.SelectedValue == "1"))
-            toUpdate.Add("UniqueEmail".GetPropertyDescription(), rblUniqueEmail.SelectedValue);
+
         Config.UpdateKeys(toUpdate);
+
+        Configuration config = WebConfigurationManager.OpenWebConfiguration(
+        HttpContext.Current.Request.ApplicationPath);
+        SmtpSection settings =
+            (SmtpSection)config.GetSection("system.net/mailSettings/smtp");
+
+        settings.From = tbxAdminEmail.Text.Trim();
+        if (rblSMTPAuth.SelectedValue == "1")
+        {
+            settings.Network.UserName = tbxMailUser.Text.Trim();
+            settings.Network.Password = tbxMailPwd.Text.Trim();
+        }
+        else
+        {
+            settings.Network.UserName = "";
+            settings.Network.Password = "";
+        }
+        settings.Network.Host = tbxMailServer.Text.Trim();
+        settings.Network.Port = int.Parse(tbxPort.Text.Trim());
+        //settings.Network.EnableSsl = CheckBoxSSL.Checked;
+        config.Save();
 
     }
 }

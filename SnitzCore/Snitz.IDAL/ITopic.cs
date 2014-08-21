@@ -32,12 +32,12 @@ namespace Snitz.IDAL
         IEnumerable<ReplyInfo> GetReplies(TopicInfo topic,int startrec,int maxrecs);
         IEnumerable<TopicInfo> GetTopicsForSiteMap(int maxRecords);
         IEnumerable<TopicInfo> GetLatestTopics(int topicCount, string lastvisit);
-        IEnumerable<TopicInfo> GetTopics(string lastHereDate, int startRowIndex, int maximumRows, int? forumid, bool isAdminOrModerator, int? topicstatus, bool sticky);
+        IEnumerable<TopicInfo> GetTopics(string lastHereDate, int startRowIndex, int maximumRows, int? forumid, bool isAdminOrModerator, int? topicstatus, bool sticky, int? userid);
         IEnumerable<SearchResult> FindTopics(SearchParamInfo sparams, int currentPage, string orderby, ref int rowcount);
         IEnumerable<int> GetReplyIdList(int topic);
 
         TopicInfo GetNextPrevTopic(int topicid, string which);
-        int GetTopicCount(string lastHereDate, int startRowIndex, int maximumRows, int? forumid, bool isAdminOrModerator, int? topicstatus, bool sticky);
+        int GetTopicCount(string lastHereDate, int startRowIndex, int maximumRows, int? forumid, bool isAdminOrModerator, int? topicstatus, bool sticky, int? userid);
         int? GetPollId(int topicid);
 
         void UpdateLastTopicPost(ReplyInfo reply);

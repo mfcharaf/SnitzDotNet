@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Snitz.Entities;
 using Snitz.Membership.IDal;
 
@@ -9,7 +10,9 @@ namespace SnitzMembership.Helpers
         public static string[] GetAllRoles()
         {
             IRoles dal = Snitz.Membership.Helpers.Factory<IRoles>.Create("Role");
-            return dal.GetAllRoles();
+            string[] roles = dal.GetAllRoles();
+            TotalRoles = roles.Length;
+            return roles;
         }
 
         public static string[] GetRolesForUser(string username)
@@ -45,7 +48,9 @@ namespace SnitzMembership.Helpers
         public static IEnumerable<RoleInfo> GetAllRolesFull()
         {
             IRoles dal = Snitz.Membership.Helpers.Factory<IRoles>.Create("Role");
-            return dal.GetAllRolesFull();
+            var roles = dal.GetAllRolesFull();
+            TotalRoles = roles.Count();
+            return roles;
         }
 
         public static RoleInfo GetRoleFull(int roleid)
@@ -90,5 +95,6 @@ namespace SnitzMembership.Helpers
             dal.DeleteRole(roleName);
         }
 
+        public static int TotalRoles { get; set; }
     }
 }

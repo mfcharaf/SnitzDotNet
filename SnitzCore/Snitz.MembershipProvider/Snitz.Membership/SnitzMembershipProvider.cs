@@ -502,7 +502,7 @@ namespace Snitz.Providers
         public override bool ChangePasswordQuestionAndAnswer(string username, string password,
             string newPasswordQuestion, string newPasswordAnswer)
         {
-            if(password != "Registration")
+            if (newPasswordAnswer != "validationcode")
             if (!ValidateUser(username, password))
                 return false;
 
@@ -512,8 +512,8 @@ namespace Snitz.Providers
                     Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
                     MemberInfo m = dal.GetByName(username).SingleOrDefault();
 
-                    m.PasswordChangeKey = newPasswordQuestion;
-                    m.ValidationKey = EncodePassword(newPasswordAnswer);
+                    m.ValidationKey = newPasswordQuestion;
+                    m.PasswordChangeKey = newPasswordAnswer;
 
                     dal.Update(m);
                 ret = true;
@@ -937,7 +937,7 @@ namespace Snitz.Providers
                         m.Username,
                         m.Id,
                         m.Email,
-                        m.PasswordChangeKey,
+                        m.ValidationKey,
                         "",
                         m.IsValid,
                         m.Status == 0,

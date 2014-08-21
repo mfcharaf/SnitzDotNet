@@ -53,7 +53,7 @@ namespace Snitz.BLL
             int replyid = -1;
             int authorid = topic.AuthorId;
             int[] memberids = { };
-            StringBuilder Message = new StringBuilder("Hello {0}");
+            StringBuilder Message = new StringBuilder("<html><body>Hello {0}");
             string strSubject = String.Empty;
 
             if (reply != null)
@@ -97,21 +97,22 @@ namespace Snitz.BLL
             if (replyid > 0)
                 Message.AppendFormat("#{0}", replyid);
             Message.Append("\">here</a>");
-            Message.Append("</p>");
+            Message.Append("</p></body></html>");
             foreach (int id in memberids)
             {
                 MemberInfo member = Members.GetMember(id);
                 //don't send the author notification of their own posts
                 if (id == authorid)
                     continue;
-                snitzEmail email = new snitzEmail
+                SnitzEmail email = new SnitzEmail
                 {
                     subject = strSubject,
                     msgBody = String.Format(Message.ToString(), member.Username),
                     toUser = new MailAddress(member.Email, member.Username),
+                    IsHtml = true,
                     FromUser = "Forum Administrator"
                 };
-                email.send();
+                email.Send();
             }
         }
 
@@ -134,7 +135,11 @@ namespace Snitz.BLL
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
             dal.Delete(subscription.Id);
         }
-
+        public static void RemoveCategorySubscription(int memberid, int categoryid)
+        {
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            dal.RemoveMembersCategorySubscriptions(memberid, categoryid);
+        }
         public static void RemoveAllCategorySubscriptions(int categoryid)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");

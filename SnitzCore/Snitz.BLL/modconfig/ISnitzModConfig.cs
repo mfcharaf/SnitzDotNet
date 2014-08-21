@@ -28,11 +28,7 @@ using Snitz.Entities;
 /// </summary>
 public interface ISnitzModConfig
 {
-    string Name { get;}
-    string Description { get; }
-    bool Enabled { get; set; }
-    Version Version { get; }
-
     bool ShowOnMenu { get; }
     ModMenuItem Menu { get; }
+
 }

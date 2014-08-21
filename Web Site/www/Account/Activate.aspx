@@ -57,7 +57,7 @@
     </asp:Panel>
     <asp:Panel ID="ActivatedPanel" runat="server" Height="50px" HorizontalAlign="Center" Visible="False" style="width:75%;margin:auto;">
         <asp:Literal ID="litAccepted" Visible="false" runat="server" Text="Your membership has now been accepted, you may now begin posting in the forums.<br/>"></asp:Literal>
-        <asp:Literal ID="litValidated" Visible="False" runat="server" Text="Your email address has now been validated.<br/> You will receive an email once your registration has been approved by an Administrator.<br/>"></asp:Literal>
+        <asp:Literal ID="litValidated" Visible="False" runat="server" Text="<p>Thank you for completeing your email address validation.<br/> Your registration is now awaiting approval by an administrator, you will receive an email once your registration has been approved.</p><p>&nbsp;</p>"></asp:Literal>
         <asp:Literal ID="litAlreadyValid" Visible="False" runat="server" Text="Your email address has already been validated.<br/>"></asp:Literal>
     </asp:Panel>
 </asp:Content>

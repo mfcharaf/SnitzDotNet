@@ -70,6 +70,7 @@ namespace SnitzUI
                         litAccepted.Visible = false;
                         litValidated.Visible = true;
                         litAlreadyValid.Visible = false;
+
                         if (mu != null) mu.UnlockUser();
                     }
                     else

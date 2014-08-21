@@ -48,6 +48,42 @@ public partial class Admin_PendingMembers {
     protected global::System.Web.UI.WebControls.LinkButton delSel;
     
     /// <summary>
+    /// resend control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.LinkButton resend;
+    
+    /// <summary>
+    /// txtCheckEmail control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtCheckEmail;
+    
+    /// <summary>
+    /// btnCheck control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button btnCheck;
+    
+    /// <summary>
+    /// lblCheckResult control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblCheckResult;
+    
+    /// <summary>
     /// GridViewMemberUser control.
     /// </summary>
     /// <remarks>

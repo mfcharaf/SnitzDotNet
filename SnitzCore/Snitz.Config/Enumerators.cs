@@ -19,7 +19,9 @@
 #################################################################################################################### 
 */
 
+using System;
 using System.ComponentModel;
+using System.Reflection;
 
 
 namespace SnitzConfig
@@ -139,11 +141,11 @@ namespace SnitzConfig
             None = 0,
             [Description("Subscribe to Whole Board")]
             Board,
-            [Description("Subscribe by Category")]
+            [Description("Category Subscriptions")]
             Category,
-            [Description("Subscribe by Forum")]
+            [Description("Forum Subscriptions")]
             Forum,
-            [Description("Subscribe by Topic")]
+            [Description("Topic Subscriptions")]
             Topic
         }
 
@@ -156,6 +158,22 @@ namespace SnitzConfig
             RankOnly,
             StarsOnly,
             Both
+        }
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
     }
 }

@@ -24,22 +24,45 @@ using System;
 
 namespace Snitz.Entities
 {
+    [System.AttributeUsage(System.AttributeTargets.Property)]
+    public class Registration : System.Attribute
+    {
+        public bool Display;
+        public string Group;
+        public string Control;
+
+        public Registration(bool display,string group,string control)
+        {
+            Display = display;
+            Group = group;
+            Control = control;
+        }
+    }
+
     public class MemberInfo
     {
         private RankInfo _rank;
         public int Id { get; set; }
+        [Registration(true, "Member", "Text")]
         public string Username { get; set; }
         public string NTUsername { get; set; }
+        [Registration(true, "Member", "Text")]
         public string Password { get; set; }
         public string Title { get; set; }
+        [Registration(true, "Member", "Text")]
         public string Email { get; set; }
+        [Registration(true, "Settings", "Text")]
         public string Signature { get; set; }
+        
         public string MembersIP { get; set; }
         public string LastIP { get; set; }
 
         public bool AllowEmail { get; set; }
+        [Registration(true, "Settings", "CheckBox")]
         public bool HideEmail { get; set; }
+        [Registration(true, "Settings", "CheckBox")]
         public bool ReceiveEmails { get; set; }
+        
         public int MemberLevel { get; set; }
         public int PostCount { get; set; }
         public int Status { get; set; }
@@ -48,20 +71,33 @@ namespace Snitz.Entities
         
 
         #region personal data
+        [Registration(true, "Member", "Text")]
         public string Firstname { get; set; }
+        [Registration(true, "Member", "Text")]
         public string Lastname { get; set; }
         public string Age { get; set; }
+        [Registration(true, "Member", "GenderLookup")]
         public string Gender { get; set; }
+        [Registration(true, "Member", "DatePicker")]
         public string DateOfBirth { get; set; }
+        [Registration(true, "Member:Info", "Lookup")]
         public string MaritalStatus { get; set; }
+        [Registration(true, "Member:Info", "Text")]
         public string City { get; set; }
+        [Registration(true, "Member:Info", "Text")]
         public string State { get; set; }
+        [Registration(true, "Member:Info", "CountryLookup")]
         public string Country { get; set; }
+        [Registration(true, "Member:Other", "Text")]
         public string Occupation { get; set; }
         #endregion
 
         #region Dates
-        public int TimeOffset { get; set; }
+        public double TimeOffset { get; set; }
+        [Registration(true, "Settings", "TimeZoneLookup")]
+        public string TimeZone { get; set; }
+        [Registration(true, "Settings", "CheckBox")]
+        public bool UseDaylightSaving { get; set; }
         public DateTime MemberSince { get; set; }
         public DateTime? LastVisitDate { get; set; }
         public DateTime? LastPostDate { get; set; }
@@ -70,15 +106,26 @@ namespace Snitz.Entities
 
         #region Profile data
         public string Avatar { get; set; }
+        [Registration(true, "Member:Social Media", "Text")]
         public string AIM { get; set; }
+        [Registration(true, "Member:Social Media", "Text")]
         public string Yahoo { get; set; }
+        [Registration(true, "Member:Social Media", "Text")]
         public string ICQ { get; set; }
+        [Registration(true, "Member:Social Media", "Text")]
         public string Skype { get; set; }
+
+        [Registration(true, "Member:Other", "LongText")]
         public string Biography { get; set; }
+        [Registration(true, "Member:Other", "Text")]
         public string HomePage { get; set; }
+        [Registration(true, "Member:Other", "LongText")]
         public string Hobbies { get; set; }
+        [Registration(true, "Member:Other", "LongText")]
         public string LatestNews { get; set; }
+        [Registration(true, "Member:Other", "LongText")]
         public string FavouriteQuote { get; set; }
+        
         public string PhotoLink { get; set; }
         public string FavLink1 { get; set; }
         public string FavLink2 { get; set; }
@@ -86,13 +133,15 @@ namespace Snitz.Entities
         #endregion
 
         #region Forum Options
-        public bool AllowSubscriptions { get; set; }
-        public int DefaultView { get; set; }
+        [Registration(true, "Settings", "CheckBox")]
         public bool ViewSignatures { get; set; }
+        [Registration(true, "Settings", "CheckBox")]
         public bool UseSignature { get; set; }
-        public bool Voted { get; set; }
         public string Theme { get; set; }
 
+        public bool AllowSubscriptions { get; set; }
+        public int DefaultView { get; set; }
+        public bool Voted { get; set; }
         public string PasswordChangeKey { get; set; }
         public string ValidationKey { get; set; }
         public string NewEmail { get; set; }

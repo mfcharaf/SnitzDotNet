@@ -26,12 +26,12 @@ public class CaptchaImageHandler : IHttpHandler, IRequiresSessionState
     }
     private string GenerateRandomCode()
     {
-        string x = "ACDEFGHJKLMNPRSTUVWXYZ2345679";
+        string x = "ABCDEFGHJKLMNPRSTUVWXYZ234567890";
         string s = "";
         int ii = 0;
         for (int i = 0; i < 6; i++)
         {
-            ii = this.random.Next(29);
+            ii = this.random.Next(32);
             s = String.Concat(s, x[ii]);
         }
         return s;

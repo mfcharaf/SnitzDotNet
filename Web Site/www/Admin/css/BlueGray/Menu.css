@@ -135,3 +135,26 @@
 
 a.AspNet-Menu-Link:visited{color:#0FA1B8;}
 a.AspNet-Menu-Link:hover{ text-decoration: none; }
+
+        #container{width:95%;margin:auto}
+        #leftcolumn{float:left;width:20%; left: 0; top: 0;}
+        #contentcolumn{width:50%;margin:auto;height:auto;vertical-align:top;float:left;border-radius:5px;}
+        /* button style */
+a.modLink span {
+    display: inline-block;
+    white-space:nowrap;
+    width: 160px;
+    padding-left: 6px;
+    border: 1px solid #0FA1B8;
+    border-radius:3px
+} 
+a.modLink:hover span, a.modLink:active span {
+    background-color: #0FA1B8;
+} 
+a.modLink:hover {
+    text-decoration:none;
+    color:white;
+}
+
+.mod_enabled_lbl{display: inline-block;width:100px;font-weight: bold;}
+.mod_btn_pnl{text-align: right;border:1px solid #0FA1B8;background-color: white;margin-top:3px;padding :4px;border-radius:4px;}

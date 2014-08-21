@@ -41,8 +41,9 @@ namespace Snitz.IDAL
         void RemoveAllBoardSubscriptions();
         void RemoveAllMemberSubscriptions(int memberid);
         void Delete(int subscriptionid);
+
         void RemoveMembersForumSubscriptions(int memberid, int forumid);
         void RemoveMembersTopicSubscription(int memberid, int topicid);
-        
+        void RemoveMembersCategorySubscriptions(int memberid, int categoryid);
     }
 }

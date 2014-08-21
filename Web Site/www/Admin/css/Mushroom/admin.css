@@ -1,0 +1,26 @@
+﻿body {
+}
+.adminform {
+    background-color: #FFFF66;
+}
+.adminform #content {
+    padding: 6px;
+}
+.defaultform label{width:160px;display:inline-block;}
+
+.pollForm{background-color:#ffaa00;border:1px solid #ff6600;padding:4px;}
+.pollForm .AspNet-DetailsView-Name{width:150px;display:inline-block;}
+
+
+.featuresform label {width:250px;display:inline-block;}
+.profileform label{width:120px;display:inline-block;}
+.emailform label {width:250px;display:inline-block;}
+.emailserverform label {width:250px;display:inline-block;}
+span.cbx label{width:50px;display:inline-block;}
+
+.help-panel {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #ff6600;
+    background-color: #FFFFCC;
+}

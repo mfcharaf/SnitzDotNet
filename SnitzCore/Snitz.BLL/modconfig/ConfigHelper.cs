@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -108,6 +109,21 @@ namespace ModConfig
                 return res.ToString();
             }
             return "Unknown";
+        }
+
+        public static object ModClass(string modconfigname)
+        {
+            object modInstance = null;
+
+            if (!modconfigname.Contains(","))
+                modconfigname += ASSEMBLY;
+            Type modclass = Type.GetType(NAMESPACE + modconfigname, true);
+
+            if (modclass != null)
+            {
+                modInstance = Activator.CreateInstance(modclass);
+            }
+            return modInstance;
         }
 
         /// <summary>

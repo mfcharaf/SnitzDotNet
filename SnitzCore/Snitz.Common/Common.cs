@@ -21,8 +21,10 @@
 
 using System;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Web;
+
 
 
 namespace SnitzCommon
@@ -105,20 +107,7 @@ namespace SnitzCommon
             return totalNumberOfItems / pageSize + 1;
         }
         
-        /// <summary>
-        /// Converts a DateTime into a freindly TimeAgo tag
-        /// </summary>
-        /// <param name="date">Date to display</param>
-        /// <param name="authenticated">Is the user logged in</param>
-        /// <param name="timediff">Users time zone difference</param>
-        /// <returns></returns>
-        public static string TimeAgoTag(DateTime? date, bool authenticated, int timediff)
-        {
-            if (date == DateTime.MinValue || date == null)
-                return "";
-            string timeago = string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>", date.Value.ToISO8601Date(authenticated, timediff), date.Value.ToForumDateDisplay(" ", true, authenticated, timediff));
-            return timeago;
-        }
+
 
         /// <summary>
         /// Works out the current age of a member based on their date of birth
@@ -154,5 +143,6 @@ namespace SnitzCommon
             }
             return input;
         }
+
     }
 }

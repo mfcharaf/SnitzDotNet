@@ -8,7 +8,22 @@ namespace SnitzCommon
 {
     public static class SnitzCookie
     {
-
+        public static void LogOut()
+        {
+            //ExpireCookie("theme");
+            //ExpireCookie("ddlLang");
+            //ExpireCookie("pmModPaging");
+        }
+        public static void Clear()
+        {
+            ExpireCookie("theme");
+            ExpireCookie("ddlLang");
+            ExpireCookie("pmModPaging");
+            ExpireCookie("topictracker");
+            ExpireCookie("ActiveRefresh");
+            ExpireCookie("SinceDate");
+            ExpireCookie("LastVisit");
+        }
         #region LastVisitDate
         public static string GetLastVisitDate()
         {
@@ -68,6 +83,7 @@ namespace SnitzCommon
         {
             SetCookie("ActiveRefresh",value);
         }
+        
         public static string GetTopicSince()
         {
             return GetCookieValue("SinceDate");
@@ -133,8 +149,16 @@ namespace SnitzCommon
             cookie.Expires = DateTime.UtcNow.AddMonths(2);
             GetHttpResponse().Cookies.Add(cookie);
         }
- 
 
+        private static void ExpireCookie(string name)
+        {
+            if (GetHttpRequest().Cookies[name] != null)
+            {
+                HttpCookie cookie = new HttpCookie(name);
+                cookie.Expires = DateTime.UtcNow.AddDays(-1d);
+                GetHttpResponse().Cookies.Add(cookie);
+            }
+        }
         private static Dictionary<string, string> GetMultipleUsingSingleKeyCookies(string cookieName)
         {
  

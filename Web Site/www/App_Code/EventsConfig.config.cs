@@ -1,19 +1,19 @@
 ﻿
 using System;
-using System.ComponentModel;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
-using System.Xml;
+using System.Text.RegularExpressions;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
-using SnitzCommon;
-using SnitzConfig;
 
 namespace ModConfig
 {
-    public class EventsConfig : ISnitzModConfig
+    public class EventsConfig : ModConfigBase, ISnitzModConfig
     {
-        public string Name { get { return "Events Calendar"; } }
-        public string Description { get { return "Events Calendar"; } }
-        public Version Version { get { return new Version(1, 1); } }
+        
+        public static string[] EventAdminRoles { get; set; }
+
         public bool ShowOnMenu { get { return true; } }
 
         public ModMenuItem Menu
@@ -29,17 +29,37 @@ namespace ModConfig
             }
         }
 
-        [Description("boolEnableEvents")]
-        public bool Enabled
+        public EventsConfig() : base("Events")
         {
-            get
-            {
-                return (ConfigurationManager.AppSettings["boolEnableEvents"] == "1");
-            }
-            set
-            {
-                Config.UpdateConfig("boolEnableEvents", value ? "1" : "0");
-            }
+            string allowedRoles = ModConfiguration.Settings["EventAdminRoles"] != null ? ModConfiguration.Settings["EventAdminRoles"].ToString() : String.Empty;
+            EventAdminRoles = Regex.Split(allowedRoles, ",", RegexOptions.Singleline);
+            ModConfiguration.AdminControl = "EventsAdmin.ascx";
         }
+
+        protected override ModInfo LoadDefaultConfig(ModController controller)
+        {
+            Dictionary<string, string> settings = new Dictionary<string, string>
+                                                  {
+                                                      {
+                                                          "EventAdminRoles",
+                                                          "Administrator,Moderator"
+                                                      }
+                                                  };
+            ModInfo modinfo = new ModInfo
+            {
+                Id = -1,
+                Name = "Events",
+                Description = "Events Calendar",
+                Version = new Version(1, 0),
+                Enabled = true,
+                AdminControl = "EventsAdmin.ascx",
+                Settings = new Hashtable(settings)
+            };
+
+            controller.ModInfo = modinfo;
+            controller.InstallMod();
+            return modinfo;
+        }
+
     }
 }

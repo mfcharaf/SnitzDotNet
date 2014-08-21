@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_ManageRoles" CodeBehind="ManageRoles.ascx.cs" %>
+<%@ Register TagPrefix="uc2" TagName="gridpager" Src="~/UserControls/GridPager.ascx" %>
 
 <asp:MultiView ID="RoleView" runat="server">
 <asp:View ID="viewNewRole" runat="server">
@@ -196,9 +197,12 @@
         <tr>
             <td colspan="2">
                 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetAllRolesFull"
+                    EnablePaging="True"
+                    SelectCountMethod="GetRoleCount"
+                    OnSelected="RolesOdsSelected" OnSelecting="RolesOdsSelecting"
                     TypeName="Snitz.Providers.SnitzRoleProvider"></asp:ObjectDataSource>
-                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="Id"
-                    CssClass="TopicsTable" Width="100%" AllowPaging="True" EnableViewState="False"
+                <asp:GridView ID="RoleTable" runat="server" AutoGenerateColumns="False" DataKeyNames="Id"
+                    CssClass="TopicsTable" Width="100%" AllowPaging="True" EnableViewState="False" OnRowDataBound="BindRoles"
                     OnRowCommand="GridView1_RowCommand" DataSourceID="ObjectDataSource1" EnableModelValidation="True">
                     <Columns>
                         <asp:BoundField DataField="Id" HeaderText="Role ID" HeaderStyle-HorizontalAlign="Center"
@@ -235,8 +239,10 @@
                         No Roles defined
                     </EmptyDataTemplate>
                     <SelectedRowStyle BackColor="#FFE0C0" />
-                    <PagerSettings Mode="NumericFirstLast" />
-                    <PagerStyle CssClass="NoBorder" />
+                     <PagerTemplate>
+                    <uc2:gridpager ID="pager" runat="server" PagerStyle="Linkbutton" />
+                    </PagerTemplate>
+                    <PagerStyle CssClass="NoBorder pagelink" />
                 </asp:GridView>
             </td>
         </tr>

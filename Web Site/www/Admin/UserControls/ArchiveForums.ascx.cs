@@ -122,7 +122,7 @@ public partial class Admin_ArchiveForums : UserControl
               
         numDays = Convert.ToInt32(dateList.SelectedValue);
 
-        TimeSpan ts = new TimeSpan(-numDays,Config.TimeAdjust,0,0);
+        TimeSpan ts = new TimeSpan(-numDays,(int) Config.TimeAdjust,0,0);
 
         dt += ts;
 

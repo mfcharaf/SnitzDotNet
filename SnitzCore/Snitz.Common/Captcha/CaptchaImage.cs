@@ -93,7 +93,7 @@ public sealed class CaptchaImage
 			// If the named font is not installed, default to a system font.
 			try
 			{
-				var font = new Font(this._familyName, 12F);
+				var font = new Font(this._familyName, 14F);
 				this._familyName = familyName;
 				font.Dispose();
 			}

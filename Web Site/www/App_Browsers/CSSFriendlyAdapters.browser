@@ -3,8 +3,8 @@
     <controlAdapters>
       <adapter controlType="System.Web.UI.WebControls.Menu"
                adapterType="CSSFriendly.MenuAdapter" />
-      <adapter controlType="System.Web.UI.WebControls.TreeView"
-               adapterType="CSSFriendly.TreeViewAdapter" />
+      <!--<adapter controlType="System.Web.UI.WebControls.TreeView"
+               adapterType="CSSFriendly.TreeViewAdapter" />-->
       <adapter controlType="System.Web.UI.WebControls.DetailsView"
                adapterType="CSSFriendly.DetailsViewAdapter" />
       <adapter controlType="System.Web.UI.WebControls.FormView"
@@ -20,7 +20,8 @@
       <adapter controlType="System.Web.UI.WebControls.HyperLink"
                adapterType="SnitzControlAdapters.HyperLinkControlAdapter" />
       <adapter controlType="System.Web.UI.WebControls.LinkButton"
-         adapterType="SnitzControlAdapters.LinkButtonControlAdapter" />      
+         adapterType="SnitzControlAdapters.LinkButtonControlAdapter" />
+   
     </controlAdapters>
   </browser>
 
