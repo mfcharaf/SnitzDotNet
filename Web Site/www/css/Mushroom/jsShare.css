@@ -1,0 +1,73 @@
+﻿.social-media-share
+{
+	margin: 0;
+	padding: 0;
+	height: 25px;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff5500), to(#ff8800));
+	background-image: -moz-linear-gradient(#ff5500, #ff8800);
+	background-image: -webkit-linear-gradient(#ff5500, #ff8800);
+	background-image: -o-linear-gradient(#ff5500, #ff8800);
+	border: solid 1px #ff1100;
+	-moz-border-radius: 6px;
+	background: #ff8800;
+	position: relative;
+	overflow: hidden;
+	-webkit-box-shadow: 0px 1px 1px gray;
+	-moz-box-shadow: 0px 1px 1px gray;
+	box-shadow: 0px 1px 1px gray;
+    border-radius: 6px;
+}
+.social-media-share .inner
+{
+	position: relative;
+	float: left;
+	width: 20px;
+	height: 21px;
+	border: solid 1px #ff1100;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff5500), to(#ff8800));
+	background-image: -moz-linear-gradient(#ff5500, #ff8800);
+	background-image: -webkit-linear-gradient(#ff5500, #ff8800);
+	background-image: -o-linear-gradient(#ff5500, #ff8800);
+	-moz-border-radius: 4px;
+	margin: 1px;
+	text-align: center;
+	background-image: url(/images/plus.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+	-webkit-box-shadow: 0px 1px 1px gray;
+	-moz-box-shadow: 0px 1px 1px gray;
+	box-shadow: 0px 1px 1px gray;
+    border-radius: 4px;
+}
+.social-media-share-tooltip
+{
+	position: absolute;
+	z-index: 200;
+	color: #111;
+	font-size: 10pt;
+}
+.social-media-share ul
+{
+	position: relative;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	margin-top: 3px;
+	margin-left: -8px;
+	height: 22px;
+	overflow: hidden;
+	width: 88%;
+}
+.social-media-share ul li
+{
+	display: inline;
+	float: left;
+	margin-left: 9px;
+}
+.social-media-share ul li img
+{
+	border: none;
+}
+
