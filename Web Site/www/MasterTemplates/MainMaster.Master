@@ -31,9 +31,9 @@
                     $(".maincolumn").addClass('clearmargin');
                     $(".rightcolumn").addClass('hide');
                     if (current_width < 600) {
-                        $("body").css('font-size', '0.7em');
+                        $("body").css('font-size', '1em');
                     } else {
-                        $("body").css('font-size', '0.8em');
+                        $("body").css('font-size', '0.9em');
                     }
                     
                 } else {
@@ -50,9 +50,9 @@
                     $(".maincolumn").css('margin-right', '0');
                     $(".rightcolumn").css('display', 'none');
                     if (current_width < 600) {
-                        $("body").css('font-size', '0.7em');
+                        $("body").css('font-size', '1em');
                     } else {
-                        $("body").css('font-size', '0.8em');
+                        $("body").css('font-size', '0.9em');
                     }
                 } else {
                     $(".maincolumn").css('margin-right', '325px');

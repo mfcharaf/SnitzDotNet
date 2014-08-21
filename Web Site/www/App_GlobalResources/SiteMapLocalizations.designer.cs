@@ -9,9 +9,6 @@
 //------------------------------------------------------------------------------
 
 namespace Resources {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -151,7 +148,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forum Help Topics.
+        ///   Looks up a localized string similar to Frequently Asked Questions.
         /// </summary>
         internal static string FAQPageDescription {
             get {
@@ -160,7 +157,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forum Help.
+        ///   Looks up a localized string similar to Forum FAQ.
         /// </summary>
         internal static string FAQPageTitle {
             get {

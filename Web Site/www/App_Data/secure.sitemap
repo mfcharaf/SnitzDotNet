@@ -3,7 +3,7 @@
   <siteMapNode roles="*" title="root">
     <siteMapNode key="Home" url="~\default.aspx"  title="$resources:SiteMapLocalizations,HomePageTitle,?Home?" description="$resources:SiteMapLocalizations,HomePageDescription,Home" />
     <siteMapNode key="Account" title="$resources:SiteMapLocalizations,AccountTitle,?Account?" description="$resources:SiteMapLocalizations,AccountDescription,?Description?" roles="Member" >
-      <siteMapNode url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,?Profile?" description="$resources:SiteMapLocalizations,ProfilePageDescription,Profile"/>
+      <siteMapNode key="Profile" url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,?Profile?" description="$resources:SiteMapLocalizations,ProfilePageDescription,Profile"/>
       <siteMapNode  url="~\PrivateMessages" title="$resources:SiteMapLocalizations,PMTitle,?Private Messages?" description="Private Message Inbox"/>
       <siteMapNode  url="~\mygallery.aspx" title="$resources:SiteMapLocalizations,MyGalleryTitle,?Gallery?" description="My Gallery" />
       <siteMapNode  url="~\Account\bookmark.aspx" title="$resources:SiteMapLocalizations,BookMarkTitle,?BookMarks?" description="My Bookmarks" />
@@ -16,8 +16,8 @@
       <siteMapNode url="~\admin\default.aspx" title="$resources:SiteMapLocalizations,AdminDefaultTitle,?Forum Settings?" description="$resources:SiteMapLocalizations,AdminPageDescription,Admin"/>
       <siteMapNode url="~\admin\resXEditor.aspx" title="$resources:SiteMapLocalizations,LanguageTitle,?Language Translation?" description="Forum string translation"/>
       <siteMapNode url="~\admin\pendingmembers.aspx" title="$resources:SiteMapLocalizations,PendingTitle,?Pending Members?" description="Pending Members" enabled="true" />
-      <siteMapNode url="~\admin\default.aspx?action=modconfig" title="$resources:SiteMapLocalizations,ModTitle,?Add Ons?" description="Configure Mod settings" enabled="true"/>
+      <siteMapNode url="~\admin\mods\default.aspx?action=modconfig" title="$resources:SiteMapLocalizations,ModTitle,?Add Ons?" description="Configure Mod settings" enabled="true"/>
     </siteMapNode>
-    <siteMapNode key="Help" url="~\help" title="$resources:SiteMapLocalizations,FAQPageTitle,?Help?" description="$resources:SiteMapLocalizations,FAQPageDescription,Help"/>
+    <siteMapNode key="Help" url="~\faq" title="$resources:SiteMapLocalizations,FAQPageTitle,?Help?" description="$resources:SiteMapLocalizations,FAQPageDescription,Help"/>
   </siteMapNode>
 </siteMap>

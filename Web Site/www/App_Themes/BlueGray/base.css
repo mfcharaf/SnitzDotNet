@@ -26,8 +26,8 @@ table,tr,td,th{border-collapse:collapse; }
 
 #mainDIV{margin:auto;width:98%;}
 #subheadDIV{}
-#breadcrumbDIV{margin:1px;background-color:Silver;}
-
+#breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color: silver;border: 1px solid #777;border-radius: 5px;padding:0px;}
+.breadcrumb span {line-height:22px;vertical-align:top;}
 #HdrDIV{margin:1px;}
 
 #RightHdrDIV{margin-left:0px;float:right;width:49%;text-align:right;}
@@ -54,7 +54,10 @@ table,tr,td,th{border-collapse:collapse; }
 
 #contentcolumn{margin-right:325px;} /*Set right margin to RightColumnWidth*/
 #rightcolumn{float: right;width: 320px; }
-
+.clearmargin { margin-right: 0px;}
+.hide{ display: none;}
+.rightmargin { margin-right: 325px;}
+.show{ display: block;}
 #footer{clear: both;width: 100%;}
 
 #PostOptionsDIV{padding-right:5px;text-align:center;}

@@ -188,13 +188,13 @@ public partial class ActiveTopicPage : PageBase
                 var delIcon = e.Row.Cells[6].FindControl("TopicDelete") as ImageButton;
                 var subscribe = e.Row.Cells[6].FindControl("TopicSub") as ImageButton;
                 var unsubscribe = e.Row.Cells[6].FindControl("TopicUnSub") as ImageButton;
-
+                var approve = e.Row.Cells[6].FindControl("TopicApprove") as ImageButton;
                 var editIcon = e.Row.Cells[6].FindControl("hypEditTopic") as HyperLink;
                 var replyIcon = e.Row.Cells[6].FindControl("hypReplyTopic") as HyperLink;
                 var newIcon = e.Row.Cells[6].FindControl("hypNewTopic") as HyperLink;
                 var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
                 var lastpost = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
-
+                
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
@@ -202,8 +202,9 @@ public partial class ActiveTopicPage : PageBase
                 }
                 if (lastpost != null)
                 {
-                    lastpost.Text = Common.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,
-                        Member == null ? Config.TimeAdjust : Member.TimeOffset);
+                    lastpost.Text = SnitzTime.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,Member);
+                    //Common.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated,
+                    //                        (Member == null ? Config.TimeAdjust : Member.TimeOffset));
                 }
                 int replyCount = topic.ReplyCount;
                 int topicId = topic.Id;
@@ -225,7 +226,14 @@ public partial class ActiveTopicPage : PageBase
                         "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + topicId + ");return false;";
                 }
                 if (editIcon != null) editIcon.Visible = false;
-
+                if (approve != null)
+                {
+                    approve.Visible = false;
+                    if (topic.Status == (int)Enumerators.PostStatus.UnModerated || topic.Status == (int)Enumerators.PostStatus.OnHold)
+                        approve.Visible = (inModeratedList || IsAdministrator);
+                    approve.OnClientClick = string.Format("mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0},{1}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        true, topic.Id);
+                }
                 if (subscribe != null)
                 {
                     subscribe.Visible = IsAuthenticated;
@@ -330,7 +338,7 @@ public partial class ActiveTopicPage : PageBase
                 if (Member != null)
                 {
                     newdate = LastVisitDateTime;
-                    ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ", true, IsAuthenticated, Member == null ? Config.TimeAdjust : Member.TimeOffset), @"(<.*?>)", ""));
+                    ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ", true, IsAuthenticated, Member), @"(<.*?>)", ""));
                 }
             }
             else

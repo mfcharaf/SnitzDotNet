@@ -21,11 +21,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
@@ -33,6 +33,7 @@ using System.Web.UI;
 using AjaxControlToolkit;
 using ModConfig;
 using Snitz.BLL;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
 using SnitzUI.MasterTemplates;
 using SnitzCommon;
@@ -51,29 +52,9 @@ namespace SnitzUI
         private bool _topicLocked;
         private bool _inModeratedList;
         bool pingSiteMap = Config.PingSearchEngine;
-
-        /// <summary>  
-        /// since asp.net is stingy with the Themes, we have to do our own check to map the Theme directory 
-        /// </summary>  
-        private string PageThemeDirectory
-        {
-            get
-            {
-                if (null == ViewState["PageThemeDirectory"])
-                {
-                    if (string.IsNullOrEmpty(Page.Theme))
-                        ViewState["PageThemeDirectory"] = "/css/" + Config.UserTheme;
-                    else
-                    {
-                        if (Directory.Exists(Server.MapPath("/css/" + Page.Theme)))
-                            ViewState["PageThemeDirectory"] = "/css/" + Page.Theme;
-                        else
-                            ViewState["PageThemeDirectory"] = string.Empty;
-                    }
-                }
-                return ViewState["PageThemeDirectory"].ToString();
-            }
-        }  
+        public string AllowedFileTypes { get; set; }
+        public bool AllowAttachments { get; set; }
+        public bool AllowImageUploads { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -86,22 +67,31 @@ namespace SnitzUI
             ForumDropDown.DataSource = Forums.AllowedForumsList(Member);
             ForumDropDown.DataBind();
             
-            if (ConfigHelper.GetBoolValue("UploadConfig","AllowFileUpload"))
+
+            ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
+            AllowedFileTypes = "";
+            AllowAttachments = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowAttachments"]));
+            AllowImageUploads = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowImageUpload"]));
+            if (AllowImageUploads)
+                AllowedFileTypes += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
+            if (AllowAttachments)
             {
-                string style = !ConfigHelper.GetBoolValue("UploadConfig","ShowFileAttach") ? ".upload{display:none;}" : "";
-                if (!Config.UserGallery)
+                if (AllowedFileTypes != "")
+                    AllowedFileTypes += ",";
+                AllowedFileTypes += controller.ModConfiguration.Settings["AllowedAttachmentTypes"].ToString();
+            }
+            if (AllowImageUploads || AllowAttachments)
+            {
+                string style = ""; //!ShowAttachments ? ".upload{display:none;}" : 
+                if (!Config.UserGallery || !AllowImageUploads)
                     style += ".browse{display:none;}";
 
-                if (!String.IsNullOrEmpty(style))
-                    uploadStyle.Text = "<style>" + style + "</style>";
-                else
-                    uploadStyle.Text = "";
+                uploadStyle.Text = !String.IsNullOrEmpty(style) ? string.Format("<style>{0}</style>", style) : "";
             }
             else
             {
                 uploadStyle.Text = "<style>.upload{display:none;} .browse{display:none;}</style>";
             }
-
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -221,7 +211,7 @@ namespace SnitzUI
             {
                 _inModeratedList = Moderators.IsUserForumModerator(User.Identity.Name, ForumId.Value);
                 _forum = Forums.GetForum(ForumId.Value);
-                if (_forum.Type == 3 && String.IsNullOrEmpty(Message.Text))
+                if (_forum.Type == 3 && String.IsNullOrEmpty(Message.Text) && _action == "topic")
                 {
                         var file = new StreamReader(Server.MapPath(Config.CultureSpecificDataDirectory + "bugtemplate.txt"));
                         Message.Text = file.ReadToEnd();
@@ -414,8 +404,8 @@ namespace SnitzUI
                 if (Config.MoveNotify && _thisTopic.Author.Status != 0)
                 {
                     _forum = Forums.GetForum(forumid);
-                    string mailFile = Server.MapPath("~/App_Data/TopicMove.txt");
-                    string strSubject = "Sent From " + Config.ForumTitle + ": Topic move notification";
+                    string mailFile = ConfigurationManager.AppSettings["TopicMoveEmail"];
+                    string strSubject = "Sent From " + Regex.Replace(Config.ForumTitle, @"&\w+;", "") + ": Topic move notification";
 
                     var builder = new UriBuilder("http",
                         Request.Url.DnsSafeHost,
@@ -429,14 +419,15 @@ namespace SnitzUI
                     msgBody = msgBody.Replace("<%MovedTo%>", _forum.Subject);
                     msgBody = msgBody.Replace("<%URL%>", builder.Uri.AbsoluteUri);
 
-                    var mailsender = new snitzEmail
+                    var mailsender = new SnitzEmail
                     {
                         toUser = new MailAddress(_thisTopic.Author.Email, _thisTopic.AuthorName),
                         FromUser = "Forum Administrator",
                         subject = strSubject,
+                        IsHtml = true,
                         msgBody = msgBody
                     };
-                    mailsender.send();
+                    mailsender.Send();
                 }
             }
             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
@@ -539,7 +530,7 @@ namespace SnitzUI
 
             if (poll.IsMatch(Message.Text))
             {
-                //Polls not allowed in replied
+                //Polls not allowed in replies
                 Message.Text = poll.Replace(Message.Text, "");
             }
 
@@ -556,8 +547,11 @@ namespace SnitzUI
             {
 
                 if (_thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.AllPosts ||
-                    _thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.Replies)
+                    _thisTopic.Forum.ModerationLevel == (int)Enumerators.Moderation.Replies )
+                {
                     reply.Status = (int)Enumerators.PostStatus.UnModerated;
+                    _thisTopic.UnModeratedReplies += 1;
+                }
             }
 
             reply.TopicId = _thisTopic.Id;
@@ -566,7 +560,8 @@ namespace SnitzUI
             reply.Id = Replies.AddReply(reply);
 
             if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
-                Topics.SetTopicStatus(_thisTopic.Id, (int)Enumerators.PostStatus.Closed);
+                _thisTopic.Status = (int)Enumerators.PostStatus.Closed;
+            Topics.Update(_thisTopic);
             if (pingSiteMap) { Ping(""); }
             InvalidateForumCache();
             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + reply.Id);
@@ -641,46 +636,116 @@ namespace SnitzUI
 
         private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
         {
-                string filename = e.FileName;
-                if (filename == null)
-                    return;
+            ProcessUpload(e);
+        }
+
+        private void ProcessUpload(AsyncFileUploadEventArgs e)
+        {
+            if (e.FileName == null) return;
+
+            ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
+            string types = "";
+            if (AllowAttachments)
+                types += controller.ModConfiguration.Settings["AllowedAttachmentTypes"].ToString();
+            if (AllowImageUploads)
+            {
+                if (types != "")
+                    types += ",";
+                types += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
+            }
+            string[] allowedTypes = types.Split(',');
+            int fileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()) * 1024;
+            string uploadpath = controller.ModConfiguration.Settings["FileUploadLocation"].ToString();
+            string filext = Path.GetExtension(AsyncFileUpload1.PostedFile.FileName).Replace(".", "");
             string contentType = AsyncFileUpload1.PostedFile.ContentType;
-            if (!contentType.Contains("image"))
+            bool allowed = false;
+
+            if (contentType.Contains("image") && !AllowImageUploads)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "prohibited",
+                    "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Image upload prohibited';});", true);
+                AsyncFileUpload1.FailedValidation = true;
                 return;
-            var fileName = Path.GetFileName(filename);
-            if (fileName != null && fileName.Contains(".pdf"))
+            }
+            if (!contentType.Contains("image") && !AllowAttachments)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "prohibited",
+                    "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File attachments prohibited';});", true);
+                AsyncFileUpload1.FailedValidation = true;
+                return;
+            }
+
+            foreach (string allowedType in allowedTypes)
+            {
+                if (filext == allowedType)
+                {
+                    allowed = true;
+                    break;
+                }
+            }
+            if (!allowed || (int.Parse(e.FileSize) > fileSizeLimit))
             {
                 AsyncFileUpload1.FailedValidation = true;
                 return;
             }
-            if (int.Parse(e.FileSize) > 2000000)
+
+            var name = Path.GetFileName(e.FileName);
+            if (contentType.Contains("image"))
             {
+                uploadpath = "/Gallery";
+            }
+            string savePath =
+                Page.MapPath(String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name,
+                    name.Replace(" ", "+")));
+            if (File.Exists(savePath))
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "exists",
+                    "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
                 AsyncFileUpload1.FailedValidation = true;
                 return;
             }
-            var name = Path.GetFileName(filename);
-            if (name != null)
+
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size",
+                "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " +
+                e.FileSize + "';});", true);
+
+            if (!Directory.Exists(Page.MapPath(String.Format("{0}/{1}", uploadpath, HttpContext.Current.User.Identity.Name))))
             {
-                string savePath = Page.MapPath(String.Format("~/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ","+")));
-                string thumbPath = Page.MapPath(String.Format("~/Gallery/{0}/thumbnail/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")));
-                if (File.Exists(savePath))
+                Directory.CreateDirectory(
+                    Page.MapPath(String.Format("{0}/{1}", uploadpath, HttpContext.Current.User.Identity.Name)));
+            }
+
+            if (contentType.Contains("image"))
+            {
+                if (e.FileName != null && AllowImageUploads)
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
-                    AsyncFileUpload1.FailedValidation = true;
-                    return;
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag",
+                        "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" +
+                        String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) +
+                        "[/img]';});", true);
                 }
-
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
-                if (e.FileName != null)
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';});", true);
-
-                if (!Directory.Exists(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name))))
+            }
+            else
+            {
+                if (e.FileName != null && AllowAttachments)
                 {
-                    Directory.CreateDirectory(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name)));
-                    Directory.CreateDirectory(Page.MapPath(String.Format("~/Gallery/{0}/thumbnail", HttpContext.Current.User.Identity.Name)));
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag",
+                        "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[file=" + e.FileName + "]" +
+                        String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) +
+                        "[/file]';});", true);
                 }
+            }
 
-                AsyncFileUpload1.SaveAs(savePath);
+            AsyncFileUpload1.SaveAs(savePath);
+            if (contentType.Contains("image"))
+            {
+                string thumbPath =
+                    Page.MapPath(String.Format("{0}/{1}/thumbnail/{2}", uploadpath, HttpContext.Current.User.Identity.Name,
+                        name.Replace(" ", "+")));
+                if (!Directory.Exists(Page.MapPath(String.Format("{0}/{1}/thumbnail", uploadpath, HttpContext.Current.User.Identity.Name))))
+                {
+                    Directory.CreateDirectory(Page.MapPath(String.Format("{0}/{1}/thumbnail", uploadpath, HttpContext.Current.User.Identity.Name)));
+                }
                 GalleryFunctions.CreateThumbnail(savePath, thumbPath, 100);
             }
         }
@@ -743,14 +808,11 @@ namespace SnitzUI
         [WebMethod]
         public static string ParseForumCode(string data)
         {
-            var page = new PostPage();
-            string test = page.PageThemeDirectory;
+            string theme = HttpContext.Current.Session["PageTheme"] == null ? "Light" : HttpContext.Current.Session["PageTheme"].ToString();
             data = HttpUtility.UrlDecode(data);
-            string parsedText =
-                data.ParseTags();
+            string parsedText = data.ParseTags();
 
-            parsedText = "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"~/" + test + "/base.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"~/" + test + "/bluegrey.css\" /><script type=\"text/javascript\">window.focus();</script></head><body><br/><div class=\"TopicDiv clearfix\">" + parsedText + "</div></body>";
-            return parsedText;
+            return string.Format("<head><link rel=\"stylesheet\" type=\"text/css\" href=\"~/{0}/base.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"~/{0}/bluegrey.css\" /><script type=\"text/javascript\">window.focus();</script></head><body><br/><div class=\"TopicDiv clearfix\">{1}</div></body>", theme, parsedText);
         }
 
         #endregion

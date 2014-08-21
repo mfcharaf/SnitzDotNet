@@ -214,7 +214,7 @@
     <value>I agree to the Rules and Policy</value>
   </data>
   <data name="PolicyValidator" xml:space="preserve">
-    <value>You must agree to the Rules and Policy</value>
+    <value>You must agree to the Forum Rules and Policy</value>
   </data>
   <data name="PolicyPageTitle" xml:space="preserve">
     <value>Policy</value>
@@ -235,7 +235,7 @@
     <value>Registration Approval</value>
   </data>
   <data name="RegApprovalMsg" xml:space="preserve">
-    <value>Your registration has now been approved by an Administrator.[br][br]You may now begin posting at {0} [br]Once you have logged in for the first time, you may change your password to something more memorable, to change your password ..[br][br]1) Click 'Profile' from the menu and your profile should open[br]2) click on the 'Change your password' link and a pop-up window will appear[br]3) Near the top of the window, you should see 'Password' and 'Password Again'. Enter your new password in both boxes and click 'Submit'. Your password should now be changed.[br][br]Many thanks.[br]Forum Administrator</value>
+    <value>Your registration has now been approved by an Administrator.[br][br]You may now begin posting at {0} [br][br]Many thanks.[br]Forum Administrator</value>
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Sign Up for Your New Account</value>
@@ -270,7 +270,7 @@
   <data name="lblUnSubscribe" xml:space="preserve">
     <value>Unsubscribe</value>
   </data>
-  <data name="GuestLabel">
-    <value xml:space="preserve">Guests : </value>
+  <data name="GuestLabel" xml:space="preserve">
+    <value>Guests : </value>
   </data>
 </root>

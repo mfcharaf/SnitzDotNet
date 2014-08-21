@@ -217,4 +217,16 @@ public partial class ActiveTopicPage {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::SnitzUI.UserControls.SideColumn sidebar;
+    
+    /// <summary>
+    /// Master property.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated property.
+    /// </remarks>
+    public new BaseMasterPage Master {
+        get {
+            return ((BaseMasterPage)(base.Master));
+        }
+    }
 }

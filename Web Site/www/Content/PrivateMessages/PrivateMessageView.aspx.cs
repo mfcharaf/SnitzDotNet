@@ -23,7 +23,7 @@ using System;
 using System.Security;
 using SnitzCommon;
 using SnitzConfig;
-using SnitzUI.UserControls.PrivateMessaging;
+using SnitzUI.UserControls.PrivateMessages;
 
 namespace SnitzUI.Content.PrivateMessages
 {
@@ -47,9 +47,12 @@ namespace SnitzUI.Content.PrivateMessages
         {
             if (Session["CurrentProfile"] != null)
                 Session.Remove("CurrentProfile");
-            var pmview = (PMView)Page.LoadControl("~/UserControls/PrivateMessages/pmview.ascx");
+            //var pmview = (PMView)Page.LoadControl("~/UserControls/PrivateMessages/pmview.ascx");
 
-            ViewPm.Controls.Add(pmview);
+            //ViewPm.Controls.Add(pmview);
+
+            var pmaltview = (PmViewAlt)Page.LoadControl("~/UserControls/PrivateMessages/pmviewalt.ascx");
+            ViewPm.Controls.Add(pmaltview);
         }
     }
 }

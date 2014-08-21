@@ -15,29 +15,28 @@
             width: 90%;
 
         }
-        label{
+        .forumtable label{
             display:inline-block;
             width:100px;
             float:left;
         }
 
-        input {
+        .forumtable input {
             border:solid 1px #aacfe4;
             margin:0px 0 5px 5px;
 
         }
-        input[type='image']{ margin: 0px;}
-        input[type='text']{width:300px;}
+        .forumtable input[type='image']{ margin: 0px;}
+        .forumtable input[type='text']{width:300px;}
         .pmoptions label{width:auto; float:none;}
         .pmoptions input{border:0px;}
-        .youtube, .browse, .upload{display:none;}
         .mainModalContent{margin:0px;padding:4px;}
         .AspNet-DataList table{width:80%;margin:auto;}
     </style>
     <script src="/scripts/editor.min.js" type="text/javascript"></script>
         <script type="text/javascript">
         $(document).ready(function () {
-            $(".QRMsgArea").markItUp(mySettings);
+            $(".QRMsgArea").markItUp(miniSettings);
 
         });
         </script>

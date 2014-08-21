@@ -12,10 +12,9 @@
 <%@ Page Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master" AutoEventWireup="true"
     Inherits="ActiveTopicPage" Title="<%$ Resources:webResources, ttlActivePage %>" Culture="auto"
     UICulture="auto" MaintainScrollPositionOnPostback="true" CodeBehind="active.aspx.cs" %>
-
+<%@ MasterType TypeName="BaseMasterPage" %>
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
-
 <%@ Register TagPrefix="uc2" Src="~/UserControls/GridPager.ascx" TagName="gridpager" %>
 <%@ Reference Control="~/UserControls/SideColumn.ascx" %>
 <asp:Content runat="server" ID="metatag" ContentPlaceHolderID="CPMeta">
@@ -31,7 +30,8 @@
             $(".bbcode").each(function () {
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
-
+            //need to fix the Page method path in case we got here from a routing rule
+            PageMethods.set_path('/Content/Forums/active.aspx');
         });
         function setRefresh(interval) {
             if (RefreshTimer == undefined) {
@@ -51,6 +51,7 @@
     <style type="text/css">
         #breadcrumbDIV{ display: none;}
     </style>
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="CPH1" runat="server">
@@ -156,10 +157,10 @@
                 OnRowDataBound="ActiveTableRowDataBound">
                 <Columns>
                     <asp:TemplateField HeaderText=" ">
-                        <HeaderStyle Width="20px" />
+                        <HeaderStyle CssClass="iconCol" />
                         <ItemTemplate>
                         </ItemTemplate>
-                        <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" CssClass="iconCol" />
+                        <ItemStyle CssClass="iconCol" />
                     </asp:TemplateField>
                     <asp:BoundField DataField="CatId" SortExpression="CatId" HeaderStyle-Width="0px" />
                     <asp:BoundField DataField="ForumId" SortExpression="ForumId" HeaderStyle-Width="0px" />
@@ -174,7 +175,8 @@
                             <br />
                             <%# TopicPageLinks(Eval("ReplyCount"),Eval("Id")) %>
                         </ItemTemplate>
-                        <ItemStyle VerticalAlign="Top" CssClass="subjectCol" />
+                        <HeaderStyle CssClass="subjCol" />
+                        <ItemStyle CssClass="subjCol" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>"
                         SortExpression="Author.Name">
@@ -182,7 +184,7 @@
                             <asp:Literal ID="profLink" runat="server"
                                 Text='<%# Eval("AuthorProfilePopup") %>' />
                         </ItemTemplate>
-                        <HeaderStyle Width="80px" />
+                        <HeaderStyle CssClass="authorCol" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>"
@@ -190,7 +192,7 @@
                         <ItemTemplate>
                             <%# Common.TranslateNumerals(Eval("ReplyCount"))%>
                         </ItemTemplate>
-                        <HeaderStyle Width="60px" />
+                        <HeaderStyle CssClass="countCol" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>"
@@ -198,7 +200,7 @@
                         <ItemTemplate>
                             <%# Common.TranslateNumerals(Eval("Views"))%>
                         </ItemTemplate>
-                        <HeaderStyle Width="60px" />
+                        <HeaderStyle CssClass="countCol"/>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>"
@@ -214,11 +216,11 @@
                             <asp:Literal runat="server" ID="lastpostdate"></asp:Literal>
                             
                         </ItemTemplate>
-                        <HeaderStyle Width="122px" />
+                        <HeaderStyle CssClass="lastpostCol" />
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                     <asp:TemplateField InsertVisible="False">
-                        <HeaderStyle Width="100px" />
+                        <HeaderStyle CssClass="buttonCol" />
                         <ItemTemplate>
                             <asp:ImageButton ID="TopicLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>'
                                 CommandArgument='<%# Eval("Id")%>' runat="server" ToolTip="<%$ Resources:webResources, lbllock %>"
@@ -241,6 +243,8 @@
                             <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
                                 runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
                                 CausesValidation="False" EnableViewState="False" />
+                            <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" />
+
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />
                     </asp:TemplateField>

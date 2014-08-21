@@ -25,7 +25,7 @@
     {
         background-color: #FFFFFF;
         margin: 0px;
-        color: #4B4B4B;
+        color: #FFBB2F;
     }
     </style>
 </head>

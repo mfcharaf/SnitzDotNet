@@ -53,7 +53,10 @@ table,tr,td,th{border-collapse:collapse; }
 
 #contentcolumn{margin-right:325px;} /*Set right margin to RightColumnWidth*/
 #rightcolumn{float: right;width: 320px; }
-
+.clearmargin { margin-right: 0px;}
+.hide{ display: none;}
+.rightmargin { margin-right: 325px;}
+.show{ display: block;}
 #footer{clear: both;width: 100%;}
 
 #PostOptionsDIV{padding-right:5px;text-align:center;}

@@ -60,86 +60,84 @@
     </ajaxtoolkit:ToolkitScriptManager>
     <div id="maincontainer">
 
-    <div id="topsection">
-        <div id="header" class="clearfix">
-            <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
-            <Login:login ID="login1" runat="server" Skin="LoginTop" />
-        </div>
-        <div class="innertube clearfix">
-            <div id="LogoDIV">
-                 <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server" NavigateUrl="<%# Config.ForumUrl %>" ToolTip="<%# Config.ForumTitle %>" ></asp:HyperLink>
+        <div id="topsection">
+            <div id="header" class="clearfix">
+                <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
+                <Login:login ID="login1" runat="server" Skin="LoginTop" />
             </div>
-            <div id="TitleDIV">
-                <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
-                        
-                </asp:ContentPlaceHolder>
+            <div class="innertube clearfix">
+                <div id="LogoDIV">
+                     <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server" NavigateUrl="<%# Config.ForumUrl %>" ToolTip="<%# Config.ForumTitle %>" ></asp:HyperLink>
+                </div>
+                <div id="TitleDIV">
+                    <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False"></asp:ContentPlaceHolder>
+                </div>
+            </div>
+            <div id="MenuDIV" class="SnitzMenu">
+                <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Secure" />
             </div>
         </div>
-        <div id="MenuDIV" class="SnitzMenu">
-            <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Secure" />
-        </div>
-    </div>
-    <div id="subheadDIV" class="clearfix">
-        <div id="breadcrumbDIV" class="clearfix">
-            <asp:SiteMapPath SkinID="TopicBreadCrumb" CssClass="breadcrumb" runat="server" ID="SiteMap"
-                EnableViewState="true" />
-        </div>
-        <div class="innertube">
-            <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
-                <snitz:announcebox ID="announce" runat="server" />
-            </asp:ContentPlaceHolder>
-         </div>
-    </div>
-    <div id="contentwrapper">
+        <div id="subheadDIV" class="clearfix">
+            <div id="breadcrumbDIV" class="clearfix">
+                <asp:SiteMapPath SkinID="TopicBreadCrumb" CssClass="breadcrumb" runat="server" ID="SiteMap"
+                    EnableViewState="true" />
+            </div>
             <div class="innertube">
-            <div id="HdrDIV" class="nowrap">
-                <asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False">
+                <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
+                    <snitz:announcebox ID="announce" runat="server" />
                 </asp:ContentPlaceHolder>
-            </div>
-            <div id="RightHdrDIV" class="nowrap">
-                <asp:ContentPlaceHolder ID="CPHR" runat="server" EnableViewState="False">
-                </asp:ContentPlaceHolder>
-            </div>
-            <div id="LeftHdrDIV" class="nowrap">
-                <asp:ContentPlaceHolder ID="CPHL" runat="server" EnableViewState="False">
-                </asp:ContentPlaceHolder>
-            </div>
-                <div id="contentDIV" class="clearfix">
-                    <asp:ContentPlaceHolder ID="CPM" runat="server">
+             </div>
+        </div>
+        <div id="contentwrapper">
+                <div class="innertube">
+                <div id="HdrDIV" class="nowrap">
+                    <asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False">
                     </asp:ContentPlaceHolder>
                 </div>
-                <div id="contentfooterDIV" class="clearfix">
-                    <asp:ContentPlaceHolder ID="CPF1" runat="server">
+                <div id="RightHdrDIV" class="nowrap">
+                    <asp:ContentPlaceHolder ID="CPHR" runat="server" EnableViewState="False">
                     </asp:ContentPlaceHolder>
                 </div>
-            </div>
-    </div>
+                <div id="LeftHdrDIV" class="nowrap">
+                    <asp:ContentPlaceHolder ID="CPHL" runat="server" EnableViewState="False">
+                    </asp:ContentPlaceHolder>
+                </div>
+                    <div id="contentDIV" class="clearfix">
+                        <asp:ContentPlaceHolder ID="CPM" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                    <div id="contentfooterDIV" class="clearfix">
+                        <asp:ContentPlaceHolder ID="CPF1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+        </div>
 
-    <div id="footer">
-        <div class="pagefooter">
-            <div id="snitzfooterDIV">
-                <div class="FooterTable">
-                    <table width="100%">
-                    <tr>
-                    <td width="90%"><asp:Label CssClass="footerText" ID="lblFooterTitle" runat="server" EnableViewState="False" Text="<%# Config.ForumTitle %>"></asp:Label></td>
-                    <td width="*" style=" white-space:nowrap;"><asp:Label CssClass="footerText" ID="lblCopyright" runat="server" EnableViewState="False" Text="<%# Config.Copyright %>"></asp:Label>&nbsp;</td>
-                    <td width="20px"><asp:HyperLink CssClass="footerText" ID="imgGoUp" SkinID="GoUpFooter" runat="server" NavigateUrl="~/?#top" Text="<%$ Resources:webResources, lblGotoTop %>" ToolTip="<%$ Resources:webResources, lblGotoTop %>" ></asp:HyperLink></td>
-                    </tr>
-                    <tr><td colspan="3"><asp:Label CssClass="pageTimer" runat="server" Text="" ID="TimerLabel" EnableViewState="False" Visible="<%# Config.ShowTimer %>"></asp:Label></td></tr>
-                    </table>
-                </div>
-            </div>            
-            <asp:ContentPlaceHolder ID="CPF2" runat="server" EnableViewState="False">
-                <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+        <div id="footer">
+            <div class="pagefooter">
+                <div id="snitzfooterDIV">
+                    <div class="FooterTable">
+                        <table width="100%">
+                        <tr>
+                        <td width="90%"><asp:Label CssClass="footerText" ID="lblFooterTitle" runat="server" EnableViewState="False" Text="<%# Config.ForumTitle %>"></asp:Label></td>
+                        <td width="*" style=" white-space:nowrap;"><asp:Label CssClass="footerText" ID="lblCopyright" runat="server" EnableViewState="False" Text="<%# Config.Copyright %>"></asp:Label>&nbsp;</td>
+                        <td width="20px"><asp:HyperLink CssClass="footerText" ID="imgGoUp" SkinID="GoUpFooter" runat="server" NavigateUrl="~/?#top" Text="<%$ Resources:webResources, lblGotoTop %>" ToolTip="<%$ Resources:webResources, lblGotoTop %>" ></asp:HyperLink></td>
+                        </tr>
+                        <tr><td colspan="3"><asp:Label CssClass="pageTimer" runat="server" Text="" ID="TimerLabel" EnableViewState="False" Visible="<%# Config.ShowTimer %>"></asp:Label></td></tr>
+                        </table>
+                    </div>
+                </div>            
+                <asp:ContentPlaceHolder ID="CPF2" runat="server" EnableViewState="False">
+                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                </asp:ContentPlaceHolder>
+            </div>
+            <asp:ContentPlaceHolder ID="W3CVal" runat="server">
+                <div style="text-align: center;width:100%;">
+                    <a href="http://validator.w3.org/check?uri=referer"><asp:Image ID="validXHTML" SkinID="XHTML" runat="server" EnableViewState="False" /></a>
+                    <a href="http://jigsaw.w3.org/css-validator/check/referer"><asp:Image ID="validCSS" SkinID="CSS" runat="server" EnableViewState="False" /></a>
+                </div>  
             </asp:ContentPlaceHolder>
         </div>
-        <asp:ContentPlaceHolder ID="W3CVal" runat="server">
-            <div style="text-align: center;width:100%;">
-                <a href="http://validator.w3.org/check?uri=referer"><asp:Image ID="validXHTML" SkinID="XHTML" runat="server" EnableViewState="False" /></a>
-                <a href="http://jigsaw.w3.org/css-validator/check/referer"><asp:Image ID="validCSS" SkinID="CSS" runat="server" EnableViewState="False" /></a>
-            </div>  
-        </asp:ContentPlaceHolder>
-    </div>
         <asp:ContentPlaceHolder ID="RightCol" runat="server" Visible="false">
         </asp:ContentPlaceHolder>
     </div>

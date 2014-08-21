@@ -3,15 +3,7 @@
 <%@ Register Src="~/UserControls/Events/EventCalendar.ascx" TagName="EventCalendar" TagPrefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
-    <style type="text/css">
-    #breadcrumbDIV{ display: none;}
-     .eventForm{margin-left:20px;background-color:White;width:auto;padding:10px;}
-    .eventForm label{width:150px;display:inline-block;}
-    .eventForm input, .eventForm select{margin-bottom:3px;}
-    .eventForm input[type="checkbox"] {width:20px;}
-    .eventForm span.cbx label{width:200px;}
-    .alignTopLeft{text-align: left; vertical-align: top;}
-</style>
+<link rel="stylesheet" type="text/css" runat="server" id="eventCSS" href="" />
 <script type="text/javascript">
 
     function replaceDates() {
@@ -56,7 +48,7 @@
     <snitz:sidebar runat="server" ID="sidebar" Show="Ads,Active"/>
 </asp:Content>
 <asp:Content ID="Content6" ContentPlaceHolderID="CPM" runat="server">
-    <asp:Panel ID="pnlCalendar" runat="server" CssClass="forumtable">
+    <asp:Panel ID="pnlCalendar" runat="server" CssClass="calendar-container">
         <uc1:EventCalendar ID="EventCalendar1" runat="server" EnableViewState="False" /><br />
     </asp:Panel>
     <asp:UpdatePanel ID="updNewEvent" runat="server" ChildrenAsTriggers="true">
@@ -95,8 +87,8 @@
             </asp:DropDownList><br />
             <asp:Label ID="Label5" runat="server" Text="Event Date" 
                 AssociatedControlID="Calendar1" EnableViewState="False"></asp:Label>
-            <asp:Calendar ID="Calendar1" runat="server" OnDayRender="NewCal_DayRender" 
-                OnSelectionChanged="NewCal_DayChange" EnableViewState="False">
+            <asp:Calendar ID="Calendar1" runat="server" OnDayRender="NewCalDayRender" 
+                OnSelectionChanged="NewCalDayChange" EnableViewState="False">
                 <SelectedDayStyle BackColor="Green" />
             </asp:Calendar>
             <asp:CheckBox CssClass="cbx" ID="cbxMultiSelect" runat="server" Text="Select multiple days" AutoPostBack="true" OnCheckedChanged="MultiSelectChanged" />
@@ -104,7 +96,7 @@
             <asp:LinkButton ID="Button1" runat="server" Text="<%$ Resources:webresources,btnSubmit %>" OnClick="SubmitEvent" 
                 EnableViewState="False" />&nbsp;
             <asp:LinkButton ID="Button2" runat="server" EnableViewState="False" Text="<%$ Resources:webresources,btnCancel %>"/>&nbsp;
-            <asp:LinkButton ID="btnDelEvent" runat="server" onclick="btnDelEvent_Click" 
+            <asp:LinkButton ID="btnDelEvent" runat="server" onclick="BtnDelEventClick" 
                 Text="<%$ Resources:webresources,btnDelete %>" Visible="False" EnableViewState="False" /><br />
         </asp:Panel>
         </ContentTemplate>

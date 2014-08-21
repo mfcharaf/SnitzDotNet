@@ -669,6 +669,9 @@
   <data name="lblHideAge" xml:space="preserve">
     <value>Hide Age from users</value>
   </data>
+  <data name="lblMinAge" xml:space="preserve">
+    <value>You must be a minimum of {0} years of age</value>
+  </data>
   <data name="lblContactMe" xml:space="preserve">
     <value>Contact me via {0}</value>
   </data>
@@ -790,7 +793,7 @@
     <value>Edited on {0} by {1}</value>
   </data>
   <data name="lblCUserStep1" xml:space="preserve">
-    <value>To complete your registration, please provide a user name for your membership and a valid email address, your password will be emailed to this address.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;If you have spam filterring, please make sure that you allow emails from&lt;/b&gt;</value>
+    <value>To complete your registration, please provide a username for your membership and a valid email address, a confirmation email will be sent to this address.&lt;br/&gt;&lt;b&gt;If you have spam filtering, please make sure that you allow emails from&lt;/b&gt;&amp;nbsp;</value>
   </data>
   <data name="lblArchive" xml:space="preserve">
     <value>Topic can be archived</value>
@@ -959,5 +962,17 @@
   </data>
   <data name="lblBlogTitle" xml:space="preserve">
     <value>{0}'s Weblog</value>
+  </data>
+  <data name="lblComments" xml:space="preserve">
+    <value>Comment(s)</value>
+  </data>
+  <data name="lblDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="lblFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="lblTo" xml:space="preserve">
+    <value>To</value>
   </data>
 </root>

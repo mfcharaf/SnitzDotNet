@@ -22,15 +22,15 @@ Default skin template. The following skins are provided as examples only.
 <asp:DataList runat="server" RepeatDirection="Horizontal" SkinID="ForumPOTopSkin" >
     <SeparatorTemplate></SeparatorTemplate>
     <ItemTemplate>
-        <asp:HyperLink ID="H1" runat="server" ImageUrl='<%# Eval("TopicImagePath") %>' NavigateUrl='<%# Eval("PostTopicUrl") %>' Text='<%# Eval("PostTopicTitle") %>' ></asp:HyperLink>
+        <asp:HyperLink ID="H1" runat="server" ></asp:HyperLink>
     </ItemTemplate>
 </asp:DataList>
 <asp:DataList runat="server" RepeatDirection="Horizontal" SkinID="TopicPOTopSkin" >
     <SeparatorTemplate></SeparatorTemplate>
     <ItemTemplate>
-        <asp:HyperLink ID="H1" runat="server" ImageUrl='<%# Eval("TopicImagePath") %>' NavigateUrl='<%# Eval("PostTopicUrl") %>' Text='<%# Eval("PostTopicTitle") %>'></asp:HyperLink>&nbsp;
-        <asp:HyperLink ID="H2" runat="server" ImageUrl='<%# Eval("ReplyImagePath") %>' NavigateUrl='<%# Eval("ReplyTopicUrl") %>' Text='<%# Eval("ReplyTitle") %>'></asp:HyperLink>&nbsp;
-        <asp:HyperLink ID="H3" runat="server" ImageUrl='<%# Eval("SendToImagePath") %>' Text='<%# Eval("SendToTitle") %>' Navigateurl="#" onclick='<%# Eval("SendTo") %>'/>&nbsp;
-        <asp:HyperLink ID="H4" runat="server" ImageUrl='<%# Eval("PrintImagePath") %>' Text='<%# Eval("PrintTitle") %>' NavigateUrl='<%# Eval("Print") %>'/>    
+        <asp:HyperLink ID="H1" runat="server" ></asp:HyperLink>&nbsp;
+        <asp:HyperLink ID="H2" runat="server" ></asp:HyperLink>&nbsp;
+        <asp:HyperLink ID="H3" runat="server" Navigateurl="#" />&nbsp;
+        <asp:HyperLink ID="H4" runat="server" />    
     </ItemTemplate>
 </asp:DataList>

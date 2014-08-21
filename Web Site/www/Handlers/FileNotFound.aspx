@@ -24,7 +24,7 @@
  string name = Page.Request.QueryString["aspxerrorpath"];
  Page.Response.Write("<h3>The page you requested: "+name+" could not be found</h3>");
  %>
- <a href="default.aspx" title="return to home page">Return to forum</a>
+ <a href="/default.aspx" title="return to home page">Return to forum</a>
  </div>
  </body>
  </html>

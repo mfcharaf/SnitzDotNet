@@ -32,7 +32,9 @@
         div#main
         {
             margin: 0px 0px 0px 300px;
-            padding: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-left: 1px solid #777;
             border-collapse: collapse;
             background-color: rgb(47, 47, 47);
         }
@@ -65,5 +67,7 @@
         .category{padding: 3px;color: silver;}
         a.faqLnk { color: silver;}
         
-
+        div.faqtable{ border: 1px solid #ff6600;border-radius: 5px;}
+         .faqtable label{ display: inline-block;width: 120px;}
+        h1 {text-shadow: 1px 1px #ff3300;}
 

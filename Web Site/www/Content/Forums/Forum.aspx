@@ -15,7 +15,6 @@
 <%@ MasterType TypeName="BaseMasterPage" %>
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
-
 <%@ Register Src="~/UserControls/ForumLogin.ascx" TagName="ForumLogin" TagPrefix="uc2" %>
 <%@ Register Src="~/UserControls/GridPager.ascx" TagName="GridPager" TagPrefix="uc4" %>
 <%@ Register Src="~/UserControls/PagePostButtons.ascx" TagName="PostButtons" TagPrefix="uc5" %>
@@ -25,8 +24,8 @@
     <asp:Literal ID="metadescription" runat="server"></asp:Literal>
 </asp:Content>
 <asp:Content runat="server" ID="head" ContentPlaceHolderID="CPHead">
-
     <script src="/scripts/common.js" type="text/javascript"></script>
+    
     <script type="text/javascript">
         //Parse the bbcode
         var urltarget = '<%# Profile.LinkTarget %>';
@@ -40,10 +39,8 @@
         });
         // This section Keeps the memory for the collapsible panels in the menu pane
         var objExtenderMain;
-
         // this will run automatically when the page has finished loading
         function pageLoad(sender, args) {
-
             //Main
             objExtenderMain = $find("stickyHide");
             if (objExtenderMain) {
@@ -51,38 +48,16 @@
                 objExtenderMain.add_collapseComplete(getMainNavigationState);
             }
         }
-
-
         // This is for the constantly displayed collapsible panel
-        function getMainNavigationState() {
-            if (objExtenderMain.get_Collapsed()) {
-                //Collapsed
-                $get("<%= stickystate.ClientID %>").value = "1";
+    function getMainNavigationState() {
+        if (objExtenderMain.get_Collapsed()) {$get("<%= stickystate.ClientID %>").value = "1";}
+        else {$get("<%= stickystate.ClientID %>").value = "0";}
+    }
+    function fnClickUpdate(sender, e) {__doPostBack(sender, e);}
+    function HideLoginPopup(sender) {location.replace('/default.aspx');}
 
-        }
-        else {
-            //Expanded
-            $get("<%= stickystate.ClientID %>").value = "0";
-
-        }
-    }
-    function fnClickUpdate(sender, e) {
-        __doPostBack(sender, e);
-    }
-    function HideLoginPopup(sender) {
-        //        var modal = $find('mpLogin');
-        //        modal.hide();
-        location.replace('/default.aspx');
-    }
-    function ApprovePost(topicid, replyid) {
-        PageMethods.Approval(topicid, replyid);
-        __doPostBack("", "");
-    }
-    function OnHold(topicid, replyid) {
-        PageMethods.PutOnHold(topicid, replyid);
-        __doPostBack("", "");
-    }
     </script>
+    <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
     <style type="text/css">
         .AspNet-Login-UserPanel {
             display: none;
@@ -107,7 +82,15 @@
 
             prm.add_initializeRequest(InitializeRequest);
             prm.add_endRequest(EndRequest);
+            prm.add_pageLoaded(pageLoaded);
 
+            function pageLoaded(sender, args) {
+
+                $(".bbcode").each(function () {
+                    $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+                });
+                jQuery("abbr.timeago").timeago();
+            }
             function InitializeRequest(sender, args) {
                 if (prm.get_isInAsyncPostBack()) {
                     args.set_cancel(true);
@@ -133,6 +116,7 @@
         <asp:ListItem Value="">[Select Topics to display]</asp:ListItem>
         <asp:ListItem Value="-1">Show all topics</asp:ListItem>
         <asp:ListItem Value="0" >Show all open topics</asp:ListItem>
+        <asp:ListItem Value="-99" >Show my topics</asp:ListItem>
         <asp:ListItem Value="1" >Show topics from last day</asp:ListItem>
         <asp:ListItem Value="2" >Show topics from last 2 days</asp:ListItem>
         <asp:ListItem Value="5" >Show topics from last 5 days</asp:ListItem>
@@ -161,7 +145,7 @@
                     DataKeyNames="Id" CellPadding="3" CssClass="stickytable" GridLines="None" EnableViewState="False"
                     OnRowDataBound="ForumTableRowDataBound">
                     <PagerSettings Visible="False" />
-                    <HeaderStyle CssClass="category cattitle" />
+                    <HeaderStyle CssClass="tableheader cattitle" />
                     <RowStyle CssClass="rowsticky" />
                     <AlternatingRowStyle CssClass="rowsticky" />
                     <EmptyDataRowStyle CssClass="NoBorder" HorizontalAlign="Center" />
@@ -254,7 +238,6 @@
                                 <asp:HyperLink ID="hypArchiveTopic" SkinID="ArchiveTopic" runat="server" Text="<%$ Resources:webResources, lblArchive %>"
                                     ToolTip="<%$ Resources:webResources, lblArchive %>" Visible="false"></asp:HyperLink>
                                 <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" />
-                                <%--<asp:ImageButton ID="TopicHold" SkinID="OnHold" runat="server" />--%>
                             </ItemTemplate>
                             <ItemStyle CssClass="buttonCol" Width="40px" HorizontalAlign="Right" />
                             <HeaderStyle Width="40px"></HeaderStyle>
@@ -283,6 +266,7 @@
             <asp:SessionParameter Name="forumid" DefaultValue="-1" SessionField="ForumId" Type="Int32" />
             <asp:SessionParameter ConvertEmptyStringToNull="true" Name="topicstatus" DefaultValue="" SessionField="TopicStatus" Type="Int32" />
             <asp:SessionParameter ConvertEmptyStringToNull="true" Name="fromdate" DefaultValue="" SessionField="LastPostDate" Type="String" />
+            <asp:SessionParameter ConvertEmptyStringToNull="true" Name="userid" DefaultValue="" SessionField="MyTopics" Type="Int32" />
             <asp:Parameter Name="startRowIndex" Type="Int32" />
             <asp:Parameter Name="maximumRows" DefaultValue="20" Type="Int32" />
         </SelectParameters>
@@ -320,13 +304,13 @@
                         <HeaderTemplate>
                             <asp:HyperLink ID="HyperLink1" NavigateUrl='<%# String.Format("~/Handlers/rss.ashx?id={0}", ForumId ) %>' runat="server" SkinID="RSS" ToolTip="rss feed">RSS</asp:HyperLink>
                         </HeaderTemplate>
-                        <HeaderStyle Width="20px" />
-                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                        <ItemTemplate>&nbsp;
+                        <HeaderStyle CssClass="iconCol" />
+                        <ItemStyle CssClass="iconCol"></ItemStyle>
+                        <ItemTemplate>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="Subject">
-                        <ItemStyle Width="50%" CssClass="postCol"></ItemStyle>
+                        <ItemStyle CssClass="postCol"></ItemStyle>
                         <ItemTemplate>
                             <span style="width: 100%; overflow: hidden;">
                                 <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="true"
@@ -343,32 +327,32 @@
                             </div>
 
                         </HeaderTemplate>
-                        <HeaderStyle Width="50%" HorizontalAlign="Left"></HeaderStyle>
+                        <HeaderStyle CssClass="subjCol"></HeaderStyle>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Name">
-                        <HeaderStyle Width="80px" />
-                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        <HeaderStyle CssClass="authorCol" />
+                        <ItemStyle CssClass="authorCol"></ItemStyle>
                         <ItemTemplate>
                             <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
-                        <HeaderStyle Width="60px" />
-                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        <HeaderStyle CssClass="countCol" />
+                        <ItemStyle CssClass="countCol"></ItemStyle>
                         <ItemTemplate>
                             <%# Eval("ReplyCount") %>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount">
-                        <HeaderStyle Width="60px" />
-                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        <HeaderStyle CssClass="countCol" />
+                        <ItemStyle CssClass="countCol"></ItemStyle>
                         <ItemTemplate>
                             <%# Eval("Views") %>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
-                        <HeaderStyle Width="90px" />
-                        <ItemStyle HorizontalAlign="Center" CssClass="nowrap"></ItemStyle>
+                        <HeaderStyle  CssClass="lastpostCol" />
+                        <ItemStyle CssClass="lastpostCol nowrap"></ItemStyle>
                         <ItemTemplate>
                             <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>
                                 <br /><asp:Literal runat="server" ID="lastpostdate"></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
@@ -393,8 +377,7 @@
                             <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                 runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>" OnClientClick=""
                                 CausesValidation="False" EnableViewState="False" />
-
-                            <asp:HyperLink ID="hypEditTopic" EnableViewState="false" SkinID="EditTopic" runat="server"
+                            <br/><asp:HyperLink ID="hypEditTopic" EnableViewState="false" SkinID="EditTopic" runat="server"
                                 Visible="False" Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
                             <asp:HyperLink ID="hypReplyTopic" EnableViewState="false" SkinID="ReplyTopic" runat="server"
                                 Text="<%$ Resources:webResources, lblReply %>" ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
@@ -414,10 +397,10 @@
                                     CssClass="profilelnk" SkinID="JumpToLastRead" ToolTip="Last read message" Text="Last read"></asp:HyperLink>
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />
-                        <HeaderStyle Width="40px" />
+                        <HeaderStyle CssClass="buttonCol" />
                     </asp:TemplateField>
                 </Columns>
-                <HeaderStyle CssClass="category cattitle" />
+                <HeaderStyle CssClass="tableheader cattitle" />
                 <RowStyle CssClass="row" />
                 <AlternatingRowStyle CssClass="altrow" />
                 <EmptyDataRowStyle HorizontalAlign="Center" CssClass="NoBorder"></EmptyDataRowStyle>

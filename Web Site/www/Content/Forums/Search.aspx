@@ -12,6 +12,7 @@
     UICulture="auto"
     CodeBehind="Search.aspx.cs" Inherits="SnitzUI.Search" %>
 
+<%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
@@ -196,7 +197,7 @@
                                 ID="lpLnk" runat="server" CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
                                 ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
                             <br />
-                            <%# Common.TimeAgoTag((DateTime) DataBinder.Eval(Container.DataItem, "LastPostDate"), IsAuthenticated,Member.TimeOffset)%>
+                            <%# SnitzTime.TimeAgoTag((DateTime) DataBinder.Eval(Container.DataItem, "LastPostDate"), IsAuthenticated,Member)%>
                         </ItemTemplate>
                         <HeaderStyle Width="122px"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />

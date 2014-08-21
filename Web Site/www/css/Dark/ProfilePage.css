@@ -25,9 +25,9 @@ height:21px;
 }
 .ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('/App_Themes/Dark/images/tab/tab.gif') repeat-x;
 }
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-right.gif")%>) no-repeat right;}
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-left.gif")%>) no-repeat;}
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover.gif")%>) repeat-x;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;}
 .ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/Dark/images/tab/tab-activer.gif') no-repeat right 50%;
 }
 .ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/Dark/images/tab/tab-activel.gif') no-repeat;
@@ -97,6 +97,7 @@ height:21px;
  width:60px;
  width:auto !important;
  margin:0px 0 10px 10px;
+     max-width: 250px;
  }
  #profileDIV input[type="image"]
  {
@@ -120,7 +121,8 @@ height:21px;
  float:left;
  }
  #profileDIV span.sig label{width:250px;}
- #profileDIV span.email label{width:180px;}
+ #profileDIV span.email label{width:auto;}
+ #profileDIV span.gravatar label{width:auto;}
  #profileDIV label.links{width:180px;}
  #profileDIV label.doblabel{width:100px;}
  

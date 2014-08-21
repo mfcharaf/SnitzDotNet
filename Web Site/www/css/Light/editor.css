@@ -234,10 +234,10 @@
 {
     background-image:url(/App_themes/Light/images/editor/pictureBrowse.png);
 }
-.markItUp .markItUpButton18 a	{
+.markItUp .urllink a	{
 	background-image:url(/App_themes/Light/images/editor/link.png);
 }
-.markItUp .markItUpButton19 a	{
+.markItUp .emaillink a	{
 	background-image:url(/App_themes/Light/images/editor/email.gif);
 }
 

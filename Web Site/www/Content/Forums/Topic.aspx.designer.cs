@@ -31,6 +31,15 @@ namespace SnitzUI {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl editorCSS;
         
         /// <summary>
+        /// jsshareCSS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl jsshareCSS;
+        
+        /// <summary>
         /// shareItScripts control.
         /// </summary>
         /// <remarks>
@@ -38,15 +47,6 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal shareItScripts;
-        
-        /// <summary>
-        /// uploadStyle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal uploadStyle;
         
         /// <summary>
         /// pbTop control.

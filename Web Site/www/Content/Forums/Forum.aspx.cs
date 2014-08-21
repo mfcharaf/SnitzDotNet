@@ -24,7 +24,6 @@ using System.Linq;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
@@ -46,8 +45,8 @@ namespace SnitzUI
         bool _bGetSelectCount;
         private ForumInfo _currentForum;
         public bool IsForumModerator;
-        private GridPager _replyPager;
-        //private GridPager _topicPager;
+        private GridPager _topicPager;
+
         private int RowCount
         {
             get
@@ -117,11 +116,11 @@ namespace SnitzUI
             }
             if (stickystate.Value != "")
                 Collapsed = stickystate.Value;
-            
-            //_topicPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
-            //_topicPager.PagerStyle = Enumerators.PagerType.Linkbutton;
-            //_topicPager.UserControlLinkClick += PagerLinkClick;
-            //_topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
+
+            _topicPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
+            _topicPager.PagerStyle = Enumerators.PagerType.Linkbutton;
+            _topicPager.UserControlLinkClick += PagerLinkClick;
+            _topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
 
             topicUPD.Triggers.Add(new AsyncPostBackTrigger {ControlID = ddlShowTopicDays.UniqueID, EventName="SelectedIndexChanged"});
             if (Request.QueryString["ARCHIVE"] != null)
@@ -230,7 +229,7 @@ namespace SnitzUI
                 try
                 {
                     //_topicPager.CurrentIndex = Int32.Parse(Request.Params["whichpage"]) - 1;
-                    _replyPager.CurrentIndex = Int32.Parse(Request.Params["whichpage"]) - 1;
+                    _topicPager.CurrentIndex = Int32.Parse(Request.Params["whichpage"]) - 1;
                 }
                 catch (Exception)
                 {
@@ -321,6 +320,12 @@ namespace SnitzUI
 
             switch (ddlShowTopicDays.SelectedValue)
             {
+                case "-99" : // Users Topics
+                    Session["LastPostDate"] = "";
+                    Session["TopicStatus"] = "";
+                    if(IsAuthenticated)
+                        Session["MyTopics"] = Member.Id;
+                    break;
                 case "-1": //All Topics
                     Session["LastPostDate"] = "";
                     Session["TopicStatus"] = "";
@@ -370,16 +375,16 @@ namespace SnitzUI
                     else if (lnk.Text.Contains("&lt;"))
                         CurrentPage -= 1;
                     else if (lnk.Text.Contains("&raquo;"))
-                        CurrentPage = _replyPager.PageCount - 1;
+                        CurrentPage = _topicPager.PageCount - 1;
                     else
                         CurrentPage = 0;
                 }
                 if (CurrentPage < 0)
                     CurrentPage = 0;
-                if (CurrentPage >= _replyPager.PageCount)
-                    CurrentPage = _replyPager.PageCount - 1;
+                if (CurrentPage >= _topicPager.PageCount)
+                    CurrentPage = _topicPager.PageCount - 1;
             }
-            _replyPager.CurrentIndex = CurrentPage;
+            _topicPager.CurrentIndex = CurrentPage;
         }
 
         private void InitializeStickyCollapse()
@@ -443,8 +448,9 @@ namespace SnitzUI
                 }
                 if (lastpostdate != null)
                 {
-                    lastpostdate.Text = Common.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,
-                        Member == null ? Config.TimeAdjust : Member.TimeOffset);
+                    lastpostdate.Text = SnitzTime.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,Member);
+                    //Common.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated,
+                    //    (int)(Member == null ? Config.TimeAdjust : Member.TimeOffset));
                 }
                 if (lastreadpost != null)
                 {
@@ -527,16 +533,10 @@ namespace SnitzUI
                     approve.Visible = false;
                     if (topic.Status == (int)Enumerators.PostStatus.UnModerated || topic.Status == (int)Enumerators.PostStatus.OnHold)
                         approve.Visible = (IsForumModerator || IsAdministrator);
-                    approve.OnClientClick = string.Format(
-                        "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0}'}}, 'methodHandlers.BeginRecieve');return false;",
-                        topic.Id);
+                    approve.OnClientClick = string.Format("mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0},{1}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        true,topic.Id);
                 }
-                //if(hold != null)
-                //{
-                //    hold.Visible = false;
-                //    if (topic.Status == Enumerators.PostStatus.UnModerated)
-                //        hold.Visible = (IsForumModerator || IsAdministrator);
-                //}
+
                 if (!IsAuthenticated)
                     if (replyIcon != null) replyIcon.Visible = false;
 
@@ -567,10 +567,10 @@ namespace SnitzUI
             }
             else if (e.Row.RowType == DataControlRowType.Pager)
             {
-                _replyPager = (GridPager)e.Row.FindControl("pager");
-                _replyPager.UpdateIndex = populate;
-                _replyPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
-                _replyPager.CurrentIndex = CurrentPage;
+                _topicPager = (GridPager)e.Row.FindControl("pager");
+                _topicPager.UpdateIndex = populate;
+                _topicPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.TopicPageSize);
+                _topicPager.CurrentIndex = CurrentPage;
             }
         }
 
@@ -639,7 +639,7 @@ namespace SnitzUI
             if (topic.PollId > 0)
             {
                 image.ToolTip = Polls.lblPoll;
-                image.SkinID = "Poll";
+                image.SkinID = "PollFolder";
             }
 
             image.GenerateEmptyAlternateText = true;
@@ -676,20 +676,20 @@ namespace SnitzUI
         protected void TopicOdsSelecting(object sender, ObjectDataSourceSelectingEventArgs e)
         {
             _bGetSelectCount = e.ExecutingSelectCount;
-            if (e.ExecutingSelectCount)
-            {
-                //Cancel the event   
-                return;
-            }
-            if (CurrentPage == PreviousPage)
-            {
-                if (IsPostBack && CurrentPage != 0)
-                    e.Cancel = true;
-            }
-            else
-            {
-                PreviousPage = CurrentPage;
-            }
+            //if (e.ExecutingSelectCount)
+            //{
+            //    //Cancel the event   
+            //    return;
+            //}
+            //if (CurrentPage == PreviousPage)
+            //{
+            //    if (IsPostBack && CurrentPage != 0)
+            //        e.Cancel = true;
+            //}
+            //else
+            //{
+            //    PreviousPage = CurrentPage;
+            //}
         }
 
         protected void TopicOdsSelected(object sender, ObjectDataSourceStatusEventArgs e)
@@ -764,39 +764,5 @@ namespace SnitzUI
         {
             Subscriptions.RemoveTopicSubscription(Member.Id, topicid);
         }
-
-        [WebMethod]
-        public static void Approval(string topicid, string replyid)
-        {
-            if (!String.IsNullOrEmpty(topicid))
-            {
-                int id = Convert.ToInt32(topicid);
-                TopicInfo topic = Topics.GetTopic(id);
-                //topic.Forum = Forums.GetForum(topic.ForumId);
-                Topics.SetTopicStatus(id, (int)Enumerators.PostStatus.Open);
-                if(topic.Forum.SubscriptionLevel == (int)Enumerators.Subscription.ForumSubscription)
-                    Subscriptions.ProcessForumSubscriptions(topic);
-
-            }
-            if (!String.IsNullOrEmpty(replyid))
-            {
-                int id = Convert.ToInt32(replyid);
-                ReplyInfo reply = Replies.GetReply(id);
-                TopicInfo topic = Topics.GetTopic(reply.TopicId);
-                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.Open);
-                if(topic.AllowSubscriptions)
-                    Subscriptions.ProcessTopicSubscriptions(topic, reply);
-            }
-
-        }
-        [WebMethod]
-        public static void PutOnHold(string topicid, string replyid)
-        {
-            if (!String.IsNullOrEmpty(topicid))
-                Topics.SetTopicStatus(Convert.ToInt32(topicid), (int)Enumerators.PostStatus.OnHold);
-            if (!String.IsNullOrEmpty(replyid))
-                Replies.SetReplyStatus(Convert.ToInt32(replyid), (int)Enumerators.PostStatus.OnHold);
-        }
-
     }
 }

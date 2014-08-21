@@ -21,9 +21,9 @@ height:21px;
 }
 .ajax__tab_xp2 .ajax__tab_tab {height:13px;padding:4px;margin:0px;margin-right:4px;background:url('/App_Themes/Dark/images/tab/tab.gif') repeat-x;
 }
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-left.gif")%>) no-repeat left;}
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover-right.gif")%>) no-repeat;}
-.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;background:url(<%=WebResource("Tabs.tab-hover.gif")%>) repeat-x;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;}
+.ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;}
 .ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/Dark/images/tab/tab-activel.gif') no-repeat left 50%;
 }
 .ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/Dark/images/tab/tab-activer.gif') no-repeat right;

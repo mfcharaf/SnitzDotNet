@@ -6,6 +6,7 @@
       <siteMapNode url="~\admin\default.aspx?action=features" title="Feature Configuration" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=time" title="Date/Time Configuration" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=email" title="Email Configuration" description=""/>
+      <siteMapNode url="~\admin\default.aspx?action=registration" title="Registration" description=""/>
     </siteMapNode>
     <siteMapNode title="Forum Admin" description="Create/Edit Forums and Moderators">
       <siteMapNode url="~\admin\default.aspx?action=managecategories" title="Manage Categories" description=""/>
@@ -21,6 +22,7 @@
       <siteMapNode url="~\admin\default.aspx?action=manageusers" title="Manage Members" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=managesubscriptions" title="Manage Subscriptions" description=""/>
       <siteMapNode url="~\admin\default.aspx?action=avatar" title="Avatars" description=""/>
+      
       <siteMapNode url="~\admin\default.aspx?action=profile" title="Manage Profile" description=""/>
     </siteMapNode>
     <siteMapNode title="Roles" description="">
@@ -35,7 +37,7 @@
       <siteMapNode url="~\admin\default.aspx?action=pollconfig" title="Poll Configuration" description=""/>
     </siteMapNode>
     <siteMapNode title="Mods" description="">
-      <siteMapNode url="~\admin\default.aspx?action=modconfig" title="Mod Configuration" description=""/>
+      <siteMapNode url="~\admin\mods\default.aspx" title="Mod Configuration" description=""/>
     </siteMapNode>    
   </siteMapNode>
 </siteMap>

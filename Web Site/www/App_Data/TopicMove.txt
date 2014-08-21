@@ -1,13 +1,22 @@
-Hello <%UserName%>,
-
-Your posting on <%ForumUrl%>
-Regarding the subject - <%TopicSubject%>.
-
-Has been moved to the '<%MovedTo%>' forum, You can view it at ...
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Registration approval</title>
+</head>
+<body>
+Hello <%UserName%>,<br/>
+<p>
+Your posting on <%ForumUrl%><br/>
+Regarding the subject - <%TopicSubject%>.<br/>
+</p>
+<p>
+Has been moved to the '<%MovedTo%>' forum, You can view it at ...<br/>
+<br/>
 	<%URL%>
-
-
-Regards,
-
+</p>
+<p>
+Regards,<br/>
+<br/>
 Forum Administrator
+</p>
+</body>
+</html>

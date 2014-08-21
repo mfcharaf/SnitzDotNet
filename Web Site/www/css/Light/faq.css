@@ -31,7 +31,8 @@
         div#main
         {
             margin: 0px 0px 0px 300px;
-            padding: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
             border-left: 1px solid #777;
             border-collapse: collapse;
             background-color: white;
@@ -66,5 +67,7 @@
         .category{padding: 3px;}
         .codebox{ max-height: 2000px;}
         
-
+        div.faqtable{ border: 1px solid #ff6600;border-radius: 5px;}
+         .faqtable label{ display: inline-block;width: 120px;}
+        h1 {text-shadow: 1px 1px #ff3300;}
 

@@ -119,6 +119,33 @@ td.category, .row td.categorylink{background-color: #191970; height: 24px;paddin
     background-color: #6a5acd;
     font-size: smaller;
 }
+th.iconCol{    
+    max-width: 26px;
+    width: 26px;}
+th.forumCol{    
+    width: auto;}
+th.subjCol{    
+    width: auto;}
+th.authorCol{    
+    max-width: 100px;
+    width: 60px;
+}
+th.countCol{    
+    max-width: 60px;
+    width: 45px;}
+th.lastpostCol{  
+    overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  
+    max-width: 200px;
+    width: 140px;
+}
+th.buttonCol{    
+    max-width: 50px;
+    width: 48px;}
+td.countCol{
+    text-align: center;}
+td.authorCol{    
+    text-align: center;
+}
 .cattitle		{ font-weight: bold; color : #FFFFFF; }
 .FooterTable 
 {
@@ -537,7 +564,24 @@ table.smallCal { table-layout:auto;}
 .smallCal table { table-layout:auto;}
 .PMContainer{width:80%;padding:10px;margin:auto;	background-color: white;
 	border: 1px solid #000000;}
-
+.pm-inner{background-color: #666;padding: 3px;border: 1px solid #666;border-radius:3px;}
+.pmbutton {height:28px;background-color: silver;margin-bottom:3px;vertical-align: middle;padding:2px;}
+     .popub-bkg{ position: absolute;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8; top: 0;left: 0;width: 100%;height: 100%;z-index: 500;display: none;vertical-align: middle;text-align: center;}
+    .pmbutton input { vertical-align: middle;border: 1px solid #666;margin: 1px;border-radius: 3px;}
+    .pmbutton input:hover{ border: 1px solid white;}
+    div.pm-new-message{ padding: 3px;}
+    .pm-new-message label{ width: 60px;display: inline-block;}
+    .pm-new-message input{margin: 2px;margin-left: 8px;}
+    div.mini{ width: 77%;display:inline-block;margin: auto;}
+    .pmMsgArea{ width: 77%;height: 80px;}
+    textarea.pmMsgArea{
+        border: 1px solid #000;
+        width: 98%;
+    }
+     .pm-new-message   .markItUpEditor{min-height: 50px !important}
+     .pmoptions fieldset{ font-size: smaller;}
+     .pm-footer{ margin-top: 2px;height:22px;background-color:silver;vertical-align: middle;padding:2px;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px}
+     .pm-message-header{background-color:silver;padding:3px;}
 
 .ovHidden{overflow:hidden;}
  .shadow {
@@ -699,6 +743,24 @@ a.Snitzbutton:hover span{
  .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none;}
  .announceBox{text-align:center;width:80%;margin:auto;border:3px ridge #EFEFEF; background-color:#efefef;}
 .hidden{ display: none;visibility: hidden;}
+    .blogList{background-color: whitesmoke;border: 1px solid #ddd;border-radius:5px;padding:4px;margin-top:14px;max-height: 400px;}
+    .blog-date{ width: 60px;height: 70px;background-color: white;float: left;text-align: center;border-radius: 4px;border: 1px solid silver;box-shadow: 3px 3px 4px #000;}
+    .blog-day{ color-rendering: black;height: 50px;vertical-align: middle;font-size: x-large;}
+    .blog-day span { display:inline-block;vertical-align: middle;line-height: 50px; }
+    .blog-month{ width: 100%;background-color: silver;color: white;height: 20px;border-top-left-radius: 4px;border-top-right-radius: 4px;}
+    .blog-content{margin-left: 80px;}
+    .blogheader{background-color: #eee;border:1px solid #bbb;width:99%;margin-bottom:3px;font-size: smaller;border-radius:5px}
+    .blogmessage{background-color: whitesmoke;border:1px solid #bbb;min-height:100px;width:99%;border-top-left-radius: 7px;border-bottom-right-radius: 7px}
+    .blogreply{background-color: #fafafa;border:1px solid #ddd;min-height:40px;width:70%;margin-left: 160px;margin-bottom: 3px;}
+    .blogreply span{ font-size: x-small;}
+    .blog-buttons{display:table-cell;text-align:center;vertical-align:middle;color: #bbb;}
+    .blog-buttons img{ vertical-align: middle;}
+    .blog-buttons input{ vertical-align: middle;}
+    .blog-content h2{ vertical-align: middle;}
+    .blog-content h2 span img{ vertical-align: middle;}
+    .blog-comments{ display: none;}
+    .poll-content{ min-height: 40px;border: 1px solid silver;border-top-left-radius: 5px;border-top-right-radius: 5px;}
+    .Poll_PollResults table{ width: 99%;}
 
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

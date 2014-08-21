@@ -72,17 +72,17 @@ namespace SnitzUI
             string sTitle = Config.ForumTitle;
             string sSiteUrl = Config.ForumUrl;
             string sDescription = forum.Description;
-            const string sTTL = "60";
+            const string TTL = "60";
 
             var oBuilder = new System.Text.StringBuilder();
             oBuilder.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             oBuilder.Append("<rss version=\"2.0\"><channel>");
 
             oBuilder.Append("<title>");
-            oBuilder.Append(sTitle);
+            oBuilder.Append(sTitle.WrapCData());
             oBuilder.Append("</title>");
             oBuilder.Append("<copyright>");
-            oBuilder.Append("Copyright 2009, " + sTitle);
+            oBuilder.Append(("Copyright 2009, " + sTitle).WrapCData());
             oBuilder.Append("</copyright>");
             oBuilder.Append("<generator>");
             oBuilder.Append("Snitz Forums .Net");
@@ -92,13 +92,13 @@ namespace SnitzUI
             oBuilder.Append("</link>");
 
             oBuilder.Append("<description>");
-            oBuilder.Append(sDescription);
+            oBuilder.Append(sDescription.WrapCData());
             oBuilder.Append("</description>");
             oBuilder.Append("<pubDate>");
             oBuilder.Append(DateTime.Now);
             oBuilder.Append("</pubDate>");
             oBuilder.Append("<ttl>");
-            oBuilder.Append(sTTL);
+            oBuilder.Append(TTL);
             oBuilder.Append("</ttl>");
 
             AppendItems(oBuilder, forum);
@@ -115,13 +115,13 @@ namespace SnitzUI
                 int topicId = row.Id;
                 TopicInfo topic = Topics.GetTopic(topicId);
                 string sTitle = topic.Subject;
-                string sGuid = string.Format("{0}/Content/Forums/topic.aspx?TOPIC={1}", Config.ForumUrl, topicId);
+                string sGuid = string.Format("{0}/Content/Forums/Topic/{1}", Config.ForumUrl, topicId);
                 string sLink = string.Format("{0}/Content/Forums/topic.aspx?TOPIC={1}&amp;whichpage=-1", Config.ForumUrl, topicId);
                 if (topic.LastReplyId > 0)
                     sLink += "#" + topic.LastReplyId;
 
                 string sDescription = topic.Message; //topic.Message.Length > 512 ? topic.Message.Substring(0, 512) + " ... " : topic.Message;
-                string sPubDate = topic.LastPostDate.Value.ToISO8601Date(false,0);
+                string sPubDate = topic.LastPostDate.Value.ToISO8601Date(false,null);
                 string author = topic.AuthorName;
                 if (topic.LastReplyId > 0)
                 {
@@ -135,11 +135,11 @@ namespace SnitzUI
 
                 oBuilder.Append("<item>");
                 oBuilder.Append("<category>");
-                oBuilder.Append(forum.Subject);
+                oBuilder.Append(forum.Subject.WrapCData());
                 oBuilder.Append("</category>");
-                oBuilder.Append("<title><![CDATA[ ");
-                oBuilder.Append(sTitle);
-                oBuilder.Append(" ]]> </title>");
+                oBuilder.Append("<title>");
+                oBuilder.Append(sTitle.WrapCData());
+                oBuilder.Append("</title>");
                 oBuilder.Append("<author>");
                 oBuilder.Append(author);
                 oBuilder.Append("</author>");
@@ -149,9 +149,9 @@ namespace SnitzUI
                 oBuilder.Append("<guid isPermaLink=\"true\">");
                 oBuilder.Append(sGuid);
                 oBuilder.Append("</guid>");
-                oBuilder.Append("<description><![CDATA[ ");
-                oBuilder.Append(sDescription.ParseTags());
-                oBuilder.Append(" ]]> </description>");
+                oBuilder.Append("<description>");
+                oBuilder.Append(sDescription.ParseTags().WrapCData());
+                oBuilder.Append("</description>");
                 oBuilder.Append("<pubDate>");
                 oBuilder.Append(sPubDate);
                 oBuilder.Append("</pubDate>");

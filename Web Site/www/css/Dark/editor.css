@@ -127,23 +127,6 @@
 	background-color:#3C769D;
 }
 /***************************************************************************************/
-.html .markItUpEditor {
-	background-image:url(images/bg-editor-html.png);
-}
-.markdown .markItUpEditor {
-	background-image:url(images/bg-editor-markdown.png);
-}
-.textile .markItUpEditor {
-	background-image:url(images/bg-editor-textile.png);
-}
-.bbcode .markItUpEditor {
-	background-image:url(images/bg-editor-bbcode.png);
-}
-.wiki .markItUpEditor,
-.dotclear .markItUpEditor {
-	background-image:url(images/bg-editor-wiki.png);
-}
-
 /* BBcode CSS */
 .markItUp .markItUpButton1 a	{
 	background-image:url(/App_themes/Dark/images/editor/fonts.png);
@@ -251,10 +234,10 @@
 {
     background-image:url(/App_themes/Dark/images/editor/pictureBrowse.png);
 }
-.markItUp .markItUpButton18 a	{
+.markItUp .urllink a	{
 	background-image:url(/App_themes/Dark/images/editor/link.png);
 }
-.markItUp .markItUpButton19 a	{
+.markItUp .emaillink a	{
 	background-image:url(/App_themes/Dark/images/editor/email.gif);
 }
 

@@ -1,26 +1,27 @@
-﻿    .policy{padding:6px;}
+﻿.regHeader{ background-color: silver;padding: 4px;vertical-align: middle;}    
+.policy{padding:6px;max-height: 300px;overflow: auto;}
     .regBox input{margin-bottom:6px;margin-right:6px;}
     .formLayout
     {
         padding: 10px;
-        width: 400px;
-        margin:auto;
+        width: 90%;
+        margin:auto;max-height: 400px;overflow: auto;
     }
-    
-    .formLayout label, .formLayout input
+    .wizardstep{ max-height: 300px;overflow: auto;}
+    .formLayout label, .formLayout input, .formLayout textarea
     {
         display: block;
         width: 120px;
         float: left;
         margin-bottom: 10px;
     }
-    
+    .formLayout textarea{ width: 50%;}
+    .formLayout input[type="text"]{width:30%}
     .formLayout input, .formLayout select{ border:1px solid Silver;}
     .formLayout select {max-width:200px;}
     .formLayout label
     {
         text-align: right;
-        padding-right: 20px;
     }
     .formLayout span
     {
@@ -36,7 +37,7 @@
     {
         clear: left;
     }
-
+   .formLayout label.captcha-label{ width: auto;}
     .checkboxLayout
     {
         padding: 10px;
@@ -57,16 +58,7 @@
         width:50px;
     }
 
-.label_mandatory {
-	margin: 0 8px 0 0;
-	padding-right:4px;
-	border-right: solid 4px #0FA1B8;
-	white-space: nowrap;
-}
-.label_not_mandatory {
-	margin: 0 12px 0 0;
-	white-space: nowrap;
-}
+
 .validationGood, span.validationGood
 {
     text-align:left;float:left;color:green;border:1px solid green;width:350px;padding:10px;display:inline;
@@ -76,3 +68,58 @@
     text-align:left;float:left;color:Red;border:1px solid red;width:350px;padding:10px;display:inline;
 }
 span.usercheck{text-align:left;float:left;color:Red;border:1px solid red;width:300px;padding:10px;display:none;}
+
+        div.label_mandatory, div.label_not_mandatory{ width: 99%;display: inline-block;}
+        label.label_mandatory:before {
+    content : "* ";
+    color   : red;
+}
+         .label_mandatory label, span.label_mandatory,label.label_mandatory {
+             display: inline-block;
+             margin: 1px 8px 1px 0;
+             padding-right:4px;
+             border-right: solid 3px #0FA1B8;
+             white-space: nowrap;
+             width: 150px;
+             vertical-align: top;
+         }
+        .label_not_mandatory label, label.label_not_mandatory{
+            display: inline-block;
+            margin: 1px 16px 1px 0;
+            white-space: nowrap;
+            width: 150px;
+            vertical-align: top;
+        }
+        .label_not_mandatory span.cbxLabel label{ width: auto;}
+        .label_mandatory img {
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+.BarIndicatorweak
+{
+    color:Red;
+    background-color:Red;
+}
+.BarIndicatoraverage
+{
+    color:orange;
+    background-color:orange;
+}
+.BarIndicatorgood
+{
+    color:yellow;
+    background-color:yellow;
+}
+.BarIndicatorexcelent
+{
+    color:Green;
+    background-color:Green;
+}
+.BarBorder
+{
+    border-style:solid;
+    border-width:1px;
+    padding:2px 2px 2px 2px;
+    width:200px;
+    vertical-align:middle;
+}

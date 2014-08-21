@@ -960,4 +960,7 @@
   <data name="EmailValMessage" xml:space="preserve">
     <value>Your account has been created, but before you can login you must first verify your email address. A message has been sent to the email address you specified. Please check your email inbox and follow the instructions in that email to verify your account</value>
   </data>
+  <data name="lblMinAge" xml:space="preserve">
+    <value>You must be a minimum of {0} years of age</value>
+  </data>
 </root>

@@ -20,12 +20,10 @@
 */
 
 using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Text;
-using System.Xml;
+using System.Collections;
+using System.Collections.Generic;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
-using SnitzConfig;
 
 
 namespace ModConfig
@@ -33,15 +31,10 @@ namespace ModConfig
     /// <summary>
     /// Summary description for SampleMod
     /// </summary>
-    public class ShareItConfig : ISnitzModConfig
+    public class ShareItConfig : ModConfigBase, ISnitzModConfig
     {
         #region ISnitzModConfig Implementation
 
-        public string Name { get { return "Share It"; }}
-
-        public string Description { get { return "Share topic on Social Media sites"; } }
-
-        public Version Version { get { return new Version(1, 0); } }
         public bool ShowOnMenu { get { return false; } }
 
         public ModMenuItem Menu
@@ -52,37 +45,48 @@ namespace ModConfig
              }
         }
 
-
-        [Description("boolShareItEnabled")]
-        public bool Enabled
-        {
-            get
-            {
-                return (ConfigurationManager.AppSettings["boolShareItEnabled"] == "1");
-            }
-            set
-            {
-                Config.UpdateConfig("boolShareItEnabled", value ? "1" : "0");
-            }
-        }
-
         #endregion
         
         #region Mod specific Properties
-
-        [Description("strShareItItems")]
-        public static string MediaItems
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["strSampleModProperty"];
-            }
-            set
-            {
-                Config.UpdateConfig("strSampleModProperty", value);
-            }
-        }
+        /// <summary>
+        /// comma seperated list of items to hide
+        /// Available items: messenger,facebook,delicious,stumbleupon,googlebuzz,digg,twitter,reddit,linkedin
+        /// </summary>
+        public static string MediaItems { get; set; }
 
         #endregion
+
+        public ShareItConfig() : base("ShareIt")
+        {
+            ModConfiguration.AdminControl = "ShareIt.ascx";
+
+            MediaItems = ModConfiguration.Settings["MediaItems"].ToString();
+        }
+
+        protected override ModInfo LoadDefaultConfig(ModController controller)
+        {
+            Dictionary<string, string> settings = new Dictionary<string, string>
+                                                  {
+                                                      {
+                                                          "MediaItems",
+                                                          "messenger,googlebuzz"
+                                                      }
+                                                  };
+
+            ModInfo modinfo = new ModInfo
+            {
+                Id = -1,
+                Name = "ShareIt",
+                Description = "Share topic on Social Media sites",
+                Version = new Version(1, 0),
+                Enabled = true,
+                Settings = new Hashtable(settings)
+            };
+
+            controller.ModInfo = modinfo;
+            controller.InstallMod();
+            return modinfo;
+        }
+
     } 
 }

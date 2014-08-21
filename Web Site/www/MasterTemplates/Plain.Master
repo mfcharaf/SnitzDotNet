@@ -28,8 +28,8 @@
         <div id="header" class="clearfix">
             <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
         </div>
-        <div class="innertube">
-            <div id="LogoDIV">
+        <div class="innertube" style="display:none">
+            <div id="LogoDIV" >
                 <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server"></asp:HyperLink>
             </div>
             <div id="TitleDIV">

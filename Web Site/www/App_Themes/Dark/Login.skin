@@ -6,10 +6,10 @@
                     <table cellpadding="2">
                         <tr>
                             <td>
-                                <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">User Name:</asp:Label>
+                                <asp:Label ID="UserNameLabel" runat="server" >User Name:</asp:Label>
                                 <asp:TextBox ID="UserName" runat="server"></asp:TextBox>
                                         
-                                <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">Password:</asp:Label>
+                                <asp:Label ID="PasswordLabel" runat="server" >Password:</asp:Label>
                                 <asp:TextBox ID="Password" runat="server" TextMode="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" Display="dynamic" 
                                     ControlToValidate="Password" ErrorMessage="Password is required." 
@@ -35,10 +35,10 @@
 <asp:Login  runat="server" SkinID="NewLogin" Orientation="Horizontal">
     <LayoutTemplate>
 
-            <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">User Name:</asp:Label>
+            <asp:Label ID="UserNameLabel" runat="server" >User Name:</asp:Label>
             <asp:TextBox ID="UserName" runat="server"></asp:TextBox>
                                         
-            <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">Password:</asp:Label>
+            <asp:Label ID="PasswordLabel" runat="server" >Password:</asp:Label>
             <asp:TextBox ID="Password" runat="server" TextMode="Password"></asp:TextBox>
             <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" Display="dynamic" 
                 ControlToValidate="Password" ErrorMessage="Password is required." 

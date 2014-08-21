@@ -8,7 +8,7 @@
 ## http://forum.snitz.com
 ##############################################################################################################
 --%>
-<%@ Page Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master" AutoEventWireup="True" Inherits="MembersPage" Title="<%$ Resources:webResources, ttlMembersPage %>" Culture="auto" UICulture="auto" Codebehind="members.aspx.cs" %>
+<%@ Page Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="True" Inherits="MembersPage" Title="<%$ Resources:webResources, ttlMembersPage %>" Culture="auto" UICulture="auto" Codebehind="members.aspx.cs" %>
 <%@ Import Namespace="Resources" %>
 <%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzCommon" %>
@@ -23,9 +23,10 @@ td a.Snitzbutton, td a.Snitzbutton span{
     height: auto;
     padding-right: 1px;padding-top: 0px;
     text-decoration: none;
+    text-align: left;
     white-space:nowrap;
     font-size:small;
-    font-weight:bold;}
+    padding-left: 0px;}
     </style>
 
 </asp:Content>
@@ -98,44 +99,44 @@ td a.Snitzbutton, td a.Snitzbutton span{
                         <asp:HyperLink ID="HyperLink1" runat="server" ToolTip='<%# String.Format(webResources.lblViewProfile, Eval("Username")) %>' NavigateUrl='<%# Eval("ProfileLink") %>'>
                         <asp:Image runat="server" Visible='<%# ((bool)Eval("boolStatus")) %>' ID="ImgProfile" SkinID="Profile" AlternateText='<%$ Resources:webResources, lblProfile %>' EnableViewState="False" />
                         <asp:Image runat="server" Visible='<%# (!(bool)Eval("boolStatus")) %>' ID="ImgProfileLocked" SkinID="ProfileLocked" AlternateText='<%$ Resources:webResources, lblProfile %>' EnableViewState="False"/></asp:HyperLink>
-
                     </ItemTemplate>
-                    <HeaderStyle Width="20px" CssClass="sortLnk" />
+                    <HeaderStyle CssClass="iconCol" />
                     <ItemStyle CssClass="membericon" />
                 </asp:TemplateField>               
-                <asp:BoundField DataField="Username" HeaderText="<%$ Resources:webResources, lblUsername %>" SortExpression="M_NAME" HeaderStyle-CssClass="sortLnk"/>
+                <asp:BoundField DataField="Username" HeaderText="<%$ Resources:webResources, lblUsername %>" SortExpression="M_NAME" HeaderStyle-CssClass="userCol"/>
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblTitle %>" SortExpression="M_TITLE">
-            		<ItemStyle ></ItemStyle>
-                    <HeaderStyle CssClass="sortLnk" />
+                    <HeaderStyle CssClass="rankCol" />
             		<ItemTemplate >
                         <%# Eval("Rank.Title") %>
         		    </ItemTemplate>
         		</asp:TemplateField>
-                
-                <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPosts %>" sortexpression="M_POSTS" HeaderStyle-CssClass="sortLnk">
-                	<ItemStyle HorizontalAlign="Center" Wrap="false"></ItemStyle>
+                <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPosts %>" sortexpression="M_POSTS" HeaderStyle-CssClass="countCol">
+                	<ItemStyle CssClass="postcountCol"></ItemStyle>
+                    <HeaderStyle CssClass="postcountCol" />
             		<ItemTemplate>
                         <%# Common.TranslateNumerals(Eval("PostCount"))%>
                 		<br />
                         <%# Eval("Rank.Stars") %>
                 	</ItemTemplate>
         		</asp:TemplateField>
-                
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" sortexpression="M_LASTPOSTDATE">
-                	<ItemStyle HorizontalAlign="Center"></ItemStyle>
+                	<HeaderStyle CssClass="dateCol" />
+                    <ItemStyle CssClass="dateCol"></ItemStyle>
             		<ItemTemplate>
                 		<%# Members.LastPostTimeAgo(Container.DataItem) %></ItemTemplate>
         		</asp:TemplateField>
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblMemberSince %>" sortexpression="M_DATE">
-                	<ItemStyle HorizontalAlign="Center"></ItemStyle>
+                	<HeaderStyle CssClass="dateCol" />
+                    <ItemStyle CssClass="dateCol"></ItemStyle>
             		<ItemTemplate>
                 		<%# Members.MemberSinceTimeAgo(Container.DataItem) %></ItemTemplate>
         		</asp:TemplateField>
-                <asp:BoundField DataField="Country"   HeaderText="<%$ Resources:webResources, lblCountry %>" SortExpression="M_COUNTRY">
-                	<ItemStyle HorizontalAlign="Center"></ItemStyle>
+                <asp:BoundField DataField="Country"   HeaderText="<%$ Resources:webResources, lblCountry %>" SortExpression="M_COUNTRY" HeaderStyle-CssClass="countryCol">
+                	<ItemStyle CssClass="countryCol"></ItemStyle>
                 </asp:BoundField>
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastVisit %>" SortExpression="M_LASTHEREDATE">
-                <ItemStyle HorizontalAlign="Center" Wrap="false"></ItemStyle>
+                    <HeaderStyle CssClass="dateCol" />
+                    <ItemStyle CssClass="dateCol"></ItemStyle>
                 <ItemTemplate>
                     <%# Members.LastVisitTimeAgo(Container.DataItem) %>
                 </ItemTemplate>  
@@ -147,11 +148,12 @@ td a.Snitzbutton, td a.Snitzbutton span{
                         <asp:HyperLink ID="hypUserEdit" SkinID="UserEdit" Text="<%$ Resources:webResources, lblEditUser %>" runat="server" EnableViewState="False" NavigateUrl='<%# "~/Account/profile.aspx?edit=Y&user=" + Eval("Username") %>' Visible='<%# IsAdministrator %>' rel="NoFollow"></asp:HyperLink>
                         <asp:HyperLink ID="hypUserDelete" SkinID="UserDelete" Text="<%$ Resources:webResources, lblDeleteUser %>" runat="server" EnableViewState="False" Visible='<%# IsAdministrator %>' NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"pop_delete.aspx?lock=1&mode=M&ID={0}\")",Eval("Username")) %>' rel="NoFollow"></asp:HyperLink>
                     </ItemTemplate>
-                    <HeaderStyle Width="60px" />
+                    <HeaderStyle CssClass="buttonCol"/>
                     <ItemStyle CssClass="memberLC" />
                 </asp:TemplateField>
               </Columns> 
-        	<RowStyle CssClass="row" />
+            <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+        	<RowStyle CssClass="row" HorizontalAlign="Center"/>
         	<AlternatingRowStyle CssClass="altrow" />     
             	<PagerStyle CssClass="hidden" />
                 <PagerTemplate></PagerTemplate>
@@ -206,9 +208,7 @@ td a.Snitzbutton, td a.Snitzbutton span{
         CancelControlID="clB" OnCancelScript="mainScreen.CancelModal();" DropShadow="true" />
     
 </asp:Content>
-<asp:Content ID="rightcol" ContentPlaceHolderID="RightCol" runat="server" >
-    <snitz:SideBar runat="server" ID="sidebar" Show="Ads,Stats,Events,Active"/>
-</asp:Content>
+
 <asp:Content ID="cpf1" runat="server" ContentPlaceHolderID="CPF1">
 </asp:Content>
 <asp:Content ID="adOverride" runat="server" contentplaceholderid="CPAd">

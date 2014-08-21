@@ -700,6 +700,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment(s).
+        /// </summary>
+        internal static string lblComments {
+            get {
+                return ResourceManager.GetString("lblComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact Info.
         /// </summary>
         internal static string lblContactInfo {
@@ -727,11 +736,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To complete your registration, please provide a user name for your membership and a valid email address, your password will be emailed to this address.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;If you have spam filterring, please make sure that you allow emails from&lt;/b&gt;.
+        ///   Looks up a localized string similar to To complete your registration, please provide a username for your membership and a valid email address, a confirmation email will be sent to this address.&lt;br/&gt;&lt;b&gt;If you have spam filtering, please make sure that you allow emails from&lt;/b&gt;&amp;nbsp;.
         /// </summary>
         internal static string lblCUserStep1 {
             get {
                 return ResourceManager.GetString("lblCUserStep1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string lblDate {
+            get {
+                return ResourceManager.GetString("lblDate", resourceCulture);
             }
         }
         
@@ -1020,6 +1038,15 @@ namespace Resources {
         internal static string lblFrenchLang {
             get {
                 return ResourceManager.GetString("lblFrenchLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        internal static string lblFrom {
+            get {
+                return ResourceManager.GetString("lblFrom", resourceCulture);
             }
         }
         
@@ -1461,6 +1488,15 @@ namespace Resources {
         internal static string lblMessengerSkype {
             get {
                 return ResourceManager.GetString("lblMessengerSkype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must be a minimum of {0} years of age.
+        /// </summary>
+        internal static string lblMinAge {
+            get {
+                return ResourceManager.GetString("lblMinAge", resourceCulture);
             }
         }
         
@@ -2190,6 +2226,15 @@ namespace Resources {
         internal static string lblTitle {
             get {
                 return ResourceManager.GetString("lblTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        internal static string lblTo {
+            get {
+                return ResourceManager.GetString("lblTo", resourceCulture);
             }
         }
         

@@ -20,11 +20,10 @@
 */
 
 using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Xml;
+using System.Collections;
+using System.Collections.Generic;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
-using SnitzConfig;
 
 
 namespace ModConfig
@@ -33,121 +32,76 @@ namespace ModConfig
     /// File upload configuration
     /// </summary>
     /// 
-    public class UploadConfig : ISnitzModConfig
+    public class UploadConfig : ModConfigBase, ISnitzModConfig
     {
-        public string Name
-        {
-            get { return "File Upload"; }
-        }
 
-        public string Description
-        {
-            get { return "File Upload Configuration"; }
-        }
-
-        public Version Version { get { return new Version(1, 0); } }
         public bool ShowOnMenu { get { return false; } }
         public ModMenuItem Menu { get { return null; } }
 
-        [Description("boolEnableUploads")]
-        public bool Enabled
+        public static bool AllowImageUpload { get; set; }
+        public static bool AllowAttachments { get; set; }
+        public static string FileUploadLocation { get; set; }
+        public static string AllowedAttachmentTypes { get; set; }
+        public static string AllowedImageTypes { get; set; }
+        public static int TotalUploadLimitFileSize { get; set; }
+        public static int TotalUploadLimitFileNumber { get; set; }
+        public static int FileSizeLimit { get; set; }
+
+        public UploadConfig() : base("FileUpload")
         {
-            get
-            {
-                return (ConfigurationManager.AppSettings["boolEnableUploads"] == "1");
-            }
-            set
-            {
-                Config.UpdateConfig("boolEnableUploads", value ? "1" : "0");
-            }
+            ModConfiguration.AdminControl = "FileUpload.ascx";
+
+            //initialise mod specific properties
+            AllowImageUpload = ModConfiguration.Settings["AllowImageUpload"].ToString() == "1";
+            AllowAttachments = ModConfiguration.Settings["AllowAttachments"].ToString() == "1";
+            FileUploadLocation = ModConfiguration.Settings["FileUploadLocation"].ToString();
+            AllowedAttachmentTypes = ModConfiguration.Settings["AllowedAttachmentTypes"].ToString();
+            AllowedImageTypes = ModConfiguration.Settings["AllowedImageTypes"].ToString();
+            TotalUploadLimitFileSize = Convert.ToInt32(ModConfiguration.Settings["TotalUploadLimitFileSize"]);
+            TotalUploadLimitFileNumber = Convert.ToInt32(ModConfiguration.Settings["TotalUploadLimitFileNumber"]);
+            FileSizeLimit = Convert.ToInt32(ModConfiguration.Settings["FileSizeLimit"]);
         }
 
+        protected override ModInfo LoadDefaultConfig(ModController controller)
+        {
 
-        [Description("boolAllowFileUpload")]
-        public static bool AllowFileUpload
-        {
-            get
-            {
-                return (ConfigurationManager.AppSettings["boolAllowFileUpload"] == "1");
-            }
-            set
-            {
-                Config.UpdateConfig("boolAllowFileUpload", value ? "1" : "0");
-            }
-        }
-        [Description("boolShowFileAttach")]
-        public static bool ShowFileAttach
-        {
-            get
-            {
-                return (ConfigurationManager.AppSettings["boolShowFileAttach"] == "1");
-            }
-            set
-            {
-                Config.UpdateConfig("boolShowFileAttach", value ? "1" : "0");
-            }
-        }
-        [Description("strFileUploadLocation")]
-        public static string FileUploadLocation
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["strFileUploadLocation"];
-            }
+            Dictionary<string,string> settings = new Dictionary<string, string>
+                                                 {
+                                                     {"AllowFileUpload", "1"},
+                                                     {"ShowFileAttach", "1"},
+                                                     {
+                                                         "FileUploadLocation", "/sharedFiles"
+                                                     },
+                                                     {
+                                                         "AllowedAttachmentTypes",
+                                                         "zip,pdf,txt,doc"
+                                                     },
+                                                     {
+                                                         "AllowedImageTypes",
+                                                         "jpg,jpeg,gif,png"
+                                                     },
+                                                     {
+                                                         "TotalUploadLimitFileSize",
+                                                         "1073741824"
+                                                     },
+                                                     {"TotalUploadLimitFileNumber", "250"},
+                                                     {"FileSizeLimit", "2097152"}
+                                                 };
 
-            set
+            ModInfo modinfo = new ModInfo
             {
-                Config.UpdateConfig("strFileUploadLocation", value);
-            }
-        }
-        [Description("strAllowedFileTypes")]
-        public static string AllowedFileTypes
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["strAllowedFileTypes"];
-            }
+                Id = -1,
+                Name = "FileUpload",
+                Description = "File Upload Configuration",
+                Version = new Version(1, 0),
+                Enabled = true,
+                Settings = new Hashtable(settings)
+            };
 
-            set
-            {
-                Config.UpdateConfig("strAllowedFileTypes", value);
-            }
-        }
-        [Description("intTotalUploadLimitFileSize")]
-        public static int TotalUploadLimitFileSize
-        {
-            get
-            {
-                return Int32.Parse(ConfigurationManager.AppSettings["intTotalUploadLimitFileSize"]);
-            }
-            set
-            {
-                Config.UpdateConfig("intTotalUploadLimitFileSize", value.ToString());
-            }
-        }
-        [Description("intTotalUploadLimitFileNumber")]
-        public static int TotalUploadLimitFileNumber
-        {
-            get
-            {
-                return Int32.Parse(ConfigurationManager.AppSettings["intTotalUploadLimitFileNumber"]);
-            }
-            set
-            {
-                Config.UpdateConfig("intTotalUploadLimitFileNumber", value.ToString());
-            }
-        }
-        [Description("intUploadLimitFileSize")]
-        public static int FileSizeLimit
-        {
-            get
-            {
-                return Int32.Parse(ConfigurationManager.AppSettings["intUploadLimitFileSize"]);
-            }
-            set
-            {
-                Config.UpdateConfig("intUploadLimitFileSize", value.ToString());
-            }
+            controller.ModInfo = modinfo;
+            controller.InstallMod();
+            return modinfo;
+
         }
 
     }

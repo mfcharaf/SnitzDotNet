@@ -54,21 +54,49 @@
             cell.style.borderBottom = cell.style.borderRight = "solid 1px #aaaaff";
         }
         function uploadError(sender, args) {
-            addToClientTable(args.get_fileName(), "<span style='color:red;'>" + args.get_errorMessage() + "</span>");
+            $get("errDiv").style.display = 'block';
+            $get(errLabelId).innerHTML = "<span style='color:red;'>" + args.get_errorMessage() + "</span>";
+            $get(clientMsgId).style.display = 'none';
+            $get(updPostId).style.display = 'none';
+
             return false;
         }
+
+        var validFilesStr = '<%= AllowedFileTypes %>';
+
+        function uploadStart(sender, args) {
+            var validFilesArray = validFilesStr.split(',');
+            var filename = args.get_fileName();
+            var filext = filename.substring(filename.lastIndexOf(".") + 1);
+            var isValidFile = false;
+
+            for (var i = 0; i < validFilesArray.length; i++) {
+                if (filext == validFilesArray[i]) {
+                    isValidFile = true;
+                    break;
+                }
+            }
+
+            if(!isValidFile) {
+                //you cannot cancel the upload using set_cancel(true)
+                //cause an error
+                //will  automatically trigger event OnClientUploadError
+                var err = new Error();
+                err.name = 'Forum Upload Error';
+                err.message = 'Invalid file type';
+                throw (err);
+            }
+            $get("errDiv").style.display = 'none';
+            $get(errLabelId).innerHTML = "";
+            $get(clientMsgId).style.display = 'block';
+            $get(updPostId).style.display = 'block';
+            return isValidFile;
+        }
+
         function uploadComplete(sender, args) {
             var contentType = args.get_contentType();
+            $get(updPostId).style.display = 'block';
 
-            try {
-                var fileExtension = args.get_fileName();
-                if (fileExtension.indexOf('.pdf') != -1 || contentType.indexOf('image') < 0) {
-                    $get("errDiv").style.display = 'block';
-                    $get(errLabelId).innerHTML = "File type not permitted";
-                    $get(clientMsgId).style.display = 'none';
-                    return false;
-                }
-            } catch (e) { alert(e.Message); }
             try {
 
                 if (parseInt(args.get_length()) > 2000000) {
@@ -84,8 +112,9 @@
                 text += ", '" + contentType + "'";
             }
             addToClientTable(args.get_fileName(), text);
-
+            return true;
         }
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="CPHR" runat="server">
@@ -141,14 +170,18 @@
         </div>
     </div>
     <br class="clearfix" />
-    <!-- Upload file popup -->
+
+</asp:Content>
+<asp:Content ID="Content5" ContentPlaceHolderID="CPF1" runat="server">
+</asp:Content>
+<asp:Content ID="Content6" ContentPlaceHolderID="CPF2" runat="server">
     <asp:Panel ID="fUpload" runat="server" Style="display: none; clear:both;" EnableViewState="false">
         <div class="mainModalPopup mainModalBorder">
             <div class="mainModalInnerDiv mainModalInnerBorder">
                 <div id="upheader" style="width: 100%;" class="clearfix">
                     <div class="mainModalDraggablePanelDiv">
                         <asp:Panel CssClass="mainModalDraggablePanel" ID="MPD" runat="server" EnableViewState="false">
-                            <span class="mainModalTitle" id="spanTitle">Image Upload</span>
+                            <span class="mainModalTitle" id="spanTitle">File Upload</span>
                         </asp:Panel>
                     </div>
                     <div class="mainModalDraggablePanelCloseDiv">
@@ -159,28 +192,24 @@
                 <div class="mainModalContent">
                     <div id="mainModalContents">
                         <div class="demoarea">
-                            <div class="demoheading">
-                                Image Upload</div>
+                            <div class="demoheading">File Upload</div>
                             Click '<i>Select File</i>' for asynchronous upload.
                             <br />
                             <br />
-                            <ajaxtoolkit:AsyncFileUpload OnClientUploadError="uploadError" OnClientUploadComplete="uploadComplete"
-                                runat="server" ID="AsyncFileUpload1" Width="400px" UploadingBackColor="#CCFFFF"
+                            <ajaxtoolkit:AsyncFileUpload OnClientUploadError="uploadError" OnClientUploadComplete="uploadComplete" OnClientUploadStarted="uploadStart"
+                                runat="server" ID="AsyncFileUpload1" Width="400px" UploadingBackColor="#CCFFFF" UploaderStyle="Modern"
                                 ThrobberID="myThrobber" />
                             &nbsp;<asp:Label runat="server" ID="myThrobber" Style="display: none;"><img align="middle" alt="" src="/images/ajax-loader.gif" /></asp:Label>
-                            <div>
-                            <strong>The latest Server-side event:</strong></div>
+                            
                             <asp:Label runat="server" Text="&nbsp;" ID="uploadResult" />
                             <br />
                             <asp:Label runat="server" Text="&nbsp;" ID="imageTag" />
                             <br />
-                            <div id="errDiv" style="display: none;">
-                                <asp:Label ID="errLabel" runat="server" Text="Label"></asp:Label></div>
-                            <div>
-                                <strong>Client-side events:</strong></div>
+                            <div id="errDiv" style="display: none;"><asp:Label ID="errLabel" runat="server" Text="Label"></asp:Label></div>
+
                             <table style="border-collapse: collapse; border-left: solid 1px #aaaaff; border-top: solid 1px #aaaaff;"
-                                runat="server" cellpadding="3" id="clientSide" />
-                        </div>
+                                runat="server" cellpadding="3" id="clientSide" ></table>
+                            </div>
                         <br />
                         <asp:HyperLink ID="updPost" runat="server" NavigateUrl="#">Insert link into post</asp:HyperLink>
                     </div>
@@ -219,9 +248,7 @@
         TargetControlID="btnHid" BehaviorID="mpBrowse" BackgroundCssClass="modalBackground"
         CancelControlID="clB2" OnCancelScript="$find('mpBrowse').hide();" DropShadow="true" />
 
-    <asp:Button runat="server" ID="btnHid" Style="display: none;" />
-</asp:Content>
-<asp:Content ID="Content5" ContentPlaceHolderID="CPF1" runat="server">
-</asp:Content>
-<asp:Content ID="Content6" ContentPlaceHolderID="CPF2" runat="server">
+    <asp:Button runat="server" ID="btnHid" Style="display: none;" /></asp:Content>
+<asp:Content ID="Content7" ContentPlaceHolderID="W3CVal" runat="server">
+    <!-- Upload file popup -->
 </asp:Content>

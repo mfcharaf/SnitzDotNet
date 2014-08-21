@@ -23,3 +23,5 @@
 <asp:HyperLink SkinID="NewForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
 <asp:HyperLink SkinID="DeleteTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/trash.png"></asp:HyperLink>
 <asp:HyperLink SkinID="SendTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/icon_send_topic.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="sknEditLnk" runat="server" ImageUrl="images/admin/write.png" Text="Edit"></asp:HyperLink>
+<asp:HyperLink SkinID="sknHomePage" runat="server" Text="Visit my homepage"></asp:HyperLink>

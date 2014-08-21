@@ -1,3 +1,3 @@
-﻿<asp:ImageButton SkinID="BookMarkBLog" CssClass="msgIcons" runat="server" ImageUrl="Images/bookmark.png"></asp:ImageButton>
-<asp:HyperLink SkinID="EmailBlog" runat="server" ImageUrl="Images/email.gif" cssclass="msgIcons"></asp:HyperLink>
-<asp:Image SkinID="BlogComments" runat="server" ImageUrl="Images/note.png" cssclass="msgIcons"/>
+﻿<asp:ImageButton SkinID="BookMarkBLog" CssClass="msgIcons" runat="server" ImageUrl="Images/blog/bookmark.png"></asp:ImageButton>
+<asp:HyperLink SkinID="EmailBlog" runat="server" ImageUrl="Images/blog/email.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:Image SkinID="BlogComments" runat="server" ImageUrl="Images/blog/note.png" cssclass="msgIcons"/>

@@ -61,6 +61,7 @@ namespace SnitzUI.Content.FAQ
                 ViewState.Add("faqFilter", value);
             }
         }
+
         protected override void Page_PreRender(object sender, EventArgs e)
         {
             base.Page_PreRender(sender, e);
@@ -86,21 +87,10 @@ namespace SnitzUI.Content.FAQ
             }
             addTopic.Visible = IsAuthenticated && (IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin"));
             manageCats.Visible = IsAuthenticated && (IsAdministrator || IsModerator || Roles.IsUserInRole("FaqAdmin"));
-
+            if (!IsPostBack)
             BindFaqNav();
         }
 
-        private void BindFaqNav()
-        {
-            var faqcats = SnitzCachedLists.GetCachedHelpCategories();
-            FaqNav.DataSource = faqcats;
-            FaqNav.DataBind();
-            ddlCategoryEdit.DataSource = faqcats;
-            ddlCategoryEdit.DataBind();
-            ddlCategoryEdit.Items.Insert(0, "[New]");
-            ddlCategory.DataSource = faqcats;
-            ddlCategory.DataBind();
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -130,6 +120,18 @@ namespace SnitzUI.Content.FAQ
 
         }
 
+        private void BindFaqNav()
+        {
+            var faqcats = SnitzCachedLists.GetCachedHelpCategories();
+            FaqNav.DataSource = faqcats;
+            FaqNav.DataBind();
+            ddlCategoryEdit.DataSource = faqcats;
+            ddlCategoryEdit.DataBind();
+            ddlCategoryEdit.Items.Insert(0, "[New]");
+            ddlCategory.DataSource = faqcats;
+            ddlCategory.DataBind();
+        }
+
         private void SetDefaultView()
         {
             FaqViews.ActiveViewIndex = 0;
@@ -155,6 +157,7 @@ namespace SnitzUI.Content.FAQ
         protected void SearchFaq(object sender, ImageClickEventArgs e)
         {
             Filter = searchFor.Text;
+            FaqNav.DataSource = null;
             BindFaqNav();
         }
 
@@ -188,7 +191,7 @@ namespace SnitzUI.Content.FAQ
             int question = Convert.ToInt32(e.CommandArgument);
             faqId.Value = question.ToString();
             FaqInfo faq = SnitzFaq.GetFaqQuestion(question, CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            faqQuestion.Text = "<br/>" + faq.LinkTitle + "<br/><br/>";
+            faqQuestion.Text = "<h1>" + faq.LinkTitle + "</h1>";
             faqAnswer.Text = faq.LinkBody.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
             btnDeleteFaq.OnClientClick =
 "setArgAndPostBack('Do you want to delete Question and answer?','DeleteFaq'," + faqId.Value + ");return false;";

@@ -10,7 +10,9 @@
     <siteMapNode url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,Profile" description="$resources:SiteMapLocalizations,ProfilePageDescription"/>
     <siteMapNode url="~\ActiveTopics" title="$resources:SiteMapLocalizations,ActivePageTitle,Active" description="$resources:SiteMapLocalizations,ActivePageDescription"/>
     <siteMapNode url="~\Members" title="$resources:SiteMapLocalizations,MembersPageTitle,Members" description="$resources:SiteMapLocalizations,MembersPageDescription"/>
-    <siteMapNode url="~\help" title="$resources:SiteMapLocalizations,FaqPageTitle,Frequently asked Questions" description="$resources:SiteMapLocalizations,FaqPageDescription"/>
+    <siteMapNode url="~\faq" title="$resources:SiteMapLocalizations,FAQPageTitle,FAQ" description="$resources:SiteMapLocalizations,FAQPageDescription">
+      <siteMapNode url="~\question" title="" description=""/>
+    </siteMapNode>
     <siteMapNode url="~\Account\register.aspx" title="$resources:SiteMapLocalizations,RegisterPageTitle,Registration" description="$resources:SiteMapLocalizations,RegisterPageDescription"/>
     <siteMapNode url="~\admin\default.aspx" title="Admin Home">
       <siteMapNode url="~\admin\features.aspx" title="Feature Configuration" description="" />
@@ -21,6 +23,7 @@
       <siteMapNode url="~\admin\badwords.aspx" title="Badword Filter Configuration" description="" />
       <siteMapNode url="~\admin\namefilter.aspx" title="Username Filter Configuration" description="" />
       <siteMapNode url="~\admin\moderators.aspx" title="Moderator/Roles Configuration" description="" />
+      <siteMapNode url="~\admin\mods\default.aspx" title="Mod Administration" description="" />
     </siteMapNode>
   </siteMapNode>
 </siteMap>
