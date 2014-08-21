@@ -1,4 +1,5 @@
 ﻿using System;
+using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
@@ -23,7 +24,7 @@ namespace SnitzUI.UserControls.Post_Templates
             msgBody.Text = topic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
 
             editedByLbl.Text = String.Format("Edited by {0} - ", topic.EditorName);
-            litEditDate.Text = Common.TimeAgoTag(topic.LastEditDate, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
+            litEditDate.Text = SnitzTime.TimeAgoTag(topic.LastEditDate, page.IsAuthenticated, page.Member);
             sigDiv.Visible = Config.AllowSignatures && topic.AuthorViewSig && topic.UseSignatures && !String.IsNullOrEmpty(topic.AuthorSignature);
             litSig.Text = topic.AuthorSignature;
 

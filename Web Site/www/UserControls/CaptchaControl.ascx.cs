@@ -40,11 +40,15 @@ public partial class SnitzCaptchaControl : UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         SubmitButton.Visible = _submit;
-        Visible = Config.UseCaptcha;
+        if (Page is Login)
+            Visible = Config.UseCaptchaLogin;
+        else
+            Visible = Config.UseCaptchaReg;
     }
     protected void CaptchaValidator_ServerValidate(object source, ServerValidateEventArgs args)
     {
-        args.IsValid = CodeNumberTextBox.Text == HttpContext.Current.Session["CaptchaImageText"].ToString();
+        args.IsValid = CodeNumberTextBox.Text.ToUpper() == HttpContext.Current.Session["CaptchaImageText"].ToString();
     }
 }

@@ -31,7 +31,6 @@ using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
 using SnitzMembership;
-using SnitzUI.UserControls.PrivateMessaging;
 
 
 public partial class MessageProfile : UserControl
@@ -91,6 +90,7 @@ public partial class MessageProfile : UserControl
             Gravatar avatar = new Gravatar { Email = _author.Email };
             if (_author.AvatarUrl != "")
                 avatar.DefaultImage = _author.AvatarUrl;
+            avatar.CssClass = "avatar";
             phAvatar.Controls.Add(avatar);
 
         }else
@@ -141,7 +141,7 @@ public partial class MessageProfile : UserControl
         hAIM.NavigateUrl = string.Format("aim:goim?screenname={0}", _author.AIM.Trim());
         hAIM.Text = hAIM.ToolTip = webResources.lblAIM;
 
-        hSKYPE.Visible = true;
+        hSKYPE.Visible = _loggedonuser && !String.IsNullOrEmpty(_author.Skype.Trim());
         hSKYPE.NavigateUrl = String.Format("skype:{0}?chat",_author.Skype.Trim());
         hSKYPE.Text = hSKYPE.ToolTip = webResources.lblSkype;
 

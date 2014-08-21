@@ -20,14 +20,12 @@
 */
 
 using System;
-using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using GroupedRepeater.Controls;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using SnitzUI.UserControls.Post_Templates;
 
 namespace SnitzUI.UserControls
 {

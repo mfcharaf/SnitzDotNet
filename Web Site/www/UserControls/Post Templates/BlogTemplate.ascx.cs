@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
+using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using SnitzConfig;
 using SnitzMembership;
 
 namespace SnitzUI.UserControls.Post_Templates
@@ -26,7 +26,7 @@ namespace SnitzUI.UserControls.Post_Templates
             TopicInfo topic = (TopicInfo) Post;
             lblSubject.Text = topic.Subject;
             msgBody.Text = topic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
-            litDate.Text = Common.TimeAgoTag(topic.Date, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
+            litDate.Text = SnitzTime.TimeAgoTag(topic.Date, page.IsAuthenticated, page.Member);
             litAuthor.Text = topic.AuthorProfilePopup;
 
             ProfileCommon prof = ProfileCommon.GetUserProfile(topic.AuthorName);
@@ -52,7 +52,7 @@ namespace SnitzUI.UserControls.Post_Templates
             blgDay.Text = topic.Date.Day.ToString();
             blgMonth.Text = topic.Date.ToString("MMM");
             hBookmark.OnClientClick = "setArgAndPostBack('Do you want to bookmark this Blog entry?','BookMarkBlog'," + topic.Id + ");return false;";
-            hComments.Text = String.Format("{0} Comment(s)", topic.ReplyCount);
+            hComments.Text = String.Format("{0} {1}", topic.ReplyCount, webResources.lblComments);
             if (Page.IsPostBack)
             {
                 string postbackbtn = Request.Form["__EVENTTARGET"];

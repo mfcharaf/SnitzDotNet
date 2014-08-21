@@ -24,7 +24,6 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
-using Snitz.BLL;
 
 namespace SnitzUI.UserControls.PrivateMessaging
 {
@@ -36,7 +35,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             if (currentUser == null || currentUser.ProviderUserKey == null || !HttpContext.Current.User.Identity.IsAuthenticated)
                 return;
 
-            if (PrivateMessages.GetUnreadPMCount((int)currentUser.ProviderUserKey) > 0)
+            if (Snitz.BLL.PrivateMessages.GetUnreadPMCount((int)currentUser.ProviderUserKey) > 0)
             {
                 var alert = new StringBuilder();
                 alert.Append("<div style=\"z-index:10000;float:left;\">");

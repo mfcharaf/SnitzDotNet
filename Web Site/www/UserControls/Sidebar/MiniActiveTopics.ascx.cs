@@ -63,8 +63,8 @@ namespace SnitzUI.UserControls
             Literal test = (Literal)e.Item.FindControl("lastposttime");
             if (test != null)
             {
-                test.Text = Common.TimeAgoTag(((TopicInfo)e.Item.DataItem).LastPostDate,
-                    ThisPage.IsAuthenticated, ThisPage.Member == null ? 0 : ThisPage.Member.TimeOffset);
+                test.Text = SnitzTime.TimeAgoTag(((TopicInfo)e.Item.DataItem).LastPostDate,
+                    ThisPage.IsAuthenticated, ThisPage.Member);
             }
         }
     }

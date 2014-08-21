@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Snitz.BLL;
@@ -33,6 +34,7 @@ namespace SnitzUI.UserControls
     public partial class PagePostButtons : UserControl
     {
         private TopicInfo _topic;
+        public string[] DisplaySettings { get; set; } // "NewTopic",ReplyTopic,SendTopic,PrintTopic,SubscribeTopic,UnSubscribeTopic
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -111,6 +113,15 @@ namespace SnitzUI.UserControls
                     }
                 }
 
+            }
+            if (DisplaySettings != null && DisplaySettings.Length > 0)
+            {
+                var controls = this.GetAllControls().OfType<LinkButton>().ToList();
+                foreach (LinkButton button in controls)
+                {
+                    if (!DisplaySettings.Contains(button.ID))
+                        button.Visible = false;
+                }
             }
         }
 

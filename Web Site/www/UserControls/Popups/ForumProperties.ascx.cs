@@ -78,7 +78,8 @@ namespace SnitzUI.UserControls.Popups
                 cbxCountPost.Checked = forum.UpdatePostCount.Value;
             cbxAllowPolls.Checked = forum.AllowPolls;
 
-            cbxBugReport.Checked = (forum.Type == 3);
+            cbxBugReport.Checked = (forum.Type == (int)Enumerators.ForumType.BugReports);
+            cbxBlogPosts.Checked = (forum.Type == (int) Enumerators.ForumType.BlogPosts);
             if (Config.Moderation)
             {
                 if (forum.ModerationLevel != null) ddlMod.SelectedValue = ((int) forum.ModerationLevel).ToString();

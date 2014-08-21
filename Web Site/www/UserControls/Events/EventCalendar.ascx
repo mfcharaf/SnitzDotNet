@@ -10,13 +10,13 @@
     <asp:Label ID="lblYearPick" runat="server" Text="Choose a year to display" AssociatedControlID="ddlYear"></asp:Label>
 <asp:DropDownList ID="ddlYear" runat="server" 
     AutoPostBack="True" EnableViewState="true" 
-    onselectedindexchanged="ddlYear_SelectedIndexChanged">
+    onselectedindexchanged="DdlYearSelectedIndexChanged">
 </asp:DropDownList>
 </asp:Panel>
 
 <asp:Panel ID="calMonth" runat="server" Visible="false">
-<asp:Calendar OnDayRender="Calendar1_DayRender" 
-    OnSelectionChanged="Calendar1_SelectionChanged"
+<asp:Calendar OnDayRender="Calendar1DayRender" 
+    OnSelectionChanged="Calendar1SelectionChanged"
     OnVisibleMonthChanged="MonthChanged"
     Runat="server" id="Calendar1"  CssClass="largeCal"
     SelectionMode="Day" SkinID="lgeCal" EnableViewState="False" >
@@ -26,22 +26,22 @@
             <asp:UpdatePanel ID="udpOutterUpdatePanel" runat="server"> 
              <ContentTemplate>
 <asp:Panel ID="calYear" runat="server" Visible="true">
-    <asp:Repeater ID="rptMonths" runat="server" OnItemDataBound="rptMonths_ItemDataBound" >
+    <asp:Repeater ID="rptMonths" runat="server" OnItemDataBound="RptMonthsItemDataBound" >
         <HeaderTemplate> 
-        <div style="width:100%;"> 
+        <div style="width:100%;" class="cal-div-header"> 
     </HeaderTemplate> 
     <SeparatorTemplate> 
         
-        </div><div style="width:100%;"> 
+        </div><div style="width:100%;" class="cal-div-sep"> 
     </SeparatorTemplate> 
 
     <ItemTemplate>
-    <div style="float:left;width:auto;padding:2px;">
-    <uc1:ExtendedCalendar ID="ExtendedCalendar1" runat="server" TodaysDate='<%# Eval("Date") %>' />
+    <div style="float:left;width:auto;padding:2px;" class="cal-div-item">
+    <uc1:ExtendedCalendar ID="ExtendedCalendar1" runat="server" TodaysDate='<%# Eval("Date") %>'  />
     </div>
     </ItemTemplate>
     <FooterTemplate> 
-        <div style="clear:both;"></div></div></FooterTemplate>
+        <div style="clear:both;" class="cal-div-footer"></div></div></FooterTemplate>
     </asp:Repeater>
 <br />
 </asp:Panel>

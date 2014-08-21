@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UserProfile.ascx.cs" Inherits="SnitzUI.UserControls.UserProfile" %>
+<%@ Import Namespace="Snitz.BLL" %>
 <%@ Import Namespace="SnitzCommon" %>
 
 <asp:Repeater ID="rpt" runat="server" onitemdatabound="RptItemDataBound">
@@ -14,7 +15,7 @@
         <asp:Label ID="postsLabel" runat="server" Text='<%# Common.TranslateNumerals(Eval("PostCount"))%>' /><br />
         <asp:Label CssClass="usrlabel" ID="Label4" runat="server" Text="<%$ Resources:webResources, lblMemberSince %>"></asp:Label>:
         <asp:Label ID="MemberSinceLabel" runat="server" Text='<%# String.Format("{0:MMMM dd, yyyy}",Eval("MemberSince")) %>' /><br />
-        <asp:Label CssClass="usrlabel" ID="Label6" runat="server" Text="<%$ Resources:webResources, lblLastVisit %>"></asp:Label>:<%# Common.TimeAgoTag((DateTime)DataBinder.Eval(Container.DataItem, "LastVisitDate"), this.IsAuthenticated, this.CurrentUser != null ? this.CurrentUser.TimeOffset : 0)%>
+        <asp:Label CssClass="usrlabel" ID="Label6" runat="server" Text="<%$ Resources:webResources, lblLastVisit %>"></asp:Label>:<%# SnitzTime.TimeAgoTag((DateTime)DataBinder.Eval(Container.DataItem, "LastVisitDate"), this.IsAuthenticated, this.CurrentUser)%>
         <hr />
         <asp:Label ID="Label5" runat="server" CssClass="smallText" Text='<%# Bind("ParsedSignature") %>' />
     </ItemTemplate>

@@ -20,6 +20,7 @@
 */
 
 using System;
+using ModConfig;
 using SnitzConfig;
 
 namespace SnitzUI.UserControls
@@ -37,28 +38,41 @@ namespace SnitzUI.UserControls
                 switch (control)
                 {
                     case "Events" :
-                        var events = Page.LoadControl("~/UserControls/Events/UpComingEvents.ascx");
-                        events.EnableViewState = false;
-                        Container.Controls.Add(events);
+                        if (ConfigHelper.IsModEnabled("EventsConfig"))
+                        {
+                            var events = Page.LoadControl("~/UserControls/Events/UpComingEvents.ascx");
+                            events.EnableViewState = false;
+                            Container.Controls.Add(events);
+                        }
                         break;
                     case "Stats":
-                        var stats = Page.LoadControl("~/UserControls/SideBar/MiniStatistics.ascx");
-                        stats.EnableViewState = false;
-                        Container.Controls.Add(stats);
+                        if (Config.ShowStats)
+                        {
+                            var stats = Page.LoadControl("~/UserControls/SideBar/MiniStatistics.ascx");
+                            stats.EnableViewState = false;
+                            Container.Controls.Add(stats);
+                        }
                         break;
                     case "Rss":
-                        var rss = Page.LoadControl("~/UserControls/SideBar/rssview.ascx");
-                        rss.EnableViewState = false;
-                        Container.Controls.Add(rss);
+                        if (ConfigHelper.IsModEnabled("RSSFeedConfig"))
+                        {
+                            var rss = (RssView)Page.LoadControl("~/UserControls/SideBar/rssview.ascx");
+                            rss.RssUrl = ConfigHelper.GetStringValue("RSSFeedConfig", "Url");
+                            rss.EnableViewState = false;
+                            Container.Controls.Add(rss);
+                        }
                         break;
                     case "Ads" :
-                        var ads = (GoogleAdCode)Page.LoadControl("~/UserControls/googleadcode.ascx");
-                        ads.Visible = Config.ShowSideAds && Config.ShowGoogleAds;
-                        ads.AdSlot = "7801400008";
-                        ads.AdHeight = 250;
-                        ads.AdWidth = 300;
-                        ads.EnableViewState = false;
-                        Container.Controls.Add(ads);
+                        if (Config.ShowSideAds)
+                        {
+                            var ads = (GoogleAdCode) Page.LoadControl("~/UserControls/googleadcode.ascx");
+                            ads.Visible = Config.ShowSideAds && Config.ShowGoogleAds;
+                            ads.AdSlot = "7801400008";
+                            ads.AdHeight = 250;
+                            ads.AdWidth = 300;
+                            ads.EnableViewState = false;
+                            Container.Controls.Add(ads);
+                        }
                         break;
                     case "Active" :
                         var active = (MiniActiveTopics)Page.LoadControl("~/UserControls/SideBar/MiniActiveTopics.ascx");
@@ -68,11 +82,11 @@ namespace SnitzUI.UserControls
                         active.Visible = !active.Hide;
                         break;
                     case "Poll":
-                        var poll = (Poll)Page.LoadControl("~/UserControls/Polls/Poll.ascx");
-                        poll.PollId = Config.ActivePoll;
-                        poll.EnableViewState = false;
-                        if (poll.PollId > 0)
+                        if (Config.ActivePoll > 0)
                         {
+                            var poll = (Poll) Page.LoadControl("~/UserControls/Polls/Poll.ascx");
+                            poll.PollId = Config.ActivePoll;
+                            poll.EnableViewState = false;
                             Container.Controls.Add(poll);
                         }
                         break;

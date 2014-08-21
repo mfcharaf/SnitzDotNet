@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumProperties.ascx.cs"
     Inherits="SnitzUI.UserControls.Popups.ForumProperties" %>
-<div id="divEditForum" >
+<div id="divEditForum" style="font-size:smaller;line-height: 1em;" >
     <asp:HiddenField ID="hdnForumId" runat="server" />
     <asp:Panel ID="pnlMain" runat="server" GroupingText="<%$ Resources: webResources,lblForum %>">
         <asp:Label ID="Label3" runat="server" Text="Category" AssociatedControlID="ddlCat" EnableViewState="False"></asp:Label>
@@ -20,10 +20,10 @@
         <asp:Label ID="Label4" runat="server" Text="Forum Order" AssociatedControlID="tbxSubject"></asp:Label>
         <asp:TextBox ID="tbxOrder" CssClass="testClass" runat="server" Width="20px" EnableViewState="False"></asp:TextBox>
         <br/>
-        <asp:CheckBox ID="cbxAllowPolls" Text="Allow user polls in forum" runat="server" /><br />
-        <asp:CheckBox ID="cbxCountPost" CssClass="cbx"  runat="server" Text="Increase user Post Count" /><br />
+        <asp:CheckBox ID="cbxAllowPolls" Text="Allow user polls" runat="server" />
         <asp:CheckBox ID="cbxBugReport" CssClass="cbx"  runat="server" Text="Bug Forum" />
-        <asp:CheckBox ID="cbxBlogPosts" CssClass="cbx" runat="server" Text="Blog Posts" />
+        <asp:CheckBox ID="cbxBlogPosts" CssClass="cbx" runat="server" Text="Blog Forum" /><br />
+        <asp:CheckBox ID="cbxCountPost" CssClass="cbx"  runat="server" Text="Increase user Post Count" /><br />
         <br />
         <asp:Label ID="lblMod" runat="server" Text="Moderation level" 
             EnableViewState="False"></asp:Label>

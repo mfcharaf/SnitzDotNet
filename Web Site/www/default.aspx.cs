@@ -106,8 +106,13 @@ public partial class Homepage : PageBase
                     break;
 
             }
-        }
 
+        }
+        if (!Config.ShowStats)
+        {
+            ContentPlaceHolder holder = (ContentPlaceHolder)Master.FindControl("CPF1");
+            holder.Controls.Clear();
+        }
         Session["TopicId"] = "";
         Session["ForumId"] = "";
         Session["CatId"] = "";
@@ -120,7 +125,6 @@ public partial class Homepage : PageBase
         repCatDL.DataBind();
         Page.Title = string.Format(webResources.ttlDefaultPage, Config.ForumTitle);
         GroupDIV.Visible = Config.ShowGroups;
-        //WriteJavascript();
 
         var smp = (SiteMapPath)Master.FindControl("SiteMap");
         if (smp != null)
@@ -132,7 +136,6 @@ public partial class Homepage : PageBase
 	    RepeaterItem item = e.Item;
 	    if( (item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem) )
 	    {
-            //var nestedRepeater = (Repeater)item.FindControl("repForum");
             var cat = (CategoryInfo)item.DataItem;
             var lockIcon = item.FindControl("CatLock") as ImageButton;
             var unlockIcon = item.FindControl("CatUnLock") as ImageButton;
@@ -231,6 +234,7 @@ public partial class Homepage : PageBase
     }
 
     #endregion
+
     #region Page methods for Ajax 
 
     [WebMethod]
@@ -261,6 +265,7 @@ public partial class Homepage : PageBase
     public static void SaveForum(string jsonform)
     {
         var test = HttpUtility.UrlDecode(jsonform);
+        bool forumMoved = false;
         System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
         int forumid = Convert.ToInt32(formresult["ctl00$hdnForumId"]);
         ForumInfo forum = forumid == -1 ? new ForumInfo { Id = -1,Status = 1} : Forums.GetForum(forumid);
@@ -284,7 +289,10 @@ public partial class Homepage : PageBase
                 switch (key.Replace("ctl00$", ""))
                 {
                     case "ddlCat":
+                        int currentid = forum.CatId;
                         forum.CatId = Convert.ToInt32(formresult[key]);
+                        if (forum.CatId != currentid)
+                            forumMoved = true;
                         break;
                     case "tbxUrl":
                         forum.Url = formresult[key];
@@ -340,6 +348,8 @@ public partial class Homepage : PageBase
         forum.Password = password.Trim();
 
         int newId = Forums.SaveForum(forum);
+        if (forumMoved)
+            Forums.MoveForumPosts(forum);
         SnitzRoleProvider.AddRolesToForum(newId,roles);
         Forums.AddForumModerators(newId, moderators);
     }

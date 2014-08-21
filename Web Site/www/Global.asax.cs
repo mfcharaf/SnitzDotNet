@@ -36,6 +36,10 @@ namespace SnitzUI
         {
             // The routes: 
             routes.Add(new Route("Topic/{subject}", new WebFormRouteHandler("~/Content/Forums/Topic.aspx")));
+            routes.Add(new Route("Topic/Reply/{Id}", new WebFormRouteHandler("~/Content/Forums/Topic.aspx")));
+            routes.Add(new Route("MyWebLog", new WebFormRouteHandler("~/Content/Forums/Topic.aspx")));
+            routes.Add(new Route("WebLog/{username}", new WebFormRouteHandler("~/Content/Forums/Topic.aspx")));
+            routes.Add(new Route("WebLog/{username}/{subject}", new WebFormRouteHandler("~/Content/Forums/Topic.aspx")));
             routes.Add(new Route("Member/{username}", new WebFormRouteHandler("~/Account/Profile.aspx")));
             routes.Add(new Route("MemberList", new WebFormRouteHandler("~/Content/Forums/Members.aspx")));
             routes.Add(new Route("Members", new WebFormRouteHandler("~/Content/Forums/Members.aspx")));
@@ -44,8 +48,9 @@ namespace SnitzUI
             routes.Add(new Route("Find", new WebFormRouteHandler("~/Content/Forums/Search.aspx")));
             routes.Add(new Route("Active", new WebFormRouteHandler("~/Content/Forums/Active.aspx")));
             routes.Add(new Route("ActiveTopics", new WebFormRouteHandler("~/Content/Forums/Active.aspx")));
-            routes.Add(new Route("Help", new WebFormRouteHandler("~/Content/Faq/help.aspx")));
-            routes.Add(new Route("Faq", new WebFormRouteHandler("~/Content/Faq/help.aspx")));
+            routes.Add(new Route("Help", new WebFormRouteHandler("~/Content/Faq/faq.aspx")));
+            routes.Add(new Route("Faq", new WebFormRouteHandler("~/Content/Faq/faq.aspx")));
+            routes.Add(new Route("Faq/{category}/{subject}", new WebFormRouteHandler("~/Content/Faq/faq.aspx")));
             routes.Add(new Route("Login",new WebFormRouteHandler("~/Account/Login.aspx")));
             routes.Add(new Route("Register", new WebFormRouteHandler("~/Account/Register.aspx")));
             routes.Add(new Route("PrivateMessages", new WebFormRouteHandler("~/Content/PrivateMessages/PrivateMessageView.aspx")));
@@ -69,6 +74,8 @@ namespace SnitzUI
         protected void Application_Start(object sender, EventArgs e)
         {
             Application.Add("SessionCount", 0);
+            Application.Add("DailyCount", 0);
+            Application.Add("DailyCountDay", DateTime.UtcNow.Day);
             // Add Routes.
             RegisterRoutes(RouteTable.Routes);
         }
@@ -76,9 +83,17 @@ namespace SnitzUI
         protected void Session_Start(object sender, EventArgs e)
         {
             Application.Lock();
+            var dailycount = (int)Application["DailyCount"];
+            var day = (int)Application["DailyCountDay"];
             var countSession = (int)Application["SessionCount"];
             if (countSession < 0)
                 countSession = 0;
+            if (DateTime.UtcNow.Day != day)
+            {
+                dailycount = 0;
+                Application["DailyCountDay"] = DateTime.UtcNow.Day;
+            }
+            Application["DailyCount"] = dailycount + 1;
             Application["SessionCount"] = countSession + 1;
             Application.UnLock();
         }

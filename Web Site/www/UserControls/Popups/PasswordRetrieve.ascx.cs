@@ -31,8 +31,9 @@ namespace SnitzUI.UserControls.Popups
         protected void Page_Load(object sender, EventArgs e)
         {
             recover.MailDefinition.From = Config.AdminEmail;
-            recover.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory + "PasswordReset.txt";
-            recover.MailDefinition.Subject = String.Format("{0} : {1} {2}", Config.ForumTitle, Resources.webResources.lblPassword, Resources.webResources.btnReset);
+            recover.MailDefinition.IsBodyHtml = true;
+            recover.MailDefinition.BodyFileName = Config.CultureSpecificDataDirectory + "PasswordReset.html";
+            recover.MailDefinition.Subject = String.Format("{0} : {1} {2}", Config.ForumTitle.Replace("&trade;",""), Resources.webResources.lblPassword, Resources.webResources.btnReset);
 
         }
 

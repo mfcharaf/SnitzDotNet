@@ -4,7 +4,10 @@
 <style type="text/css">
 .mainModalContent{white-space:normal;min-height:100px;}
 </style>
-
+<div style="position: relative">
+<div id="loadergif" style="position:absolute;top:0px;left:0px; width:100%;height:100%;background:#666;filter: alpha(opacity=80);-moz-opacity:.8; opacity:.8;z-index:5000;display:none;"  >
+    <img src="/images/ajax-loader.gif" style="position:relative; top:45%;left:45%;" />
+</div>
 <asp:Panel ID="pnlSplit" runat="server" GroupingText="Split Topic" CssClass="topicSplit">
 
 <asp:Label ID="Label1" runat="server" Text="Forum" AssociatedControlID="ddlForum"></asp:Label>
@@ -16,6 +19,7 @@
         ErrorMessage="You must supply a subject" ValidationGroup="splitTopic" 
         ControlToValidate="tbxSubject">*</asp:RequiredFieldValidator>
     <br class="clearfix" />
+    <div id="resultText" style="color:red;display:none;"></div><br />
     <input type="button" id="btnOk" onclick="SplitTopic();return false;" value="Split Topic" />
     <asp:Button ID="btnCancel" runat="server" Text="Cancel" 
         CausesValidation="False" EnableViewState="False" OnClientClick="mainScreen.CancelModal();return false;" />
@@ -60,5 +64,5 @@
     </asp:Panel>
     
 </asp:Panel>
-
+</div>
 

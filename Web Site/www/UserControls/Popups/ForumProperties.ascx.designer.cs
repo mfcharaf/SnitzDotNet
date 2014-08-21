@@ -157,15 +157,6 @@ namespace SnitzUI.UserControls.Popups {
         protected global::System.Web.UI.WebControls.CheckBox cbxAllowPolls;
         
         /// <summary>
-        /// cbxCountPost control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxCountPost;
-        
-        /// <summary>
         /// cbxBugReport control.
         /// </summary>
         /// <remarks>
@@ -182,6 +173,15 @@ namespace SnitzUI.UserControls.Popups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbxBlogPosts;
+        
+        /// <summary>
+        /// cbxCountPost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbxCountPost;
         
         /// <summary>
         /// lblMod control.

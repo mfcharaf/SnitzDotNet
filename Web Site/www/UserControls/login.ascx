@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="User_Controls_login" Codebehind="login.ascx.cs" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Register TagPrefix="uc1" TagName="ChangePassword" Src="~/UserControls/popups/ChangePassword.ascx" %>
         <script type="text/javascript">
             function CancelModal() {

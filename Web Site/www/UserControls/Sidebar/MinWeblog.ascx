@@ -14,7 +14,7 @@
                     </GroupTemplate>
                     <ItemTemplate>
                         <div class="ovHidden" style="padding-left: 16px;">
-                            <a class="" href='/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>'
+                            <a class="" href='/Weblog/<%# Eval("AuthorName") %>/<%# Eval("Subject") %>'
                                 target='<%# Eval("Author.LinkTarget") %>' title="<%# Eval("Subject") %>">
                                 <span class="minibbcode mImg"><%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></span></a>
                         </div>

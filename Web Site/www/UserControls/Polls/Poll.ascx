@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Poll" CodeBehind="Poll.ascx.cs" %>
 <%@ Import Namespace="SnitzConfig" %>
-
-<asp:FormView CssClass="PollBox" ID="PollFormView" runat="server"     DataKeyNames="Id"
+<div class="PollBox">
+<asp:FormView ID="PollFormView" runat="server"     DataKeyNames="Id"
     OnDataBound="PollFormViewDataBound" EnableModelValidation="True">
     <HeaderTemplate>
             <div class="category">
@@ -9,31 +9,10 @@
             </div>
     </HeaderTemplate>
     <ItemTemplate>
-        <script type="text/javascript">
-            function MakeActive() {
-                alert("add code for this");
-            }
-            function CastVote() {
-                var test = $(".Poll_TakePoll input:radio:checked").val();
-                PageMethods.CastVote(test, VoteSucceeded, VoteFailed);
-            }
-            function VoteSucceeded(results, userContext, methodName) {
-                alert(results);
-                mainScreen.CancelModal();
-                location.reload();
-                return false;
-            }
 
-            function VoteFailed(error, userContext, methodName) {
-                // Alert user to the error.
-                alert(error.get_message());
-                mainScreen.CancelModal();
-                return false;
-            }
-        </script>
         <asp:Label CssClass="Poll_DisplayText" ID="DisplayTextLabel" runat="server" Text='<%# Bind("DisplayText") %>' EnableViewState="False"></asp:Label>
         <asp:HiddenField ID="hidTopicId" runat="server" Value='<%# Bind("TopicId") %>' />
-
+        <input type="hidden" id="pollIdhdn" value="<%# PollId %>"/>
         <asp:Panel ID="pnlTakePoll" runat="server" CssClass="Poll_TakePoll" EnableViewState="False">
             <asp:RadioButtonList ID="rblPollAnswer" runat="server" ValidationGroup="poll"
                 DataTextField="DisplayText" DataValueField="Id" EnableViewState="False">
@@ -48,7 +27,7 @@
                 <ItemTemplate>
                     <asp:Label ID="DisplayTextLabel" runat="server" Text='<%# Eval("Answer") %>' EnableViewState="False"></asp:Label>
                     (<asp:Label ID="VotesLabel" runat="server" Text='<%# Eval("Votes") %>' EnableViewState="False"></asp:Label>&nbsp;votes)<br />
-                    <asp:Image ID="PercentageImage" runat="server" Height="7px" ImageUrl="~/images/bar.JPG" Visible="True" EnableViewState="False" />
+                    <asp:Image ID="PercentageImage" runat="server" SkinID="percentImage" Height="7px" Visible="True" EnableViewState="False" />
                     <asp:Label ID="PercentageLabel" runat="server" EnableViewState="False"></asp:Label>
                     <br style="line-height: 0.4em;" />
                 </ItemTemplate>
@@ -66,5 +45,6 @@
     <FooterTemplate></FooterTemplate>
 
 </asp:FormView>
+</div>
 <br class="seperator"/>
 

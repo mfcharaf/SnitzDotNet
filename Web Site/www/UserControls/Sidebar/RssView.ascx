@@ -15,7 +15,7 @@
                 <asp:HyperLink ID="myLink" runat="server" Target="_blank" NavigateUrl='<%# XPath("link") %>' EnableViewState="False">        
                 <h3><%# XPath("title") %></h3></asp:HyperLink>
                 <div style="max-height: 124px; overflow: hidden; text-overflow: ellipsis; padding:5px;margin-bottom: 3px;">
-                    <%# Regex.Replace(XPath("description").ToString(),"src=\"image","src=\"" + Url + "image",RegexOptions.IgnoreCase) %>
+                    <%# Regex.Replace(XPath("description").ToString(),"src=\"image","src=\"" + ImgUrl + "image",RegexOptions.IgnoreCase) %>
                 </div>
                 <i class="smallText">&nbsp;Published on <%# XPath("pubDate").ToString().Remove(XPath("pubDate").ToString().IndexOf(" -")) %></i><br/>
                 </p>
@@ -25,7 +25,8 @@
             <br style="line-height: 0.3em;"/>
         </SeparatorTemplate>
         <FooterTemplate></div></FooterTemplate>
-    </asp:Repeater>      
+    </asp:Repeater>   
+    <asp:Literal runat="server" ID="noFeed"></asp:Literal>   
 </div>
 <br class="seperator"/>
 

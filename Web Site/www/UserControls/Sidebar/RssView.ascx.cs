@@ -26,9 +26,10 @@ namespace SnitzUI.UserControls
 {
     public partial class RssView : UserControl
     {
-        public string RssUrl = "http://forum.snitz.com/forum/rssfeed2.asp";
+        public string RssUrl { get; set; } 
+       
         protected System.Xml.XmlDocument Doc;
-        protected string Url;
+        protected string ImgUrl;
 
         public override void DataBind()
         {
@@ -36,7 +37,7 @@ namespace SnitzUI.UserControls
             Doc.Load(RssUrl);
             var link = Doc.SelectSingleNode("/rss/channel/link");
             if (link != null)
-                Url = link.InnerText;
+                ImgUrl = link.InnerText;
             base.DataBind();
         }
 
@@ -44,6 +45,11 @@ namespace SnitzUI.UserControls
         {
             try
             {
+                if (String.IsNullOrEmpty(RssUrl))
+                {
+                    noFeed.Text = "<b>No Url defined</b>";
+                    return;
+                }
                 DataBind();
                 MyRSSBlog.DataSource = Doc.SelectNodes("/rss/channel/item[position()<=4]");
                 MyRSSBlog.DataBind();

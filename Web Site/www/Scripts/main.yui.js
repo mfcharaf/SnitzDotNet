@@ -44,7 +44,9 @@ mainScreen.LoadServerControlHtml = function (a, b, c) {
     mainScreen.ExecuteCommand("GetWizardPage", c, b)
 };
 mainScreen.ExecuteCommand = function (a, b, c) {
-    PageMethods.ExecuteCommand(a, b, c, mainScreen.ExecuteCommandCallback, mainScreen.ExecuteCommandFailed)
+
+    PageMethods.ExecuteCommand(a, b, c, mainScreen.ExecuteCommandCallback, mainScreen.ExecuteCommandFailed);
+    
 };
 mainScreen.ExecuteCommandCallback = function (result) {
     if (result) {
@@ -55,7 +57,8 @@ mainScreen.ExecuteCommandCallback = function (result) {
     }
 };
 mainScreen.ExecuteCommandFailed = function (a, b, c) {
-    if (a) { }
+    
+    if (a) { alert('command failed : ' + a.get_message()); }
 };
 mainScreen.LoadStyleSheet = function (a) {
     if (!this.styleSheets[a]) {

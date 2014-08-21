@@ -8,7 +8,7 @@
     <asp:Label ID="date" runat="server" Style="padding:0px;margin-bottom:4px;" EnableViewState="False"></asp:Label>
 </span>
 <div class="buttonbarImg">
-    <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Approve Post"
+    <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Moderate Post"
         CausesValidation="False" EnableViewState="False" CommandArgument='<%# ThisId %>' />
     <asp:HyperLink ID="hReplyQuote" rel="nofollow" SkinID="ReplyQuote" runat="server"
         EnableViewState="False" Text="<%$ Resources:webResources, lblReplyQuote %>" ToolTip="<%$ Resources:webResources, lblReplyQuote %>"></asp:HyperLink>

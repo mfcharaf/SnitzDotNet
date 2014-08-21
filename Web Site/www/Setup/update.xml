@@ -74,7 +74,6 @@
       <Column name="PMEmail" type="int" allownulls="true" default="1"/>
       <Column name="PMReceive" type="int" allownulls="true" default="1"/>
       <Column name="PMLayout" type="varchar" size="50" allownulls="true"/>
-      <Column name="TimeOffset" type="int" allownulls="false" default="0"/>
       <Index name="PK_Profile" columns="UserId" direction="ASC" unique="true"/>
     </Table>
     <Table name="FORUM_EVENT" idfield="Id">
@@ -97,7 +96,10 @@
       <Column action="ADD" name="M_LASTUPDATED" type="varchar" size="50" default="" allownulls="true"/>
       <Column action="ADD" name="M_AVATAR" type="varchar" size="255" default="" allownulls="true"/>
       <Column action="ADD" name="M_THEME" type="varchar" size="50" default="" allownulls="true"/>
-      <Column action="ADD" name="M_TIMEOFFSET" type="int" default="0" allownulls="false"/>
+      <Column action="ADD" name="M_TIMEOFFSET" type="float" default="0.0" allownulls="false"/>
+      <Column action="ADD" name="M_DAYLIGHTSAVING" type="int" default="0" allownulls="false"/>
+      <Column action="ADD" name="M_TIMEZONE" type="varchar" size="250" default="" allownulls="true"/>
+      <Column action="ADD" name="M_DAYLIGHTSAVING" type="smallint" default="0" allownulls="false"/>
       <Column action="ADD" name="M_VALID" type="int" default="0" allownulls="false"/>
     </Table>    
   </Alter>

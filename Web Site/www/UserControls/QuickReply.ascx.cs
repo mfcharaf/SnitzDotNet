@@ -25,7 +25,9 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using AjaxControlToolkit;
+using ModConfig;
 using Snitz.BLL;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
@@ -35,6 +37,9 @@ public partial class QuickReply : UserControl
 {
     private PageBase page;
     public TopicInfo thisTopic { get; set; }
+    public string AllowedFileTypes { get; set; }
+    public bool AllowAttachments { get; set; }
+    public bool AllowImageUploads { get; set; }
 
     protected override void OnInit(EventArgs e)
     {
@@ -42,6 +47,31 @@ public partial class QuickReply : UserControl
 
         page = (PageBase)this.Page;
         cbxSig.Checked = page.Member.UseSignature;
+        ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
+
+        AllowedFileTypes = "";
+        AllowAttachments = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowAttachments"]));
+        AllowImageUploads = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowImageUpload"]));
+        if (AllowImageUploads)
+            AllowedFileTypes += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
+        if (AllowAttachments)
+        {
+            if (AllowedFileTypes != "")
+                AllowedFileTypes += ",";
+            AllowedFileTypes += controller.ModConfiguration.Settings["AllowedAttachmentTypes"].ToString();
+        }
+        if (AllowImageUploads || AllowAttachments)
+        {
+            string style = ""; //!ShowAttachments ? ".upload{display:none;}" : 
+            if (!Config.UserGallery || !AllowImageUploads)
+                style += ".browse{display:none;}";
+
+            uploadStyle.Text = !String.IsNullOrEmpty(style) ? string.Format("<style>{0}</style>", style) : "";
+        }
+        else
+        {
+            uploadStyle.Text = "<style>.upload{display:none;} .browse{display:none;}</style>";
+        }
     }
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -85,6 +115,14 @@ public partial class QuickReply : UserControl
                               AuthorId = page.Member.Id,
                               Date = newdate
                           };
+        var forum = Forums.GetForum(thisTopic.ForumId);
+        if (forum.ModerationLevel == (int) Enumerators.Moderation.AllPosts ||
+            forum.ModerationLevel == (int) Enumerators.Moderation.Replies)
+        {
+            reply.Status = (int) Enumerators.PostStatus.UnModerated;
+            thisTopic.UnModeratedReplies += 1;
+            Topics.Update(thisTopic);
+        }
 
         int replyid = Replies.AddReply(reply);
         if (Session["LastPostMade"] == null)
@@ -113,46 +151,106 @@ public partial class QuickReply : UserControl
 
     private void AsyncFileUpload1UploadedComplete(object sender, AsyncFileUploadEventArgs e)
     {
-        string filename = e.FileName;
-        if (filename == null)
-            return;
+        ProcessUpload(e);
+    }
+    private void ProcessUpload(AsyncFileUploadEventArgs e)
+    {
+        if (e.FileName == null) return;
+
+        ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
+        string[] allowedTypes = controller.ModConfiguration.Settings["AllowedFileTypes"].ToString().Split(',');
+        int fileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()) * 1024;
+        string uploadpath = controller.ModConfiguration.Settings["FileUploadLocation"].ToString();
+        string filext = Path.GetExtension(AsyncFileUpload1.PostedFile.FileName).Replace(".", "");
         string contentType = AsyncFileUpload1.PostedFile.ContentType;
-        if (!contentType.Contains("image"))
+        bool allowed = false;
+
+        if (contentType.Contains("image") && !AllowImageUploads)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "prohibited",
+                "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Image upload prohibited';});",true);
+            AsyncFileUpload1.FailedValidation = true;
             return;
-        var fileName = Path.GetFileName(filename);
-        if (fileName != null && fileName.Contains(".pdf"))
+        }
+        if (!contentType.Contains("image") && !AllowAttachments)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "prohibited",
+                "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File attachments prohibited';});",true);
+            AsyncFileUpload1.FailedValidation = true;
+            return;            
+        }
+
+        foreach (string allowedType in allowedTypes)
+        {
+            if (filext == allowedType)
+            {
+                allowed = true;
+                break;
+            }
+        }
+        if (!allowed || (int.Parse(e.FileSize) > fileSizeLimit))
         {
             AsyncFileUpload1.FailedValidation = true;
             return;
         }
-        if (int.Parse(e.FileSize) > 2000000)
+
+        var name = Path.GetFileName(e.FileName);
+        if (contentType.Contains("image"))
         {
+            uploadpath = "/Gallery";
+        }
+        string savePath =
+            Page.MapPath(String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name,
+                name.Replace(" ", "+")));
+        if (File.Exists(savePath))
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "exists",
+                "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
             AsyncFileUpload1.FailedValidation = true;
             return;
         }
-        var name = Path.GetFileName(filename);
-        if (name != null)
+
+        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size",
+            "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " +
+            e.FileSize + "';});", true);
+
+        if (!Directory.Exists(Page.MapPath(String.Format("{0}/{1}", uploadpath, HttpContext.Current.User.Identity.Name))))
         {
-            string savePath = Page.MapPath(String.Format("~/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")));
-            string thumbPath = Page.MapPath(String.Format("~/Gallery/{0}/thumbnail/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")));
-            if (File.Exists(savePath))
+            Directory.CreateDirectory(
+                Page.MapPath(String.Format("{0}/{1}", uploadpath, HttpContext.Current.User.Identity.Name)));
+        }
+
+        if (contentType.Contains("image"))
+        {
+            if (e.FileName != null && AllowImageUploads)
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'File already exists';});", true);
-                AsyncFileUpload1.FailedValidation = true;
-                return;
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag",
+                    "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" +
+                    String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) +
+                    "[/img]';});", true);
             }
-
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "size", "$(function() {top.$get(\"" + uploadResult.ClientID + "\").innerHTML = 'Uploaded size: " + AsyncFileUpload1.FileBytes.Length.ToString() + "';});", true);
-            if (e.FileName != null)
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag", "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[img]" + String.Format("/Gallery/{0}/{1}", HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) + "[/img]';});", true);
-
-            if (!Directory.Exists(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name))))
+        }
+        else
+        {
+            if (e.FileName != null && AllowAttachments)
             {
-                Directory.CreateDirectory(Page.MapPath(String.Format("~/Gallery/{0}", HttpContext.Current.User.Identity.Name)));
-                Directory.CreateDirectory(Page.MapPath(String.Format("~/Gallery/{0}/thumbnail", HttpContext.Current.User.Identity.Name)));
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "tag",
+                    "$(function() {top.$get(\"" + imageTag.ClientID + "\").innerHTML = '[file=" + e.FileName + "]" +
+                    String.Format("{0}/{1}/{2}", uploadpath, HttpContext.Current.User.Identity.Name, name.Replace(" ", "+")) +
+                    "[/file]';});", true);
             }
+        }
 
-            AsyncFileUpload1.SaveAs(savePath);
+        AsyncFileUpload1.SaveAs(savePath);
+        if (contentType.Contains("image"))
+        {
+            string thumbPath =
+                Page.MapPath(String.Format("{0}/{1}/thumbnail/{2}", uploadpath, HttpContext.Current.User.Identity.Name,
+                    name.Replace(" ", "+")));
+            if (!Directory.Exists(Page.MapPath(String.Format("{0}/{1}/thumbnail", uploadpath, HttpContext.Current.User.Identity.Name))))
+            {
+                Directory.CreateDirectory(Page.MapPath(String.Format("{0}/{1}/thumbnail", uploadpath, HttpContext.Current.User.Identity.Name)));
+            }
             GalleryFunctions.CreateThumbnail(savePath, thumbPath, 100);
         }
     }

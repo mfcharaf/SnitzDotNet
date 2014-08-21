@@ -21,24 +21,6 @@ public partial class PollTemplate {
     protected global::System.Web.UI.WebControls.HiddenField hdnAuthor;
     
     /// <summary>
-    /// popuplink control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal popuplink;
-    
-    /// <summary>
-    /// AuthorProfile control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::MessageProfile AuthorProfile;
-    
-    /// <summary>
     /// buttonBar control.
     /// </summary>
     /// <remarks>
@@ -64,4 +46,13 @@ public partial class PollTemplate {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Literal msgBody;
+    
+    /// <summary>
+    /// comments control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label comments;
 }

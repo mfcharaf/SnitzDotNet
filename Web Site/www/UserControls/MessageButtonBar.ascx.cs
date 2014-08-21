@@ -21,10 +21,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
@@ -143,8 +141,8 @@ public partial class MessageButtonBar : UserControl
                 TopicApprove.Visible = (_topic.Status == (int)Enumerators.PostStatus.UnModerated ||
                                         _topic.Status == (int)Enumerators.PostStatus.OnHold);
                 TopicApprove.OnClientClick = string.Format(
-                        "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0}'}}, 'methodHandlers.BeginRecieve');return false;",
-                        _topic.Id);
+                        "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0},{1}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        false,_topic.Id);
                 //TopicHold.Visible = _topic.Status == Enumerators.PostStatus.UnModerated;
             }
             if (_topic.Status == (int)Enumerators.PostStatus.UnModerated || _topic.Status == (int)Enumerators.PostStatus.OnHold)
@@ -178,8 +176,8 @@ public partial class MessageButtonBar : UserControl
                 TopicApprove.Visible = (reply.Status == (int)Enumerators.PostStatus.UnModerated ||
                                         reply.Status == (int)Enumerators.PostStatus.OnHold);
                 TopicApprove.OnClientClick = string.Format(
-                        "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0},{1}'}}, 'methodHandlers.BeginRecieve');return false;",
-                        "",reply.Id);
+                        "mainScreen.LoadServerControlHtml('Moderation',{{'pageID':7,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        false,"",reply.Id);
                 //TopicHold.Visible = reply.Status == Enumerators.PostStatus.UnModerated;
             }
             if (reply.Status == (int)Enumerators.PostStatus.UnModerated || reply.Status == (int)Enumerators.PostStatus.OnHold)
@@ -208,7 +206,7 @@ public partial class MessageButtonBar : UserControl
         imgPosticon.AlternateText = String.Format("#{0}", ThisId);
 
 
-        date.Text = _unmoderated ? modtext : Common.TimeAgoTag(_postdate, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
+        date.Text = _unmoderated ? modtext : SnitzTime.TimeAgoTag(_postdate, page.IsAuthenticated, page.Member);
         
         
         ViewIP.Visible = _isadmin && Config.LogIP;

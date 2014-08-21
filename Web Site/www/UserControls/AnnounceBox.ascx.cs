@@ -20,15 +20,33 @@
 */
 
 using System;
+using System.Web.UI.WebControls;
+using Snitz.BLL;
+using SnitzCommon;
 using SnitzConfig;
 
 namespace SnitzUI.UserControls
 {
+    
     public partial class AnnounceBox : System.Web.UI.UserControl
-    { 
+    {
+        public string AnonMessage { get; set; }
+        public string AuthMessage { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            Visible = Config.Announcement;
+            AuthMessage = Config.AuthMessage;
+            AnonMessage = Config.AnonMessage;
+            Visible = Config.Announcement && (!String.IsNullOrEmpty(AuthMessage) || !String.IsNullOrEmpty(AnonMessage));
+            if (Visible)
+            {
+                var auth = (Literal) LoginView1.FindControl("authText");
+                var anon = (Literal) LoginView1.FindControl("anonText");
+                if (auth != null && !String.IsNullOrEmpty(AuthMessage))
+                    auth.Text = AuthMessage.StripCData().ParseTags();
+                if (anon != null && !String.IsNullOrEmpty(AnonMessage))
+                    anon.Text = AnonMessage.StripCData().ParseTags();
+            }
         }
     }
 }

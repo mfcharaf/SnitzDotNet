@@ -21,10 +21,10 @@
 
 using System;
 using System.Linq;
+using System.Web.Security;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using SnitzConfig;
 
 
 namespace SnitzUI.UserControls.Popups
@@ -36,45 +36,45 @@ namespace SnitzUI.UserControls.Popups
             if (Data != null)
             {
                 string[] ids = ((string) Data).Split(',');
-                if(ids.Any())
+                if (ids.Any())
                 {
-                    if(ids.Count() == 2)
+                    if (ids.Count() == 3)
                     {
-                        ReplyInfo reply = Replies.GetReply(Convert.ToInt32(ids[1]));
+                        ReplyInfo reply = Replies.GetReply(Convert.ToInt32(ids[2]));
                         lblPosted.Text = String.Format("Posted by:{0} on {1}", reply.AuthorName, reply.Date);
                         msgBody.CssClass = "bbcode";
                         msgBody.Text = reply.Message;
+                        hdnTopic.Value = ids[1];
                         hdnReply.Value = reply.Id.ToString();
-                    }else
+                    }
+                    else
                     {
-                        TopicInfo topic = Topics.GetTopic(Convert.ToInt32(ids[0]));
+                        TopicInfo topic = Topics.GetTopic(Convert.ToInt32(ids[1]));
                         lblPosted.Text = String.Format("Posted by:{0} on {1}", topic.AuthorName, topic.Date);
+                        msgBody.CssClass = "bbcode";
                         msgBody.Text = topic.Message;
                         hdnTopic.Value = topic.Id.ToString();
+                        hdnReply.Value = "0";
                     }
                 }
-                //ApprovePost('<%# hdnTopic.Value %>','<%# hdnReply.Value %>');return false;
-                btnOk.OnClientClick = String.Format("ApprovePost('{0}','{1}');return false;", hdnTopic.Value, hdnReply.Value);
-                btnHold.OnClientClick = String.Format("OnHold('{0}','{1}');return false;", hdnTopic.Value, hdnReply.Value);
+                var mod = Membership.GetUser(Page.User.Identity.Name);
+                hdnModerator.Value = mod.ProviderUserKey.ToString();
+                btnApprove.OnClientClick = String.Format("ApprovePost('{0}','{1}');return false;", hdnTopic.Value,
+                    hdnReply.Value);
+                btnHold.OnClientClick = String.Format("OnHold('{0}','{1}');return false;", hdnTopic.Value,
+                    hdnReply.Value);
+                btnDelete.OnClientClick = String.Format("DeletePost('{0}','{1}');return false;", hdnTopic.Value,
+                    hdnReply.Value);
+                pnlMessage.Visible = Convert.ToBoolean(ids[0]);
             }
 
+            string theme = Session["PageTheme"] == null ? "Light" : Session["PageTheme"].ToString();
+
+            if (pnlMessage.Visible)
+                this.StartupScript =
+                    "$('.bbcode').each(function () {$(this).html(parseBBCode(parseEmoticon($(this).text(), '" + theme +
+                    "')));});";
         }
 
-        protected void BtnOkClick(object sender, EventArgs e)
-        {
-            if(!String.IsNullOrEmpty(hdnTopic.Value))
-                Topics.SetTopicStatus(Convert.ToInt32(hdnTopic.Value), (int)Enumerators.PostStatus.Open);
-            if (!String.IsNullOrEmpty(hdnReply.Value))
-                Replies.SetReplyStatus(Convert.ToInt32(hdnReply.Value), (int)Enumerators.PostStatus.Open);
-        }
-
-        protected void BtnHoldClick(object sender, EventArgs e)
-        {
-            if (!String.IsNullOrEmpty(hdnTopic.Value))
-                Topics.SetTopicStatus(Convert.ToInt32(hdnTopic.Value), (int)Enumerators.PostStatus.OnHold);
-            if (!String.IsNullOrEmpty(hdnReply.Value))
-                Replies.SetReplyStatus(Convert.ToInt32(hdnReply.Value), (int)Enumerators.PostStatus.OnHold);
-
-        }
     }
 }

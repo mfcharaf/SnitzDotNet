@@ -41,16 +41,15 @@ namespace SnitzUI.UserControls.Popups
             if (Data != null)
             {
                 _topicid = (int)Data;
+                var topic = Topics.GetTopic(_topicid);
 
                 string topicUrl = System.Web.VirtualPathUtility.AppendTrailingSlash(Config.ForumUrl) + "Content/Forums/topic.aspx?TOPIC_ID=" + _topicid;
-                string msg = string.Format(Resources.webResources.lblSendTopicMessage, topicUrl, Topics.GetTopic(_topicid).Subject);
+                string msg = string.Format(Resources.webResources.lblSendTopicMessage, topicUrl, topic.Subject);
                 msg = msg.Replace("<br />", Environment.NewLine);
                 msg = msg.Replace("<p>", Environment.NewLine);
                 Message = msg.Replace("</p>", Environment.NewLine);
             }
         }
-
-
 
     }
 }

@@ -41,7 +41,7 @@
     winprint.document.write('<p><a href="javascript:onClick=window.print()">Print Page</a> | <a href="JavaScript:onClick=window.close()">Close Window</a></p>');
     winprint.document.write('<p class="PageTitle">' + sSubject + '</p>');
     winprint.document.write('<p class="CategoryTitle">Printed from: ' + sTitle + '<br/>');
-    winprint.document.write('Topic URL: ' + sUrl + '/Content/Forums/topic.aspx?TOPIC_ID=' + TopicId + '<br/>');
+    winprint.document.write('Topic URL: ' + sUrl + '<br/>');
     winprint.document.write('Printed on: ' + dToday.getDate() + ' ' + monthnames[dToday.getMonth()] + ' ' + dToday.getFullYear());
     winprint.document.write(' at ' + dToday.getHours() + ':' + dToday.getMinutes() + '<br/><br/>');
     winprint.document.write('</p><hr>');

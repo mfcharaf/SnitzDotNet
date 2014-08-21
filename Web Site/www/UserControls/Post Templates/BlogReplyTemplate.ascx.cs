@@ -5,7 +5,6 @@ using AjaxControlToolkit;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using SnitzConfig;
 using SnitzMembership;
 
 namespace SnitzUI.UserControls.Post_Templates
@@ -25,7 +24,7 @@ namespace SnitzUI.UserControls.Post_Templates
             PostPanel.CssClass = this.CssClass;
             ReplyInfo reply = (ReplyInfo)Post;
             msgBody.Text = reply.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
-            litDate.Text = Common.TimeAgoTag(reply.Date, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
+            litDate.Text = SnitzTime.TimeAgoTag(reply.Date, page.IsAuthenticated, page.Member);
             litAuthor.Text = reply.AuthorProfilePopup;
             ProfileCommon prof = ProfileCommon.GetUserProfile(reply.AuthorName);
             var author = Members.GetAuthor(reply.AuthorId);
@@ -34,6 +33,7 @@ namespace SnitzUI.UserControls.Post_Templates
                 Gravatar avatar = new Gravatar { Email = author.Email };
                 if (author.AvatarUrl != "")
                     avatar.DefaultImage = author.AvatarUrl;
+                avatar.CssClass = "avatar";
                 phAvatar.Controls.Add(avatar);
 
             }

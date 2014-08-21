@@ -23,8 +23,9 @@ using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using Snitz.BLL;
 using SnitzCommon;
-
+using SnitzConfig;
 
 
 public partial class User_Controls_login : System.Web.UI.UserControl
@@ -51,7 +52,7 @@ public partial class User_Controls_login : System.Web.UI.UserControl
                 Literal lit = (Literal) LoginView1.FindControl("Literal1");
                 string separator = _skinid == "LoginTop" ? @"&nbsp;" : @"<br/>";
                 lit.Text = separator;
-                string lastloggedOn = Common.TimeAgoTag(page.LastVisitDateTime, page.IsAuthenticated, page.Member != null ? page.Member.TimeOffset : 0);
+                string lastloggedOn = SnitzTime.TimeAgoTag(page.LastVisitDateTime, page.IsAuthenticated, page.Member);
                 if (Lname != null)
                     Lname.FormatString = String.Format(Resources.webResources.lblLoggedOn, HttpContext.Current.User.Identity.Name,separator, lastloggedOn);
 
@@ -94,7 +95,8 @@ public partial class User_Controls_login : System.Web.UI.UserControl
     {
         FormsAuthentication.SignOut();
         Session.Abandon();
-
+        SnitzCookie.LogOut();
+        Response.Redirect(Config.ForumUrl,true);
     }
 
 }

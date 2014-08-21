@@ -1053,22 +1053,84 @@
 // ----------------------------------------------------------------------------
 // markItUp! Setings
 // ----------------------------------------------------------------------------
+miniSettings = {
+    nameSpace:'mini',
+    markupSet: [
+        {
+            name: 'Size', className: 'fontsize', key: 'S', openWith: '[size=[![Text size]!]]', closeWith: '[/size]',
+            dropMenu: [
+                { name: 'Large', openWith: '[size=4]', closeWith: '[/size=4]' },
+                { name: 'Small', openWith: '[size=3]', closeWith: '[/size=3]' },
+                { name: 'x-Small', openWith: '[size=2]', closeWith: '[/size-2]' }
+            ]
+        },
+		{ name: 'Bold', key: 'B', openWith: '[b]', closeWith: '[/b]' },
+		{ name: 'Italic', key: 'I', openWith: '[i]', closeWith: '[/i]' },
+		{ name: 'Underline', key: 'U', openWith: '[u]', closeWith: '[/u]' },
+        { name: 'StrikeThrough', className: 'strike', key: 'K', openWith: '[s]', closeWith: '[/s]' },
+        {
+            name: 'Colors',
+            className: 'colors',
+            openWith: '[color=[![Color]!]]',
+            closeWith: '[/color]',
+            dropMenu: [ //violet|brown|||beige|teal||maroon|limegreen
+					{ name: 'Yellow', openWith: '[yellow]', closeWith: '[/yellow]', className: "col1-1" },
+                    { name: 'Gold', openWith: '[gold]', closeWith: '[/gold]', className: "col1-2" },
+					{ name: 'Orange', openWith: '[orange]', closeWith: '[/orange]', className: "col1-3" },
+					{ name: 'Red', openWith: '[red]', closeWith: '[/red]', className: "col1-4" },
+
+					{ name: 'Purple', openWith: '[purple]', closeWith: '[/purple]', className: "col2-1" },
+					{ name: 'Green', openWith: '[green]', closeWith: '[/green]', className: "col2-2" },
+					{ name: 'White', openWith: '[white]', closeWith: '[/white]', className: "col2-3" },
+					{ name: 'Gray', openWith: '[gray]', closeWith: '[/gray]', className: "col2-4" },
+					{ name: 'Black', openWith: '[black]', closeWith: '[/black]', className: "col3-1" },
+
+                    { name: 'Navy', openWith: '[navy]', closeWith: '[/navy]', className: "col3-2" },
+					{ name: 'Blue', openWith: '[blue]', closeWith: '[/blue]', className: "col3-3" },
+					{ name: 'Pink', openWith: '[pink]', closeWith: '[/pink]', className: "col3-4" }
+            ]
+        },
+        { separator: '---------------' },
+        { name: 'Left', openWith: '[left]', closeWith: '[/left]' },
+        { name: 'Center', openWith: '[center]', closeWith: '[/center]' },
+        { name: 'Right', openWith: '[right]', closeWith: '[/right]' },
+        { name: 'Direction', className: "textdir", openWith: '[(!(ltr|!|rtl)!)]', closeWith: '[/(!(ltr|!|rtl)!)]' },
+		{ separator: '---------------' },
+		{ name: 'Bulleted list', openWith: '[*]', closeWith: '[/*]', multiline: true, openBlockWith: '[list]\n', closeBlockWith: '\n[/list]' },
+		{ name: 'Numeric list', openWith: '[*]', closeWith: '[/*]', multiline: true, openBlockWith: '[list=[![Type:!:1]!],[![Starting number]!]]\n', closeBlockWith: '\n[/list=o]' },
+		{ name: 'List item', openWith: '[*] ', closeWith: '[/*]' },
+		{ separator: '---------------' },
+        { name: 'Link', key: 'L', className: 'urllink', openWith: '(!([url]|!|[url=\"[![Url:!:http://]!]\"])!)', closeWith: '[/url]' },
+        { name: 'Email', key: 'E', className: 'emaillink', openWith: '[mail=\"[![Email:!:mailto:]!]\"]', closeWith: '[/mail]', placeHolder: 'Text to display here...' },
+		{ separator: '---------------' },
+        {
+            name: 'Spellcheck', className: 'spellcheck',
+            dropMenu: [
+                { name: "English", beforeInsert: function (markitup) { miuSpellchecker(markitup, 'en'); } },
+                { name: "French", beforeInsert: function (markitup) { miuSpellchecker(markitup, 'fr'); } },
+                { name: "Dutch", beforeInsert: function (markitup) { miuSpellchecker(markitup, 'nl'); } },
+                 { name: "German", beforeInsert: function (markitup) { miuSpellchecker(markitup, 'de'); } }
+            ]
+        }
+    ]
+}
 
 mySettings = {
-
+        nameSpace:'alloptions',
 	    previewInWindow: 'width=700,height=550,resizable=yes,scrollbars=yes,directories=no,location=no,status=no,menubar=no',
     previewTemplatePath: '/scripts/templates/preview.html',
     markupSet: [
-        { name: 'Size', key: 'S', openWith: '[size=[![Text size]!]]', closeWith: '[/size]',
+        {
+            name: 'Size', className: 'fontsize', key: 'S', openWith: '[size=[![Text size]!]]', closeWith: '[/size]',
         		    dropMenu: [
-			{ name: 'Large', openWith: '[size=4]', closeWith: '[/size=4]' },
-			{ name: 'Small', openWith: '[size=3]', closeWith: '[/size=3]' },
-			{ name: 'x-Small', openWith: '[size=2]', closeWith: '[/size-2]' }
+			    { name: 'Large', openWith: '[size=4]', closeWith: '[/size=4]' },
+			    { name: 'Small', openWith: '[size=3]', closeWith: '[/size=3]' },
+			    { name: 'x-Small', openWith: '[size=2]', closeWith: '[/size-2]' }
 		    ]},
 		{ name: 'Bold', key: 'B', openWith: '[b]', closeWith: '[/b]' },
 		{ name: 'Italic', key: 'I', openWith: '[i]', closeWith: '[/i]' },
 		{ name: 'Underline', key: 'U', openWith: '[u]', closeWith: '[/u]' },
-        { name: 'StrikeThrough', key: 'K', openWith: '[s]', closeWith: '[/s]' },
+        { name: 'StrikeThrough', className: 'strike', key: 'K', openWith: '[s]', closeWith: '[/s]' },
         { name: 'Colors', 
             className: 'colors',
             openWith: '[color=[![Color]!]]',
@@ -1102,17 +1164,19 @@ mySettings = {
 
 		{ separator: '---------------' },
 		{ name: 'Image tags', classname: "imagetag", key: 'P', openWith: '(!([img]|!|[img][![Url:!:http://]!])!)', closeWith: '[/img]' },
-        { name: 'Upload Image', className: "upload", call: 'ShowUpload' },
+        { name: 'File Upload', className: "upload", call: 'ShowUpload' },
         { name: 'Browse Images', className: "browse", call: 'ShowImageBrowser' },
         { name: 'YouTube1', className: "youtube", openWith: '[video=\"[![YouTube video id]!]\"]', closeWith: '[/video]', placeHolder: "Video Description" },
 
 		{ separator: '---------------' },
-        { name: 'Link', key: 'L', openWith: '(!([url]|!|[url=\"[![Url:!:http://]!]\"])!)', closeWith: '[/url]' },
-        { name: 'Email', key: 'E', openWith: '[mail=\"[![Email:!:mailto:]!]\"]', closeWith: '[/mail]', placeHolder: 'Text to display here...' },
+        { name: 'Link', key: 'L', className: 'urllink', openWith: '(!([url]|!|[url=\"[![Url:!:http://]!]\"])!)', closeWith: '[/url]' },
+        { name: 'Email', key: 'E', className: 'emaillink', openWith: '[mail=\"[![Email:!:mailto:]!]\"]', closeWith: '[/mail]', placeHolder: 'Text to display here...' },
 		{ separator: '---------------' },
-		{ name: 'Quotes', openWith: '[quote]', closeWith: '[/quote]' },
+		{ name: 'Quotes', className: 'bbquote', openWith: '[quote]', closeWith: '[/quote]' },
 		{ name: 'Code', openWith: '', closeWith: '', multiline: true, openBlockWith: '[code]\n', closeBlockWith: '\n[/code]' },
-        {	name:'Table',
+        {
+            name: 'Table',
+            className: 'bbtable',
 			openWith:'[table]',
 			closeWith:'[/table]',
 			placeHolder:"[tr][(!(td|!|th)!)][/(!(td|!|th)!)][/tr]",

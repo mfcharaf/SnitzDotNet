@@ -4,7 +4,7 @@
     <span class="smallText">
         <asp:Literal ID="Rank" runat="server" EnableViewState="False"></asp:Literal>
         <asp:PlaceHolder ID="phAvatar" runat="server" EnableViewState="False"></asp:PlaceHolder>
-        <asp:Label ID="country" runat="server" EnableViewState="False"></asp:Label><br/>
+        <br/><asp:Label ID="country" runat="server" EnableViewState="False"></asp:Label><br/>
         <asp:Label ID="posts" runat="server" EnableViewState="False"></asp:Label><br />
     </span>
         <div class="userlinks">

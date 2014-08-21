@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GoogleAdCode.ascx.cs" Inherits="SnitzUI.UserControls.GoogleAdCode" %>
-<%@ Import Namespace="SnitzConfig" %>
 <div id="googleAdSide">
     <script type="text/javascript"><!--
     google_ad_client = "<%= AdCode %>";

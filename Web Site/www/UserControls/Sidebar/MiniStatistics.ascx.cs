@@ -31,72 +31,52 @@ using Snitz.Providers;
 public partial class MiniStatistics : System.Web.UI.UserControl
 {
     
-    private const string ProfileUrl = "<a href=\"/Account/profile.aspx?user={0}\" title=\"{1}\" rel=\"NoFollow\">{0}</a>";
+    private const string PROFILE_URL = "<a href=\"/Account/profile.aspx?user={0}\" title=\"{1}\" rel=\"NoFollow\">{0}</a>";
     
     private PageBase _page;
-    private StatsInfo stats;
-
-    private string NewMember
-    {
-        set
-        {
-            lblNewestMember.Text = value;
-        }
-    }
-
-    private string MemberStats
-    {
-        set
-        {
-            lblMemberStats.Text = value;
-        }
-    }
-
-    private string TopicStats
-    {
-        set
-        {
-            lblTopicStats.Text = value;
-        }
-    }
-
-    private string ActiveUsers
-    {
-        set { lblActiveUsers.Text = value;}
-    }
+    private StatsInfo _stats;
+    private int _memberCount;
+    private int _totalPostCount;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["CurrentProfile"] != null)
             Session.Remove("CurrentProfile");
-        _page = (PageBase) Page;
-        stats = Statistics.GetStatistics();
-        string newmemberlink = String.Format(ProfileUrl, stats.NewestMember, String.Format(webResources.lblViewProfile, stats.NewestMember));
-        NewMember = string.Format(webResources.lblMiniStatsNewMember, newmemberlink);
+        _page = (PageBase) Page;        
+        _stats = Statistics.GetStatistics();
+        if (_stats == null)
+            return;
+        PopulateData();
+    }
 
-        int memberCount = stats.MemberCount;
-        int totalPostCount = stats.TotalPostCount;
-
-        MemberStats = string.Format(webResources.lblMiniStatsMembers, Common.TranslateNumerals(memberCount), Common.TranslateNumerals(totalPostCount), GetLastPost(), GetLastPostAuthor());
-        TopicStats = string.Format(webResources.lblMiniStatsTopics, Common.TranslateNumerals(stats.ActiveTopicCount));
+    private void PopulateData()
+    {
         int activemembers = new SnitzMembershipProvider().GetNumberOfUsersOnline();
         int totalsessions = Convert.ToInt32(Application["SessionCount"]);
+        int dailySessions = Convert.ToInt32(Application["DailyCount"]);
+        var dSession = String.Format("{0} visitor(s) today", dailySessions);
         int anonusers = totalsessions - activemembers;
+
+        GetCounts();
+        string newmemberlink = String.Format(PROFILE_URL, _stats.NewestMember,String.Format(webResources.lblViewProfile, _stats.NewestMember));
+        
+        lblNewestMember.Text = string.Format(webResources.lblMiniStatsNewMember, newmemberlink);
+        lblMemberStats.Text = string.Format(webResources.lblMiniStatsMembers, Common.TranslateNumerals(_memberCount), Common.TranslateNumerals(_totalPostCount), GetLastPost(), GetLastPostAuthor());
+        lblTopicStats.Text = string.Format(webResources.lblMiniStatsTopics, Common.TranslateNumerals(_stats.ActiveTopicCount));
         lblActiveSessions.Text = extras.GuestLabel + Common.TranslateNumerals(anonusers);
-        ActiveUsers = string.Format(webResources.lblStatsMembersOnline,
-                                    String.Join(",", new SnitzMembershipProvider().GetOnlineUsers()));
+        lblActiveUsers.Text = string.Format(webResources.lblStatsMembersOnline, String.Join(",", new SnitzMembershipProvider().GetOnlineUsers())) + "<br/>" + dSession;
     }
 
     private string GetLastPost()
     {
-        if (stats.LastPost == null)
+        if (_stats.LastPost == null)
             return "";
         const string url = "<a href=\"/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}\">{2}</a>";
-        TopicInfo lastpost = stats.LastPost;
+        TopicInfo lastpost = _stats.LastPost;
 
         if (lastpost.LastPostDate != null)
         {
-            string lastpostDate = Common.TimeAgoTag(lastpost.LastPostDate.Value, ((PageBase)Page).IsAuthenticated, _page.Member != null ? _page.Member.TimeOffset : 0);
+            string lastpostDate = SnitzTime.TimeAgoTag(lastpost.LastPostDate.Value, _page.IsAuthenticated, _page.Member);
             return String.Format(url, lastpost.Id, lastpost.LastReplyId, lastpostDate);
         }
         return String.Empty;
@@ -104,8 +84,15 @@ public partial class MiniStatistics : System.Web.UI.UserControl
     
     private string GetLastPostAuthor() 
     {
-        var author = stats.LastPostAuthor;
-        return author == null ? String.Empty : String.Format(ProfileUrl, author.Username, String.Format(webResources.lblViewProfile,author.Username));
+        var author = _stats.LastPostAuthor;
+        return author == null ? String.Empty : String.Format(PROFILE_URL, author.Username, String.Format(webResources.lblViewProfile,author.Username));
     }
 
+    private void GetCounts()
+    {
+
+        _memberCount = _stats.MemberCount;
+        _totalPostCount = _stats.TotalPostCount;
+
+    }
 }

@@ -149,23 +149,14 @@ namespace SnitzUI.UserControls
 
                 header.Visible = true;
 
-                if (iconPh != null && forum.Type != 1)
-                {
-                    var img =
-                        GetForumIcon(HttpContext.Current.User.Identity.Name, LastVisitDateTime, (Enumerators.PostStatus)forum.Status,
-                                     forum.LastPostDate);
-                    //img.ApplyStyleSheetSkin(page);
-                    img.EnableViewState = false;
-                    iconPh.Controls.Add(img);
-                }
-
                 if (ldate != null)
                 {
-                    int offset = 0;
+                    var offset = 0.0;
                     if (Member != null)
                         offset = Member.TimeOffset;
                     if (forum.LastPostDate.HasValue && !(forum.LastPostDate.Value == DateTime.MinValue))
-                        ldate.Text = Common.TimeAgoTag(forum.LastPostDate.Value, IsAuthenticated, offset);
+                        ldate.Text = SnitzTime.TimeAgoTag(forum.LastPostDate.Value, IsAuthenticated, Member);
+                    //Common.TimeAgoTag(forum.LastPostDate.Value, IsAuthenticated, offset);
                 }
                 bool isForumModerator = Moderators.IsUserForumModerator(HttpContext.Current.User.Identity.Name, forum.Id);
 
@@ -279,25 +270,48 @@ namespace SnitzUI.UserControls
         private static Image GetForumIcon(string username, DateTime lasthere, Enumerators.PostStatus fStatus, DateTime? tLastPost)
         {
             var image = new Image { ID = "imgTopicIcon", EnableViewState = false };
+            image.SkinID = "FolderNew";
             string imagedir = Config.ImageDirectory;
             switch (fStatus)
             {
                 case Enumerators.PostStatus.Open:
                     image.AlternateText = webResources.lblOldPosts;
-                    image.ImageUrl = imagedir + "/message/foldernoposts.png";
+                    image.SkinID = "Folder";
+                    image.ImageUrl = imagedir + "/folders/foldernoposts.png";
                     if (username != "")
                         if (tLastPost > lasthere)
                         {
-                            image.ImageUrl = imagedir + "/message/foldernewposts.png";
+                            image.SkinID = "FolderNew";
+                            image.ImageUrl = imagedir + "/folders/foldernewposts.png";
                             image.AlternateText = webResources.lblNewPosts;
                         }
                     break;
                 default:
-                    image.ImageUrl = imagedir + "/message/folder_locked.png";
+                    image.SkinID = "FolderLocked";
+                    image.ImageUrl = imagedir + "/folders/folder_locked.png";
                     image.AlternateText = webResources.lblLockedForum;
                     break;
             }
             return image;
+        }
+
+        protected void repForum_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
+            {
+                var forum = (ForumInfo)e.Item.DataItem;
+                var iconPh = (PlaceHolder)e.Item.FindControl("Ticons");
+                if (iconPh != null && forum.Type != 1)
+                {
+                   var img =
+                        GetForumIcon(HttpContext.Current.User.Identity.Name, LastVisitDateTime, (Enumerators.PostStatus)forum.Status,
+                                     forum.LastPostDate);
+                    img.EnableViewState = false;
+                    img.ApplyStyleSheetSkin(this.Page);
+                    
+                    iconPh.Controls.Add(img);
+                }
+            }
         }
 
 

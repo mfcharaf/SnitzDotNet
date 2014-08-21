@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Web.Security;
-using Snitz.BLL;
-using Snitz.Entities;
-using Snitz.Providers;
-using SnitzConfig;
-
 
 
 namespace SnitzUI.Setup

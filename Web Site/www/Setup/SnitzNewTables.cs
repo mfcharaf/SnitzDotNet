@@ -9,7 +9,9 @@
                  "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_LASTUPDATED] [varchar](50)  NULL",
                  "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_AVATAR] [varchar](255)  NULL",
                  "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_THEME] [varchar](50)  NULL",
-                 "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_TIMEOFFSET] [int] NOT NULL DEFAULT 0",
+                 "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_TIMEOFFSET] [float] NOT NULL DEFAULT 0.0",
+                 "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_DAYLIGHTSAVING] [smallint] NOT NULL DEFAULT 0",
+                 "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_TIMEZONE] [varchar](250)  NULL",
                  "ALTER TABLE FORUM_MEMBERS ADD COLUMN [M_VALID] [int] NOT NULL DEFAULT 0" //,
                  //"ALTER TABLE FORUM_TOPICS ALTER COLUMN [T_MESSAGE] [text]",
                  //"ALTER TABLE FORUM_REPLY ALTER COLUMN [R_MESSAGE] [text]"
@@ -115,8 +117,7 @@
                                            "    [PublicGallery] [smallint] NOT NULL DEFAULT (0)," +
                                            "    [PMEmail] [smallint] NULL," +
                                            "    [PMReceive] [smallint] NULL," +
-                                           "    [PMLayout] [varchar](50) NULL," +
-                                           "    [TimeOffset] [int] NOT NULL DEFAULT (0)" +
+                                           "    [PMLayout] [varchar](50) NULL" +
                                            ") ON [PRIMARY]";
 
         const string FORUM_EVENTS = "CREATE TABLE [FORUM_EVENT](" +

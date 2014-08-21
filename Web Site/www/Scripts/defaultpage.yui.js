@@ -5,9 +5,9 @@
     });
     jQuery("abbr.timeago").timeago();
 });
-function bindForums() {
+function ForumParseBBCode(catid) {
 
-    $(".bbcode").each(function () {
+    $(".bbcode" + catid).each(function () {
         $(this).html(parseBBCode(parseEmoticon($(this).text(), pagetheme)));
     });
     jQuery("abbr.timeago").timeago();
@@ -160,6 +160,7 @@ function expandAll() {
     }
 
 }
+
 //Sender: Reference to the CollapsiblePanelExtender Client Behavior  
 //eventArgs: Empty EvenArgs  
 function onExpand(sender, eventArgs) {
@@ -167,31 +168,33 @@ function onExpand(sender, eventArgs) {
     //to get ExpandControlID.  
     var expander = $get(sender.get_ExpandControlID());
 
-    //Using RegEx to replace pnlCustomer with hdnCustId.  
-    //hdnCustId is a hidden field located within pnlCustomer.  
-    //pnlCustomer is a Panel, and Panels are not Naming Container.  
-    //So hdnCustId will have the same ID as pnlCustomer but with   
-    //'hdnCustId' at the end insted of pnlCustomer.  
-    var custId = $get(sender.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
+    //Using RegEx to replace Cat_HeaderPanel with hdnCatId.  
+    //hdnCatId is a hidden field located within Cat_HeaderPanel.  
+    //Cat_HeaderPanel is a Panel, and Panels are not Naming Containers.  
+    //So hdnCatId will have the same ID as Cat_HeaderPanel but with   
+    //'hdnCatId' at the end insted of Cat_HeaderPanel.  
+    var catId = $get(sender.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
     //Issue AJAX call to PageMethod, and send sender   
     //object as userContext Parameter.  
-    PageMethods.GetForums(custId, OnSucceeded, OnFailed, sender);
+    PageMethods.GetForums(catId, GetForumsSucceeded, GetForumsFailed, sender);
 
 }
 // Callback function invoked on successful   
 // completion of the page method.  
-function OnSucceeded(result, userContext, methodName) {
-    //$get('progress').style.visibility = 'hidden';
+function GetForumsSucceeded(result, userContext, methodName) {
     //userContext is sent while issue AJAX call  
     //it is an instance of CollapsiblePanelExtender client Behavior.  
     //Used to get the collapsible element and sent its innerHTML   
-    //to the returned result.             
-    userContext.get_element().innerHTML = result;
-    bindForums();
+    //to the returned result.   
+    var catId = $get(userContext.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
+    //set the class for the code parser
+
+    userContext.get_element().innerHTML = result.replace(/bbcode/g, "bbcode" + catId);
+    //call userTheme code parser
+    ForumParseBBCode(catId);
 }
 // Callback function invoked on failure   
 // of the page method.  
-function OnFailed(error, userContext, methodName) {
-    //$get('progress').style.visibility = 'hidden';
+function GetForumsFailed(error, userContext, methodName) {
     alert(error.get_message());
 }

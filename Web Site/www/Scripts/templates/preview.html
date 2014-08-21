@@ -9,6 +9,14 @@
     <link href="/css/Light/shThemeDefault.css" rel="stylesheet" />
     
     <script src="/scripts/topic.js"></script>
+
+</head>
+    <body onblur="self.focus();" onload="self.focus();">
+        <div class="forumtable" style="margin:6px;width:auto;">
+            <div class="mContent bbcode">
+                <!-- content -->
+            </div>
+        </div>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".bbcode").each(function () {
@@ -23,17 +31,8 @@
                 'vb vbnet               /Scripts/syntax/shBrushVb.min.js',
                 'xml xhtml xslt html    /Scripts/syntax/shBrushXml.min.js'
             );
+            SyntaxHighlighter.all();
         });
     </script>
-</head>
-    <body onblur="self.focus();" onload="self.focus();">
-        <div class="forumtable" style="margin:6px;width:auto;">
-            <div class="mContent bbcode">
-                <!-- content -->
-            </div>
-        </div>
-        <script type="text/javascript">
-            SyntaxHighlighter.all();
-        </script>
     </body>
 </html>

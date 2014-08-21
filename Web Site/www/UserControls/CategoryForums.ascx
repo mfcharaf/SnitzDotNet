@@ -2,48 +2,47 @@
 <%@ Import Namespace="SnitzCommon" %>
 <%@ Import Namespace="SnitzConfig" %>
 
-<asp:Repeater ID="repForum" runat="server" OnItemDataBound="RepForumItemDataBound" EnableViewState="False">
+<asp:Repeater ID="repForum" runat="server" OnItemDataBound="RepForumItemDataBound" EnableViewState="False" OnItemCreated="repForum_ItemCreated">
                 <HeaderTemplate>
                     <table id="defaultTopicTable" style="table-layout: fixed; width: 100%;">
                     <tr style="padding: 0px;">
                         <td style="padding: 0px;vertical-align: top;" colspan="3">
-                            <table class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%;
-                                margin: 0px; table-layout: fixed;" >
+                            <table class="forumtable" cellpadding="3" cellspacing="0" style="width: 100%; margin: 0px; table-layout: fixed;" >
                                 <thead runat="server" ID="fTableHeader">
                                 <tr>
-                                <th class="tableheader" style="width:20px;"></th>
-                                <th class="tableheader nowrap" style="width:auto;">
+                                <th class="tableheader iconCol" ></th>
+                                <th class="tableheader nowrap forumCol">
                                     <asp:Label ID="LF" runat="server" Text="<%$ Resources:webResources, lblForum %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center nowrap" style="width:60px;">
+                                <th class="tableheader nowrap countCol">
                                     <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopics %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center nowrap" style="width:60px;">
+                                <th class="tableheader nowrap countCol">
                                     <asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblPosts %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader center" style="width:180px;">
+                                <th class="tableheader lastpostCol">
                                     <asp:Label ID="Label3" runat="server" Text="<%$ Resources:webResources, lblLastPost %>" EnableViewState="False"></asp:Label>
                                 </th>
-                                <th class="tableheader" style="width: 50px"></th>
+                                <th class="tableheader buttonCol"></th>
                             </tr>
                             </thead>
                 </HeaderTemplate>
                 <ItemTemplate>
                     <tr class="row">
-                        <td valign="top" width="20px">
-                            <asp:PlaceHolder ID="Ticons" runat="server" EnableViewState="False"></asp:PlaceHolder>
+                        <td valign="top" class="iconCol">
+                            <asp:PlaceHolder  ID="Ticons" runat="server" EnableViewState="False"></asp:PlaceHolder>
                         </td>
-                        <td valign="top" runat="server" id="linkCol" width="*">
+                        <td valign="top" runat="server" id="linkCol" class="forumCol">
                             <asp:HyperLink CssClass="forumlink bbcode" NavigateUrl='<%# String.Format("/Content/Forums/forum.aspx?FORUM={0}",Eval("Id")) %>' runat="server" ID="forumLink"><%# Eval("Subject") %></asp:HyperLink><br />
                             <span class="smallText bbcode"><%# Eval("Description") %></span>
                         </td>
-                        <td class="nowrap" align="center" valign="top" runat="server" id="tCount" width="60px">
+                        <td class="nowrap countCol" align="center" valign="top" runat="server" id="tCount">
                             <%# Common.TranslateNumerals(Eval("TopicCount"))%>
                         </td>
-                        <td class="nowrap" style="text-align: center" valign="top" runat="server" id="pCount" width="60px">
+                        <td class="nowrap countCol" style="text-align: center" valign="top" runat="server" id="pCount">
                             <%# Common.TranslateNumerals(Eval("PostCount"))%>&nbsp;
                         </td>
-                        <td class="smallText" style="overflow: hidden; text-overflow: ellipsis;white-space: nowrap;" runat="server" id="lastpost" width="160px">
+                        <td class="smallText lastpostCol" runat="server" id="lastpost">
                             <asp:HyperLink ID="hypTopic" runat="server" Visible='<%# (Eval("LastPostTopicId") != null) %>' NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}",Eval("LastPostTopicId")) %>' ToolTip='<%# Eval("LastPostSubject") %>'>
                                 <span class="bbcode"><%# Eval("LastPostSubject") %></span><br /></asp:HyperLink>
                             <asp:Literal ID="lDate" runat="server" EnableViewState="False" />
@@ -56,7 +55,7 @@
                                 ImageAlign="Bottom" runat="server" AlternateText='<%$ Resources:webResources, lblLastPostJump %>'
                                 ToolTip='<%$ Resources:webResources, lblLastPostJump  %>' EnableViewState="False" /></a>
                         </td>
-                        <td id="adminBtn" runat="server" valign="top" width="50px">
+                        <td id="adminBtn" runat="server" valign="top" class="buttonCol">
                             <asp:HyperLink ID="hypNewTopic" runat="server" Text="<%$ Resources:webResources, lblNewTopic %>"
                                 ToolTip="<%$ Resources:webResources, lblNewTopic %>" EnableViewState="False"></asp:HyperLink>
                             <asp:ImageButton ID="ForumEdit" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'

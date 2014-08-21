@@ -11,10 +11,9 @@
 
 <%@ Page AutoEventWireup="True" Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master"
     Title="" Inherits="Homepage" Culture="auto" UICulture="auto" CodeBehind="default.aspx.cs" ValidateRequest ="false"
-    MaintainScrollPositionOnPostback="true" enableEventValidation="false" viewStateEncryptionMode ="Never" %>
+    MaintainScrollPositionOnPostback="true" EnableSessionState="true" enableEventValidation="false" viewStateEncryptionMode ="Never" %>
 
 <%@ MasterType TypeName="BaseMasterPage" %>
-<%@ Import Namespace="SnitzConfig" %>
 <%@ Register TagPrefix="stats" TagName="Statistics" Src="~/UserControls/Statistics.ascx" %>
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 <%@ Register TagPrefix="asp" Namespace="SnitzUI.UserControls" Assembly="Snitz.UI" %>
@@ -32,6 +31,7 @@
     </script>    
     <script src="/scripts/common.js" type="text/javascript"></script>
     <script src="/scripts/defaultpage.min.js" type="text/javascript"></script>
+    <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
 </asp:Content>
 
 <asp:Content ID="cph" runat="server" ContentPlaceHolderID="CPHL">
@@ -44,7 +44,6 @@
         </asp:DropDownList>
     </div>
 </asp:Content>
-
 <asp:Content ID="cpm" runat="server" ContentPlaceHolderID="CPM">
     <asp:Repeater OnItemDataBound="CategoryDataListItemDataBound" runat="server" ID="repCatDL" EnableViewState="False">
         <HeaderTemplate>
@@ -119,8 +118,7 @@
     <snitz:SideBar runat="server" ID="sidebar" Show="Poll,Events,Ads,Active,Rss" />
 </asp:Content>
 
-<asp:Content ID="C3" runat="server" ContentPlaceHolderID="CPF1">
-    <br style="line-height: 0.4em;" />
-    <stats:Statistics ID="Statistics1" runat="server" Visible='<%# Config.ShowStats %>' EnableViewState="False" />
+<asp:Content ID="C3" runat="server" ContentPlaceHolderID="CPF1" >
+    <stats:Statistics ID="Statistics1" runat="server" EnableViewState="False" />
 </asp:Content>
 <asp:Content ID="cpf" runat="server" ContentPlaceHolderID="CPF2"></asp:Content>

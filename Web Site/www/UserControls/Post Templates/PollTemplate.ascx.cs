@@ -14,16 +14,7 @@ public partial class PollTemplate : UserControl
 
     #region Public Properties
     public object Post { get; set; }
-    public int PollId
-    {
-        get
-        {
-            if (ViewState["PollID"] == null)
-                return Config.ActivePoll;
-            return (int)ViewState["PollID"];
-        }
-        set { ViewState["PollID"] = value; }
-    }
+    public int PollId { get; set; }
 
     public bool PollEnabled
     {
@@ -44,17 +35,20 @@ public partial class PollTemplate : UserControl
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        PollFormView.Visible = (Config.ActivePoll > 0 || ViewState["PollID"] != null);
         if (PollId == 0) return;
+        PollFormView.Visible = (Config.ActivePoll > 0 ||PollId > 0);
+        
         TopicInfo topic = (TopicInfo)Post;
         
         var polls = new List<PollInfo> { Polls.GetTopicPoll(PollId) };
         PollFormView.DataSource = polls;
         PollFormView.DataBind();
-
+        Literal user = (Literal)PollFormView.FindControl("postedBy");
+        if (user != null)
+            user.Text = "Asked by " + topic.AuthorProfilePopup;
         buttonBar.Post = Post;
-        popuplink.Text = String.Format("<a href='{0}' title='{1}'>{2}</a>", topic.AuthorProfileLink, String.Format(Resources.webResources.lblViewProfile,topic.AuthorName), topic.AuthorName);
-        AuthorProfile.AuthorId = topic.AuthorId;
+        //popuplink.Text = String.Format("<a href='{0}' title='{1}'>{2}</a>", topic.AuthorProfileLink, String.Format(Resources.webResources.lblViewProfile,topic.AuthorName), topic.AuthorName);
+        //AuthorProfile.AuthorId = topic.AuthorId;
         msgBody.Text = topic.Message.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
 
     }
@@ -120,9 +114,9 @@ public partial class PollTemplate : UserControl
                     }
                 }
             }
-            string path = Page.Request.FilePath;
-            if (path.ToLower().Contains("topic.aspx"))
-                viewCommentsPanel.Visible = false;
+            //string path = Page.Request.FilePath;
+            //if (path.ToLower().Contains("topic.aspx"))
+            //    viewCommentsPanel.Visible = false;
         }
     }
     #endregion

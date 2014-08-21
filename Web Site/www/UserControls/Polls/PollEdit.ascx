@@ -5,10 +5,11 @@
     <asp:Panel ID="Panel2" runat="server" GroupingText="Question">
         <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="Id"
             DefaultMode="Edit" OnDataBound="PollDatabound"
-            EnableModelValidation="True">
+            EnableModelValidation="True" OnItemUpdating="DetailsView1_ItemUpdating" OnItemUpdated="DetailsView1_ItemUpdated">
             <Fields>
                 <asp:TemplateField HeaderText="Poll Question">
                     <EditItemTemplate>
+                        <asp:HiddenField runat="server" ID="pollID" Value='<%# Bind("Id") %>'/>
                         <asp:TextBox ID="EditPollDisplayText" runat="server" Text='<%# Bind("DisplayText") %>' Columns="75" ValidationGroup="EditPollQuestion"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="EditPollDisplayText"
                             Display="Dynamic" ErrorMessage="You must enter text for the poll question"></asp:RequiredFieldValidator>

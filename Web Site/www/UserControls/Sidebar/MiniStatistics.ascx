@@ -10,7 +10,6 @@
 --%>
 
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="MiniStatistics" Codebehind="MiniStatistics.ascx.cs" EnableTheming="true" EnableViewState="False" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <div id="statsControl" class="sideBox">
     <asp:Panel ID="Stats_HeaderPanel" runat="server" CssClass="category statsPanelHeader" style="cursor: pointer;" EnableViewState="False">
         <div class="heading">

@@ -7,9 +7,11 @@
     try {
         $('#' + updPostId).click(function() {
             var img = $get(imgTagId).innerHTML;
+            
             var pos = $('#caretP').val();
             $('#' + messageId).focus();
             setCaretPosition($get(messageId), pos);
+            
             $.markItUp({ replaceWith: img });
             $find('mpUpload').hide();
             return false;

@@ -60,7 +60,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            int totalmembers = PrivateMessages.GetMemberCount(Session["_searchfor"] != null ? Session["_searchfor"].ToString() : String.Empty);
+            int totalmembers = Snitz.BLL.PrivateMessages.GetMemberCount(Session["_searchfor"] != null ? Session["_searchfor"].ToString() : String.Empty);
             _pages = Common.CalculateNumberOfPages(totalmembers, 11);
             SetupPager();
 
@@ -109,7 +109,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
                 cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
             }
 
-            var profile = PrivateMessages.GetPreferences(currentUser.UserName);
+            var profile = Snitz.BLL.PrivateMessages.GetPreferences(currentUser.UserName);
             _layout = profile == null ? "double" : profile.PMLayout;
 
             if (String.IsNullOrEmpty(_layout))
@@ -145,7 +145,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             }
             Members.DataSource = Snitz.BLL.Members.GetAllMembers("",CurrentPage,15);
             Members.DataBind();
-            int totalmembers = PrivateMessages.GetMemberCount(searchfor);
+            int totalmembers = Snitz.BLL.PrivateMessages.GetMemberCount(searchfor);
             _pages = Common.CalculateNumberOfPages(totalmembers, 11);
 
             numPages.Text = _pages.ToString();
@@ -173,7 +173,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         {
             MembershipUser currentUser = Membership.GetUser(username);
             if (currentUser != null && currentUser.ProviderUserKey != null)
-                grdOutBox.DataSource = PrivateMessages.GetSentMessages((int)currentUser.ProviderUserKey);
+                grdOutBox.DataSource = Snitz.BLL.PrivateMessages.GetSentMessages((int)currentUser.ProviderUserKey);
             grdOutBox.DataBind();
         }
 
@@ -181,7 +181,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         {
             MembershipUser currentUser = Membership.GetUser(username);
             if (currentUser != null && currentUser.ProviderUserKey != null)
-                grdInBox.DataSource = PrivateMessages.GetMessages((int)currentUser.ProviderUserKey);
+                grdInBox.DataSource = Snitz.BLL.PrivateMessages.GetMessages((int)currentUser.ProviderUserKey);
             grdInBox.DataBind();
         }
 
@@ -190,7 +190,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             MembershipUser currentUser = Membership.GetUser(username);
             string layout = rblLayout.SelectedValue;
             if (currentUser != null)
-                PrivateMessages.SavePreferences(username, rblEnabled.SelectedValue, rblNotify.SelectedValue, layout);
+                Snitz.BLL.PrivateMessages.SavePreferences(username, rblEnabled.SelectedValue, rblNotify.SelectedValue, layout);
 
             lblResult.Text = Resources.PrivateMessage.PmOptionsSaved;
 
@@ -203,7 +203,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             MembershipUser currentUser = Membership.GetUser(username);
             if (currentUser != null)
             {
-                var userprefs = PrivateMessages.GetPreferences(currentUser.UserName);
+                var userprefs = Snitz.BLL.PrivateMessages.GetPreferences(currentUser.UserName);
                 PMViews.ActiveViewIndex = 3;
                 rblLayout.SelectedValue = _layout;
                 if (userprefs != null)
@@ -313,7 +313,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
                         Mail = profile.PMEmail == null ? 0 : profile.PMEmail.Value
                     };
 
-                    PrivateMessages.SendPrivateMessage(pm);
+                    Snitz.BLL.PrivateMessages.SendPrivateMessage(pm);
                 }
 
             }
@@ -327,7 +327,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         {
 
             LinkButton lnk = (LinkButton)sender;
-            PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+            PrivateMessageInfo pm = Snitz.BLL.PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
             DisplayMessage(pm);
             ButtonReply.CommandArgument = lnk.CommandArgument;
             ButtonReplyQuote.CommandArgument = lnk.CommandArgument;
@@ -339,7 +339,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected void ViewSentMessage(object sender, EventArgs e)
         {
             var lnk = (LinkButton)sender;
-            PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+            PrivateMessageInfo pm = Snitz.BLL.PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
             pm.FromMember = Snitz.BLL.Members.GetMember(pm.FromMemberId);
 
             if (pm.FromMember.ProfileData != null && pm.FromMember.ProfileData.Gravatar == 1)
@@ -362,7 +362,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             pmTitle.Text = pm.FromMember.Title;
             pmCountry.Text = pm.FromMember.Country;
             pmPostcount.Text = pm.FromMember.PostCount.ToString();
-            pmDate.Text = Common.TimeAgoTag(pm.Sent, true, pm.FromMember.TimeOffset);
+            pmDate.Text = SnitzTime.TimeAgoTag(pm.Sent, true, pm.FromMember);
             pmSubject.Visible = true;
             pmSubject.Text = pm.Subject;
             pmBody.Text = pm.Message.ParseTags();
@@ -386,7 +386,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
                         if (dataKey != null)
                         {
                             var currentPmId = dataKey.Value;
-                            PrivateMessages.DeletePrivateMessage((int)currentPmId);
+                            Snitz.BLL.PrivateMessages.DeletePrivateMessage((int)currentPmId);
                         }
                     }
             }
@@ -407,7 +407,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
                         if (dataKey != null)
                         {
                             var currentPMId = dataKey.Value;
-                            PrivateMessages.RemoveFromOutBox((int)currentPMId);
+                            Snitz.BLL.PrivateMessages.RemoveFromOutBox((int)currentPMId);
                         }
                     }
             }
@@ -469,7 +469,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             PmMessage.Visible = true;
             PmMessage.GroupingText = "Reply To Message";
             ImageButton lnk = (ImageButton)sender;
-            var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+            var pm = Snitz.BLL.PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
             //DisplayMessage(pm);
             PMViews.ActiveViewIndex = 1;
             SetButtonDisplay();
@@ -488,7 +488,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             PmMessage.Visible = true;
             PmMessage.GroupingText = "Reply To Message";
             ImageButton lnk = (ImageButton)sender;
-            var pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+            var pm = Snitz.BLL.PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
             //DisplayMessage(pm);
             PMViews.ActiveViewIndex = 1;
             SetButtonDisplay();
@@ -505,7 +505,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
         protected void ButtonDelete_Click(object sender, ImageClickEventArgs e)
         {
             ImageButton lnk = (ImageButton)sender;
-            PrivateMessages.DeletePrivateMessage(Convert.ToInt32(lnk.CommandArgument));
+            Snitz.BLL.PrivateMessages.DeletePrivateMessage(Convert.ToInt32(lnk.CommandArgument));
             ScriptManager.RegisterStartupScript(this, GetType(), "Startup", _redirectionScript, true);
         }
 
@@ -514,7 +514,7 @@ namespace SnitzUI.UserControls.PrivateMessaging
             PmMessage.Visible = true;
             PmMessage.GroupingText = "Forward Message";
             ImageButton lnk = (ImageButton)sender;
-            PrivateMessageInfo pm = PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
+            PrivateMessageInfo pm = Snitz.BLL.PrivateMessages.GetMessage(Convert.ToInt32(lnk.CommandArgument));
             //DisplayMessage(pm);
             PMViews.ActiveViewIndex = 1;
             SetButtonDisplay();
@@ -576,6 +576,26 @@ namespace SnitzUI.UserControls.PrivateMessaging
                 ImageButton ib = e.Item.FindControl("sendpm") as ImageButton;
                 var scriptManager = ScriptManager.GetCurrent(Page);
                 if (scriptManager != null && ib != null) scriptManager.RegisterPostBackControl(ib);
+            }
+        }
+
+        protected void OutboxBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Image imgRead = e.Row.Cells[0].FindControl("pmImgReadx") as Image;
+                Image imgUnread = e.Row.Cells[0].FindControl("pmImgUnReadx") as Image;
+                var pm = (PrivateMessageInfo)e.Row.DataItem;
+                if (pm.Read == 1)
+                {
+                    if (imgRead != null) imgRead.Visible = true;
+                    if (imgUnread != null) imgUnread.Visible = false;
+                }
+                else
+                {
+                    if (imgRead != null) imgRead.Visible = false;
+                    if (imgUnread != null) imgUnread.Visible = true;
+                }
             }
         }
     }

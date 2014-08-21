@@ -28,8 +28,8 @@
 <br />
 <asp:MultiView runat="server" ID="PMViews" ActiveViewIndex="0">
     <asp:View runat="server" ID="view1">
-        <asp:Panel ID="InBox" runat="server" GroupingText="InBox">
-            <asp:GridView ID="grdInBox" runat="server" EmptyDataText="You have no Private Messages in your Inbox"
+        <asp:Panel ID="InBox" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmInbox %>">
+            <asp:GridView ID="grdInBox" runat="server" EmptyDataText='<%# String.Format("{0} {1}",Resources.PrivateMessage.PmEmpty,Resources.PrivateMessage.PmInbox) %>'
                 AutoGenerateColumns="False" EnableModelValidation="True" OnRowDataBound="InboxBound"
                 CellPadding="4" GridLines="None"
                 HorizontalAlign="Center" CssClass="forumtable" DataKeyNames="Id">
@@ -42,20 +42,20 @@
                         </ItemTemplate>
                         <HeaderStyle Width="40px" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Subject">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblSubject %>">
                         <ItemTemplate>
                             <asp:LinkButton CssClass="pmLnk" ID="LinkButton1" Text='<%# Bind("Subject") %>' runat="server" CommandArgument='<%# Bind("Id") %>'
                                 OnClick="ViewMessage"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="From">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblFrom %>">
                         <ItemTemplate>
                             <asp:Label ID="Label1" runat="server" Text='<%# Bind("FromMemberName") %>'></asp:Label>
                         </ItemTemplate>
                         <HeaderStyle Width="150px" />
                     </asp:TemplateField>
 
-                    <asp:BoundField DataField="Sent" HeaderText="Date" DataFormatString="{0:dd MMM yyyy HH:mm}"
+                    <asp:BoundField DataField="Sent" HeaderText="<%$ Resources:webResources, lblDate %>" DataFormatString="{0:dd MMM yyyy HH:mm}"
                         HtmlEncode="False">
                         <ItemStyle HorizontalAlign="Center" />
                         <HeaderStyle Width="150px" />
@@ -78,44 +78,44 @@
                 <SelectedRowStyle ForeColor="#333333" />
             </asp:GridView>
             <br />
-            <asp:LinkButton ID="btnDelMessage" runat="server" Text="Delete Selected"
+            <asp:LinkButton ID="btnDelMessage" runat="server" Text="<%$ Resources:webResources, btnDelete %>"
                 OnClick="btnDelMessage_Click" />
         </asp:Panel>
         <br />
-        <asp:Panel ID="OutBox" runat="server" GroupingText="Sent Items">
-            <asp:GridView ID="grdOutBox" runat="server" AutoGenerateColumns="False" EmptyDataText="You have no Private Messages in your Sent Items"
-                EnableModelValidation="True" OnRowDataBound="InboxBound" CellPadding="4" ForeColor="#333333"
+        <asp:Panel ID="OutBox" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmSentItems %>">
+            <asp:GridView ID="grdOutBox" runat="server" AutoGenerateColumns="False" EmptyDataText='<%# String.Format("{0} {1}",Resources.PrivateMessage.PmEmpty,Resources.PrivateMessage.PmSentItems) %>'
+                EnableModelValidation="True" OnRowDataBound="OutboxBound" CellPadding="4" ForeColor="#333333"
                 GridLines="None" DataKeyNames="Id" CssClass="forumtable">
                 <AlternatingRowStyle CssClass="altrow" />
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:Image ID="pmImgRead" runat="server" SkinID="pmRead" Visible="false"></asp:Image>
-                            <asp:Image ID="pmImgUnread" runat="server" SkinID="pmUnread" Visible="false"></asp:Image>
+                            <asp:Image ID="pmImgReadx" runat="server" SkinID="pmRead" Visible="false"></asp:Image>
+                            <asp:Image ID="pmImgUnreadx" runat="server" SkinID="pmUnread" Visible="false"></asp:Image>
                         </ItemTemplate>
                         <HeaderStyle Width="20px" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Subject">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblSubject %>">
                         <ItemTemplate>
-                            <asp:LinkButton CssClass="pmLnk" ID="LinkButton1" Text='<%# Bind("Subject") %>' runat="server" CommandArgument='<%# Bind("Id") %>'
+                            <asp:LinkButton CssClass="pmLnk" ID="LinkButton1x" Text='<%# Bind("Subject") %>' runat="server" CommandArgument='<%# Bind("Id") %>'
                                 OnClick="ViewSentMessage"></asp:LinkButton>
                         </ItemTemplate>
                         <HeaderStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="To">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblTo %>">
                         <ItemTemplate>
                             <asp:Label ID="Label1" runat="server" Text='<%# Bind("ToMemberName") %>'></asp:Label>
                         </ItemTemplate>
                         <HeaderStyle Width="150px" HorizontalAlign="Left" />
                     </asp:TemplateField>
-                    <asp:BoundField DataField="Sent" DataFormatString="{0:dd MMM yyyy HH:mm}" HeaderText="Date"
+                    <asp:BoundField DataField="Sent" DataFormatString="{0:dd MMM yyyy HH:mm}" HeaderText="<%$ Resources:webResources, lblDate %>"
                         HtmlEncode="False">
                         <ItemStyle HorizontalAlign="Center" />
                         <HeaderStyle Width="150px" />
                     </asp:BoundField>
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:CheckBox ID="cbxDel" runat="server" CssClass="pmRemove" />
+                            <asp:CheckBox ID="cbxDelx" runat="server" CssClass="pmRemove" />
                         </ItemTemplate>
                         <HeaderStyle Width="40px" />
                     </asp:TemplateField>
@@ -128,7 +128,7 @@
                 <SelectedRowStyle ForeColor="#333333" />
             </asp:GridView>
             <br />
-            <asp:LinkButton ID="btnRemMessage" runat="server" Text="Remove Selected"
+            <asp:LinkButton ID="btnRemMessage" runat="server" Text="<%$ Resources:PrivateMessage, PmRemove %>"
                 OnClick="btnRemMessage_Click" />
         </asp:Panel>
     </asp:View>
@@ -138,7 +138,7 @@
                 AssociatedControlID="tbxRecipient"></asp:Label>
             <asp:TextBox ID="tbxRecipient" runat="server"></asp:TextBox>&nbsp;
            
-            <asp:Label ID="lblMultiple" runat="server" Text="Separate multiple recipients using ; "></asp:Label>
+            <asp:Label ID="lblMultiple" runat="server" Text="Separate multiple recipients using ; (semicolon)"></asp:Label>
             <br />
             <asp:Label ID="lblSubject" runat="server" Text="Subject"
                 AssociatedControlID="tbxSubject"></asp:Label>
@@ -183,34 +183,32 @@
     <asp:View runat="server" ID="view4">
         <asp:Panel ID="PmOptions" runat="server" DefaultButton="btnPmOptions"
             CssClass="pmoptions clearfix">
-            <asp:Panel ID="Panel1" runat="server" GroupingText="Enable/Disable Private Messages">
-                <%--<asp:Label ID="Label1" runat="server" Text="private messages are currently turned OFF"></asp:Label>.<br />
-                <asp:Literal ID="Label2" runat="server" Text="You may turn it <b>ON</b> below.  By doing so you will no longer be able to receive private messages"></asp:Literal><br />--%>
+            <asp:Panel ID="Panel1" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmOptGroup1 %>">
                 <asp:RadioButtonList ID="rblEnabled" runat="server">
-                    <asp:ListItem Value="1">Enable private messages</asp:ListItem>
-                    <asp:ListItem Value="0">Disable private messages</asp:ListItem>
+                    <asp:ListItem Value="1" Text='<%$ Resources:PrivateMessage, PmEnable %>'></asp:ListItem>
+                    <asp:ListItem Value="0" Text='<%$ Resources:PrivateMessage, PmDisable %>'></asp:ListItem>
                 </asp:RadioButtonList>
                 <br />
-                <asp:Label ID="Label3" runat="server" Text="You may turn Private Messages back on by returning to this page"></asp:Label>
+                <asp:Label ID="Label3" runat="server" Text="<%$ Resources:PrivateMessage, PmOptGroup1Text %>"></asp:Label>
             </asp:Panel>
-            <asp:Panel ID="Panel2" runat="server" GroupingText="Email Notification">
-                <asp:Label ID="Label4" runat="server" Text="can send you an e-mail notification whenever you receive a private message."></asp:Label>
-                <asp:Label ID="Label6" runat="server" Text="Please select your preference."></asp:Label>
+            <asp:Panel ID="Panel2" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmOptGroup2 %>">
+                <asp:Label ID="Label4" runat="server" Text="<%$ Resources:PrivateMessage, PmNote %>"></asp:Label>
+                <asp:Label ID="Label6" runat="server" Text="<%$ Resources:PrivateMessage, PmPrefLbl %>"></asp:Label>
                 <asp:RadioButtonList ID="rblNotify" runat="server">
-                    <asp:ListItem Value="1">Receive e-mail notification of private messages</asp:ListItem>
-                    <asp:ListItem Value="0">Do not receive notification</asp:ListItem>
+                    <asp:ListItem Value="1" Text="<%$ Resources:PrivateMessage, PmNotify1 %>"></asp:ListItem>
+                    <asp:ListItem Value="0" Text="<%$ Resources:PrivateMessage, PmNotify2 %>"></asp:ListItem>
                 </asp:RadioButtonList>
             </asp:Panel>
-            <asp:Panel ID="Panel3" runat="server" GroupingText="InBox/OutBox Preferences">
-                <asp:Label ID="Label5" runat="server" Text="Please select your layout preference."></asp:Label>
+            <asp:Panel ID="Panel3" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmOptGroup3 %>">
+                <asp:Label ID="Label5" runat="server" Text="<%$ Resources:PrivateMessage, PmPrefLbl %>"></asp:Label>
                 <asp:RadioButtonList ID="rblLayout" runat="server">
-                    <asp:ListItem Value="single">Single page layout :  both inbox and outbox appear on the same page</asp:ListItem>
-                    <asp:ListItem Value="double">2 page layout :  inbox and outbox appear on seperate pages</asp:ListItem>
-                    <asp:ListItem Value="none">No Outbox :  No outbox. Sent messages are not saved</asp:ListItem>
+                    <asp:ListItem Value="single" Text="<%$ Resources:PrivateMessage, PmLayout1 %>"></asp:ListItem>
+                    <asp:ListItem Value="double" Text="<%$ Resources:PrivateMessage, PmLayout2 %>"></asp:ListItem>
+                    <asp:ListItem Value="none" Text="<%$ Resources:PrivateMessage, PmLayout3 %>"></asp:ListItem>
                 </asp:RadioButtonList>
             </asp:Panel>
             <asp:Label ID="lblResult" runat="server" Text=""></asp:Label><br />
-            <asp:LinkButton ID="btnPmOptions" Text="<%$ Resources:webResources,btnUpdate %>" runat="server" OnClick="SaveOptions"
+            <asp:LinkButton ID="btnPmOptions" Text="<%$ Resources:webResources,btnUpdate %>" runat="server" OnClick="<%$ Resources:webResources, btnSave %>"
                 AlternateText="Save Options" />
         </asp:Panel>
     </asp:View>

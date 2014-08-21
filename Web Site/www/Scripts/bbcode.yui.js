@@ -221,8 +221,8 @@ function textToHtmlCB(mstr, m1, m2, m3, m4, offset, string) {
             // and treat the text following [url] as a URL
             return "<a class=\"postlink\" target=\"" + urltarget + "\" href=\"";
         case "file":
-            opentags.push(new taginfo_t(m2, "\"><img src=\"/style/images/attach.png\"/></a>"));
-            return "<a title=\"open attachment\" href=\"/download.ashx?file=";
+            opentags.push(new taginfo_t(m2, "\"><img src=\"/images/attach.png\"/></a>"));
+            return "Attachment: <a title=\"download " + m3 + "\" href=\"";
         case "q":
         case "quote":
 

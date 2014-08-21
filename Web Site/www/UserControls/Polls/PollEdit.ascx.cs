@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Snitz.Entities;
 using SnitzConfig;
@@ -74,6 +75,19 @@ namespace SnitzUI.Admin
                 Order = order
             };
             Snitz.BLL.Polls.UpdatePollAnswer(choice);
+        }
+
+        protected void DetailsView1_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
+        {
+            TextBox text = (TextBox)DetailsView1.FindControl("EditPollDisplayText");
+            TextBox order = (TextBox)DetailsView1.FindControl("TextBox1");
+            HiddenField id = (HiddenField) DetailsView1.FindControl("pollID");
+            Snitz.BLL.Polls.UpdateTopicPoll(Convert.ToInt32(id.Value),text.Text,new SortedList<int, string>());
+        }
+
+        protected void DetailsView1_ItemUpdated(object sender, DetailsViewUpdatedEventArgs e)
+        {
+            Response.Redirect("/admin/default.aspx?action=pollconfig");
         }
 
     }
