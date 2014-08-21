@@ -1,0 +1,43 @@
+
+<%@ Register
+    Assembly="AjaxControlToolkit"
+    Namespace="AjaxControlToolkit"
+    TagPrefix="ajaxtoolkit" %>
+<%@ Register TagPrefix="ajaxtoolkit" Namespace="SnitzUI.UserControls" Assembly="Snitz.UI" %>
+
+<ajaxtoolkit:CollapsiblePanelExtender runat="server"
+    SkinID="StatsSkin"
+    ExpandControlID="Stats_HeaderPanel"
+    CollapseControlID="Stats_HeaderPanel"
+    TargetControlID="Stats_Panel"
+    ExpandDirection="Vertical"
+    ExpandedImage="images/collapse.png"
+    ExpandedText="Collapse"
+    CollapsedImage="images/expand.png"
+    CollapsedText="Expand"
+    ImageControlID="statsExpand"/>
+
+<ajaxtoolkit:CollapsiblePanelEx runat="server"
+    SkinID="CatExpandSkin"
+    ExpandControlID="Cat_HeaderPanel"
+    CollapseControlID="Cat_HeaderPanel"
+    TargetControlID="Cat_Panel"
+    ExpandDirection="Vertical"
+    ExpandedImage="images/collapse.png"
+    ExpandedText="Collapse"
+    CollapsedImage="images/expand.png"
+    CollapsedText="Expand"
+    ImageControlID="catExpand"/>   
+
+<ajaxtoolkit:CollapsiblePanelExtender runat="server"
+    SkinID="StickyExpandSkin"
+    ExpandControlID="Sticky_HeaderPanel"
+    CollapseControlID="Sticky_HeaderPanel"
+    TargetControlID="StickyPanel"
+    ExpandDirection="Vertical"
+    ExpandedImage="images/collapse_blue.png"
+    ExpandedText="Collapse"
+    CollapsedImage="images/expand_blue.png"
+    CollapsedText="Expand"
+    ImageControlID="stickyExpand"/> 
+   

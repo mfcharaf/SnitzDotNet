@@ -1,0 +1,39 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+
+<asp:GridView SkinID="bwfilterGrid" runat="server" AutoGenerateColumns="False" DataKeyNames="Id"
+    Width="80%" CssClass="ForumList" style="margin:auto;">
+    <Columns>
+        <asp:BoundField DataField="Badword" HeaderText="BadWord to Filter" >
+            <ItemStyle Width="40%" Wrap="False" />
+        </asp:BoundField>
+        <asp:BoundField DataField="Replace" HeaderText="Replace With" >
+            <ItemStyle Wrap="False" />
+        </asp:BoundField>
+        <asp:CommandField ItemStyle-Width="40px" ButtonType="Image" ShowEditButton="True" EditImageUrl="images/admin/write.png" InsertVisible="False" CancelImageUrl="images/admin/cancel.png" UpdateImageUrl="images/admin/ok.png" DeleteImageUrl="images/admin/trash.png" ShowDeleteButton="True" />
+    </Columns>
+    <HeaderStyle CssClass="category" />
+</asp:GridView>
+<asp:GridView SkinID="namefilterGrid"  CellPadding="2" runat="server" AutoGenerateColumns="False" Width="80%" style="margin:auto;"  CssClass="ForumList" DataKeyNames="Id">
+    <Columns>
+        <asp:BoundField DataField="Name" HeaderText="Username to Filter" >
+            <ItemStyle Wrap="False" HorizontalAlign="Left" />
+        </asp:BoundField>
+        <asp:CommandField ItemStyle-Width="40px" ButtonType="Image" CancelImageUrl="images/admin/cancel.png" DeleteImageUrl="images/admin/trash.png"
+            EditImageUrl="images/admin/write.png" UpdateImageUrl="images/admin/ok.png" ShowEditButton="True" ShowDeleteButton="True" />
+    </Columns>
+    <HeaderStyle CssClass="category" />
+</asp:GridView>

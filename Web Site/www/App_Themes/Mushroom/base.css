@@ -1,0 +1,214 @@
+﻿html {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+body {
+    background-color: #FFC751;
+    color: #CC0000;
+    margin: 0px;
+    padding: 0px;
+    line-height: 1.4em;
+}
+
+#aspnetForm {
+    width: 100%;
+    margin: 0px;
+}
+
+#LoginDIV {
+    float: left;
+    width: 30%;
+    margin-left: -30%;
+    background-color: #ff8800;
+}
+
+#LogoDIV {
+    /*width: 25%;*/
+    margin-left: 0%;
+    float: left;
+}
+
+#TitleDIV {
+    margin: auto;
+    margin-top: 15px;
+    float: right;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #ff8800;
+}
+
+#MenuDIV {
+    display: block;
+    background-color: #FF6600;
+    padding-top: 1px;
+    margin: 1px 0px 1px 0px;
+    width: auto;
+    height: 24px;
+    border-top: 1px solid #ff8800;
+    border-bottom: 1px solid #FF3300;
+    clear: both;
+}
+
+#mainDIV {
+    margin: auto;
+    width: 98%;
+}
+
+#subheadDIV {
+}
+
+#breadcrumbDIV {
+    line-height: 22px;
+    height: 22px;
+    margin: 1px;
+    background-color: #ff8800;
+    border: 1px solid #FF6600;
+    border-radius: 5px;
+    padding: 0px;
+}
+
+
+#HdrDIV {
+    margin: 1px;
+}
+
+#header, #upheader, #brwsheader {
+    width: 100%;
+    background: #FF6600;
+    height: 26px;
+    vertical-align: middle;
+}
+
+#RightHdrDIV {
+    margin-left: 0px;
+    float: right;
+    width: 49%;
+    text-align: right;
+}
+
+#LeftHdrDIV {
+    float: left;
+    width: 49%;
+}
+
+#contentDIV {
+    width: auto;
+    margin: 1px;
+    clear: both;
+}
+
+#MessageList {
+    width: 100%;
+}
+
+#contentfooterDIV {
+    margin: 1px;
+    width: auto;
+}
+
+#pagefooterDIV {
+    width: 100%;
+    margin: auto;
+    background-color: transparent;
+}
+
+#LoginBox {
+    float: right;
+}
+
+#LoginBox .content {
+    display: block;
+    border: 0px;
+}
+
+#maincontainer {
+    margin: 5px 20px 5px 20px;
+    border: 3px solid #FF6600;
+    border-radius: 5px;
+    background-color: #FFBB2F;
+}
+
+#maincontainer:after {
+    content: ".";
+    display: block;
+    height: 0px;
+    clear: both;
+    visibility: hidden;
+}
+
+#topsection {
+    background: #FFBB2F;
+}
+
+#topsection h1 {
+    margin: 0;
+    padding-top: 15px;
+    border-radius: 5px;
+}
+
+#contentwrapper {
+    width: 100%;
+    float: left;
+    margin-right: -325px;
+}
+
+#rightcolumn {
+    float: right;
+    width: 320px;
+}
+
+#footer {
+    clear: both;
+    width: 100%;
+}
+
+#PostOptionsDIV {
+    padding-right: 5px;
+    text-align: center;
+}
+
+#PagerPanel {
+    margin-top: 3px;
+}
+
+.breadcrumb span {
+    line-height: 22px;
+    vertical-align: top;
+}
+
+.clearmargin {
+    margin-right: 0px;
+}
+
+.hide {
+    display: none;
+}
+
+.rightmargin {
+    margin-right: 325px;
+}
+
+.show {
+    display: block;
+}
+
+.innertube {
+    margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+    margin-top: 5px;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.daydetail {
+    border: 1px solid #FF6600;
+    border-top: 0px;
+    width: 35%;
+    float: left;
+}

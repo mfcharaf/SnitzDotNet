@@ -1,0 +1,350 @@
+﻿a:link, a:active {
+    color: #FF6600;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #FF3300;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #FF4400;
+}
+
+/* links*/
+
+#header a, #upheader a, #brwsheader a {
+    color: gold;
+    font-weight: bolder;
+}
+
+a.forumlink {
+    text-decoration: none;
+    color: #FF2200;
+}
+
+a.forumlink:visited {
+    color: #FF3300;
+}
+
+a.forumlink:hover {
+    text-decoration: underline;
+}
+
+a.active:visited {
+    color: #FF1100;
+}
+
+.poweredText a, a.poweredText {
+    color: #FF1100;
+    font-size: 0.6em;
+}
+
+.PageTitle {
+    font-weight: bold;
+    color: gold;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.smallText {
+    font-Size: 0.8em;
+}
+
+.categorylink, th.categorylink, td.categorylink {
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+/* button style */
+a.Snitzbutton {
+    /* Sliding right image */
+    background: transparent url(images/buttons/button_right.png) no-repeat scroll top right;
+    display: block;
+    float: left;
+    height: 30px; /* CHANGE THIS VALUE ACCORDING TO IMAGE HEIGHT */
+    margin-right: 6px;
+    padding-right: 20px; /* CHENGE THIS VALUE ACCORDING TO RIGHT IMAGE WIDTH */
+    /* FONT PROPERTIES */
+    text-decoration: none;
+    color: gold;
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-size: 12px;
+    font-weight: bold;
+}
+
+a.Snitzbutton span {
+    /* Background left image */
+    background: transparent url(images/buttons/button_left.png) no-repeat;
+    display: block;
+    line-height: 18px; /* CHANGE THIS VALUE ACCORDING TO BUTTONG HEIGHT */
+    padding: 7px 0 5px 18px;
+    white-space: nowrap;
+}
+
+a.Snitzbutton:hover span {
+    text-decoration: none;
+    color: gold;
+}
+
+.bbcode h1 {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-decoration: none;
+    line-height: 1em;
+    color: red;
+}
+
+.bbcode h2 {
+    font-weight: bold;
+    font-size: 0.9em;
+    text-decoration: none;
+    line-height: 1em;
+    color: #ff3300;
+}
+
+.bbcode h3 {
+    font-weight: bold;
+    font-size: 0.8em;
+    padding-left: 4px;
+    text-decoration: none;
+    line-height: 0.8em;
+    color: #FF6600;
+}
+
+.tableheader, th.tableheader, .tableheader th, td.tableheader {
+    color: #FF4400;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+.tableheader a {
+    color: yellow;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cattitle {
+    font-weight: bold;
+    color: gold;
+}
+
+.row td.ForumHeaderRow {
+    color: yellow;
+}
+
+#LoginBox .content {
+    font-size: small;
+    color: gold;
+}
+
+#contentfooterDIV .statsPanelHeader a {
+    color: #FF6600;
+}
+
+.breadcrumb a {
+    color: #FF4400;
+    text-decoration: none;
+}
+
+.FooterTable {
+    font-size: 10px;
+    color: #FF0000;
+}
+
+.poweredText {
+    color: #ff6600;
+    font-size: 0.6em;
+}
+
+.statsPanelHeader {
+    font-weight: bold;
+}
+
+.tooltip {
+    font-size: small;
+}
+
+/* Topic+Reply */
+.topicPrev a {
+    color: gold;
+}
+
+.topicNext a {
+    color: gold;
+}
+
+.TopicSubject {
+    color: White;
+}
+
+.topictitle {
+    font-weight: bold;
+}
+
+.usertitle {
+    font-weight: bold;
+    color: #FF6600;
+}
+
+.ReplyDiv {
+    color: #FF6600;
+}
+
+.AltReplyDiv {
+    color: #FF3300;
+}
+
+.editedDIV {
+    color: #990033;
+    font-size: 0.8em;
+}
+
+.sigDIV {
+    font-size: smaller;
+}
+
+.usrlabel {
+    font-weight: bold;
+}
+
+blockquote.quoteMessage {
+    font-size: smaller;
+}
+
+blockquote.quoteMessage span {
+    font-style: normal;
+}
+/*code window*/
+.codebox {
+    font: 0.8em Monospace;
+    color: black;
+}
+
+.codebox a {
+    color: #ff5500;
+}
+
+.codehead {
+    font-size: 1.1em;
+    font-weight: normal;
+    color: gold;
+}
+
+.regBoxHeader {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Member Search */
+.SearchLinks {
+    font-size: 1.1em;
+}
+
+.SearchLinks a:visited {
+    color: #FF6600;
+    text-decoration: none;
+}
+
+.SearchLinks a:link,
+.SearchLinks a:visited {
+    background: #FFBB2F;
+    padding: 1px 3px 1px 3px;
+    margin-right: 2px;
+}
+
+.QRHeader {
+    color: gold;
+    font-weight: bold;
+}
+
+span.moderation {
+    font-weight: bolder;
+    color: Red;
+}
+
+.Poll_DisplayText {
+    font-weight: normal;
+}
+
+.Poll_TotalVotes {
+    font-style: italic;
+}
+
+.snitzpager {
+    color: #FF6600;
+}
+
+.leftColumn .smallText {
+    color: #FF6600;
+}
+
+.leftColumn .profilelnk {
+    color: red;
+}
+
+.buttonbar {
+    color: white;
+}
+
+.pmtitle {
+    color: #000000;
+}
+
+/* Pagerlinks */
+.snitzpager {
+    margin: 6px 0px 6px 0px;
+}
+
+.snitzpager a.pagelink,
+.snitzpager a.pagelinkfirst,
+.snitzpager a.pagelinklast,
+.snitzpager .currentpagelink,
+.snitzpager .pagecount {
+    text-decoration: none;
+    background: transparent;
+    border: 1px solid #FF6600;
+    padding: 1px 3px 1px 3px;
+    margin-right: 2px;
+}
+
+.snitzpager .pagecount {
+    margin-right: 5px;
+}
+
+.snitzpager a.pagelinkfirst,
+.snitzpager a.pagelinklast {
+    background: #FFaa00;
+}
+
+.snitzpager .currentpagelink {
+    background: #FFaa00;
+    border: 1px solid red;
+    color: red;
+}
+
+.snitzpager a.pagelink,
+.snitzpager a.pagelinkfirst,
+.snitzpager a.pagelinklast {
+    text-decoration: none;
+    color: #FF6600;
+}
+
+.snitzpager .pagelink:hover,
+.snitzpager a.pagelinkfirst:hover,
+.snitzpager a.pagelinklast:hover {
+    background: #FF6600;
+    color: #FF1100;
+}
+
+.loggedIn a {
+    color: gold;
+}
+    .topicSplit label, .topicSplit input{font-size: 0.9em;display: inline-block;width: 120px;margin-bottom: 10px;}
+    .topicSplit input[type="text"]{width: 400px;}
+    .topicSplit input, .topicSplit select{border: 1px solid #ff6600;}
+    .topicSplit select{max-width: 200px;}
+    .topicSplit label{text-align: right;padding-right: 20px;}
+    

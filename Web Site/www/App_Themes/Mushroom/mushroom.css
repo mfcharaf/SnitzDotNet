@@ -1,0 +1,1106 @@
+table, tr, td, th {
+    border-collapse: collapse;
+}
+
+b {
+    font-size: 105%;
+}
+
+img {
+    border: 0px;
+}
+
+fieldset {
+    margin-top: 20px;
+    padding: 10px 8px 10px;
+    border: 1px solid #FF6600;
+    border-radius: 6px;
+}
+
+legend {
+    padding: 2px 4px;
+    background-color: #ffaa00; /* For better legibility against the box-shadow */
+    border: 1px solid #FF6600;
+    border-radius: 3px;
+}
+
+fieldset > legend {
+    float: left;
+    margin-top: -28px;
+}
+
+fieldset > legend + * {
+    clear: both;
+}
+
+hr {
+    height: 0px;
+    border: dotted #FF6600 0px;
+    border-top-width: 1px;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-decoration: none;
+    line-height: 120%;
+    color: #FF2200;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 1em;
+    text-decoration: none;
+    line-height: 1em;
+    color: #FF3300;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 0.9em;
+    padding-left: 4px;
+    text-decoration: none;
+    line-height: 1em;
+    color: #FF6600;
+}
+
+p {
+    font-size: 0.9em;
+    padding: 0px 4px 0px 4px;
+}
+
+input, textarea, select {
+    color: #000000;
+    border: 1px solid #FF6600;
+    border-radius: 3px;
+}
+input[type="checkbox"]{ border: 0px;}
+input[type="radio"]{ border: 0px;}
+input {
+    text-indent: 2px;
+}
+
+#contentfooterDIV .forumtable {
+    border: 0px none;
+}
+
+#contentfooterDIV .statsPanelHeader a:hover {
+    text-decoration: none;
+    background: none;
+}
+
+span.topicPageLnk {
+    border: 1px solid #FF6600;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.allReadButton {
+    background: url(images/admin/book.png) no-repeat;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    border: none;
+}
+
+.AspNet-Login {
+    margin: auto;
+}
+.AspNet-FormView-Data{ padding: 4px;}
+img.captchaImage {
+    border: 1px solid #FF6600;
+    margin: 2px;
+}
+
+/*classes*/
+.faqCat label {
+    display: inline-block;
+    width: 140px;
+}
+
+.breadcrumb {
+    height: auto;
+    width: auto;
+    background-color: transparent;
+}
+
+.PageTitle {
+    float: left;
+    margin-left: 5px;
+    margin-top: 8px;
+    line-height: 120%;
+}
+
+.row td {
+    background-color: #FFff99;
+    border-bottom: 1px solid #FF6600;
+    border-right: 1px solid #FF6600;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.altrow td {
+    background-color: #FFff66;
+    border-bottom: 1px solid #FF6600;
+    border-right: 1px solid #FF6600;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.row td.CatHeaderRow {
+    background-color: #FF6600;
+    border: 0px;
+}
+
+.row td.ForumHeaderRow {
+    background-color: #FF8800;
+    border: 0px;
+}
+
+.row td.iconCol, .altrow td.iconCol {
+
+    vertical-align: top;
+}
+
+.row td.buttonCol, .altrow td.buttonCol {
+    min-width: 110px;
+    width: 110px;
+    max-width: 110px;
+    vertical-align: top;
+}
+
+.row td.subjectCol, .altrow td.subjectCol {
+    overflow: hidden;
+    max-width: 300px;
+    width: 300px;
+}
+
+.emptyrow {
+    text-align: center;
+}
+
+.category {
+    background-color: #FF6600;
+    height: 24px;
+}
+
+.tableheader, th.tableheader, .tableheader th, td.tableheader {
+    background-color: #FF7700;
+}
+th.iconCol,td.iconCol{    
+    max-width: 26px;
+    width: 26px;}
+th.forumCol,td.forumCol{    
+    width: auto;}
+th.subjCol,td.subjCol{    
+    width: auto;}
+th.authorCol,td.authorCol{    
+    max-width: 100px;
+    width: 60px;
+}
+th.userCol,td.userCol{    
+    max-width: 120px;
+    width: 100px;
+}
+th.countCol,td.countCol{    
+    max-width: 60px;
+    width: 45px;}
+th.postcountCol,td.postcountCol{    
+    max-width: 80px;
+    width: 65px;}
+th.lastpostCol,td.lastpostCol{  
+    overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  
+    max-width: 200px;
+    width: 140px;
+}
+th.buttonCol,td.buttonCol{    
+    max-width: 50px;
+    width: 48px;}
+th.dateCol,td.dateCol{    
+    max-width: 140px;white-space: normal;
+    width: 110px;}
+th.countryCol,td.countryCol{    
+    max-width: 100px;
+    width: 80px;}
+
+th.rankCol,td.rankCol{    
+    width: auto;}
+td.countCol{
+    text-align: center;}
+td.authorCol{    
+    text-align: center;
+}
+div.category {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+td.category, .row td.categorylink {
+    background-color: #FF6600;
+    height: 24px;
+    padding-top: 4px;
+}
+
+.FooterTable {
+    padding: 5px 10px 0px 10px;
+    border-top: 1px solid #FF8800;
+    border-bottom: 1px solid #FF1100;
+    background-color: #FF6600;
+}
+
+.FooterTable table {
+    table-layout: auto;
+}
+
+#statsControl {
+    width: 100%;
+    margin: auto;
+}
+
+#contentfooterDIV .statsPanel {
+    background-color: #FFffaa;
+    padding: 5px;
+    overflow: hidden;
+    border: 1px solid #FF6600;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top: none;
+}
+
+.categorybuttons {
+    float: right;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.statsPanelHeader {
+    background-color: #FF6600;
+    height: 30px;
+    vertical-align: text-bottom;
+    overflow: hidden;
+    border: 1px solid #FF3300;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.statsPanelHeader img {
+    margin: 0px;
+}
+
+.stickytable {
+    background-color: #FFffaa;
+    border: 1px solid #FF6600;
+    width: 100%;
+    display: inline-table;
+    table-layout: fixed;
+}
+
+tr.rowsticky {
+    border-bottom: 1px solid #FF6600;
+}
+
+.rowsticky td {
+    background-color: #FFffaa;
+}
+
+.rowsticky td.iconCol {
+    max-width: 20px;
+    width: 20px;
+    vertical-align: top;
+}
+
+.rowsticky td.buttonCol {
+    min-width: 110px;
+    width: 110px;
+    max-width: 110px;
+    vertical-align: top;
+}
+
+.profilelnk img {
+    vertical-align: text-bottom;
+}
+
+.tooltip {
+    border: 1px solid #FF6600;
+    background-color: White;
+    padding: 5px;
+    max-height: 350px;
+    overflow: auto;
+    width: 650px;
+}
+
+/* Topic+Reply */
+.TopicDiv .AspNet-FormView {
+    width: 100%;
+    margin: 0px;
+    padding: 0;
+    /*background-color: #FFFF66;
+    border: 1px solid #FF6600;*/
+    border-radius: 5px;
+}
+.poll-content,.topic-content{background-color: #FFFF66;}
+.topic-content{ border-radius: 4px;border: 1px solid #ff6600;}
+.TopicDiv .AspNet-FormView div.AspNet-FormView-Header {
+    width: 100%;
+    margin: 0px;
+}
+
+.TopicDiv .AspNet-FormView-Data {
+
+}
+
+.topicHeader {
+    width: 100%;
+    background-color: #FF6600;
+}
+
+.topicPrev {
+    float: left;
+    width: 20%;
+    padding: 3px;
+}
+
+.topicNext {
+    float: right;
+    width: auto;
+    padding: 3px;
+}
+
+.topicPrev a {
+    text-decoration: none;
+}
+
+.topicNext a {
+    text-decoration: none;
+}
+
+#replyHeader {
+    width: 100%;
+    text-align: right;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.TopicSubject {
+    width: 100%;
+    border: 1px solid #FF6600;
+    background-color: #FF6600;
+    overflow: hidden;
+}
+
+.topictitle {
+    margin: 8px;
+    line-height: 1.3em;
+}
+
+.usertitle {
+    line-height: 1.2em;
+}
+
+.ReplyDiv {
+    width: 100%;
+    border: 1px solid #FF6600;
+    background-color: #efefef;
+    overflow: hidden !important;
+    overflow: hidden;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    float: left;
+    border-radius: 4px;
+}
+
+.AltReplyDiv {
+    width: 100%;
+    border: 1px solid #FF6600;
+    background-color: White;
+    overflow: hidden !important;
+    overflow: hidden;
+    float: left;
+}
+
+.leftColumn {
+    float: left;
+    min-height: 160px;
+    width: 181px;
+    padding: 3px;
+    height: auto !important;
+    height: 160px;
+}
+
+.MessageDIV {
+    position: relative;
+    padding: 1px;
+    min-height: 250px;
+    height: auto !important;
+    height: 185px;
+    border-left: 1px solid #FF6600;
+    margin-left: 187px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+.mImg {
+    max-width: 99%;
+    width: auto !important;
+    width: 99%;
+}
+
+.mContent {
+    min-height: 120px;
+    height: auto !important;
+    height: 120px;
+    width: 99% !important;
+    width: 95%;
+    padding: 4px;
+}
+
+.msgIcons {
+    padding: 1px;
+    display: inline;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+}
+
+.buttonbar {
+    height: 20px;
+    border-bottom: 1px solid #ff3300;
+    width: 100%;
+    background-color: #ff8800;
+    padding-top: 2px;
+    border-top-right-radius: 4px;
+}
+
+.buttonbarImg span {
+    height: auto;
+    display: inline;
+    vertical-align: bottom;
+}
+
+.buttonbarImg {
+    height: auto;
+    display: inline;
+    vertical-align: bottom;
+    float: right;
+}
+
+.buttonbarTxt {
+    float: left;
+    vertical-align: text-top;
+}
+
+.buttonbarImg img {
+    width: 16px;
+}
+
+.TopIcon {
+    padding: 1px;
+    float: right;
+}
+
+.TopIcon img {
+    width: 16px;
+}
+
+.editedDIV span {
+}
+
+.sigDIV {
+    bottom: 0;
+    height: auto;
+    margin-bottom: 3px;
+    width: 100%;
+    vertical-align: baseline;
+}
+
+.modalPopup {
+    background-color: #ffffdd;
+    border-width: 1px;
+    border-style: solid;
+    border-color: Gray;
+    padding: 5px;
+    width: 350px;
+    height: auto;
+}
+
+
+.avatar {
+    border: 1px solid #FF6600;
+    width: 80px;
+    height: 80px;
+}
+
+.usrlabel {
+    width: 100px;
+    display: inline-block;
+    line-height: 1em;
+}
+
+blockquote.quoteMessage {
+    margin: 1.5em 1em;
+    padding: .5em 1em;
+    background-color: #FFFF96;
+}
+
+blockquote.quoteMessage span {
+    display: block;
+}
+
+blockquote.quoteMessage span:before {
+    content: url(images/smallquote_lt.png);
+}
+
+blockquote.quoteMessage span:last-child:after {
+    content: url(images/smallquote_rt.png);
+    display: block;
+    float: right;
+}
+
+/*code window*/
+.codebox {
+    position: relative;
+    display: block;
+    margin: 5px 20px 5px 20px;
+    padding-top: 0px;
+    padding-bottom: 1px;
+    border: 1px solid #FF6600;
+    line-height: 1em;
+    overflow: auto;
+    width: 90% !important;
+    min-height: 100px;
+    min-width: 200px;
+    max-height: 250px;
+    height: auto !important;
+    height: 100px;
+    background-color: #ffffff;
+}
+
+.stickytable div {
+    max-width: 400px;
+}
+
+.codehead {
+    margin: 0;
+    margin-bottom: 0px;
+    padding-left: 8px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #808080;
+    line-height: 1.2em;
+    background-color: #CCCCCC;
+    position: relative;
+}
+
+.regBox {
+    width: 75%;
+    position: relative;
+    margin: auto;
+    border: 1px solid #FF6600;
+    background-color: White;
+}
+
+.regBoxHeader {
+    background-color: #FF6600;
+    height: 22px;
+}
+
+/* Member Search */
+.SearchLinks {
+    margin-top: 3px;
+    text-align: center;
+    padding: 10px;
+}
+
+.SearchFilters {
+    background-color: #FF6600;
+    border: 1px gold solid;
+    margin-top: 3px;
+    width: 98%;
+    padding: 10px;
+}
+
+#postForm {
+    height: 400px;
+    width: auto;
+    margin: auto;
+    padding: 3px;
+    height: auto !important;
+    width: 75%;
+    border: 1px solid #FF6600;
+    border-radius: 5px;
+}
+
+#postForm label {
+    display: inline-block;
+    width: 140px;
+    float: left;
+}
+
+#postForm input {
+    border: solid 1px #FF6600;
+    width: 70%;
+    margin: 0px 0 2px 10px;
+}
+
+#postForm select {
+    border: solid 1px #FF6600;
+    min-width: 60px;
+    width: 60px;
+    width: auto !important;
+    margin: 0px 0 10px 10px;
+}
+
+#postForm input[type="image"] {
+    clear: both;
+    margin-left: 0px;
+    width: 88px;
+    height: 20px;
+}
+
+#postForm input[type="checkbox"] {
+    clear: both;
+    width: 12px;
+    height: 12px;
+    border: 0px;
+    float: left;
+}
+
+#postForm span.cbx label {
+    display: block;
+    width: 350px;
+    float: left;
+}
+
+#container:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+#emoticons {
+    width: 125px;
+    top: 0px;
+    height: auto;
+    margin: auto;
+}
+
+#Editor {
+    float: left;
+}
+
+.QRBox {
+    margin: 0px;
+}
+
+.QRBox #qrcontentwrapper {
+    border-style: none solid solid solid;
+    border-color: #FF6600;
+    border-width: 1px;
+    background-color: White;
+}
+
+.QRHeader {
+    background-color: #FF6600;
+    height: 22px;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    border-color: #FF6600;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.QRLeft {
+    width: 150px;
+    background-color: White;
+    float: left;
+}
+
+.QRRight {
+    margin-top: 16px;
+    vertical-align: top;
+    float: left;
+    width: 80%;
+}
+
+.QRFooter {
+    clear: left;
+    width: 100%;
+    text-align: center;
+    padding: 2px 0;
+}
+
+textarea.QRMsgArea {
+    border: 1px solid #FF6600;
+    width: 97% !important;
+    width: 90%;
+}
+
+.profBtn img {
+    padding: 1px;
+}
+
+input.profBtn {
+    padding: 1px;
+}
+
+.NoBorder {
+    border: 0px;
+}
+
+#ContactFieldset label {
+    display: inline-block;
+    width: 140px;
+    float: left;
+}
+
+#ContactFieldset input, #ContactFieldset textarea {
+    border: solid 1px #FF6600;
+    width: 70%;
+    margin: 0px 0 10px 10px;
+}
+
+.seperator {
+    line-height: 0.4em;
+}
+
+.sideBox {
+    background-color: white;
+    border: 1px solid #FF6600;
+    table-layout: fixed;
+    width: 100%;
+    border-top-style: none;
+    border-radius: 5px;
+}
+
+.forumtable {
+    background-color: #f8f8f8;
+    padding: 0px;
+    border-collapse: collapse;
+    border: 1px solid #FF6600;
+    table-layout: fixed;
+    width: 100%;
+    border-radius: 5px;
+}
+
+table.smallCal {
+    table-layout: auto;
+}
+
+.smallCal table {
+    table-layout: auto;
+}
+
+.ovHidden {
+    overflow: hidden;
+}
+
+.shadow {
+    -moz-box-shadow: 3px 3px 4px #000;
+    -webkit-box-shadow: 3px 3px 4px #000;
+    box-shadow: 3px 3px 4px #000;
+    /* For IE 8 */
+    /*-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";*/
+    /* For IE 5.5 - 7 */
+    /*filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');*/
+}
+
+.table-bottom {
+    text-align: left;
+    margin: 0px auto;
+    padding: 0px;
+    border: 0;
+}
+
+.table-bottom-left {
+    float: left;
+    max-width: 50%;
+}
+
+.table-bottom-right {
+    margin: 0;
+    float: right;
+    width: auto;
+    text-align: right;
+}
+
+.table-bottom-footer {
+    clear: both;
+}
+
+.PostForm {
+    background-color: White;
+    margin: 0 auto;
+}
+
+/* Private Messaging CSS */
+.pmbuttonbar {
+    height: 20px;
+    border-bottom: 1px solid #ff3300;
+    width: 100%;
+    padding-top: 2px;
+}
+
+.PMContainer {
+    width: 80%;
+    padding: 4px;
+    margin: auto;
+    background-color: #ff8800;
+    border-radius: 5px;
+}
+
+.pm-inner {
+    background-color: #ff6600;
+    padding: 3px;
+    border: 1px solid yellow;
+    border-radius: 3px;
+}
+
+.pmbutton {
+    height: 28px;
+    background-color: #ff8800;
+    margin-bottom: 3px;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.popub-bkg {
+    position: absolute;
+    background: #666;
+    filter: alpha(opacity=80);
+    -moz-opacity: .8;
+    opacity: .8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    display: none;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.pmbutton input {
+    vertical-align: middle;
+    border: 1px solid #ff3300;
+    margin: 1px;
+    border-radius: 3px;
+}
+
+.pmbutton input:hover {
+    border: 1px solid yellow;
+}
+
+div.pm-new-message {
+    padding: 3px;
+}
+
+.pm-new-message label {
+    width: 60px;
+    display: inline-block;
+}
+
+.pm-new-message input {
+    margin: 2px;
+    margin-left: 8px;
+}
+.pm-message-header{background-color:#FFC751;padding:3px;}
+
+div.mini {
+    width: 77%;
+    display: inline-block;
+    margin: auto;
+}
+
+.pmMsgArea {
+    width: 77%;
+    height: 80px;
+}
+
+textarea.pmMsgArea {
+    border: 1px solid #000;
+    width: 98%;
+}
+
+.pm-new-message .markItUpEditor {
+    min-height: 50px !important;
+}
+
+.pmoptions fieldset {
+    font-size: smaller;
+}
+
+.pm-footer {
+    margin-top: 2px;
+    height: 22px;
+    background-color: #ff8800;
+    vertical-align: middle;
+    padding: 2px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.memberModalPopup {
+    margin: 0 auto;
+    width: 360px;
+}
+
+.announceBox {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    border: 3px ridge red;
+    background-color: #FFBB2F;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+/* Blog Template */
+.blogList {
+    background-color: #FFFF8C;
+    border: 1px solid #ff6600;
+    border-radius: 5px;
+    padding: 4px;
+    margin-top: 14px;
+    max-height: 400px;
+}
+
+.blog-date {
+    width: 60px;
+    height: 70px;
+    background-color: white;
+    float: left;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #ff6600;
+    box-shadow: 3px 3px 4px #000;
+}
+
+.blog-day {
+    color-rendering: black;
+    height: 50px;
+    vertical-align: middle;
+    font-size: x-large;
+}
+
+.blog-day span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.blog-month {
+    width: 100%;
+    background-color: #ff6600;
+    color: gold;
+    height: 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.blog-content {
+    margin-left: 80px;
+}
+
+.blogheader {
+    background-color: #eee;
+    border: 1px solid #ff4400;
+    width: 99%;
+    margin-bottom: 3px;
+    font-size: smaller;
+    border-radius: 5px;
+}
+
+.blogmessage {
+    background-color: whitesmoke;
+    border: 1px solid #ff6600;
+    min-height: 100px;
+    width: 99%;
+    border-top-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.blogreply {
+    background-color: #fafafa;
+    border: 1px solid #ff6600;
+    min-height: 40px;
+    width: 70%;
+    margin-left: 160px;
+    margin-bottom: 3px;
+    border-radius: 5px;
+}
+
+.blogreply span {
+    font-size: x-small;
+}
+
+.blog-buttons {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: #bbb;
+}
+
+.blog-buttons img {
+    vertical-align: middle;
+}
+
+.blog-buttons input {
+    vertical-align: middle;
+}
+
+.blog-content h2 {
+    vertical-align: middle;
+}
+
+.blog-content h2 span img {
+    vertical-align: middle;
+}
+
+.blog-comments {
+    display: none;
+}
+/* Poll Template */
+.Poll_TakePoll, .Poll_PollResults {
+    border: 1px dashed #ff6600;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.PollBox {
+    background-color: #ffff99;
+    border: 1px solid #FF6600;
+    border-radius: 5px;
+}
+
+.poll-content {
+    min-height: 40px;
+    border: 1px solid #ff6600;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.Poll_PollResults table {
+    width: 99%;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0px;
+    clear: both;
+    visibility: hidden;
+}
+
+#__asptrace {
+    position: relative;
+}

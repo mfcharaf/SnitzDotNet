@@ -1,0 +1,41 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+    <asp:Calendar runat="server" SkinId="lgeCal"
+    DayStyle-Height="80" DayStyle-Width="60" DayStyle-HorizontalAlign="Left"
+    DayStyle-verticalalign="Top"
+    TitleStyle-CssClass="calendar-month-header"
+    TitleStyle-BackColor="Transparent"
+    NextPrevFormat="FullMonth" 
+    TitleStyle-Font-Bold="False"
+    BackColor="white" BorderColor="#ff6600"
+    SelectedDayStyle-BackColor="#faebd7"
+    SelectedDayStyle-ForeColor="#ff3300"
+    OtherMonthDayStyle-ForeColor="#ffaa00" DayStyle-BorderStyle="Solid" 
+    DayStyle-BorderWidth="1" TodayDayStyle-ForeColor="#ff6600"
+    Width="95%"></asp:Calendar>
+
+    <asp:Calendar runat="server" 
+        SkinId="smlCal"
+        NextPrevFormat="FullMonth"
+        CssClass="smallCal">
+        <TodayDayStyle ForeColor="#ff1100"></TodayDayStyle>
+        <OtherMonthDayStyle ForeColor="#ff9900" />  
+        <DayStyle CssClass="smallCalDay" ForeColor="#ff1100"/>  
+        <SelectedDayStyle Font-Bold="True" Font-Size="12px" />  
+        <SelectorStyle CssClass="smallCalSelector" />  
+        <NextPrevStyle CssClass="smallCalNextPrev" />  
+        <TitleStyle CssClass="smallCalTitle" BackColor="Transparent" />  
+    </asp:Calendar>

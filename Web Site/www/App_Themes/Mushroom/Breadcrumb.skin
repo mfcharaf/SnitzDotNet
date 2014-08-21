@@ -1,0 +1,6 @@
+﻿<asp:SiteMapPath runat="server" SkinID="TopicBreadCrumb">   
+    <PathSeparatorTemplate>
+    &nbsp;::&nbsp;
+    </PathSeparatorTemplate>
+    <CurrentNodeStyle CssClass="bbcode"/>
+</asp:SiteMapPath>  

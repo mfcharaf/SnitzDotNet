@@ -1,0 +1,27 @@
+<asp:HyperLink SkinID="EditTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/write.png"></asp:HyperLink>
+<asp:HyperLink SkinID="ReplyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/reply.png"></asp:HyperLink>
+<asp:HyperLink SkinID="NewTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/message/document.png"></asp:HyperLink>
+<asp:HyperLink SkinID="JumpTo" CssClass="msgIcons" runat="server" ImageUrl="Images/page_go.png"></asp:HyperLink>
+<asp:HyperLink SkinID="JumpToLastRead" CssClass="msgIcons" runat="server" ImageUrl="Images/bookmark.png"></asp:HyperLink>
+<asp:HyperLink SkinID="TitleLogo" runat="server" ImageUrl="Images/ncec.gif" Text="Forum Logo"></asp:HyperLink>
+<asp:HyperLink SkinID="UserLock" runat="server" ImageUrl="Images/icon_user_lock.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="UserUnlock" runat="server" ImageUrl="Images/icon_user_unlock.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="UserEdit" runat="server" ImageUrl="Images/icon_user_edit.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="UserDelete" runat="server" ImageUrl="Images/icon_user_delete.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="Email" runat="server" ImageUrl="Images/message/email.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="HomePage" runat="server" ImageUrl="Images/message/home.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="AIM" runat="server" ImageUrl="Images/social/icon_aim.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="ICQ" runat="server" ImageUrl="Images/social/icon_icq.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="YAHOO" runat="server" ImageUrl="Images/social/icon_yahoo.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="SKYPE" runat="server" ImageUrl="Images/social/icon_skype.png" cssclass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="EditPost" runat="server" ImageUrl="Images/message/edit.png" CssClass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="ReplyQuote" runat="server" ImageUrl="Images/message/quote.png" CssClass="msgIcons"></asp:HyperLink>
+<asp:HyperLink SkinID="GotoTop" runat="server" ImageUrl="Images/message/up.png" cssclass="TopIcon"></asp:HyperLink>
+<asp:HyperLink SkinID="GoUpFooter" runat="server" ImageUrl="Images/message/up.png"></asp:HyperLink>
+<asp:HyperLink SkinID="RSS" runat="server" Text="RSS Feed" ImageUrl="Images/rss.png"></asp:HyperLink>
+
+<asp:HyperLink SkinID="NewForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
+<asp:HyperLink SkinID="DeleteTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/trash.png"></asp:HyperLink>
+<asp:HyperLink SkinID="SendTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/icon_send_topic.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="sknEditLnk" runat="server" ImageUrl="images/admin/write.png" Text="Edit"></asp:HyperLink>
+<asp:HyperLink SkinID="sknHomePage" runat="server" Text="Visit my homepage"></asp:HyperLink>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <Username Group="Member" Show="false" Require="true" />
+  <Password Group="Member" Show="false" Require="true" />
+  <Email Group="Member" Show="false" Require="true" />
+  <Firstname Group="Member" Show="true" Require="false" />
+  <Lastname Group="Member" Show="false" Require="false" />
+  <DateOfBirth Group="Member" Show="true" Require="true" />
+  <Gender Group="Member" Show="true" Require="false" />
+  <MaritalStatus Group="Member:Info" Show="false" Require="false" />
+  <City Group="Member:Info" Show="true" Require="false" />
+  <State Group="Member:Info" Show="false" Require="false" />
+  <Country Group="Member:Info" Show="true" Require="true" />
+  <Occupation Group="Member:Other" Show="true" Require="false" />
+  <Biography Group="Member:Other" Show="true" Require="false" />
+  <HomePage Group="Member:Other" Show="true" Require="false" />
+  <Hobbies Group="Member:Other" Show="false" Require="false" />
+  <LatestNews Group="Member:Other" Show="false" Require="false" />
+  <FavouriteQuote Group="Member:Other" Show="false" Require="false" />
+  <AIM Group="Member:Social Media" Show="false" Require="false" />
+  <Yahoo Group="Member:Social Media" Show="false" Require="false" />
+  <ICQ Group="Member:Social Media" Show="false" Require="false" />
+  <Skype Group="Member:Social Media" Show="true" Require="false" />
+  
+  <TimeZone Group="Settings" Show="true" Require="false" />
+  <UseDaylightSaving Group="Settings" Show="true" Require="false" />
+  <HideEmail Group="Settings" Show="true" Require="false" />
+  <ReceiveEmails Group="Settings" Show="true" Require="false" />
+  <ViewSignatures Group="Settings" Show="true" Require="false" />
+  <UseSignature Group="Settings" Show="true" Require="false" />
+  <Signature Group="Settings" Show="true" Require="false" />
+</root>

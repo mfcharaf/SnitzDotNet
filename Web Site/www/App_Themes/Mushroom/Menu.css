@@ -1,0 +1,115 @@
+﻿.snitzMenu div.AspNet-Menu-Horizontal:after{content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
+.snitzMenu div.AspNet-Menu-Horizontal
+{
+
+    z-index: 10000;
+    margin-left:auto;margin-right:auto;
+    text-align:center;
+    width:auto;
+}
+.snitzMenu ul
+{
+    background:#FF6600;
+}
+.snitzMenu ul.AspNet-Menu ul
+{
+    width: 9.5em;
+    /*left: 8.9em;*/
+    top: -1em;
+    z-index: 400;
+}
+.snitzMenu ul.AspNet-Menu ul ul
+{
+    width: 10.5em;
+    left: 10.4em;
+}
+.snitzMenu ul.AspNet-Menu li
+{
+    white-space:nowrap;
+    height:auto !important;
+    line-height:1em;
+}
+.snitzMenu ul.AspNet-Menu li a,
+.snitzMenu ul.AspNet-Menu li span
+{
+
+    padding: 4px 4px 4px 6px;
+    border-bottom: 0;
+}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a,
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span
+{
+    background-image: none;
+}
+.snitzMenu ul.AspNet-Menu li:hover, 
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Hover
+{
+    background:transparent;
+}
+.snitzMenu ul.AspNet-Menu li a:hover,
+.snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover
+{
+    background: transparent url(images/menu-expand.gif) right center no-repeat;
+}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a:hover
+{
+    background-image: none;
+}
+
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul
+{
+    width: 10.5em;
+    left: 0;
+    top: 100%;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul
+{
+    top: -0.3em;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul
+{
+    width: 11.5em;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li
+{
+    width: auto;
+    min-width:6em;
+    border-left:1px solid #FF6600;
+    border-right:1px solid #FF0000;
+    text-align:center;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li
+{
+    text-align:left;
+    width: 10.5em;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul li
+{
+    width: 11.5em;
+}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li ul li ul
+{
+    margin: -1.4em 0 0 10.35em;
+}
+.snitzMenu .AspNet-Menu-Horizontal li.AspNet-Menu-WithChildren ul
+ {
+     white-space:nowrap;
+     border: solid 1px yellow !important;
+     -moz-box-shadow: 3px 3px 4px #ff0000;
+	-webkit-box-shadow: 3px 3px 4px #ff0000;
+	box-shadow: 3px 3px 4px #ff0000;
+	/* For IE 8 */
+	/*-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";*/
+	/* For IE 5.5 - 7 */
+	/*filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');*/
+ }
+ .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none;}
+
+ .snitzMenu ul.AspNet-Menu li a,
+.snitzMenu ul.AspNet-Menu li span
+{
+    color: yellow;
+}
+.snitzMenu ul.AspNet-Menu li a:hover, .snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover {
+    color: #FFCC00;
+}
