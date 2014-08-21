@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Snitz.Entities;
@@ -134,7 +135,7 @@ namespace Snitz.SQLServerDAL
 
         public void RemoveMembersForumSubscriptions(int memberid, int forumid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum";
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum AND TOPIC_ID=0";
             List<SqlParameter> parms = new List<SqlParameter>(new SqlParameter[2])
                 {
                     new SqlParameter("@Member", SqlDbType.Int) {Value = memberid},
@@ -154,12 +155,23 @@ namespace Snitz.SQLServerDAL
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parms.ToArray());
         }
 
+        public void RemoveMembersCategorySubscriptions(int memberid, int categoryid)
+        {
+            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND CAT_ID=@CAtId FORUM_ID=0 AND TOPIC_ID=0";
+            List<SqlParameter> parms = new List<SqlParameter>(new SqlParameter[2])
+                {
+                    new SqlParameter("@Member", SqlDbType.Int) {Value = memberid},
+                    new SqlParameter("@CatId", SqlDbType.Int) {Value = categoryid}
+                };
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parms.ToArray());
+        }
+
         public IEnumerable<SubscriptionInfo> GetAllSubscriptions()
         {
             var allsubs = new List<SubscriptionInfo>();
 
             string SqlStr =
-                "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME " +
+                "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME,M.M_STATUS " +
                 "FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS SUBS " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "FORUM F ON F.FORUM_ID = SUBS.FORUM_ID " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "CATEGORY C ON C.CAT_ID = SUBS.CAT_ID " +
@@ -174,10 +186,10 @@ namespace Snitz.SQLServerDAL
                         CategoryId = rdr.SafeGetInt32(2), 
                         ForumId = rdr.SafeGetInt32(3), 
                         TopicId = rdr.SafeGetInt32(4),
-                        CategoryName = rdr.SafeGetString(5),
-                        ForumSubject = rdr.SafeGetString(6),
-                        TopicSubject = rdr.SafeGetString(7),
-                        MemberName = rdr.SafeGetString(8)
+                        CategoryName = rdr.SafeGetInt32(2) == null ? "" : rdr.SafeGetString(5, "Category Deleted"),
+                        ForumSubject = rdr.SafeGetInt32(3) == null ? "" : rdr.SafeGetString(6, "Forum Deleted"),
+                        TopicSubject = rdr.SafeGetInt32(4) == 0 ? "" : rdr.SafeGetString(7, "Topic Deleted"),
+                        MemberName = rdr.SafeGetString(8) + (rdr.SafeGetInt16(9) == 0 ? "(Locked)" : "")
                     });
                 }
             }

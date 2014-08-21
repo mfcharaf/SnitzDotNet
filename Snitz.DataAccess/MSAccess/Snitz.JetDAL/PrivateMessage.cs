@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
@@ -72,7 +71,7 @@ namespace Snitz.OLEDbDAL
 
         public void Update(PrivateMessageInfo message)
         {
-            string strSql = "UPDATE " + Config.ForumTablePrefix + "PM SET M_SUBJECT=,M_FROM=@Subject,M_TO=@ToUser,M_SENT=@FromUser,M_MESSAGE=@Message,M_READ=M_READ+1,M_MAIL=@Email,M_OUTBOX=@Outbox " +
+            string strSql = "UPDATE " + Config.ForumTablePrefix + "PM SET M_SUBJECT=@Subject,M_FROM=@FromUser,M_TO=@ToUser,M_SENT=@SentDate,M_MESSAGE=@Message,M_READ=M_READ+1,M_MAIL=@Email,M_OUTBOX=@Outbox " +
                                   "WHERE M_ID=@PmId";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
@@ -156,7 +155,7 @@ namespace Snitz.OLEDbDAL
                                          ",M.M_LEVEL,M.M_AIM,M.M_YAHOO,M.M_ICQ,M.M_MSN,M.M_POSTS,M.M_DATE,M.M_LASTHEREDATE,M.M_LASTPOSTDATE" +
                                          ",M.M_TITLE,M.M_SUBSCRIPTION,M.M_HIDE_EMAIL,M.M_RECEIVE_EMAIL,M.M_IP,M.M_VIEW_SIG,M.M_SIG_DEFAULT" +
                                          ",M.M_VOTED,M.M_ALLOWEMAIL,M.M_AVATAR,M.M_THEME,M.M_TIMEOFFSET,M.M_DOB,M_AGE,M_PASSWORD,M_KEY,M_VALID,M_LASTUPDATED " +
-                                         ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE ";
+                                         ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE,M_DAYLIGHTSAVING ";
             string SELECT_OVER_FROM = "FROM MemberEntities ME INNER JOIN " + Config.MemberTablePrefix + "MEMBERS M on ME.MEMBER_ID = M.MEMBER_ID " +
                                             " WHERE ME.Row Between @Start AND @MaxRows ORDER BY ME.Row ASC ";
             List<MemberInfo> members = new List<MemberInfo>();

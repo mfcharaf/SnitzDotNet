@@ -112,9 +112,20 @@ namespace Snitz.SQLServerDAL
         {
             List<TopicInfo> blogtopics = new List<TopicInfo>();
             List<SqlParameter> parms = new List<SqlParameter>();
-            parms.Add(new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid});
+            if(forumid > 0)
+                parms.Add(new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid});
             parms.Add(new SqlParameter("@MemberId", SqlDbType.Int) { Value = memberid });
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + Topic.TopicCols + Topic.TopicFrom + " WHERE T.FORUM_ID = @Forum AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC", parms.ToArray()))
+            StringBuilder strSQL = new StringBuilder();
+            strSQL.AppendLine("SELECT ");
+            strSQL.AppendLine(Topic.TopicCols);
+            strSQL.AppendLine(Topic.TopicFrom);
+            strSQL.AppendLine("LEFT OUTER JOIN " + Config.ForumTablePrefix + "FORUM AS F ON F.FORUM_ID = T.FORUM_ID ");
+            strSQL.AppendLine("WHERE ");
+            if(forumid > 0)
+                strSQL.AppendLine("T.FORUM_ID = @Forum AND ");
+            strSQL.AppendFormat("F.F_TYPE={0} AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC",(int)Enumerators.ForumType.BlogPosts);
+
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSQL.ToString(), parms.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -210,6 +221,18 @@ namespace Snitz.SQLServerDAL
             return forums.ToArray();
         }
 
+        public void MoveForumPosts(int id, int catId)
+        {
+            List<SqlParameter> parms = new List<SqlParameter>();
+            string sql =
+                "UPDATE " + Config.ForumTablePrefix + "TOPICS SET CAT_ID=@CatId WHERE FORUM_ID=@ForumId; UPDATE " + Config.ForumTablePrefix + "REPLY SET CAT_ID=@CatId WHERE FORUM_ID=@ForumId";
+
+            parms.Add(new SqlParameter("@ForumId", SqlDbType.Int) { Value = id });
+            parms.Add(new SqlParameter("@CatId", SqlDbType.Int) { Value = catId });
+
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql, parms.ToArray());
+        }
+
         #endregion
 
         #region IBaseObject<ForumInfo> Members
@@ -239,7 +262,7 @@ namespace Snitz.SQLServerDAL
         {
             List<ForumInfo> forums = new List<ForumInfo>();
 
-            SqlParameter parm = new SqlParameter("@Subject", SqlDbType.VarChar) { Value = "%" + name + "%" };
+            SqlParameter parm = new SqlParameter("@Subject", SqlDbType.VarChar) { Value = name };
 
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT " + FORUM_COLS + FROM_CLAUSE + " WHERE F.F_SUBJECT = @Subject", parm))
             {

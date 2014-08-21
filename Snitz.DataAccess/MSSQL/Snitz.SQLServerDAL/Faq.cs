@@ -167,7 +167,7 @@ namespace Snitz.SQLServerDAL
             List<SqlParameter> parms = new List<SqlParameter>
                 {
                     new SqlParameter("@Lang", SqlDbType.VarChar, 6) {Value = lang},
-                    new SqlParameter("@SearchFor", SqlDbType.Int) {Value = "%" + searchfor + "%"}
+                    new SqlParameter("@SearchFor", SqlDbType.VarChar) {Value = "%" + searchfor + "%"}
                 };
 
             //Execute a query to read the products
@@ -247,7 +247,6 @@ namespace Snitz.SQLServerDAL
                 while (rdr.Read())
                 {
                     faq = BoHelper.CopyFaqQuestionsToBO(rdr);
-
                 }
             }
             return faq;
@@ -255,7 +254,22 @@ namespace Snitz.SQLServerDAL
 
         IEnumerable<FaqInfo> IBaseObject<FaqInfo>.GetByName(string name)
         {
-            throw new NotImplementedException();
+            List<SqlParameter> parms = new List<SqlParameter>();
+            FaqInfo faq = null;
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_LINK = @FaqLink ";
+
+            parms.Add(new SqlParameter("@FaqLink", SqlDbType.NVarChar) { Value = name });
+
+            //Execute a query to read the products
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray()))
+            {
+                while (rdr.Read())
+                {
+                    faq = BoHelper.CopyFaqQuestionsToBO(rdr);
+
+                }
+            }
+            return new[] {faq};
         }
 
         public int Add(FaqInfo faq)

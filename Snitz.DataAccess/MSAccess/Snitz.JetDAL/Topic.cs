@@ -405,10 +405,10 @@ namespace Snitz.OLEDbDAL
             return replies;
         }
 
-        public IEnumerable<TopicInfo> GetTopics(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus,bool stickytopics)
+        public IEnumerable<TopicInfo> GetTopics(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus,bool stickytopics,int? userid)
         {
             List<OleDbParameter> param = new List<OleDbParameter>();
-            int totalrecs = GetTopicCount(lastHereDate, start, maxrecs, forumid, isAdminOrModerator, topicstatus,stickytopics);
+            int totalrecs = GetTopicCount(lastHereDate, start, maxrecs, forumid, isAdminOrModerator, topicstatus,stickytopics,userid);
             string where = String.Empty;
 
             StringBuilder over = new StringBuilder();
@@ -429,7 +429,13 @@ namespace Snitz.OLEDbDAL
             over.AppendFormat("LEFT OUTER JOIN {0}MEMBERS LPA ON T.T_LAST_POST_AUTHOR = LPA.MEMBER_ID )", Config.MemberTablePrefix).AppendLine();
             over.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS A ON T.T_AUTHOR = A.MEMBER_ID )", Config.MemberTablePrefix).AppendLine();
             over.AppendFormat("LEFT OUTER JOIN {0}MEMBERS AS EM ON T.T_LAST_EDITBY = EM.MEMBER_ID ", Config.MemberTablePrefix).AppendLine();
-
+            if (userid.HasValue)
+            {
+                param.Add(new OleDbParameter("@MemberId", SqlDbType.Int) { Value = userid.Value });
+                if (!String.IsNullOrEmpty(where))
+                    where += " AND ";
+                where = where + " T_AUTHOR=@MemberId";
+            }
             if (topicstatus.HasValue)
             {
                 switch (topicstatus.Value)
@@ -491,11 +497,16 @@ namespace Snitz.OLEDbDAL
             return topics;
         }
 
-        public int GetTopicCount(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics)
+        public int GetTopicCount(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics,int? userid)
         {
             string strSql = "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "TOPICS  " + (stickytopics ? "WHERE T_STICKY>-1 " : "WHERE T_STICKY=0 ");
 
             List<OleDbParameter> param = new List<OleDbParameter>();
+            if (userid.HasValue)
+            {
+                param.Add(new OleDbParameter("@MemberId", SqlDbType.Int) { Value = userid.Value });
+                strSql = strSql + " AND T_AUTHOR=@MemberId";
+            }
             if (topicstatus.HasValue)
             {
                 //+ (isAdminOrModerator ? "" : "AND T_STATUS=1")

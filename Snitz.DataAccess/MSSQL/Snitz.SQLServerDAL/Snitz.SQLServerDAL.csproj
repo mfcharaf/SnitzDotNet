@@ -60,6 +60,7 @@
     <Compile Include="ArchiveForums.cs" />
     <Compile Include="BadWordFilter.cs" />
     <Compile Include="CustomProfile.cs" />
+    <Compile Include="ForumMod.cs" />
     <Compile Include="Helpers\BOHelper.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Helpers\SQLExtensions.cs" />

@@ -31,7 +31,7 @@ namespace Snitz.OLEDbDAL
             ",M.M_LEVEL,M.M_AIM,M.M_YAHOO,M.M_ICQ,M.M_MSN,M.M_POSTS,M.M_DATE,M.M_LASTHEREDATE,M.M_LASTPOSTDATE" +
             ",M.M_TITLE,M.M_SUBSCRIPTION,M.M_HIDE_EMAIL,M.M_RECEIVE_EMAIL,M.M_IP,M.M_VIEW_SIG,M.M_SIG_DEFAULT" +
             ",M.M_VOTED,M.M_ALLOWEMAIL,M.M_AVATAR,M.M_THEME,M.M_TIMEOFFSET,M.M_DOB,M_AGE,M_PASSWORD,M_KEY,M_VALID,M_LASTUPDATED " +
-            ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE ";
+            ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE,M_DAYLIGHTSAVING,M_TIMEZONE ";
 
         private string FROM = " FROM " + Config.MemberTablePrefix + "MEMBERS M ";
         private const string WHERE_NAME = " WHERE M.M_NAME = @Username ";
@@ -49,7 +49,7 @@ namespace Snitz.OLEDbDAL
                     member = BoHelper.CopyMemberToBO(rdr);
                 }
             }
-            return member ?? (new MemberInfo { Username = "Guest", TimeOffset = 0 });
+            return member ?? (new MemberInfo { Username = "Guest", TimeOffset = 0.0 });
         }
 
         public IEnumerable<MemberInfo> GetByName(string name)
@@ -67,7 +67,7 @@ namespace Snitz.OLEDbDAL
                 }
             }
             if (members.Count < 1)
-                members.Add(new MemberInfo { Username = "Guest", TimeOffset = 0 });
+                members.Add(new MemberInfo { Username = "Guest", TimeOffset = 0.0 });
             return members;
         }
 
@@ -80,13 +80,13 @@ namespace Snitz.OLEDbDAL
                                   ",M_SEX,M_AGE,M_DOB,M_MARSTATUS,M_CITY,M_STATE,M_COUNTRY,M_HOMEPAGE,M_SIG" +
                                   ",M_HIDE_EMAIL,M_RECEIVE_EMAIL,M_VIEW_SIG,M_SIG_DEFAULT,M_HOBBIES,M_LNEWS" +
                                   ",M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_AIM,M_YAHOO,M_ICQ,M_MSN,M_LAST_IP,M_LASTUPDATED" +
-                                  ",M_LASTHEREDATE,M_AVATAR,M_THEME,M_TIMEOFFSET,M_DATE,M_POSTS,M_IP,M_DEFAULT_VIEW,M_USERNAME,M_PHOTO_URL,M_NEWEMAIL,M_PWKEY,M_SHA256,M_ALLOWEMAIL)" +
+                                  ",M_LASTHEREDATE,M_AVATAR,M_THEME,M_TIMEOFFSET,M_DATE,M_POSTS,M_IP,M_DEFAULT_VIEW,M_USERNAME,M_PHOTO_URL,M_NEWEMAIL,M_PWKEY,M_SHA256,M_ALLOWEMAIL,M_DAYLIGHTSAVING,M_TIMEZONE)" +
                                   " VALUES " +
                                   "(@Username,@Status,@Mlev,@Title,@Email,@Password,@IsValid,@ValidationKey,@Firstname,@Lastname" +
                                   ",@Occupation,@Gender,@Age,@Dob,@Maritalstatus,@City,@State,@Country" +
                                   ",@Homepage,@Signature,@Hidemail,@Receivemails,@Viewsignatures,@Usesignature" +
                                   ",@Hobbies,@Latestnews,@Favquote,@Bio,@Link1,@Link2,@Aim,@Yahoo,@Icq,@Skype" +
-                                  ",@LastIP,@Lastupdated,@LastVisit,@Avatar,@Theme,@Timeoffset,@Created,0,@LastIP,0,'','','','',1,0)";
+                                  ",@LastIP,@Lastupdated,@LastVisit,@Avatar,@Theme,@Timeoffset,@Created,0,@LastIP,0,'','','','',1,0,@DaylightSaving,@TimeZone)";
                                   
             try
             {
@@ -143,8 +143,9 @@ namespace Snitz.OLEDbDAL
                 });
                 memberparms.Add(new OleDbParameter("@Avatar", OleDbType.VarChar){Value = member.Avatar.ConvertDBNull("")});
                 memberparms.Add(new OleDbParameter("@Theme", OleDbType.VarChar) { Value = member.Theme.ConvertDBNull("")});
-                memberparms.Add(new OleDbParameter("@Timeoffset", OleDbType.Integer) { Value = member.TimeOffset });
-
+                memberparms.Add(new OleDbParameter("@Timeoffset", OleDbType.Double) { Value = member.TimeOffset });
+                memberparms.Add(new OleDbParameter("@DaylightSaving", OleDbType.Integer) { Value = member.UseDaylightSaving ? 1 : 0 });
+                memberparms.Add(new OleDbParameter("@TimeZone", OleDbType.VarChar) { Value = member.TimeZone.ConvertDBNull("") });
                 string query = strSql;
                 foreach (OleDbParameter p in memberparms)
                 {
@@ -201,11 +202,15 @@ namespace Snitz.OLEDbDAL
             updateSql.AppendLine(",M_LINK1=@Link1");
             updateSql.AppendLine(",M_LINK2=@Link2");
             updateSql.AppendLine(",M_AIM=@Aim,M_YAHOO=@Yahoo,M_ICQ=@Icq,M_MSN=@Skype");
-            updateSql.AppendLine(",M_LAST_IP=@LastIP");
+            updateSql.AppendLine(",M_LAST_IP=M_IP");
+            updateSql.AppendLine(",M_IP=@LastIP");
             updateSql.AppendLine(",M_LASTUPDATED=@Lastupdated,M_LASTHEREDATE=@LastVisit");
             updateSql.AppendLine(",M_AVATAR=@Avatar");
             updateSql.AppendLine(",M_THEME=@Theme");
             updateSql.AppendLine(",M_TIMEOFFSET=@Timeoffset");
+            updateSql.AppendLine(",M_DAYLIGHTSAVING=@DaylightSaving");
+            updateSql.AppendLine(",M_TIMEZONE=@TimeZone");
+            updateSql.AppendLine(",M_STATUS=@Status");
             updateSql.AppendLine("WHERE MEMBER_ID=@MemberId");
 
             List<OleDbParameter> memberparms = new List<OleDbParameter>
@@ -318,7 +323,11 @@ namespace Snitz.OLEDbDAL
                 },
                 new OleDbParameter("@Theme", OleDbType.VarChar) {Value = member.Theme.ConvertDBNull(), IsNullable = true},
                 new OleDbParameter("@Timeoffset", OleDbType.Integer) {Value = member.TimeOffset},
-                new OleDbParameter("@MemberId", OleDbType.Integer) {Value = member.Id}
+                new OleDbParameter("@Status", OleDbType.Integer) {Value = member.Status},
+                new OleDbParameter("@MemberId", OleDbType.Integer) {Value = member.Id},
+                new OleDbParameter("@TimeZone", OleDbType.VarChar) {Value = member.TimeZone.ConvertDBNull(), IsNullable = true},
+                new OleDbParameter("@DaylightSaving", OleDbType.Integer) { Value = member.UseDaylightSaving ? 1 : 0 }
+
             };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateSql.ToString(), memberparms.ToArray());
@@ -350,7 +359,7 @@ namespace Snitz.OLEDbDAL
             }
             else
             {
-                string strSql = "DELETE FROM " + Config.MemberTablePrefix + "MEMBERS WHERE MEMBER_ID=@Member";
+                string strSql = "DELETE FROM " + Config.MemberTablePrefix + "MEMBERS WHERE MEMBER_ID=@MemberId";
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@MemberId", OleDbType.Integer) { Value = member.Id });
             }
         }
@@ -659,11 +668,13 @@ namespace Snitz.OLEDbDAL
         {
             //M_LASTHEREDATE=@LastVisit
             List<OleDbParameter> parms = new List<OleDbParameter>();
-            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_LASTHEREDATE=@LastVisit WHERE MEMBER_ID=@MemberId ";
+            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_LASTHEREDATE=@LastVisit, M_LAST_IP=M_IP, M_IP=@LastIP WHERE MEMBER_ID=@MemberId ";
             OleDbParameter memberid = new OleDbParameter("@MemberId", OleDbType.Integer) { Value = member.Id };
             OleDbParameter lastvisit = new OleDbParameter("@LastVisit", OleDbType.VarChar) { Value = DateTime.UtcNow.ToForumDateStr() };
+            OleDbParameter memberip = new OleDbParameter("@LastIP", OleDbType.VarChar) {Value = Common.GetIP4Address()};
             parms.Add(lastvisit);
             parms.Add(memberid);
+            parms.Add(memberip);
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateMemberSql, parms.ToArray());
         }
 

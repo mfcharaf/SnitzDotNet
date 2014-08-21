@@ -88,7 +88,7 @@ namespace Snitz.SQLServerDAL
         {
             List<CategoryInfo> categories = new List<CategoryInfo>();
             string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM " + Config.ForumTablePrefix + "CATEGORY WHERE CAT_NAME = @Name ORDER BY CAT_ORDER, CAT_NAME";
-            SqlParameter parm = new SqlParameter("@Name", SqlDbType.Int) { Value = name };
+            SqlParameter parm = new SqlParameter("@Name", SqlDbType.VarChar) { Value = name };
 
             //Execute a query to read the products
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parm))

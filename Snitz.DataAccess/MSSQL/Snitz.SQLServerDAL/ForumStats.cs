@@ -79,7 +79,7 @@ namespace Snitz.SQLServerDAL
 
         private string GetNewestMember()
         {
-            return (string)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP(1) M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS ORDER BY M_DATE DESC", null);
+            return (string)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP(1) M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_VALID=1 AND M_STATUS=1 ORDER BY M_DATE DESC", null);
             
         }
 

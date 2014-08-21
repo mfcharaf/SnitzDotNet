@@ -411,7 +411,7 @@ namespace Snitz.SQLServerDAL
             return replies;
         }
 
-        public IEnumerable<TopicInfo> GetTopics(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics)
+        public IEnumerable<TopicInfo> GetTopics(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics,int? userid)
         {
             //start = start * maxrecs;
             List<SqlParameter> param = new List<SqlParameter>();
@@ -424,6 +424,11 @@ namespace Snitz.SQLServerDAL
                                  "WHERE TE.Row Between @Start AND @MaxRows ORDER BY TE.Row ASC";
 
             //param.Add(new SqlParameter("@Status", SqlDbType.Int) { Value = topicstatus });
+            if (userid.HasValue)
+            {
+                param.Add(new SqlParameter("@MemberId", SqlDbType.Int) { Value = userid.Value });
+                selectover = selectover + " AND T_AUTHOR=@MemberId";
+            }
             if (topicstatus.HasValue)
             {
                 //+ (isAdminOrModerator ? "" : "AND T_STATUS=1")
@@ -478,12 +483,17 @@ namespace Snitz.SQLServerDAL
             return topics;
         }
 
-        public int GetTopicCount(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics)
+        public int GetTopicCount(string lastHereDate, int start, int maxrecs, int? forumid, bool isAdminOrModerator, int? topicstatus, bool stickytopics,int? userid)
         {
             string strSql =
                 "SELECT COUNT(TOPIC_ID) FROM " + Config.ForumTablePrefix + "TOPICS " + (stickytopics ? "WHERE T_STICKY>-1 " : "WHERE T_STICKY=0 ");
 
             List<SqlParameter> param = new List<SqlParameter>();
+            if (userid.HasValue)
+            {
+                param.Add(new SqlParameter("@MemberId", SqlDbType.Int) { Value = userid.Value });
+                strSql = strSql + " AND T_AUTHOR=@MemberId";
+            }
             if (topicstatus.HasValue)
             {
                 //+ (isAdminOrModerator ? "" : "AND T_STATUS=1")
@@ -602,7 +612,8 @@ namespace Snitz.SQLServerDAL
                     new SqlParameter("@Message", SqlDbType.NVarChar) {Value = topic.Message},
                     new SqlParameter("@Sticky", SqlDbType.Bit) {Value = topic.IsSticky},
                     new SqlParameter("@UseSig", SqlDbType.Bit) {Value = topic.UseSignatures},
-                    new SqlParameter("@TopicId", SqlDbType.Int) {Value = topic.Id}
+                    new SqlParameter("@TopicId", SqlDbType.Int) {Value = topic.Id},
+                    new SqlParameter("@Unmoderated", SqlDbType.Int) {Value = topic.UnModeratedReplies}
                 };
 
             StringBuilder updateSql = new StringBuilder();
@@ -619,7 +630,8 @@ namespace Snitz.SQLServerDAL
 
             }
             updateSql.AppendLine("T_STICKY=@Sticky,");
-            updateSql.AppendLine("T_SIG=@UseSig ");
+            updateSql.AppendLine("T_SIG=@UseSig, ");
+            updateSql.AppendLine("T_UREPLIES=@Unmoderated ");
             updateSql.AppendLine("WHERE TOPIC_ID=@TopicId");
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateSql.ToString(), parms.ToArray());

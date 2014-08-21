@@ -19,7 +19,33 @@ namespace Snitz.SQLServerDAL
             
             return string.Empty;
         }
+        /// <summary>
+        /// Safely handles null values when fetching strings from a DataReader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="colIndex"></param>
+        /// <returns></returns>
+        public static double SafeGetDouble(this SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetDouble(colIndex);
 
+            return 0.0;
+        }
+        /// <summary>
+        /// Safely handles null values when fetching strings from a DataReader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="colIndex"></param>
+        /// <param name="defaultvalue"></param>
+        /// <returns></returns>
+        public static string SafeGetString(this SqlDataReader reader, int colIndex, string defaultvalue)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetString(colIndex);
+
+            return defaultvalue;
+        }
         /// <summary>
         /// Safely handles null values when fetching integers from a DataReader
         /// </summary>

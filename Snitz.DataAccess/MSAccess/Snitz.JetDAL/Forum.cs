@@ -113,9 +113,20 @@ namespace Snitz.OLEDbDAL
         {
             List<TopicInfo> blogtopics = new List<TopicInfo>();
             List<OleDbParameter> parms = new List<OleDbParameter>();
+            if(forumid > 0)
             parms.Add(new OleDbParameter("@Forum", OleDbType.Numeric) { Value = forumid });
             parms.Add(new OleDbParameter("@MemberId", OleDbType.Numeric) { Value = memberid });
-            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT" + Topic.TopicCols + Topic.TopicFrom + " WHERE T.FORUM_ID = @Forum AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC", parms.ToArray()))
+            StringBuilder strSQL = new StringBuilder();
+            strSQL.AppendLine("SELECT ");
+            strSQL.AppendLine(Topic.TopicCols);
+            strSQL.AppendLine(Topic.TopicFrom);
+            strSQL.AppendLine("LEFT OUTER JOIN " + Config.ForumTablePrefix + "FORUM AS F ON F.FORUM_ID = T.FORUM_ID ");
+            strSQL.AppendLine("WHERE ");
+            if (forumid > 0)
+                strSQL.AppendLine("T.FORUM_ID = @Forum AND ");
+            strSQL.AppendFormat("F.F_TYPE={0} AND T.T_AUTHOR=@MemberId ORDER BY T.T_DATE DESC", (int)Enumerators.ForumType.BlogPosts);
+
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSQL.ToString(), parms.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -213,6 +224,19 @@ namespace Snitz.OLEDbDAL
             return forums.ToArray();
         }
 
+        public void MoveForumPosts(int id, int catId)
+        {
+            List<OleDbParameter> parms = new List<OleDbParameter>();
+            string sql =
+                "UPDATE " + Config.ForumTablePrefix + "TOPICS SET CAT_ID=@CatId WHERE FORUM_ID=@ForumId; UPDATE " + Config.ForumTablePrefix + "REPLY SET CAT_ID=@CatId WHERE FORUM_ID=@ForumId";
+
+            parms.Add(new OleDbParameter("@ForumId", SqlDbType.Int) { Value = id });
+            parms.Add(new OleDbParameter("@CatId", SqlDbType.Int) { Value = catId });
+
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql, parms.ToArray());
+
+        }
+
         #endregion
 
         #region IBaseObject<ForumInfo> Members
@@ -242,7 +266,7 @@ namespace Snitz.OLEDbDAL
         {
             List<ForumInfo> forums = new List<ForumInfo>();
 
-            OleDbParameter parm = new OleDbParameter("@Subject", OleDbType.VarChar) { Value = "%" + name + "%" };
+            OleDbParameter parm = new OleDbParameter("@Subject", OleDbType.VarChar) { Value = name };
 
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, "SELECT " + FORUM_COLS + FROM_CLAUSE + " WHERE F.F_SUBJECT = @Subject", parm))
             {

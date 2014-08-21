@@ -25,7 +25,7 @@ namespace Snitz.SQLServerDAL
             ",M.M_LEVEL,M.M_AIM,M.M_YAHOO,M.M_ICQ,M.M_MSN,M.M_POSTS,M.M_DATE,M.M_LASTHEREDATE,M.M_LASTPOSTDATE" +
             ",M.M_TITLE,M.M_SUBSCRIPTION,M.M_HIDE_EMAIL,M.M_RECEIVE_EMAIL,M.M_IP,M.M_VIEW_SIG,M.M_SIG_DEFAULT" +
             ",M.M_VOTED,M.M_ALLOWEMAIL,M.M_AVATAR,M.M_THEME,M.M_TIMEOFFSET,M.M_DOB,M_AGE,M_PASSWORD,M_KEY,M_VALID,M_LASTUPDATED " +
-            ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE ";
+            ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE,M_DAYLIGHTSAVING,M_TIMEZONE ";
 
         private string FROM = " FROM " + Config.MemberTablePrefix + "MEMBERS M ";
         private const string WHERE_NAME = " WHERE M.M_NAME = @Username ";
@@ -43,7 +43,7 @@ namespace Snitz.SQLServerDAL
                     member = BoHelper.CopyMemberToBO(rdr);
                 }
             }
-            return member ?? (new MemberInfo {Username = "Guest", TimeOffset = 0});
+            return member ?? (new MemberInfo {Username = "Guest", TimeOffset = 0.0});
         }
 
         public IEnumerable<MemberInfo> GetByName(string name)
@@ -59,7 +59,7 @@ namespace Snitz.SQLServerDAL
                 }
             }
             if(members.Count < 1)
-                members.Add(new MemberInfo {Username = "Guest", TimeOffset = 0});
+                members.Add(new MemberInfo {Username = "Guest", TimeOffset = 0.0});
             return members;
         }
 
@@ -72,13 +72,13 @@ namespace Snitz.SQLServerDAL
                                   ",M_SEX,M_AGE,M_DOB,M_MARSTATUS,M_CITY,M_STATE,M_COUNTRY,M_HOMEPAGE,M_SIG" +
                                   ",M_HIDE_EMAIL,M_RECEIVE_EMAIL,M_VIEW_SIG,M_SIG_DEFAULT,M_HOBBIES,M_LNEWS" +
                                   ",M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_AIM,M_YAHOO,M_ICQ,M_MSN,M_LAST_IP,M_LASTUPDATED" +
-                                  ",M_LASTHEREDATE,M_AVATAR,M_THEME,M_TIMEOFFSET,M_DATE)" +
+                                  ",M_LASTHEREDATE,M_AVATAR,M_THEME,M_TIMEOFFSET,M_DATE,M_POSTS,M_IP,M_DEFAULT_VIEW,M_USERNAME,M_PHOTO_URL,M_NEWEMAIL,M_PWKEY,M_SHA256,M_ALLOWEMAIL,M_DAYLIGHTSAVING,M_TIMEZONE)" +
                                   " VALUES " +
                                   "(@Username,@Status,@Mlev,@Title,@Email,@Password,@IsValid,@ValidationKey,@Firstname,@Lastname" +
                                   ",@Occupation,@Gender,@Age,@Dob,@Maritalstatus,@City,@State,@Country" +
                                   ",@Homepage,@Signature,@Hidemail,@Receivemails,@Viewsignatures,@Usesignature" +
                                   ",@Hobbies,@Latestnews,@Favquote,@Bio,@Link1,@Link2,@Aim,@Yahoo,@Icq,@Msn" +
-                                  ",@LastIP,@Lastupdated,@LastVisit,@Avatar,@Theme,@Timeoffset,@Created); " +
+                                  ",@LastIP,@Lastupdated,@LastVisit,@Avatar,@Theme,@Timeoffset,@Created,0,@LastIP,0,'','','','',1,0,@DaylightSaving,@TimeZone); " +
                                   "SELECT SCOPE_IDENTITY();";
             try
             {
@@ -196,9 +196,13 @@ namespace Snitz.SQLServerDAL
                     IsNullable = true
                 });
                 memberparms.Add(new SqlParameter("@Theme", SqlDbType.NVarChar) {Value = member.Theme.ConvertDBNull(), IsNullable = true});
-                memberparms.Add(new SqlParameter("@Timeoffset", SqlDbType.Int) { Value = member.TimeOffset });
-
-            
+                memberparms.Add(new SqlParameter("@Timeoffset", SqlDbType.Float) { Value = member.TimeOffset });
+                memberparms.Add(new SqlParameter("@DaylightSaving", SqlDbType.SmallInt) { Value = member.UseDaylightSaving });
+                memberparms.Add(new SqlParameter("@TimeZone", SqlDbType.NVarChar)
+                                {
+                                    Value = member.TimeZone.ConvertDBNull(),
+                                    IsNullable = true
+                                });
             }
             catch (Exception)
             {
@@ -210,17 +214,37 @@ namespace Snitz.SQLServerDAL
             return res;
         }
 
+        public void UpdateValidationKeys(MemberInfo member)
+        {
+            if (member.Username.ToLower() == "guest")
+                return;
+            StringBuilder updateSql = new StringBuilder();
+            updateSql.AppendFormat("UPDATE {0}MEMBERS SET ", Config.MemberTablePrefix).AppendLine();
+            updateSql.AppendLine("M_KEY=@ValidationKey");
+            updateSql.AppendLine(",M_PWKEY=@PasswordKey");
+            updateSql.AppendLine("WHERE MEMBER_ID=@MemberId");
+            List<SqlParameter> memberparms = new List<SqlParameter>
+                                             {
+                new SqlParameter("@ValidationKey", SqlDbType.NVarChar) {Value = member.ValidationKey},
+                new SqlParameter("@PasswordKey", SqlDbType.NVarChar) {Value = member.PasswordChangeKey},
+                new SqlParameter("@MemberId", SqlDbType.Int) {Value = member.Id}
+                };
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateSql.ToString(), memberparms.ToArray());
+
+        }
+
         public void Update(MemberInfo member)
         {
             if (member.Username.ToLower() == "guest")
                 return;
             StringBuilder updateSql = new StringBuilder();
-            updateSql.AppendFormat("UPDATE {0}MEMBERS SET",Config.MemberTablePrefix).AppendLine();
+            updateSql.AppendFormat("UPDATE {0}MEMBERS SET ",Config.MemberTablePrefix).AppendLine();
             updateSql.AppendLine("M_TITLE=@Title");
             updateSql.AppendLine(",M_EMAIL=@Email");
             updateSql.AppendLine(",M_PASSWORD=@Password");
             updateSql.AppendLine(",M_VALID=@IsValid");
             updateSql.AppendLine(",M_KEY=@ValidationKey");
+            updateSql.AppendLine(",M_PWKEY=@PasswordKey");
             updateSql.AppendLine(",M_FIRSTNAME=@Firstname");
             updateSql.AppendLine(",M_LASTNAME=@Lastname");
             updateSql.AppendLine(",M_OCCUPATION=@Occupation");
@@ -244,11 +268,15 @@ namespace Snitz.SQLServerDAL
             updateSql.AppendLine(",M_LINK1=@Link1");
             updateSql.AppendLine(",M_LINK2=@Link2");
             updateSql.AppendLine(",M_AIM=@Aim,M_YAHOO=@Yahoo,M_ICQ=@Icq,M_MSN=@Msn");
-            updateSql.AppendLine(",M_LAST_IP=@LastIP");
+            updateSql.AppendLine(",M_LAST_IP=M_IP");
+            updateSql.AppendLine(",M_IP=@LastIP");
             updateSql.AppendLine(",M_LASTUPDATED=@Lastupdated,M_LASTHEREDATE=@LastVisit");
             updateSql.AppendLine(",M_AVATAR=@Avatar");
             updateSql.AppendLine(",M_THEME=@Theme");
             updateSql.AppendLine(",M_TIMEOFFSET=@Timeoffset");
+            updateSql.AppendLine(",M_DAYLIGHTSAVING=@DaylightSaving");
+            updateSql.AppendLine(",M_TIMEZONE=@TimeZone");
+            updateSql.AppendLine(",M_STATUS=@Status");
             updateSql.AppendLine("WHERE MEMBER_ID=@MemberId");
 
             List<SqlParameter> memberparms = new List<SqlParameter>
@@ -256,7 +284,8 @@ namespace Snitz.SQLServerDAL
                 new SqlParameter("@Title", SqlDbType.NVarChar) {Value = member.Title.ConvertDBNull(),IsNullable = true},
                 new SqlParameter("@Password", SqlDbType.NVarChar) {Value = member.Password},
                 new SqlParameter("@IsValid", SqlDbType.Int) {Value = member.IsValid},
-                new SqlParameter("@ValidationKey", SqlDbType.NVarChar) {Value = member.ValidationKey},
+                new SqlParameter("@ValidationKey", SqlDbType.NVarChar) {Value = member.ValidationKey.ConvertDBNull(),IsNullable = true},
+                new SqlParameter("@PasswordKey", SqlDbType.NVarChar) {Value = member.PasswordChangeKey.ConvertDBNull(),IsNullable = true},
                 new SqlParameter("@Email", SqlDbType.NVarChar) {Value = member.Email},
                 new SqlParameter("@Firstname", SqlDbType.NVarChar)
                 {
@@ -359,7 +388,14 @@ namespace Snitz.SQLServerDAL
                     IsNullable = true
                 },
                 new SqlParameter("@Theme", SqlDbType.NVarChar) {Value = member.Theme.ConvertDBNull(), IsNullable = true},
-                new SqlParameter("@Timeoffset", SqlDbType.Int) {Value = member.TimeOffset},
+                new SqlParameter("@Timeoffset", SqlDbType.Float) {Value = member.TimeOffset},
+                new SqlParameter("@DaylightSaving", SqlDbType.SmallInt) {Value = member.UseDaylightSaving},
+                new SqlParameter("@TimeZone", SqlDbType.NVarChar)
+                {
+                    Value = member.TimeZone.ConvertDBNull(),
+                    IsNullable = true
+                },
+                new SqlParameter("@Status", SqlDbType.Int) {Value = member.Status},
                 new SqlParameter("@MemberId", SqlDbType.Int) {Value = member.Id}
             };
 
@@ -392,7 +428,7 @@ namespace Snitz.SQLServerDAL
             }
             else
             {
-                string strSql = "DELETE FROM " + Config.MemberTablePrefix + "MEMBERS WHERE MEMBER_ID=@Member";
+                string strSql = "DELETE FROM " + Config.MemberTablePrefix + "MEMBERS WHERE MEMBER_ID=@MemberId";
                 SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@MemberId", SqlDbType.Int) { Value = member.Id });
             }
         }
@@ -624,9 +660,9 @@ namespace Snitz.SQLServerDAL
             }
 
             SELECT_OVER = SELECT_OVER.Replace("[WHERE]", whereclause);
-            List<MemberInfo> members = new List<MemberInfo>();
-            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord + 1 };
-            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = startRecord + maxRecords };
+            List<MemberInfo> members = new List<MemberInfo>(); 
+            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord * maxRecords }; 
+            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = startRecord * maxRecords + maxRecords };
             parms.Add(start);
             parms.Add(recs);
 
@@ -700,7 +736,8 @@ namespace Snitz.SQLServerDAL
             List<SqlParameter> parms = new List<SqlParameter>();
             List<MemberInfo> members = new List<MemberInfo>();
 
-            SELECT_OVER = SELECT_OVER.Replace("[WHERE]", "WHERE M.M_VALID=0");
+            SELECT_OVER = SELECT_OVER.Replace("[WHERE]", "WHERE M_VALID=0");
+            SELECT_OVER = SELECT_OVER.Replace("[ORDERBY]", "(ORDER BY M_DATE DESC)");
             SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startrecord };
             SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = maxrecords };
             parms.Add(start);
@@ -720,11 +757,13 @@ namespace Snitz.SQLServerDAL
         public void UpdateVisit(MemberInfo member)
         {
             List<SqlParameter> parms = new List<SqlParameter>();
-            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_LASTHEREDATE=@LastVisit WHERE MEMBER_ID=@MemberId ";
+            string updateMemberSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_LASTHEREDATE=@LastVisit,M_LAST_IP=M_IP,M_IP=@LastIP WHERE MEMBER_ID=@MemberId ";
             SqlParameter memberid = new SqlParameter("@MemberId", SqlDbType.Int){Value = member.Id};
+            SqlParameter memberip = new SqlParameter("@LastIP", SqlDbType.NVarChar) {Value = Common.GetIP4Address()};
             SqlParameter lastvisit = new SqlParameter("@LastVisit", SqlDbType.VarChar){Value = DateTime.UtcNow.ToForumDateStr()};
             parms.Add(lastvisit);
             parms.Add(memberid);
+            parms.Add(memberip);
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, updateMemberSql, parms.ToArray());
 
         }

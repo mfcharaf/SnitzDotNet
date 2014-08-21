@@ -93,7 +93,7 @@ namespace Snitz.OLEDbDAL
 
         private string GetNewestMember()
         {
-            var res = SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP 1 M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS ORDER BY M_DATE DESC", null);
+            var res = SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, "SELECT TOP 1 M_NAME FROM " + Config.MemberTablePrefix + "MEMBERS  WHERE M_VALID=1 AND M_STATUS=1 ORDER BY M_DATE DESC", null);
             if (res != System.DBNull.Value)
                 return (string) res;
             else

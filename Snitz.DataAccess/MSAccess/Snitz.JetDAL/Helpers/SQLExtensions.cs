@@ -19,6 +19,27 @@ namespace Snitz.OLEDbDAL
 
             return string.Empty;
         }
+        public static double SafeGetDouble(this OleDbDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetDouble(colIndex);
+
+            return 0.0;
+        }
+        /// <summary>
+        /// Safely handles null values when fetching strings from a DataReader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="colIndex"></param>
+        /// <param name="defaultvalue"></param>
+        /// <returns></returns>
+        public static string SafeGetString(this OleDbDataReader reader, int colIndex, string defaultvalue)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetString(colIndex);
+
+            return defaultvalue;
+        }
         public static string SafeGetString(this OleDbDataReader reader, string colName)
         {
             int col = reader.GetOrdinal(colName);

@@ -221,15 +221,16 @@ namespace Snitz.OLEDbDAL
 
         public void Update(PollInfo poll)
         {
-            string pollSql = "UPDATE " + Config.ForumTablePrefix + "POLLS SET DisplayText=@Question WHERE TopicId=@TopicId";
+            string pollSql = "UPDATE " + Config.ForumTablePrefix + "POLLS SET DisplayText=@Question WHERE PollId=@PollId";
             List<OleDbParameter> parms = new List<OleDbParameter>
                 {
-                    new OleDbParameter("@TopicId", OleDbType.Numeric) {Value = poll.TopicId},
+                    new OleDbParameter("@PollId", OleDbType.Numeric) {Value = poll.Id},
                     new OleDbParameter("@Question", OleDbType.VarChar) {Value = poll.DisplayText}
                 };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, pollSql, parms.ToArray());
-
+            if (poll.Choices == null)
+                return;
             var choices = GetPollChoices(poll.Id).ToArray();
             int currentchoicecount = choices.Length;
             int newchoicecount = poll.Choices.Count;

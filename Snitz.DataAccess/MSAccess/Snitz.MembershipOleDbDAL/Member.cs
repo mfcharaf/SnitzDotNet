@@ -14,7 +14,7 @@ namespace Snitz.Membership.OLEDbDAL
     {
         public bool ActivateUser(string username)
         {
-            string strSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_VALID=1 WHERE M_NAME=@Username";
+            string strSql = "UPDATE " + Config.MemberTablePrefix + "MEMBERS SET M_VALID=1,M_LEVEL=1 WHERE M_NAME=@Username";
             int res = SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@Username", SqlDbType.VarChar) { Value = username });
             return res > 0;
         }

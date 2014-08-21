@@ -221,15 +221,16 @@ namespace Snitz.SQLServerDAL
 
         public void Update(PollInfo poll)
         {
-            string pollSql = "UPDATE " + Config.ForumTablePrefix + "POLLS SET DisplayText=@Question WHERE TopicId=@TopicId;";
+            string pollSql = "UPDATE " + Config.ForumTablePrefix + "POLLS SET DisplayText=@Question WHERE PollId=@PollId;";
             List<SqlParameter> parms = new List<SqlParameter>
                 {
-                    new SqlParameter("@TopicId", SqlDbType.Int) {Value = poll.TopicId},
+                    new SqlParameter("@PollId", SqlDbType.Int) {Value = poll.Id},
                     new SqlParameter("@Question", SqlDbType.NVarChar) {Value = poll.DisplayText}
                 };
 
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, pollSql, parms.ToArray());
-
+            if (poll.Choices == null)
+                return;
             var choices = GetPollChoices(poll.Id).ToArray();
             int currentchoicecount = choices.Length;
             int newchoicecount = poll.Choices.Count;

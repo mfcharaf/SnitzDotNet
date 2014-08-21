@@ -98,7 +98,7 @@ namespace Snitz.OLEDbDAL.Helpers
                 member.AllowEmail = rdr.SafeGetInt16(25) == 1;
                 member.Avatar = rdr.SafeGetString(26);
                 member.Theme = rdr.SafeGetString(27);
-                member.TimeOffset = rdr.SafeGetInt32(28) == null ? 0 : rdr.SafeGetInt32(28).Value;
+                member.TimeOffset = rdr.SafeGetDouble(28);
                 member.DateOfBirth = rdr.SafeGetString(29);
                 member.Age = rdr.SafeGetString(30);
                 member.Password = rdr.GetString(31);
@@ -118,7 +118,8 @@ namespace Snitz.OLEDbDAL.Helpers
                 member.FavLink2 = rdr.SafeGetString(45);
                 member.City = rdr.SafeGetString(46);
                 member.State = rdr.SafeGetString(47);
-
+                member.UseDaylightSaving = rdr.SafeGetInt16(48) == 1;
+                member.TimeZone = rdr.SafeGetString(49);
 
             }
             catch (Exception ex)

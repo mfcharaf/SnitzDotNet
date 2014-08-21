@@ -98,7 +98,7 @@ namespace Snitz.SQLServerDAL.Helpers
                                             AllowEmail = rdr.SafeGetInt16(25) == 1,
                                             Avatar = rdr.SafeGetString(26),
                                             Theme = rdr.SafeGetString(27),
-                                            TimeOffset = rdr.GetInt32(28),
+                                            TimeOffset = rdr.SafeGetDouble(28),
                                             DateOfBirth = rdr.SafeGetString(29),
                                             Age = rdr.SafeGetString(30),
                                             Password = rdr.GetString(31),
@@ -117,8 +117,9 @@ namespace Snitz.SQLServerDAL.Helpers
                                             FavLink1 = rdr.SafeGetString(44),
                                             FavLink2 = rdr.SafeGetString(45),
                                             City = rdr.SafeGetString(46),
-                                            State = rdr.SafeGetString(47)
-
+                                            State = rdr.SafeGetString(47),
+                                            UseDaylightSaving = rdr.SafeGetInt16(48) == 1,
+                                            TimeZone = rdr.SafeGetString(49)
                                         }; 
             }
             catch(Exception ex)

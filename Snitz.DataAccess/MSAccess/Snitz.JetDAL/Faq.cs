@@ -255,7 +255,22 @@ namespace Snitz.OLEDbDAL
 
         IEnumerable<FaqInfo> IBaseObject<FaqInfo>.GetByName(string name)
         {
-            throw new NotImplementedException();
+            List<OleDbParameter> parms = new List<OleDbParameter>();
+            FaqInfo faq = null;
+            string strSql = "SELECT FI_ID,FI_LINK,FI_LINK_TITLE,FI_LINK_BODY,FI_CAT,FI_LANG_ID,FI_ORDER  FROM " + Config.ForumTablePrefix + "FAQ_INFO WHERE FI_LINK = @FaqLink ORDER BY FI_ORDER, FI_LINK_TITLE";
+
+            parms.Add(new OleDbParameter("@FaqLink", OleDbType.VarChar) { Value = name });
+
+            //Execute a query to read the products
+            using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parms.ToArray()))
+            {
+                while (rdr.Read())
+                {
+                    faq = BoHelper.CopyFaqQuestionsToBO(rdr);
+
+                }
+            }
+            return new[] {faq};
         }
 
         public int Add(FaqInfo faq)

@@ -88,7 +88,7 @@ namespace Snitz.OLEDbDAL
         {
             List<CategoryInfo> categories = new List<CategoryInfo>();
             string strSql = "SELECT CAT_ID, CAT_NAME, CAT_STATUS, CAT_MODERATION, CAT_SUBSCRIPTION, CAT_ORDER FROM " + Config.ForumTablePrefix + "CATEGORY WHERE CAT_NAME = @Name ORDER BY CAT_ORDER, CAT_NAME";
-            OleDbParameter parm = new OleDbParameter("@Name", OleDbType.Integer) { Value = name };
+            OleDbParameter parm = new OleDbParameter("@Name", OleDbType.VarChar) { Value = name };
 
             //Execute a query to read the products
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, parm))
