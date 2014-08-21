@@ -36,12 +36,16 @@ namespace EventsCalendar
     {
         private static List<DateTime> list = new List<DateTime>();
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            eventCSS.Attributes.Add("href", "/css/" + Page.Theme + "/events.css");
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!ConfigHelper.IsModEnabled("EventsConfig"))
             {
                 throw new NotSupportedException("Events Calendar not enabled");
-                Response.End();
             }
             if(!IsPostBack)
             {
@@ -55,7 +59,7 @@ namespace EventsCalendar
             if (Resources.webResources.TextDirection == "rtl")
             {
                 //lets add the rtl css file
-                rtlCss.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/eventsrtl.css' />";
+                rtlCss.Text = string.Format(@"<link rel='stylesheet' type='text/css' runat='server' href='/css/{0}/eventsrtl.css' />", Page.Theme);
             }
             if(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fa")
             Page.ClientScript.RegisterStartupScript(this.GetType(), "loctime", "$(document).ready(function () {replaceDates();});", true);
@@ -71,8 +75,8 @@ namespace EventsCalendar
             string id = Request.QueryString["id"];
             DateTime eventdate;
 
-            Array itemValues = System.Enum.GetValues(typeof(Enumerators.EventType));
-            Array itemNames = System.Enum.GetNames(typeof(Enumerators.EventType));
+            Array itemValues = Enum.GetValues(typeof(Enumerators.EventType));
+            Array itemNames = Enum.GetNames(typeof(Enumerators.EventType));
 
             ddlRoles.DataSource = Roles.GetAllRoles();
             ddlRoles.DataBind();
@@ -146,9 +150,9 @@ namespace EventsCalendar
             Response.Redirect("\\Content\\Events\\Events.aspx",true);
         }
 
-        protected void NewCal_DayRender(object sender, DayRenderEventArgs e)
+        protected void NewCalDayRender(object sender, DayRenderEventArgs e)
         {
-            if (e.Day.IsSelected == true)
+            if (e.Day.IsSelected)
             {
                 if (cbxMultiSelect.Checked)
                     list.Add(e.Day.Date);
@@ -157,7 +161,7 @@ namespace EventsCalendar
 
         }
 
-        protected void NewCal_DayChange(object sender, EventArgs e)
+        protected void NewCalDayChange(object sender, EventArgs e)
         {
             if (cbxMultiSelect.Checked && Session["SelectedDates"] != null)
             {
@@ -183,7 +187,7 @@ namespace EventsCalendar
             }
         }
 
-        protected void btnDelEvent_Click(object sender, EventArgs e)
+        protected void BtnDelEventClick(object sender, EventArgs e)
         {
             ForumEvents.DeleteEvent(Convert.ToInt32(btnDelEvent.CommandArgument));
             Thread.Sleep(500);

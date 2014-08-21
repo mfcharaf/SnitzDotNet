@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -38,7 +37,7 @@ using Calendar = System.Web.UI.WebControls.Calendar;
 
 namespace EventsCalendar.UserControls
 {
-    public class calMonths
+    public class CalMonths
     {
         public DateTime Date { get; set; }
     }
@@ -56,9 +55,9 @@ namespace EventsCalendar.UserControls
     public partial class EventCalendar : UserControl
     {
         
-        private Collection<CalDate> CalEvents;
+        private Collection<CalDate> _calEvents;
         private DateTime _tempDate;
-        private int _currentYear
+        private int CurrentYear
         {
             get
             {
@@ -79,7 +78,7 @@ namespace EventsCalendar.UserControls
             }
         }
 
-        private static bool _eventAdmin
+        private static bool EventAdmin
         {
             get
             { return Config.EventAdminRoles.Any(Roles.IsUserInRole); }
@@ -106,7 +105,7 @@ namespace EventsCalendar.UserControls
                     {
                         string date = key.Substring(4, 8);
 
-                        AddEvent_Click(date);
+                        AddEventClick(date);
                     }
                 }
                 if (Request.Params.AllKeys.Contains(ddlYear.UniqueID))
@@ -115,7 +114,7 @@ namespace EventsCalendar.UserControls
                     if (ddlYear.SelectedIndex == 0)
                     {
                         ddlYear.SelectedValue = selected;
-                        ddlYear_SelectedIndexChanged(sender, e);
+                        DdlYearSelectedIndexChanged(sender, e);
                     }
                 }
             } 
@@ -126,13 +125,13 @@ namespace EventsCalendar.UserControls
             if (!IsPostBack)
             {
                 BindYearlyCal();
-                ddlYear.SelectedValue = _currentYear.ToString();
+                ddlYear.SelectedValue = CurrentYear.ToString();
             }
             pnlButtons.Visible = calMonth.Visible;
             pnlYearPick.Visible = calYear.Visible;
         }
 
-        private void AddEvent_Click(string dt)
+        private void AddEventClick(string dt)
         {
             Response.Redirect("\\Content\\Events\\Events.aspx?mode=new&d=" + dt);
         }
@@ -142,11 +141,12 @@ namespace EventsCalendar.UserControls
 
             string[] localizedMonths = Thread.CurrentThread.CurrentCulture.DateTimeFormat.MonthNames;
 
-            List<calMonths> year = new List<calMonths>();
+            List<CalMonths> year = new List<CalMonths>();
             for (int i = 0; i < localizedMonths.Length-1; i++)
             {
-                DateTime date = new DateTime(_currentYear, i + 1, 1, CultureInfo.CurrentCulture.DateTimeFormat.Calendar);
-                calMonths month = new calMonths {Date = date};
+                DateTime date = new DateTime(CurrentYear, i + 1, 1, CultureInfo.CurrentCulture.DateTimeFormat.Calendar);
+                CalMonths month = new CalMonths();
+                month.Date = date;
                 year.Add(month);
             }
             rptMonths.DataSource = year;
@@ -155,70 +155,72 @@ namespace EventsCalendar.UserControls
 
         private void GetEvents(DateTime start, DateTime end)
         {
-            CalEvents = new Collection<CalDate>();
+            _calEvents = new Collection<CalDate>();
             foreach (EventInfo calEvent in ForumEvents.GetEvents(start,end))
             {
                 
                 CalDate cal = new CalDate { Id= calEvent.Id, Date = calEvent.Date, Title = calEvent.Title, Type = calEvent.Type };
                 if ( String.IsNullOrEmpty(calEvent.Audience) || calEvent.Audience == "All" || Roles.IsUserInRole(calEvent.Audience) || Roles.IsUserInRole("Administrator"))
-                CalEvents.Add(cal);                
+                _calEvents.Add(cal);                
             }
 
         }
 
-        protected void Calendar1_DayRender(object sender, DayRenderEventArgs e)
+        protected void Calendar1DayRender(object sender, DayRenderEventArgs e)
         {
             StringBuilder temp = new StringBuilder(); 
-            bool DayTextHasChanged = false;
-            DateTime DayHold = DateTime.MinValue;
+            bool dayTextHasChanged = false;
+            DateTime dayHold = DateTime.MinValue;
 
-            foreach (CalDate Item in CalEvents)
+            foreach (CalDate item in _calEvents)
             {
-                if (DayHold != Item.Date)
+                string headerstyle;
+                if (dayHold != item.Date)
                 {
-                    if (DayTextHasChanged)
+                    if (dayTextHasChanged)
                     {
                         break; 
                     }
-                    DayHold = Item.Date;
+                    dayHold = item.Date;
                 }
 
-                if (e.Day.Date.DayOfYear == Item.Date.DayOfYear)
+                if (e.Day.Date.DayOfYear == item.Date.DayOfYear)
                 {
-                    string TextColour;
-                    switch (Item.Type)
+                    
+                    switch (item.Type)
                     {
                         case 1:
-                            TextColour = "Blue";
+                            headerstyle = "cal-head-event";
                             break;
                         case 2:
-                            TextColour = "Red";
+                            headerstyle = "cal-head-birthday";
                             break;
                         case 3:
-                            TextColour = "Orange";
+                            headerstyle = "cal-head-anniversary";
                             break;
                         case 4:
-                            TextColour = "Green";
+                            headerstyle = "cal-head-holiday";
                             break;
                         case 5:
-                            TextColour = "Gray";
+                            headerstyle = "cal-head-special";
                             break;
                         default:
-                            TextColour = "Black";
+                            headerstyle = "cal-head";
                             break;
                     }
                   
-                    if(_eventAdmin)
-                        temp.AppendFormat("<br><a href=\"/Content/Events/Events.aspx?mode=edit&id={0}\" title=\"Edit event: {1}\">{1}</a>", Item.Id, Item.Title);
+                    if(EventAdmin)
+                        temp.AppendFormat("<br><a href=\"/Content/Events/Events.aspx?mode=edit&id={0}\" title=\"Edit event: {1}\">{1}</a>", item.Id, item.Title);
                     else
-                        temp.AppendFormat("<span style=\"font-size:12px; color:{0}\" ><br>{1}</span>", TextColour, Item.Title);
+                        temp.AppendFormat("<span class=\"{0}\" ><br>{1}</span>", headerstyle, item.Title);
 
-                    DayTextHasChanged = true;
+                    dayTextHasChanged = true;
                     ////Set the flag
                 }
 
             }
-            if (Calendar1.SkinID.ToLower().Contains("lge") && _eventAdmin)
+
+            if (Calendar1.SkinID.ToLower().Contains("lge") && EventAdmin)
             {
                 ImageButton btn = new ImageButton
                                       {
@@ -229,11 +231,8 @@ namespace EventsCalendar.UserControls
                 //btn.ApplyStyleSheetSkin(Page);
                 e.Cell.Controls.Add(btn);
             }            
-            if (DayTextHasChanged)
+            if (dayTextHasChanged)
             {
-                e.Cell.BackColor = Color.Silver;
-                if(e.Day.IsOtherMonth)
-                    e.Cell.BackColor = ColorTranslator.FromHtml("#F2F2F2");// Color.#F2F2F2
                 if (Calendar1.SkinID.ToLower().Contains("lge"))
                 {
                     e.Cell.Controls.Add(new LiteralControl(temp.ToString()));
@@ -242,43 +241,43 @@ namespace EventsCalendar.UserControls
 
         }
 
-        protected void Calendar1_SelectionChanged(object sender, EventArgs e)
+        protected void Calendar1SelectionChanged(object sender, EventArgs e)
         {
             string temp = "No Events for today";
-            string Category = "";
+            string category = "";
             Calendar currentCal = sender as Calendar;
             if (currentCal != null) _tempDate = currentCal.SelectedDate;
             // fetch todays events from db
-            IEnumerable<EventInfo> TodaysEvents = GetEventsForToday(_tempDate);
-            if (TodaysEvents.Count() > 0)
+            List<EventInfo> todaysEvents = GetEventsForToday(_tempDate).ToList();
+            if (todaysEvents.Any())
                 temp = "";
-            foreach (EventInfo Item in TodaysEvents)
+            foreach (EventInfo item in todaysEvents)
             {
-                Item.Author = Members.GetAuthor(Item.MemberId);
-                switch (Item.Type)
+                item.Author = Members.GetAuthor(item.MemberId);
+                switch (item.Type)
                 {
 			        case 1 :
-                        Category = "Event";
+                        category = "Event";
                         break;
 			        case 2 :
-                        Category = "Birthday";
+                        category = "Birthday";
                         break;
 			        case 3 :
-                        Category = "Anniversary";
+                        category = "Anniversary";
                         break;
 			        case 4 :
-                        Category = "Holiday";
+                        category = "Holiday";
                         break;
                     case 5 :
-                        Category = "Special";
+                        category = "Special";
                         break;
                 }
-                temp += "Title : <a href=\"edit.aspx?ID=" + Item.Id + "\">" + Item.Title + "</a>" + 
+                temp += "Title : <a href=\"edit.aspx?ID=" + item.Id + "\">" + item.Title + "</a>" + 
                     //"<br/>Date : " + Item.EventDate.ToDateTime() +
-                    "<br/>" + Item.Description +
-                    "<br/>Event Type : " + Category + 
-                    "<br/>Audience : " + Item.Audience +
-                    "<br/>Added by : " + Item.Author.Username + "<br/><br/>";
+                    "<br/>" + item.Description +
+                    "<br/>Event Type : " + category + 
+                    "<br/>Audience : " + item.Audience +
+                    "<br/>Added by : " + item.Author.Username + "<br/><br/>";
 
             }
 
@@ -310,8 +309,8 @@ namespace EventsCalendar.UserControls
             calMonth.Visible = false;
             pnlButtons.Visible = false;
             pnlYearPick.Visible = true;
-            _tempDate = new DateTime(_currentYear, 1, 1);
-            ddlYear.SelectedValue = _currentYear.ToString();
+            _tempDate = new DateTime(CurrentYear, 1, 1);
+            ddlYear.SelectedValue = CurrentYear.ToString();
             BindYearlyCal();
         }
 
@@ -319,33 +318,36 @@ namespace EventsCalendar.UserControls
         {
             calYear.Visible = false;
             calMonth.Visible = true;
-            _currentYear = String.IsNullOrEmpty(year) ? 2012 : Convert.ToInt32(year);
-            _tempDate = new DateTime(_currentYear, Convert.ToInt32(monthnum), 1, CultureInfo.CurrentCulture.DateTimeFormat.Calendar);
+            CurrentYear = String.IsNullOrEmpty(year) ? 2012 : Convert.ToInt32(year);
+            _tempDate = new DateTime(CurrentYear, Convert.ToInt32(monthnum), 1, CultureInfo.CurrentCulture.DateTimeFormat.Calendar);
             
             GetEvents(_tempDate.AddDays(-10), _tempDate.AddDays(40));
             Calendar1.TodaysDate = _tempDate;
-            ddlYear.SelectedValue = _currentYear.ToString();
+            ddlYear.SelectedValue = CurrentYear.ToString();
             pnlButtons.Visible = calMonth.Visible;
             pnlYearPick.Visible = false;
 
         }
 
-        protected void ddlYear_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DdlYearSelectedIndexChanged(object sender, EventArgs e)
         {
-            _currentYear = Convert.ToInt32(ddlYear.SelectedValue);
-            _tempDate = new DateTime(_currentYear,1,1);
+            CurrentYear = Convert.ToInt32(ddlYear.SelectedValue);
+            _tempDate = new DateTime(CurrentYear,1,1);
             BindYearlyCal();
             pnlYearPick.Visible = true;
             pnlButtons.Visible = false;
         }
 
-        protected void rptMonths_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void RptMonthsItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 ExtendedCalendar cal = e.Item.FindControl("ExtendedCalendar1") as ExtendedCalendar;
+                var test = (CalMonths)e.Item.DataItem;
+                if(test.Date.Month == DateTime.UtcNow.Month)
+                    cal.TodaysDate = DateTime.UtcNow.Date;
                 if (cal != null)
-                    cal.DaySelected += Calendar1_SelectionChanged;
+                    cal.DaySelected += Calendar1SelectionChanged;
             }
             if (e.Item.ItemType == ListItemType.Separator)
             {

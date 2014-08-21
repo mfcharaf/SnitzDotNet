@@ -98,7 +98,7 @@ namespace EventsCalendar.UserControls
                 {
 
 
-                    date.Text = dataItem.Date.ToForumDateDisplay(" ", false, page.IsAuthenticated, 0);
+                    date.Text = dataItem.Date.ToForumDateDisplay(" ", false, page.IsAuthenticated,page.Member);
                 }
             }
         }

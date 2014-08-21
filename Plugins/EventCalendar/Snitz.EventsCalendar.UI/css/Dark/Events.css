@@ -1,0 +1,108 @@
+﻿body {
+}
+    #breadcrumbDIV{ display: none;}
+     .eventForm{margin-left:20px;background-color:White;width:auto;padding:10px;}
+    .eventForm label{width:150px;display:inline-block;}
+    .eventForm input, .eventForm select{margin-bottom:3px;}
+    .eventForm input[type="checkbox"] {width:20px;}
+    .eventForm span.cbx label{width:200px;}
+    .alignTopLeft{text-align: left; vertical-align: top;}
+    .cal-head{ background-color: #ff3300;}
+
+    
+    .calender-current-month{ background-color: #FF3300;color: darkred;}
+    .calendar-month-header {background-color:#ff3300;margin:0;padding:0;      }
+
+
+/* 
+    Set the Style for parent CSS Class 
+    of Calendar control 
+    Parent [CssClass] = myCalendar 
+*/  
+.smallCal {  
+    background-color: #FFff99;  
+    /*width: 210px;*/  
+}
+    .smallCal th {
+        font-size:0.75em;
+    }
+.smallCal td {
+    padding: 1px;
+}  
+/* 
+    Common style declaration for hyper linked text 
+*/  
+.smallCal a {  
+    text-decoration: none;  
+}  
+  
+/* 
+    Styles declaration for top title 
+    [TitleStyle] [CssClass] = myCalendarTitle 
+*/  
+.smallCal .smallCalTitle {  
+    font-weight: bold;
+    background-color: #ff6600;
+}  
+.smallCal .smallCalTitle a{  
+    color: darkred;
+}  
+/* 
+    Styles declaration for date cells 
+    [DayStyle] [CssClass] = myCalendarDay 
+*/  
+.smallCal td.smallCalDay {  
+    border: solid 1px #fff;  
+    border-left: 0;  
+    border-top: 0;
+    padding: 1px; 
+}  
+.cal-head-today{ 
+    background-color: #FF9900;
+} 
+.cal-head-event{ 
+    background-color: orangered;
+}
+.cal-head-birthday{ 
+    background-color: red;
+}
+.cal-head-anniversary{ 
+    background-color: orange;
+}
+.cal-head-holiday{ 
+    background-color: green;
+}
+.cal-head-special{ 
+    background-color: gray;
+} 
+/* 
+    Styles declaration for next/previous month links 
+    [NextPrevStyle] [CssClass] = myCalendarNextPrev 
+*/  
+.smallCal .smallCalNextPrev {  
+    text-align: center;  
+}  
+  
+/* 
+    Styles declaration for Week/Month selector links cells 
+    [SelectorStyle] [CssClass] = myCalendarSelector 
+*/  
+.smallCal td.smallCalSelector {  
+    background-color: #dddddd;  
+}  
+  
+.smallCal .smallCalDay a,   
+.smallCal .smallCalSelector a,  
+.smallCal .smallCalNextPrev a {  
+    display: block;  
+    line-height: 18px;  
+}  
+  
+.smallCal .smallCalDay a:hover,   
+.smallCal .smallCalSelector a:hover {  
+    background-color: #cccccc;  
+}  
+  
+.smallCal .smallCalNextPrev a:hover {  
+    background-color: #fff;  
+}  

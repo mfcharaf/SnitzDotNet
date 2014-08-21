@@ -86,13 +86,27 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Mods\EventsAdmin.ascx" />
     <Content Include="Content\Events\Events.aspx" />
+    <Content Include="css\BlueGray\Events.css" />
+    <Content Include="css\ClassicSnitz\Events.css" />
+    <Content Include="css\Dark\Events.css" />
+    <Content Include="css\Light\Events.css" />
+    <Content Include="css\Mushroom\Events.css" />
     <Content Include="UserControls\Events\EventCalendar.ascx" />
     <Content Include="UserControls\Events\ExtendedCalendar.ascx" />
     <Content Include="UserControls\Events\UpcomingEvents.ascx" />
     <Content Include="UserControls\Popups\ViewEvent.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Mods\EventsAdmin.ascx.cs">
+      <DependentUpon>EventsAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Mods\EventsAdmin.ascx.designer.cs">
+      <DependentUpon>EventsAdmin.ascx</DependentUpon>
+    </Compile>
+    <Content Include="App_Code\EventsConfig.config.cs" />
     <Compile Include="App_GlobalResources\webResources.designer.cs">
       <DependentUpon>webResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -163,6 +177,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -196,6 +211,11 @@ xcopy /s /y "$(ProjectDir)UserControls\Popups\*.ascx" "$(SolutionDir)..\..\Web S
 xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.*" "$(SolutionDir)..\..\Web Site\www\bin\"
 
 xcopy /s /y "$(ProjectDir)Content\Events\*.aspx" "$(SolutionDir)..\..\Web Site\www\Content\Events\"
+xcopy /s /y "$(ProjectDir)css\*.css" "$(SolutionDir)..\..\Web Site\www\css\"
+
+xcopy /s /y "$(ProjectDir)Admin\Mods\*.ascx" "$(SolutionDir)..\..\Web Site\www\Admin\Mods\"
+
+xcopy /s /y "$(ProjectDir)App_Code\*.cs" "$(SolutionDir)..\..\Web Site\www\App_Code\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

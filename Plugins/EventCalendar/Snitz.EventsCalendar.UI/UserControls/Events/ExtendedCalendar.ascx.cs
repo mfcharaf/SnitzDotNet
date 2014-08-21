@@ -21,11 +21,9 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using EventsCalendar;
 using Snitz.BLL;
 using Snitz.Entities;
 
@@ -34,11 +32,11 @@ namespace EventsCalendar.UserControls
     public partial class ExtendedCalendar : UserControl
     {
         private DateTime _todaysDate;
-        public DateTime TodaysDate { 
-            get { return _todaysDate; }
+        public DateTime TodaysDate {
+            protected get { return _todaysDate; }
             set { _todaysDate = value; }
         }
-        private Collection<CalDate> CalEvents; 
+        private Collection<CalDate> _calEvents; 
         public event EventHandler DaySelected;
 
         private void OnDaySelected(object sender, EventArgs e)
@@ -54,10 +52,10 @@ namespace EventsCalendar.UserControls
         {
 
 
-            this.PreRender += new EventHandler(Month_PreRender);
+            this.PreRender += MonthPreRender;
         }
 
-        private void Month_PreRender(object sender, EventArgs e)
+        private void MonthPreRender(object sender, EventArgs e)
         {
             DateTime now = DateTime.Today;
             lnk.Text = _todaysDate.ToString("MMMM");
@@ -69,62 +67,67 @@ namespace EventsCalendar.UserControls
             GetEvents(_todaysDate, _todaysDate.AddDays(days));
             if(now.Year == _todaysDate.Year)
                 if (_todaysDate.Month == now.Month)
-                    calMonth.TitleStyle.BackColor = Color.Green;
+                    calMonth.TitleStyle.CssClass = "calender-current-month";
         }
 
         protected void DayRender(object sender, DayRenderEventArgs e)
         {
-            Color BackColour = Color.White;
-            bool DayTextHasChanged = false;
-            DateTime DayHold = DateTime.MinValue;
+            string headerstyle = "";
+            bool dayTextHasChanged = false;
+            DateTime dayHold = DateTime.MinValue;
 
-            foreach (CalDate Item in CalEvents)
+            foreach (CalDate item in _calEvents)
             {
-                if (DayHold != Item.Date)
+                if (dayHold != item.Date)
                 {
-                    if (DayTextHasChanged)
+                    if (dayTextHasChanged)
                     {
                         break;
                     }
-                    DayHold = Item.Date;
+                    dayHold = item.Date;
                 }
 
-                if (e.Day.Date.DayOfYear == Item.Date.DayOfYear)
+                if (e.Day.Date.DayOfYear == item.Date.DayOfYear)
                 {
 
-                    switch (Item.Type)
+                    switch (item.Type)
                     {
                         case 1:
-                            BackColour = Color.Blue;
+                            headerstyle = " cal-head-event";
                             break;
                         case 2:
-                            BackColour = Color.Red;
+                            headerstyle = " cal-head-birthday";
                             break;
                         case 3:
-                            BackColour = Color.Orange;
+                            headerstyle = " cal-head-anniversary";
                             break;
                         case 4:
-                            BackColour = Color.Green;
+                            headerstyle = " cal-head-holiday";
                             break;
                         case 5:
-                            BackColour = Color.Gray;
+                            headerstyle = " cal-head-special";
                             break;
                         default:
-                            BackColour = Color.Silver;
+                            headerstyle = " cal-head";
                             break;
                     }
 
 
-                    DayTextHasChanged = true;
+                    dayTextHasChanged = true;
                     ////Set the flag
                 }
 
             }
-            if (DayTextHasChanged)
-            {
-                e.Cell.BackColor = BackColour;
-            }
 
+            if (dayTextHasChanged)
+            {
+                e.Cell.CssClass += headerstyle;
+                //e.Cell.BackColor = BackColour;
+            }
+            if (e.Day.Date.DayOfYear == DateTime.UtcNow.DayOfYear)
+            {
+                e.Cell.CssClass += " cal-head-today";
+            }
         }
 
         protected override void Render(HtmlTextWriter writer)
@@ -145,7 +148,7 @@ namespace EventsCalendar.UserControls
             writer.Write(output);
         }
         
-        protected void lnk_Click(object sender, EventArgs e)
+        protected void LnkClick(object sender, EventArgs e)
         {
             LinkButton monthlink = sender as LinkButton;
             int year;
@@ -189,11 +192,11 @@ namespace EventsCalendar.UserControls
 
         private void GetEvents(DateTime start, DateTime end)
         {
-            CalEvents = new Collection<CalDate>();
+            _calEvents = new Collection<CalDate>();
             foreach (EventInfo calEvent in ForumEvents.GetEvents(start, end))
             {
                 CalDate cal = new CalDate { Date = calEvent.Date, Title = calEvent.Title, Type = calEvent.Type };
-                CalEvents.Add(cal);
+                _calEvents.Add(cal);
             }
 
         }
