@@ -135,7 +135,6 @@
   <ItemGroup>
     <Content Include="Account\Activate.aspx" />
     <Content Include="Account\Bookmark.aspx" />
-    <Content Include="Account\RegisterOld.aspx" />
     <Content Include="Admin\css\Mushroom\admin.css" />
     <Content Include="Admin\css\Mushroom\Menu.css" />
     <Content Include="Admin\Mods\default.aspx" />
@@ -1336,7 +1335,6 @@
     <Content Include="Setup\update.xml">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="TestEmail.aspx" />
     <Content Include="UserControls\AnnounceBox.ascx" />
     <Content Include="UserControls\CategoryForums.ascx" />
     <Content Include="UserControls\emoticons.ascx" />
@@ -1684,13 +1682,6 @@
     <Compile Include="Account\Bookmark.aspx.designer.cs">
       <DependentUpon>Bookmark.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Account\RegisterOld.aspx.cs">
-      <DependentUpon>RegisterOld.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\RegisterOld.aspx.designer.cs">
-      <DependentUpon>RegisterOld.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Mods\default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1814,13 +1805,6 @@
     </Compile>
     <Compile Include="Setup\test1.aspx.designer.cs">
       <DependentUpon>test1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="TestEmail.aspx.cs">
-      <DependentUpon>TestEmail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TestEmail.aspx.designer.cs">
-      <DependentUpon>TestEmail.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CategoryForums.ascx.cs">
       <DependentUpon>CategoryForums.ascx</DependentUpon>
