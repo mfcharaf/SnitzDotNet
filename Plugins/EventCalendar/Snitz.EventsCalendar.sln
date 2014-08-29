@@ -16,32 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.EventsCalendar.OleDbDAL", "Snitz.EventsCalendar.OleDbDAL\Snitz.EventsCalendar.OleDbDAL.csproj", "{8FCEBD4F-BC92-4AFF-9892-6C79CC54A786}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://snitzforums.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Snitz.EventsCalendar.BLL\\Snitz.EventsCalendar.BLL.csproj
-		SccProjectName1 = Snitz.EventsCalendar.BLL
-		SccLocalPath1 = Snitz.EventsCalendar.BLL
-		SccProjectUniqueName2 = Snitz.EventsCalendar.Common\\Snitz.EventsCalendar.Entities.csproj
-		SccProjectName2 = Snitz.EventsCalendar.Common
-		SccLocalPath2 = Snitz.EventsCalendar.Common
-		SccProjectUniqueName3 = Snitz.EventsCalendar.IDAL\\Snitz.EventsCalendar.IDAL.csproj
-		SccProjectName3 = Snitz.EventsCalendar.IDAL
-		SccLocalPath3 = Snitz.EventsCalendar.IDAL
-		SccProjectUniqueName4 = Snitz.EventsCalendar.OleDbDAL\\Snitz.EventsCalendar.OleDbDAL.csproj
-		SccProjectTopLevelParentUniqueName4 = Snitz.EventsCalendar.sln
-		SccProjectName4 = Snitz.EventsCalendar.OleDbDAL
-		SccLocalPath4 = Snitz.EventsCalendar.OleDbDAL
-		SccProjectUniqueName5 = Snitz.EventsCalendar.SQLServerDAL\\Snitz.EventsCalendar.SQLServerDAL.csproj
-		SccProjectTopLevelParentUniqueName5 = Snitz.EventsCalendar.sln
-		SccProjectName5 = Snitz.EventsCalendar.SQLServerDAL
-		SccLocalPath5 = Snitz.EventsCalendar.SQLServerDAL
-		SccProjectUniqueName6 = Snitz.EventsCalendar.UI\\Snitz.EventsCalendar.UI.csproj
-		SccProjectName6 = Snitz.EventsCalendar.UI
-		SccLocalPath6 = Snitz.EventsCalendar.UI
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

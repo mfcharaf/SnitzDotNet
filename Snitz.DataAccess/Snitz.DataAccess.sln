@@ -14,28 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MS Sql", "MS Sql", "{14D77B56-1D8F-47BD-8796-099BAB5130DF}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://snitzforums.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MSSQL\\Snitz.SQLServerDAL\\Snitz.SQLServerDAL.csproj
-		SccProjectTopLevelParentUniqueName1 = Snitz.DataAccess.sln
-		SccProjectName1 = MSSQL/Snitz.SQLServerDAL
-		SccLocalPath1 = MSSQL\\Snitz.SQLServerDAL
-		SccProjectUniqueName2 = MSAccess\\Snitz.JetDAL\\Snitz.OLEDbDAL.csproj
-		SccProjectTopLevelParentUniqueName2 = Snitz.DataAccess.sln
-		SccProjectName2 = MSAccess/Snitz.JetDAL
-		SccLocalPath2 = MSAccess\\Snitz.JetDAL
-		SccProjectUniqueName3 = MSSQL\\Snitz.Membership.SQLServerDAL\\Snitz.Membership.SQLServerDAL.csproj
-		SccProjectTopLevelParentUniqueName3 = Snitz.DataAccess.sln
-		SccProjectName3 = MSSQL/Snitz.Membership.SQLServerDAL
-		SccLocalPath3 = MSSQL\\Snitz.Membership.SQLServerDAL
-		SccProjectUniqueName4 = MSAccess\\Snitz.MembershipOleDbDAL\\Snitz.MembershipOleDbDAL.csproj
-		SccProjectTopLevelParentUniqueName4 = Snitz.DataAccess.sln
-		SccProjectName4 = MSAccess/Snitz.MembershipOleDbDAL
-		SccLocalPath4 = MSAccess\\Snitz.MembershipOleDbDAL
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

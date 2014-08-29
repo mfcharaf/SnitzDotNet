@@ -24,44 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snitz.Membership.IDal", "Snitz.MembershipProvider\Snitz.Membership.IDal\Snitz.Membership.IDal.csproj", "{A0C1364E-09E1-429F-888F-7F9B26C77527}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://snitzforums.visualstudio.com/defaultcollection
-		SccProjectUniqueName0 = Snitz.Config\\Snitz.Config.csproj
-		SccProjectName0 = Snitz.Config
-		SccLocalPath0 = Snitz.Config
-		SccProjectUniqueName1 = Snitz.Common\\Snitz.Common.csproj
-		SccProjectName1 = Snitz.Common
-		SccLocalPath1 = Snitz.Common
-		SccProjectUniqueName2 = Snitz.Entities\\Snitz.Entities.csproj
-		SccProjectName2 = Snitz.Entities
-		SccLocalPath2 = Snitz.Entities
-		SccProjectUniqueName3 = Snitz.IDAL\\Snitz.IDAL.csproj
-		SccProjectName3 = Snitz.IDAL
-		SccLocalPath3 = Snitz.IDAL
-		SccProjectUniqueName4 = Snitz.MembershipProvider\\Snitz.Membership.IDal\\Snitz.Membership.IDal.csproj
-		SccProjectTopLevelParentUniqueName4 = SnitzCore.sln
-		SccProjectName4 = Snitz.MembershipProvider/Snitz.Membership.IDal
-		SccLocalPath4 = Snitz.MembershipProvider\\Snitz.Membership.IDal
-		SccProjectUniqueName5 = Snitz.MembershipProvider\\Snitz.Membership\\Snitz.Membership.csproj
-		SccProjectTopLevelParentUniqueName5 = SnitzCore.sln
-		SccProjectName5 = Snitz.MembershipProvider/Snitz.Membership
-		SccLocalPath5 = Snitz.MembershipProvider\\Snitz.Membership
-		SccProjectUniqueName6 = Snitz.BLL\\Snitz.BusinessLayer.csproj
-		SccProjectName6 = Snitz.BLL
-		SccLocalPath6 = Snitz.BLL
-		SccProjectUniqueName7 = Snitz.ThirdParty\\Snitz.ThirdParty.csproj
-		SccProjectName7 = Snitz.ThirdParty
-		SccLocalPath7 = Snitz.ThirdParty
-		SccProjectUniqueName8 = Snitz.Base\\Snitz.Base.csproj
-		SccProjectName8 = Snitz.Base
-		SccLocalPath8 = Snitz.Base
-		SccProjectUniqueName9 = jquery.spellchecker\\jquery.spellchecker.csproj
-		SccProjectName9 = jquery.spellchecker
-		SccLocalPath9 = jquery.spellchecker
-		SccLocalPath10 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
