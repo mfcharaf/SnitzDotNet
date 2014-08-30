@@ -86,6 +86,11 @@
       <Index name="PK_FORUM_Event" columns="Id" direction="ASC" unique="true"/>
       <Index name="IDX_FORUM_Event" columns="EventDate" direction="DESC" />
     </Table>
+      <Table name="FORUM_FILELOG" idfield="ID">
+        <Column name="FILENAME" type="varchar" size="255" allownulls="false"/>
+        <Column name="COUNTER" type="int" default="0" allownulls="false"/>
+        <Index name="PK_FORUM_FILELOG" columns="FILENAME" direction="ASC" unique="true"/>
+      </Table>
   </Create>  
   <Alter>
     <Table name="FORUM_FORUM">
