@@ -14,6 +14,11 @@
             
             $.markItUp({ replaceWith: img });
             $find('mpUpload').hide();
+            $get("errDiv").style.display = 'none';
+            $get(clientMsgId).style.display = 'none';
+            $get(imgTagId).style.display = 'none';
+            $get(upResId).innerHTML = "";
+
             return false;
         });
     } catch (e) {

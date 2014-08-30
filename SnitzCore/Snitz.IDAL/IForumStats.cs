@@ -26,5 +26,6 @@ namespace Snitz.IDAL
     public interface IForumStats
     {
         StatsInfo GetStatistics(string lastvisit);
+        int LogDownload(string file);
     }
 }

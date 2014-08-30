@@ -37,8 +37,6 @@
 
         function BindControlEvents() {
             //jQuery is wrapped in BindEvents function so it can be re-bound after each callback.
-            //Your code would replace the following line:
-            PageMethods.set_path('/Content/Forums/topic.aspx');
             $(".bbcode").each(function () {
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
@@ -98,13 +96,9 @@
             });
         });
 
-
-
-
         function pollloaded() { 
             BindControlEvents();
         }       
-
     </script>
     <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
 <style type="text/css">

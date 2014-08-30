@@ -395,35 +395,6 @@ namespace SnitzUI
 
         #endregion
 
-        #region Page methods for Ajax Name and Email checks
-
-        [WebMethod]
-        public static bool CheckUserName(string userName)
-        {
-            Thread.Sleep(1000);
-            var membercheck = Membership.GetUser(userName);
-            if ((membercheck != null) && membercheck.UserName.ToLower() != "guest")
-            {
-                return true;
-            }
-            if (!IsNameAllowed(userName))
-                return true;
-            return false;
-        }
-
-        [WebMethod]
-        public static bool CheckEmail(string email)
-        {
-            Thread.Sleep(1000);
-            if (!String.IsNullOrEmpty(Membership.GetUserNameByEmail(email)))
-            {
-                return true;
-            }
-            return false;
-        } 
-
-        #endregion
-
         private void SetVisiblity()
         {
             _regsettings = Server.MapPath("~/App_Data/regcontrols.xml");

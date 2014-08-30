@@ -75,6 +75,11 @@ public partial class QuickReply : UserControl
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        uploadResult.Text = "";
+        imageTag.Text = "";
+        errLabel.Text = "";
+        clientSide.Rows.Clear();
+
         Visible = (Roles.IsUserInRole("Member") && thisTopic.Status==(int)Enumerators.PostStatus.Open) || page.IsAdministrator;
         AsyncFileUpload1.UploaderStyle = AsyncFileUpload.UploaderStyleEnum.Modern;
         AsyncFileUpload1.UploadedComplete += AsyncFileUpload1UploadedComplete;
@@ -158,7 +163,16 @@ public partial class QuickReply : UserControl
         if (e.FileName == null) return;
 
         ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
-        string[] allowedTypes = controller.ModConfiguration.Settings["AllowedFileTypes"].ToString().Split(',');
+        string types = "";
+        if (AllowAttachments)
+            types += controller.ModConfiguration.Settings["AllowedAttachmentTypes"].ToString();
+        if (AllowImageUploads)
+        {
+            if (types != "")
+                types += ",";
+            types += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
+        }
+        string[] allowedTypes = types.Split(',');
         int fileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()) * 1024;
         string uploadpath = controller.ModConfiguration.Settings["FileUploadLocation"].ToString();
         string filext = Path.GetExtension(AsyncFileUpload1.PostedFile.FileName).Replace(".", "");

@@ -200,6 +200,7 @@ namespace SnitzUI
 
         private void InitialiseVariablesFromParams()
         {
+
             _action = Request.Params["method"].ToLower();
 
             if (Request.Params["id"] != null)
@@ -797,26 +798,6 @@ namespace SnitzUI
                 // TODO: handle error!
             }
         }
-
-        #region Page methods 
-
-        /// <summary>
-        /// Called Asynchronously by the Preview window to parse [bb] tags
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        [WebMethod]
-        public static string ParseForumCode(string data)
-        {
-            string theme = HttpContext.Current.Session["PageTheme"] == null ? "Light" : HttpContext.Current.Session["PageTheme"].ToString();
-            data = HttpUtility.UrlDecode(data);
-            string parsedText = data.ParseTags();
-
-            return string.Format("<head><link rel=\"stylesheet\" type=\"text/css\" href=\"~/{0}/base.css\" /><link rel=\"stylesheet\" type=\"text/css\" href=\"~/{0}/bluegrey.css\" /><script type=\"text/javascript\">window.focus();</script></head><body><br/><div class=\"TopicDiv clearfix\">{1}</div></body>", theme, parsedText);
-        }
-
-        #endregion
-
 
     }
 }

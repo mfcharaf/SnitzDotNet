@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Tables>
+<Tables title="" applied="false">
   <Create>
     <Table name="aspnet_Roles" idfield="RoleId">
       <Column name="ApplicationId" type="GUID" allownulls="false"/>

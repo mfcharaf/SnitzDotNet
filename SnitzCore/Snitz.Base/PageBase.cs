@@ -173,66 +173,108 @@ namespace SnitzCommon
         protected override void OnPreInit(EventArgs e)
         {
             //DO we need to run the Database setup
-            if (ConfigurationManager.AppSettings["RunSetup"] == "true")
+            try
             {
-                Response.Redirect("~/Setup/Setup.aspx", true);
+                if (ConfigurationManager.AppSettings["RunSetup"] == "true")
+                {
+                    Response.Redirect("~/Setup/Setup.aspx", true);
+                }
             }
+            catch (Exception)
+            {
+                throw new FileNotFoundException("Could not load setup page");
+            }
+
             base.OnPreInit(e);
 
             #region Theme Setting
-            Page.Theme = Config.UserTheme;
-            Session.Add("PageTheme",Page.Theme);
+            try
+            {
+                Page.Theme = Config.UserTheme;
+                Session.Add("PageTheme", Page.Theme);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Problem loading default Theme");
+            }
             #endregion
 
-            if(!Config.ShowRightColumn)
+            try
             {
-                Session.Add("_MasterPage", "~/MasterTemplates/SingleCol.Master");
-            }
-            if (Session["_MasterPage"] == null)
-            {
-                if (MasterPageFile == "~/MasterTemplates/MainMaster.master")
+                if (!Config.ShowRightColumn)
                 {
-                    Session.Add("_MasterPage", "~/MasterTemplates/MainMaster.master");
+                    Session.Add("_MasterPage", "~/MasterTemplates/SingleCol.Master");
+                }
+                if (Session["_MasterPage"] == null)
+                {
+                    if (MasterPageFile == "/MasterTemplates/MainMaster.master")
+                    {
+                        Session.Add("_MasterPage", "/MasterTemplates/MainMaster.master");
+                        MasterPageFile = ((string)Session["_MasterPage"]);
+                    }
+                }
+                else
+                {
                     MasterPageFile = ((string)Session["_MasterPage"]);
                 }
             }
-            else
+            catch (Exception)
             {
-                MasterPageFile = ((string)Session["_MasterPage"]);
+                throw new Exception("Problem loading Master Template");
             }
 
             HttpContext current = HttpContext.Current;
 
             //Check for the _LastVisit Session
-            if (current.Session["_LastVisit"] == null)
+            int counter = 0;
+            try
             {
-                //Is there a last vist cookie
-                if (LastVisitCookie != null)
+                
+                if (current.Session["_LastVisit"] == null)
                 {
-                    current.Session.Add("_LastVisit", LastVisitCookie);
-                    if (IsAuthenticated)
-                    {
-                        //we are logged in so update lastheredate in the db and update the session
+                    //Is there a last vist cookie
 
-                        //update lastactivitydate
-                        MembershipUser mu = Membership.GetUser(current.User.Identity.Name, true);
-                        if (mu != null)
+                    if (LastVisitCookie != null)
+                    {
+                        current.Session.Add("_LastVisit", LastVisitCookie);
+                        
+                        if (IsAuthenticated)
                         {
-                            mu.LastActivityDate = mu.LastLoginDate;
-                            mu.LastLoginDate = LastVisitCookie.ToDateTime().Value;
-                            Membership.UpdateUser(mu);
+                            //we are logged in so update lastheredate in the db and update the session
+                            //update lastactivitydate
+                            MembershipUser mu = Membership.GetUser(current.User.Identity.Name, true);
+
+                            if (mu != null)
+                            {
+                                counter = 6;
+                                mu.LastActivityDate = mu.LastLoginDate;
+                                var dateTime = LastVisitCookie.ToDateTime();
+                                if (dateTime.HasValue)
+                                    mu.LastLoginDate = dateTime.Value;
+                                Membership.UpdateUser(mu);
+                            }
                         }
                     }
+                    counter = 7;
+                    //set the last visit cookie now 
+                    LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
+                    counter = 8;
                 }
-                //set the last visit cookie now 
-                LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
-                
+            }
+            catch (Exception)
+            {
+                throw new Exception("Problem setting Last Visit cookie:" + counter);
             }
 
             current.Session.Add("_IsAdminOrModerator", IsModerator || IsAdministrator);
         }
-        
-        protected override void OnInit(EventArgs e)
+
+	    public void ShowMessage(string msg)
+	    {
+            Page.ClientScript.RegisterStartupScript(GetType(), "msgbox", "alert('" + msg + "');", true); 
+	    }
+
+	    protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			//attach to the static SiteMapResolve event

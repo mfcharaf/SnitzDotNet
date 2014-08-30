@@ -36,7 +36,7 @@
         DestinationPageUrl="~/default.aspx" >
         
         <LayoutTemplate>
-        
+        <asp:Panel runat="server" ID="lPanel" DefaultButton="LoginButton"></asp:Panel>
             <table border="0" cellpadding="3" class="forumtable" >
                 <tr>
                     <td align="center" colspan="2" class="category">

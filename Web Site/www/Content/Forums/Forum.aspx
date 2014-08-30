@@ -25,7 +25,6 @@
 </asp:Content>
 <asp:Content runat="server" ID="head" ContentPlaceHolderID="CPHead">
     <script src="/scripts/common.js" type="text/javascript"></script>
-    
     <script type="text/javascript">
         //Parse the bbcode
         var urltarget = '<%# Profile.LinkTarget %>';

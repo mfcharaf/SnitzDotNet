@@ -40,5 +40,11 @@ namespace Snitz.BLL
                 return null;
             }
         }
+
+        public static int FileDownloaded(string file)
+        {
+            IForumStats dal = Factory<IForumStats>.Create("ForumStats");
+            return dal.LogDownload(file);
+        }
     }
 }

@@ -30,7 +30,7 @@
                     $get("spanUsername").style.visibility = "visible";
                     $get("spanUsername").innerHTML = "Checking Username Availability...<img id=imgWaiting src=/images/ajax-loader.gif height='28'>";
                     $get("spanUsername").className = "validationGood";
-                    PageMethods.CheckUserName(this.value, OnCheckUserName);
+                    SnitzUI.CommonFunc.CheckUserName(this.value, OnCheckUserName);
                 }
                 else {
                     $get("spanUsername").style.visibility = "visible";
@@ -51,7 +51,7 @@
                     $get("spanUsername").style.visibility = "visible";
                     $get("spanUsername").className = "validationGood";
                     $get("spanUsername").innerHTML = "Checking for duplicate email...<img id=imgWaiting1 src=/images/ajax-loader.gif height='28'>";
-                    PageMethods.CheckEmail(this.value, OnCheckEmail);
+                    SnitzUI.CommonFunc.CheckEmail(this.value, OnCheckEmail);
                 }
                 else {
                     $get("spanUsername").innerHTML = "Email is required";

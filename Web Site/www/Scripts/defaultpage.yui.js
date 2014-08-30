@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    //alert("doc ready");
     $(".minibbcode").each(function () {
         $(this).html(parseBBCode(parseEmoticon($(this).text(), pagetheme)));
     });
@@ -87,7 +86,7 @@ function UpdateModerator(ddlid, hdnid, remove) {
     $get(hdnid).value = modlist;
 }
 function SaveForum() {
-    window.PageMethods.SaveForum($("form").serializeNoViewState());
+    SnitzUI.CommonFunc.SaveForum($("form").serializeNoViewState());
     var millisecondsToWait = 500;
     setTimeout(function () {
         mainScreen.CancelModal();
@@ -96,7 +95,7 @@ function SaveForum() {
 
 }
 function SaveCategory() {
-    window.PageMethods.SaveCategory($("form").serializeNoViewState());
+    SnitzUI.CommonFunc.SaveCategory($("form").serializeNoViewState());
     var millisecondsToWait = 500;
     setTimeout(function () {
         mainScreen.CancelModal();
@@ -160,9 +159,7 @@ function expandAll() {
     }
 
 }
-
-//Sender: Reference to the CollapsiblePanelExtender Client Behavior  
-//eventArgs: Empty EvenArgs  
+ 
 function onExpand(sender, eventArgs) {
     //Use sender (instance of CollapsiblePanerExtender client Behavior)  
     //to get ExpandControlID.  
@@ -174,27 +171,17 @@ function onExpand(sender, eventArgs) {
     //So hdnCatId will have the same ID as Cat_HeaderPanel but with   
     //'hdnCatId' at the end insted of Cat_HeaderPanel.  
     var catId = $get(sender.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
-    //Issue AJAX call to PageMethod, and send sender   
-    //object as userContext Parameter.  
-    PageMethods.GetForums(catId, GetForumsSucceeded, GetForumsFailed, sender);
+    //Issue AJAX call to WebService, and send sender object as userContext Parameter.  
+    SnitzUI.CommonFunc.GetForums(catId, GetForumsSucceeded, GetForumsFailed, sender);
 
 }
-// Callback function invoked on successful   
-// completion of the page method.  
+  
 function GetForumsSucceeded(result, userContext, methodName) {
-    //userContext is sent while issue AJAX call  
-    //it is an instance of CollapsiblePanelExtender client Behavior.  
-    //Used to get the collapsible element and sent its innerHTML   
-    //to the returned result.   
     var catId = $get(userContext.get_ExpandControlID().replace(/Cat_HeaderPanel/g, 'hdnCatId')).value;
-    //set the class for the code parser
-
     userContext.get_element().innerHTML = result.replace(/bbcode/g, "bbcode" + catId);
-    //call userTheme code parser
     ForumParseBBCode(catId);
 }
-// Callback function invoked on failure   
-// of the page method.  
+ 
 function GetForumsFailed(error, userContext, methodName) {
     alert(error.get_message());
 }

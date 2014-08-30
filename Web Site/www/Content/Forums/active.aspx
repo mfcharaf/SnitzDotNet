@@ -31,7 +31,6 @@
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
             //need to fix the Page method path in case we got here from a routing rule
-            PageMethods.set_path('/Content/Forums/active.aspx');
         });
         function setRefresh(interval) {
             if (RefreshTimer == undefined) {
@@ -48,6 +47,7 @@
         };
 
     </script>
+    <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
     <style type="text/css">
         #breadcrumbDIV{ display: none;}
     </style>

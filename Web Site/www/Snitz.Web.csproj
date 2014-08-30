@@ -54,14 +54,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\Dependency\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\Dependency\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Cryptos">
-      <HintPath>..\Dependency\Cryptos.dll</HintPath>
+      <HintPath>..\..\Dependency\Cryptos.dll</HintPath>
     </Reference>
     <Reference Include="CSSFriendly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\CSSFriendly.dll</HintPath>
+      <HintPath>..\..\Dependency\CSSFriendly.dll</HintPath>
     </Reference>
     <Reference Include="jquery.spellchecker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -69,7 +69,7 @@
     </Reference>
     <Reference Include="RealWorld.Grids, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependency\RealWorld.Grids.dll</HintPath>
+      <HintPath>..\..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.BLL">
       <HintPath>..\..\Dependency\Snitz.BLL.dll</HintPath>
@@ -152,6 +152,7 @@
     <Content Include="Admin\css\Light\Menu.css" />
     <Content Include="Admin\css\Dark\admin.css" />
     <Content Include="Admin\css\Dark\Menu.css" />
+    <Content Include="Admin\UserControls\DbsManager.ascx" />
     <Content Include="Admin\UserControls\ManageCategories.ascx" />
     <Content Include="Admin\UserControls\ManageModerators.ascx" />
     <Content Include="Admin\UserControls\Registration.ascx" />
@@ -1335,6 +1336,7 @@
     <Content Include="Setup\update.xml">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="TestEmail.aspx" />
     <Content Include="UserControls\AnnounceBox.ascx" />
     <Content Include="UserControls\CategoryForums.ascx" />
     <Content Include="UserControls\emoticons.ascx" />
@@ -1731,6 +1733,13 @@
     <Compile Include="Admin\UserControls\ArchiveForums.ascx.designer.cs">
       <DependentUpon>ArchiveForums.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\UserControls\DbsManager.ascx.cs">
+      <DependentUpon>DbsManager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UserControls\DbsManager.ascx.designer.cs">
+      <DependentUpon>DbsManager.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\UserControls\ManageCategories.ascx.cs">
       <DependentUpon>ManageCategories.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1756,6 +1765,7 @@
     <Compile Include="Admin\UserControls\Registration.ascx.designer.cs">
       <DependentUpon>Registration.ascx</DependentUpon>
     </Compile>
+    <Content Include="Handlers\DownLoadFile.ashx" />
     <Compile Include="CommonFunc.asmx.cs">
       <DependentUpon>CommonFunc.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1785,7 +1795,6 @@
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Handlers\VisitorLog.cs" />
-    <Compile Include="Setup\DBSFileProcessor.cs" />
     <Compile Include="Setup\Process.aspx.cs">
       <DependentUpon>Process.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1805,6 +1814,13 @@
     </Compile>
     <Compile Include="Setup\test1.aspx.designer.cs">
       <DependentUpon>test1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestEmail.aspx.cs">
+      <DependentUpon>TestEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestEmail.aspx.designer.cs">
+      <DependentUpon>TestEmail.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CategoryForums.ascx.cs">
       <DependentUpon>CategoryForums.ascx</DependentUpon>

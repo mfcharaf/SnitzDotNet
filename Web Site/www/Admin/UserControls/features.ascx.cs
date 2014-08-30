@@ -21,7 +21,7 @@ public partial class Admin_features : UserControl
         rblCaptchaLogin.SelectedValue = Config.UseCaptchaLogin ? "1" : "0";
         rblUserGallery.SelectedValue = Config.UserGallery ? "1" : "0";
         rblShowGallery.SelectedValue = Config.ShowGallery ? "1" : "0";
-        
+        rblHotTopics.SelectedValue = Config.HotTopicNum > 0 ? "1" : "0";
         ddlSubs.SelectedValue = ((int)Config.SubscriptionLevel).ToString();
         rblTopicMod.SelectedValue = Config.Moderation ? "1" : "0";
 
@@ -98,7 +98,8 @@ public partial class Admin_features : UserControl
             toUpdate.Add("SendTopic".GetPropertyDescription(), rblSend.SelectedValue);
         if (Config.PrintTopic != (rblPrint.SelectedValue == "1"))
             toUpdate.Add("PrintTopic".GetPropertyDescription(), rblPrint.SelectedValue);
-
+        if (rblHotTopics.SelectedValue == "0")
+            tbxHotTopics.Text = "0";
         if (Config.HotTopicNum != Convert.ToInt32(tbxHotTopics.Text))
             toUpdate.Add("HotTopicNum".GetPropertyDescription(), tbxHotTopics.Text);
         if (Config.TopicPageSize != Convert.ToInt32(tbxPageItems.Text))

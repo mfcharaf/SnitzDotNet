@@ -36,6 +36,7 @@
     <script type="text/javascript" src="/Scripts/bbcode.min.js"></script>
     <script type="text/javascript" src="/Scripts/smilies.min.js"></script>
     <script type="text/javascript">
+        var upResId = '<%= uploadResult.ClientID %>';
         var messageId = '<%= Message.ClientID %>';
         var clientMsgId = '<%= clientSide.ClientID %>';
         var imgTagId = '<%= imageTag.ClientID %>';

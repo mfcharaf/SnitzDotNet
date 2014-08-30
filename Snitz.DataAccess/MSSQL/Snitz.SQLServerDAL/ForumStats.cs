@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.SQLServerDAL.Helpers;
@@ -68,6 +69,22 @@ namespace Snitz.SQLServerDAL
             stats.NewestMember = GetNewestMember();
 
             return stats;
+        }
+
+        public int LogDownload(string file)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("IF EXISTS (SELECT ID FROM " + Config.ForumTablePrefix + "FILELOG WHERE FILENAME=@FileName)");
+            sql.AppendLine("UPDATE " + Config.ForumTablePrefix + "FILELOG SET COUNTER=COUNTER+1 WHERE FILENAME=@FileName");
+            sql.AppendLine("ELSE");
+            sql.AppendLine("INSERT INTO " + Config.ForumTablePrefix + "FILELOG (FILENAME,COUNTER) VALUES (@FileName,1);");
+            SqlParameter parm = new SqlParameter("@FileName", SqlDbType.VarChar) { Value = file };
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql.ToString(), parm);
+
+            sql.Length = 0;
+            sql.AppendLine("SELECT COUNTER FROM " + Config.ForumTablePrefix + "FILELOG WHERE FILENAME=@FileName");
+
+            return (int) SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, sql.ToString(), parm);
         }
 
         private AuthorInfo GetLastPostAuthor(int authorId)

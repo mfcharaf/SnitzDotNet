@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tables title="" applied="">
+  <Create>
+    <Table name="" idfield="" >
+      <Column name="" type="" size="" default="" allownulls=""/>
+      <Column name="" type="" size="" default="" allownulls=""/>
+      <Index name="" columns="" direction="" unique=""/>
+    </Table>
+    <Table name="" idfield="" >
+      <Column name="" type="" size="" default="" allownulls=""/>
+      <Column name="" type="" size="" default="" allownulls=""/>
+      <Index name="" columns="" direction="" unique=""/>
+    </Table>
+  </Create>
+  <Alter>
+    <Table name="">
+      <Column action="ADD" name="" type="" size="" default="" allownulls=""/>
+      <Column action="ADD" name="" type="" size="" default="" allownulls=""/>
+    </Table>
+    <Table name="">
+      <Column action="ADD" name="" type="" size="" default="" allownulls=""/>
+      <Column action="ADD" name="" type="" size="" default="" allownulls=""/>
+    </Table>
+  </Alter>
+  <Insert>
+    <Table name="">
+      <Column name="" value="" type=""/>
+      <Column name="" value="" type=""/>
+    </Table>
+  <Table name="">
+    <Column name="" value="" type=""/>
+    <Column name="" value="" type=""/>
+  </Table>
+  </Insert>
+  <Update>
+    <Table name="" condition="">
+      <Column name="" value="" type=""/>
+      <Column name="" value="" type=""/>
+    </Table>
+    <Table name="" condition="">
+      <Column name="" value="" type=""/>
+      <Column name="" value="" type=""/>
+    </Table>
+  </Update>
+  <Delete>
+    <Table name="" condition="" />
+    <Table name="" condition="" />
+  </Delete>
+  <Drop>
+    <Table name="" />
+    <Table name="" />
+  </Drop>
+</Tables>

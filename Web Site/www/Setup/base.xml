@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Tables>
+<Tables title="Base tables" applied="false">
   <Create>
     <Table name="FORUM_CATEGORY" idfield="CAT_ID" >
       <Column name="CAT_STATUS" type="smallint" default="1" allownulls="true"/>
@@ -9,7 +9,7 @@
       <Column name="CAT_ORDER" type="int" allownulls="true"/>
       <Index name="PK_FORUM_CATEGORY" columns="CAT_ID" direction="ASC" unique="true"/>
     </Table>
-    <Table name="FORUM_FORUM" idfield="FORUM_ID" index="CAT_ID,FORUM_D">
+    <Table name="FORUM_FORUM" idfield="FORUM_ID">
       <Column name="CAT_ID" type="int" allownulls="false"/>
       <Column name="F_STATUS" type="smallint" default="1" allownulls="false"/>
       <Column name="F_MAIL" type="smallint" default="0" allownulls="false"/>

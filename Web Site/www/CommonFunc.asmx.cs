@@ -1,30 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Mail;
 using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Security;
 using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
+using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
 using SnitzMembership;
+using SnitzUI.UserControls;
 
 namespace SnitzUI
 {
     /// <summary>
-    /// Summary description for CommonFunc
+    /// Snitz web service functions for Ajax calls
     /// </summary>
     [WebService(Namespace = "http://forum.snitz.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService()]
-    public class CommonFunc : System.Web.Services.WebService
+    public class CommonFunc : WebService
     {
 
         [WebMethod]
@@ -93,7 +99,7 @@ namespace SnitzUI
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public string SendEmail(string name, string email, string message, string subject)
         {
@@ -134,7 +140,7 @@ namespace SnitzUI
             return "Your Email has been sent successfully";
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public string SendPrivateMessage(string touser, string message, string subject, string layout)
         {
@@ -189,7 +195,7 @@ namespace SnitzUI
             return PrivateMessage.PmSent;
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public string CastVote(string responseid)
         {
@@ -296,6 +302,188 @@ namespace SnitzUI
             return "Selected replies were moved to a new topic";
         }
 
+        [WebMethod]
+        [PrincipalPermission(SecurityAction.Demand, Role = "Administrator")]
+        [PrincipalPermission(SecurityAction.Demand, Role = "Moderator")]
+        public void SaveForum(string jsonform)
+        {
+            var test = HttpUtility.UrlDecode(jsonform);
+            bool forumMoved = false;
+            System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
+            int forumid = Convert.ToInt32(formresult["ctl00$hdnForumId"]);
+            ForumInfo forum = forumid == -1 ? new ForumInfo { Id = -1, Status = 1 } : Forums.GetForum(forumid);
+            forum.SubscriptionLevel = 0;
+            forum.ModerationLevel = 0;
+            var roles = new string[] { };
+            var moderators = new string[] { };
+            string password = "";
+
+            if (!formresult.AllKeys.Contains("ctl00$cbxCountPost"))
+                forum.UpdatePostCount = false;
+            if (!formresult.AllKeys.Contains("ctl00$cbxAllowPolls"))
+                forum.AllowPolls = false;
+            forum.Type = 0;
+            try
+            {
+                foreach (string key in formresult.AllKeys)
+                {
+                    //ctl00$
+                    if (key != null)
+                        switch (key.Replace("ctl00$", ""))
+                        {
+                            case "ddlCat":
+                                int currentid = forum.CatId;
+                                forum.CatId = Convert.ToInt32(formresult[key]);
+                                if (forum.CatId != currentid)
+                                    forumMoved = true;
+                                break;
+                            case "tbxUrl":
+                                forum.Url = formresult[key];
+                                if (!String.IsNullOrEmpty(forum.Url))
+                                    forum.Type = 1;
+                                break;
+                            case "tbxSubject":
+                                forum.Subject = formresult[key];
+                                break;
+                            case "tbxBody":
+                                forum.Description = formresult[key];
+                                break;
+                            case "cbxCountPost":
+                                forum.UpdatePostCount = formresult[key] == "on";
+                                break;
+                            case "tbxOrder":
+                                forum.Order = Convert.ToInt32(formresult[key]);
+                                break;
+                            case "ddlMod":
+                                forum.ModerationLevel = Convert.ToInt32(formresult[key]);
+                                break;
+                            case "ddlSub":
+                                forum.SubscriptionLevel = Convert.ToInt32(formresult[key]);
+                                break;
+                            case "hdnRoleList":
+                                roles = formresult[key].ToLower().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                break;
+                            case "cbxAllowPolls":
+                                forum.AllowPolls = formresult[key] == "on";
+                                break;
+                            case "cbxBugReport":
+                                if (formresult[key] == "on")
+                                    forum.Type = (int)Enumerators.ForumType.BugReports;
+                                break;
+                            case "cbxBlogPosts":
+                                if (formresult[key] == "on")
+                                    forum.Type = (int)Enumerators.ForumType.BlogPosts;
+                                break;
+                            case "hdnModerators":
+                                moderators = formresult[key].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                break;
+                            case "tbxPassword":
+                                password = formresult[key];
+                                break;
+                        }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            forum.Password = password.Trim();
+
+            int newId = Forums.SaveForum(forum);
+            if (forumMoved)
+                Forums.MoveForumPosts(forum);
+            SnitzRoleProvider.AddRolesToForum(newId, roles);
+            Forums.AddForumModerators(newId, moderators);
+        }
+
+        [WebMethod]
+        [PrincipalPermission(SecurityAction.Demand, Role = "Administrator")]
+        public void SaveCategory(string jsonform)
+        {
+            var test = HttpUtility.UrlDecode(jsonform);
+            System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
+            int catid = Convert.ToInt32(formresult["ctl00$hdnCatId"]);
+            CategoryInfo cat = catid == -1 ? new CategoryInfo { Id = -1 } : Categories.GetCategory(catid);
+            foreach (string key in formresult.AllKeys)
+            {
+                //ctl00$
+                switch (key.Replace("ctl00$", ""))
+                {
+                    case "tbxSubject":
+                        cat.Name = formresult[key];
+                        break;
+                    case "tbxOrder":
+                        cat.Order = Convert.ToInt32(formresult[key]);
+                        break;
+                    case "ddlMod":
+                        cat.ModerationLevel = Convert.ToInt32(formresult[key]);
+                        break;
+                    case "ddlSub":
+                        cat.SubscriptionLevel = Convert.ToInt32(formresult[key]);
+                        break;
+                    //case "cbxPassword":
+                    //    if (formresult[key] != null)
+                    //        forum.UpdatePostCount = formresult[key] == "1";
+                    //    break;
+                    //case "ddlAuthType":
+                    //    forum.AuthType = (Enumerators.ForumAuthType)Convert.ToInt32(formresult[key]);
+                    //    break;
+                }
+
+            }
+            Categories.UpdateCategory(cat);
+        }
+
+        [WebMethod]
+        public bool CheckUserName(string userName)
+        {
+            Thread.Sleep(500);
+            var membercheck = Membership.GetUser(userName);
+            if ((membercheck != null) && membercheck.UserName.ToLower() != "guest")
+            {
+                return true;
+            }
+            if (!IsNameAllowed(userName))
+                return true;
+            return false;
+        }
+
+        [WebMethod]
+        public bool CheckEmail(string email)
+        {
+            Thread.Sleep(500);
+            if (!String.IsNullOrEmpty(Membership.GetUserNameByEmail(email)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        [WebMethod(EnableSession = true)]
+        public string GetForums(string categoryId)
+        {
+            Page page = new Page();
+
+            CategoryForums ctl = (CategoryForums)page.LoadControl("~/UserControls/CategoryForums.ascx");
+
+            ctl.Member = Members.GetMember(HttpContext.Current.User.Identity.Name);
+            ctl.CategoryId = categoryId;
+            page.Controls.Add(ctl);
+            HtmlForm tempForm = new HtmlForm();
+            tempForm.Controls.Add(ctl);
+            page.Controls.Add(tempForm);
+            StringWriter writer = new StringWriter();
+            HttpContext.Current.Server.Execute(page, writer, false);
+            string outputToReturn = writer.ToString();
+            outputToReturn = outputToReturn.Substring(outputToReturn.IndexOf("<div"));
+            outputToReturn = outputToReturn.Substring(0, outputToReturn.IndexOf("</form>"));
+            writer.Close();
+            string viewStateRemovedOutput = Regex.Replace(outputToReturn,
+            "<input type=\"hidden\" name=\"__VIEWSTATE\" id=\"__VIEWSTATE\" value=\".*?\" />",
+            "", RegexOptions.IgnoreCase);
+            return viewStateRemovedOutput;
+        } 
 
         private void ProcessModeration(int mode, int topicid, int replyid, int adminmodid, string comments)
         {
@@ -367,6 +555,14 @@ namespace SnitzUI
             };
 
             mailsender.Send();
+        }
+        private static bool IsNameAllowed(string username)
+        {
+            if (Filters.GetAllNameFilters().Any(name => name.Name == username))
+            {
+                return false;
+            }
+            return username.ReplaceBadWords() == username;
         }
 
     }

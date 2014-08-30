@@ -111,7 +111,7 @@
             <asp:Label ID="lblHotTopics" runat="server" Enabled="False" Text="Hot Topics" 
                 AssociatedControlID="rblHotTopics" 
                 meta:resourcekey="lblHotTopicsResource1"></asp:Label>
-            <uc1:AdminRadioButton ID="rblHotTopics" runat="server" Enabled="False"/> 
+            <uc1:AdminRadioButton ID="rblHotTopics" runat="server"/> 
             <asp:TextBox ID="tbxHotTopics" runat="server" Width="50px"></asp:TextBox>
             <br />
             <asp:Label ID="lblPageCount" runat="server" Text="Items per page" 

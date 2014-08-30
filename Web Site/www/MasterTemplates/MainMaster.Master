@@ -74,6 +74,9 @@
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/main.min.js" />
         </Scripts>
+        <Services>
+            <asp:ServiceReference InlineScript="False" Path="~/CommonFunc.asmx"/>
+        </Services>
     </ajaxtoolkit:ToolkitScriptManager>
     <div id="maincontainer">
 

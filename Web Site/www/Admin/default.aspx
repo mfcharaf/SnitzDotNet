@@ -7,7 +7,8 @@
 ## http://forum.snitz.com
 ###########################################################################################
 --%>
-<%@ Page Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="true" Inherits="AdminHome" Title="Untitled Page" Codebehind="default.aspx.cs" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
+<%@ Page Language="C#" MasterPageFile="~/MasterTemplates/SingleCol.Master" AutoEventWireup="true" Inherits="AdminHome" Title="Untitled Page" Codebehind="default.aspx.cs" 
+    culture="auto" meta:resourcekey="PageResource1" uiculture="auto" validateRequest="false" %>
 <%@ MasterType TypeName="BaseMasterPage" %>
 <%@ Register Src="UserControls/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="UserControls/Statistics.ascx" TagName="Admin_Statistics" TagPrefix="uc8" %>
@@ -32,12 +33,24 @@
 <asp:Content ID="cphead" runat="server" ContentPlaceHolderID="CPHead">
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS"/>
     <link rel="stylesheet" type="text/css" runat="server" id="menuCSS"/>
+    <link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="/css/Light/shThemeDefault.css" rel="stylesheet" />    
+    <script src="/scripts/help.js" type="text/javascript"></script>
     <style type="text/css">
         .style1
         {
             width: 35%;
         }
     </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            SyntaxHighlighter.autoloader(
+                'js jscript javascript  /Scripts/syntax/shBrushJScript.min.js',
+                'c# c-sharp csharp      /Scripts/syntax/shBrushCSharp.min.js',
+                'xml xhtml xslt html    /Scripts/syntax/shBrushXml.min.js'
+            );
+        });
+    </script>
 </asp:Content>
 <asp:Content ID="adOverride" runat="server" contentplaceholderid="CPAd">
 </asp:Content>
@@ -64,10 +77,11 @@
             <div style="width:100%;padding:10px;">
                 <table>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 
-                        class="style1">Snitz™ Forum Software :</td><td style="width:auto">&copy; Snitz Forums 2000</td></tr>
+                        class="style1">Snitz™ Forum Software :</td>
+                    <td style="width:auto">&copy; Snitz Forums 2000</td></tr>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 
-                        class="style1">.Net Development :</td><td style="width:auto">
-                    Huw Reddick</td></tr>
+                        class="style1">.Net Development :</td>
+                    <td style="width:auto">Huw Reddick</td></tr>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 
                         class="style1">Language Translations :</td>
                     <td style="width:auto;vertical-align:top;">
@@ -77,14 +91,10 @@
 				        French: Machina Adibou<br />
 				        Japanese: Taku Shingai<br />
                         Persian: Sadra
-                    </td>
-                </tr>
+                    </td></tr>
                 <tr><td style="text-align:right;vertical-align:top;font-weight:bold;white-space:nowrap" 
                         class="style1">Testers :</td>
-                    <td style="width:auto;vertical-align:top;">
-                        Pacnorwest<br />
-                    </td>
-                </tr>
+                    <td style="width:auto;vertical-align:top;">Pacnorwest<br /></td></tr>
                 </table>
             </div></div>
             </asp:Panel>

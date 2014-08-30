@@ -117,10 +117,10 @@ public partial class AdminHome : PageBase
                     var adminManageProfile = (Admin_ManageProfile)Page.LoadControl("UserControls/ManageProfile.ascx");
                     CP1.Controls.Add(adminManageProfile);
                     break;
-                //case "modconfig" :
-                //    var modmanager = (Admin_ModConfiguration)Page.LoadControl("UserControls/ModConfiguration.ascx");
-                //    CP1.Controls.Add(modmanager);
-                //    break;
+                case "database":
+                    var dbsmanager = (Admin_DbsManager)Page.LoadControl("UserControls/DbsManager.ascx");
+                    CP1.Controls.Add(dbsmanager);
+                    break;
             }
         }
     }

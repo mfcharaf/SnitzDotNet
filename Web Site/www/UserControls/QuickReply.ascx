@@ -16,6 +16,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 
     <script type="text/javascript">
+        var upResId = '<%= uploadResult.ClientID %>';
         var messageId = '<%= qrMessage.ClientID %>';
         var clientMsgId = '<%= clientSide.ClientID %>';
         var imgTagId = '<%= imageTag.ClientID %>';
@@ -149,7 +150,7 @@
                             <br />
                             <asp:Label runat="server" Text="&nbsp;" ID="imageTag" />
                             <br />
-                            <div id="errDiv" style="display: none;"><asp:Label ID="errLabel" runat="server" Text="Label"></asp:Label></div>
+                            <div id="errDiv" style="display: none;"><asp:Label ID="errLabel" runat="server" Text=""></asp:Label></div>
                             
                             <table style="border-collapse: collapse; border-left: solid 1px #aaaaff; border-top: solid 1px #aaaaff;"
                                 runat="server" cellpadding="3" id="clientSide" ></table>
