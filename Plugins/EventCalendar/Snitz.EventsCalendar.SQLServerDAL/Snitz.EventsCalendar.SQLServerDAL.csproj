@@ -63,7 +63,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "..\..\Web Site\www\bin\"
+    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "$(SolutionDir)..\..\Web Site\www\bin\"
 
 </PostBuildEvent>
   </PropertyGroup>
