@@ -13,15 +13,6 @@ namespace SnitzUI.UserControls.Popups {
     public partial class ModeratePreview {
         
         /// <summary>
-        /// pnlMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlMessage;
-        
-        /// <summary>
         /// lblPosted control.
         /// </summary>
         /// <remarks>
@@ -29,6 +20,15 @@ namespace SnitzUI.UserControls.Popups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPosted;
+        
+        /// <summary>
+        /// pnlMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMessage;
         
         /// <summary>
         /// msgBody control.

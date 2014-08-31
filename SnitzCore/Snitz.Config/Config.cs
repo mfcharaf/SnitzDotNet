@@ -159,7 +159,10 @@ namespace SnitzConfig
         {
             get
             {
-                return ConfigurationManager.AppSettings["strForumUrl"];
+                string url = ConfigurationManager.AppSettings["strForumUrl"];
+                if (!url.EndsWith("/"))
+                    url += "/";
+                return url;
             }
             set
             {
@@ -665,7 +668,10 @@ namespace SnitzConfig
         {
             get
             {
-                return ConfigurationManager.AppSettings["strHomeUrl"];
+                string url = ConfigurationManager.AppSettings["strHomeUrl"];
+                if (!url.EndsWith("/"))
+                    url += "/";
+                return url;
             }
             set
             {

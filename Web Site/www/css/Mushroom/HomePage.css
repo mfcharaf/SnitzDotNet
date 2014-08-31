@@ -1,6 +1,7 @@
 ﻿body {
 }
 #breadcrumbDIV{ display: none;}
+#divEditForum{ width: 700px;height: 180px;overflow: auto;height: auto !important;max-height: 400px;}
 #divEditForum label{
  display:inline-block;
  text-align:right;
@@ -10,7 +11,8 @@
 #divEditForum span{
  display:inline-block;
  text-align:right;
- width:140px;
+ width:170px;
+    padding-right: 3px;
  }
 #divEditForum span.cbx{
  width:Auto;
@@ -28,6 +30,9 @@
  width:380px;
  margin:0px 0 10px 10px;
  }
+    #divEditForum textarea {
+        width:450px;
+    }
  #divEditForum select{
  border:solid 1px #aacfe4;
  min-width:60px;
@@ -41,7 +46,7 @@
  margin-left:0px;
  width:88px;
  height:20px;
-
+ border: 0px none;
  }
   #divEditForum input[type="checkbox"]
  {
@@ -57,9 +62,11 @@ fieldset li {
   margin: 0;
 }
 div.ListViewContainer {
-	width: 100%; /* Table width will be 99% of this */
+	width: 50%; /* Table width will be 99% of this */
 	height: 60px; /* Must be greater than tbody */
 	overflow: auto;
+    border: 1px solid silver;
+    margin-bottom: 5px;
 	}
 
 div.ListViewContainer table {

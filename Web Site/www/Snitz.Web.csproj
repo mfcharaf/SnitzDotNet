@@ -1258,12 +1258,12 @@
     <Content Include="Scripts\main.min.js">
       <DependentUpon>main.yui.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\master.js">
-      <DependentUpon>bundle.chirp.config</DependentUpon>
-    </Content>
     <None Include="Scripts\net.min.js">
       <DependentUpon>net.yui.js</DependentUpon>
     </None>
+    <Content Include="Scripts\master.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
     <Content Include="Scripts\message_funcs.min.js">
       <DependentUpon>message_funcs.yui.js</DependentUpon>
     </Content>
@@ -1320,12 +1320,12 @@
     </None>
     <None Include="Scripts\swfobject.js" />
     <Content Include="Scripts\templates\preview.html" />
-    <Content Include="Scripts\topic.js">
-      <DependentUpon>bundle.chirp.config</DependentUpon>
-    </Content>
     <None Include="Scripts\topic_print.min.js">
       <DependentUpon>topic_print.yui.js</DependentUpon>
     </None>
+    <Content Include="Scripts\topic.js">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
     <Content Include="Setup\base.xml">
       <SubType>Designer</SubType>
     </Content>

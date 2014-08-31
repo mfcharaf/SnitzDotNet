@@ -83,11 +83,6 @@ th.forumCol{width:auto}
 th.subjCol{width:auto}
 th.authorCol{max-width:100px;width:60px}
 th.countCol{max-width:60px;width:45px}
-td.countCol{
-    text-align: center;}
-td.authorCol{    
-    text-align: center;
-}
 th.lastpostCol{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;width:140px}
 th.buttonCol{max-width:50px;width:48px}
 .cattitle{font-weight:bold;color:#FFF}
@@ -261,6 +256,7 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 .blog-comments{display:none}
 .poll-content{min-height:40px;border:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px}
 .Poll_PollResults table{width:99%}
+.popup-button-panel{margin:5px}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
 #__asptrace{position:relative}
 #popup_container{font-family:Arial,sans-serif;font-size:12px;min-width:300px;max-width:600px;background:#FFF;border:solid 5px #999;color:#000;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px}

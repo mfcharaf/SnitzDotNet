@@ -761,6 +761,8 @@ a.Snitzbutton:hover span{
     .blog-comments{ display: none;}
     .poll-content{ min-height: 40px;border: 1px solid silver;border-top-left-radius: 5px;border-top-right-radius: 5px;}
     .Poll_PollResults table{ width: 99%;}
-
+.popup-button-panel {
+    margin: 5px;
+}
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

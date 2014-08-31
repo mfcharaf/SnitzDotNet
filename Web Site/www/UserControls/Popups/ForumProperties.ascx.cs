@@ -119,8 +119,8 @@ namespace SnitzUI.UserControls.Popups
                 ListView2.DataSource = roleList;
                 ListView2.DataBind();
                 hdnRoleList.Value = String.Join(",",roleList);
-                ListView1.DataSource = Forums.GetForumModerators(forum.Id);
-                ListView1.DataBind();
+                lvModerator.DataSource = Forums.GetForumModerators(forum.Id);
+                lvModerator.DataBind();
             }
             ddlRole.DataSource = new SnitzRoleProvider().GetAllRoles();
             ddlRole.DataBind();

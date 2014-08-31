@@ -130,7 +130,7 @@
                                         EnableViewState="False"></asp:Label><asp:TextBox ID="tbxAge" runat="server"></asp:TextBox></li>
                                     <li><asp:Label ID="lblMarStatus" AssociatedControlID="ddlMarStatus" runat="server" Text="<%$ Resources:webResources, lblMarStatus %>"
                                         EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlMarStatus" runat="server">
-                                            <asp:ListItem Value=" " meta:resourcekey="ddlMarStatus">[Select]</asp:ListItem>
+                                            <asp:ListItem Value="" meta:resourcekey="ddlMarStatus">[Select]</asp:ListItem>
                                             <asp:ListItem Value="Married" meta:resourcekey="ddlMarried">Married</asp:ListItem>
                                             <asp:ListItem Value="Single" meta:resourcekey="ddlSingle">Single</asp:ListItem>
                                             <asp:ListItem Value="Divorced" meta:resourcekey="ddlDivorced">Divorced</asp:ListItem>

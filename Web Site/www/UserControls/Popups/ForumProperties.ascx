@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumProperties.ascx.cs"
     Inherits="SnitzUI.UserControls.Popups.ForumProperties" %>
-<div id="divEditForum" style="font-size:smaller;line-height: 1em;" >
+
+<div id="divEditForum"  >
     <asp:HiddenField ID="hdnForumId" runat="server" />
     <asp:Panel ID="pnlMain" runat="server" GroupingText="<%$ Resources: webResources,lblForum %>">
         <asp:Label ID="Label3" runat="server" Text="Category" AssociatedControlID="ddlCat" EnableViewState="False"></asp:Label>
@@ -13,7 +14,7 @@
             <asp:Label ID="lblUrl" runat="server" Text="<%$ Resources: webResources,lblHyperlink %>"></asp:Label><asp:TextBox ID="tbxUrl" runat="server"></asp:TextBox><br runat="server" ID="brUrl"/>
         </asp:Panel>
         <asp:Label ID="Label2" runat="server" Text="<%$ Resources: webResources,lblMessage %>" AssociatedControlID="tbxBody"></asp:Label>
-        <asp:TextBox ID="tbxBody"  runat="server" Columns="20" Rows="3" TextMode="MultiLine" EnableViewState="False"></asp:TextBox>
+        <asp:TextBox ID="tbxBody"  runat="server" Columns="20" Rows="6" TextMode="MultiLine" EnableViewState="False"></asp:TextBox>
     </asp:Panel>
     
     <asp:Panel ID="pnlOptions" runat="server" GroupingText="<%$ Resources: webResources,lblOptions %>">
@@ -43,6 +44,7 @@
         </asp:DropDownList>
         <br />
     </asp:Panel>
+
     <asp:Panel ID="pnlAuth" runat="server" GroupingText="Authorisation" style="width:99%">
         <asp:Label ID="lblPassword" runat="server" Text="Forum Password" AssociatedControlID="tbxPassword"></asp:Label>&nbsp;
         <asp:TextBox ID="tbxPassword" runat="server" Width="120px" ></asp:TextBox>
@@ -51,19 +53,19 @@
             Width="49%" Style="float: left;">
             <asp:HiddenField ID="hdnModerators" runat="server"/>
             <div class="ListViewContainer" id="modlist">
-            <asp:ListView ID="ListView1" runat="server" EnableViewState="False">
+            <asp:ListView ID="lvModerator" runat="server" EnableViewState="False" ItemPlaceholderID="itemPlaceHolder1">
                 <LayoutTemplate>
-                    <table cellpadding="0" cellspacing="0" id="modtbl">
-                        <tr runat="server" id="itemPlaceholder"></tr>
+                    <table id="modtbl">
+                        <asp:PlaceHolder runat="server" ID="itemPlaceHolder1"></asp:PlaceHolder>
                     </table>
                 </LayoutTemplate>
                 <EmptyItemTemplate>
                     <table id="modtbl" cellpadding="5" cellspacing="5">
-                    <tr><td>No Moderators</td></tr>
+                        <tr><td>No Moderators</td></tr>
                     </table>
                 </EmptyItemTemplate>
                 <ItemTemplate>
-                    <tr>
+                    <tr onclick="if ($(this).find('th').length == 0) {$('#modtbl tr').each(function () {$(this).removeClass('selected');});$(this).addClass('selected');}">
                         <td>
                             <%# Eval("Name") %>
                         </td>
@@ -73,20 +75,19 @@
             </div>
             <asp:DropDownList ID="ddlModUsers" runat="server">
             </asp:DropDownList>
-            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>');">Add Moderator</button>
-            <%--<button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','true');">Remove Moderator</button>--%>
-
+            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>');">Add</button>
+            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','true');">Remove</button>
+            <div>To remove/add an item, select it in the drop down list and press the required button</div>
         </asp:Panel>
 
         <asp:Panel ID="Panel4" runat="server" GroupingText="Allowed Roles"
             Width="49%" Style="float: left;">
             <asp:HiddenField ID="hdnRoleList" runat="server"/>
             <div class="ListViewContainer" id="rolelist">
-            <asp:ListView ID="ListView2" runat="server" EnableViewState="False" >
+            <asp:ListView ID="ListView2" runat="server" EnableViewState="False" ItemPlaceholderID="itemPlaceHolder1">
                 <LayoutTemplate>
-                    <table cellpadding="0" cellspacing="0" id="roletbl">
-                        <tr runat="server" id="itemPlaceholder">
-                        </tr>
+                    <table id="roletbl">
+                        <asp:PlaceHolder runat="server" ID="itemPlaceHolder1"></asp:PlaceHolder>
                     </table>
                 </LayoutTemplate>
                 <ItemTemplate>
@@ -96,28 +97,20 @@
                         </td>
                     </tr>
                 </ItemTemplate>
-                <SelectedItemTemplate>
-                    <tr>
-                        <td style="background-color: blue;color: white;">
-                            <%# Container.DataItem %>
-                        </td>
-                    </tr>
-                </SelectedItemTemplate>
             </asp:ListView>
             </div>
             <asp:DropDownList ID="ddlRole" runat="server" CssClass="forumrole">
             </asp:DropDownList>
-            <button type="button" onclick="UpdateRoleList('<%= ddlRole.ClientID %>','<%= hdnRoleList.ClientID %>');">Add Role</button>
-            <button type="button" onclick="UpdateRoleList('<%= ddlRole.ClientID %>','<%= hdnRoleList.ClientID %>','true');">Remove Role</button>
+            <button type="button" onclick="UpdateRoleList('<%= ddlRole.ClientID %>','<%= hdnRoleList.ClientID %>');">Add</button>
+            <button type="button" onclick="UpdateRoleList('<%= ddlRole.ClientID %>','<%= hdnRoleList.ClientID %>','true');">Remove</button>
+            <div>To remove/add an item, select it in the drop down list and press the required button</div>
         </asp:Panel>
-        
-        
         <br />
     </asp:Panel>
-    <asp:Panel ID="Panel5" runat="server">
+</div>
+    <asp:Panel ID="Panel5" runat="server" CssClass="popup-button-panel">
         <button onclick="SaveForum();return false;" type="button">
             <%= Resources.webResources.btnSubmit %></button>&nbsp;
         <button onclick="mainScreen.CancelModal();return false;" type="button">
                 <%= Resources.webResources.btnCancel %></button>
     </asp:Panel>
-</div>

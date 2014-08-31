@@ -88,7 +88,7 @@ public partial class MessageProfile : UserControl
         if(prof.Gravatar)
         {
             Gravatar avatar = new Gravatar { Email = _author.Email };
-            if (_author.AvatarUrl != "")
+            if (_author.AvatarUrl != "" && _author.AvatarUrl.StartsWith("http:"))
                 avatar.DefaultImage = _author.AvatarUrl;
             avatar.CssClass = "avatar";
             phAvatar.Controls.Add(avatar);
@@ -97,7 +97,7 @@ public partial class MessageProfile : UserControl
         {
             
             SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Username);
-            Literal avatar = new Literal { Text = _author.AvatarUrl };
+            Literal avatar = new Literal { Text = _author.AvatarImg };
             if (mu != null && mu.IsActive)
                 avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
             phAvatar.Controls.Add(avatar);

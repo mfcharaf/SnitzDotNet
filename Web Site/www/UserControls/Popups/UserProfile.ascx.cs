@@ -80,7 +80,7 @@ namespace SnitzUI.UserControls
                         var ph = (PlaceHolder) item.FindControl("phAvatar");
                         ph.Visible = true;
                         var grav = new Gravatar {Email = author.Email};
-                        if (author.AvatarUrl != "")
+                        if (author.AvatarUrl != "" && author.AvatarUrl.StartsWith("http:"))
                             grav.DefaultImage = author.AvatarUrl;
                         ph.Controls.Add(grav);
 
@@ -89,7 +89,7 @@ namespace SnitzUI.UserControls
                     {
                         var avatar = (Literal)item.FindControl("AvatarLabel");
                         var ph = (PlaceHolder)item.FindControl("phAvatar");
-                        avatar.Text = author.AvatarUrl;
+                        avatar.Text = author.AvatarImg;
                         avatar.Visible = true;
                         ph.Visible = false;
                     }

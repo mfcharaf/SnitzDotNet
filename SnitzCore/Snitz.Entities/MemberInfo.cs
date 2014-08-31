@@ -20,6 +20,7 @@
 */
 
 using System;
+using SnitzConfig;
 
 
 namespace Snitz.Entities
@@ -146,7 +147,7 @@ namespace Snitz.Entities
         public string ValidationKey { get; set; }
         public string NewEmail { get; set; }
 
-        public string AvatarUrl
+        public string AvatarImg
         {
             get
             {
@@ -154,7 +155,14 @@ namespace Snitz.Entities
             }
             set { this.Avatar = value; }
         }
+        public string AvatarUrl
+        {
+            get
+            {
+                return String.IsNullOrEmpty(this.Avatar) ? String.Format("{0}Avatars/default.gif",Config.ForumUrl) : String.Format("{0}Avatars/{1}",Config.ForumUrl, this.Avatar);
+            }
 
+        }
         #endregion
 
         public RankInfo Rank

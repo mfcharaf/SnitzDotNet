@@ -1092,7 +1092,9 @@ textarea.pmMsgArea {
 .Poll_PollResults table {
     width: 99%;
 }
-
+.popup-button-panel {
+    margin: 5px;
+}
 .clearfix:after {
     content: ".";
     display: block;

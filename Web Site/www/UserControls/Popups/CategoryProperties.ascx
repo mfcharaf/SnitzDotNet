@@ -23,7 +23,7 @@
         </asp:DropDownList></li>
         </ol>
     </asp:Panel>
-    <asp:Panel ID="Panel5" runat="server">
+    <asp:Panel ID="Panel5" runat="server" CssClass="popup-button-panel">
         <button onclick="SaveCategory();return false;" type="button">
             <%= Resources.webResources.btnSubmit %></button>&nbsp;
         <button onclick="mainScreen.CancelModal();return false;" type="button">

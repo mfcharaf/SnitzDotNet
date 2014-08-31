@@ -21,8 +21,6 @@ $.fn.serializeNoViewState = function () {
 function UpdateRoleList(ddlid, hdnid, remove) {
     var rolelist = $get(hdnid).value;
     var newrole = $("#" + ddlid + " option:selected").text();
-    alert(rolelist);
-    alert(newrole);
 
     var tbl = $('#roletbl');
     if (remove) {
@@ -52,14 +50,14 @@ function UpdateRoleList(ddlid, hdnid, remove) {
     }
     $get(hdnid).value = rolelist;
 }
+
 function UpdateModerator(ddlid, hdnid, remove) {
     var modlist = $get(hdnid).value;
     var newmodid = $("#" + ddlid + " option:selected").val();
     var newmod = $("#" + ddlid + " option:selected").text();
 
-
     if (remove) {
-        $("#roletbl td:contains('" + newmod + "')").parent().remove();
+        $("#modtbl td:contains('" + newmod.toLowerCase() + "')").parent().remove();
         var regx = new RegExp("\\b" + newmodid + "(,|$)", "igm");
         modlist = modlist.replace(regx, "");
     } else {
@@ -69,7 +67,7 @@ function UpdateModerator(ddlid, hdnid, remove) {
             //already in list so do nothing
             alert("Moderator already in list");
         } else {
-            var rowCount = $('#roletbl tr').length;
+            var rowCount = $('#modtbl tr').length;
             modlist = modlist + ',' + newmodid;
             var tbl = $('#modtbl');
             if (tbl.html() == null) { // no table so create one
@@ -164,7 +162,6 @@ function onExpand(sender, eventArgs) {
     //Use sender (instance of CollapsiblePanerExtender client Behavior)  
     //to get ExpandControlID.  
     var expander = $get(sender.get_ExpandControlID());
-
     //Using RegEx to replace Cat_HeaderPanel with hdnCatId.  
     //hdnCatId is a hidden field located within Cat_HeaderPanel.  
     //Cat_HeaderPanel is a Panel, and Panels are not Naming Containers.  

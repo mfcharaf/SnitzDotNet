@@ -31,7 +31,7 @@ namespace SnitzUI.UserControls.Post_Templates
             if (prof.Gravatar)
             {
                 Gravatar avatar = new Gravatar { Email = author.Email };
-                if (author.AvatarUrl != "")
+                if (author.AvatarUrl != "" && author.AvatarUrl.StartsWith("http:"))
                     avatar.DefaultImage = author.AvatarUrl;
                 avatar.CssClass = "avatar";
                 phAvatar.Controls.Add(avatar);
@@ -41,7 +41,7 @@ namespace SnitzUI.UserControls.Post_Templates
             {
 
                 SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(author.Username);
-                Literal avatar = new Literal { Text = author.AvatarUrl };
+                Literal avatar = new Literal { Text = author.AvatarImg };
                 if (mu != null && mu.IsActive)
                     avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
                 phAvatar.Controls.Add(avatar);

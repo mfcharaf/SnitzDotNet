@@ -249,6 +249,7 @@ textarea.pmMsgArea{border:1px solid #000;width:98%}
 .PollBox{background-color:#ff9;border:1px solid #F60;border-radius:5px}
 .poll-content{min-height:40px;border:1px solid #f60;border-top-left-radius:5px;border-top-right-radius:5px}
 .Poll_PollResults table{width:99%}
+.popup-button-panel{margin:5px}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
 #__asptrace{position:relative}
 .mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#fff;padding:0;max-height:90%;line-height:1em;font-size:.8em}

@@ -50,12 +50,13 @@
             <div id="defaultCatTable" style="table-layout: fixed; width: 100%;">
         </HeaderTemplate>
         <ItemTemplate>
-            <asp:Panel ID="Cat_HeaderPanel" runat="server" CssClass="statsPanelHeader clearfix" style="cursor: pointer;" EnableViewState="False">
-                <asp:HiddenField ID="hdnCatId" runat="server"   
-                        Value='<%#Eval("Id")%>' />
+            <asp:Panel ID="Cat_Header" runat="server" CssClass="statsPanelHeader clearfix" style="cursor: pointer;" EnableViewState="False">
+                <asp:HiddenField ID="hdnCatId" runat="server" Value='<%#Eval("Id")%>' />
+            <asp:Panel runat="server" ID="Cat_HeaderPanel" style="width:60%;float:left;">
              <asp:Image ID="catExpand" runat="server" GenerateEmptyAlternateText="true" EnableViewState="False" ImageAlign="Middle" />
              <span class="cattitle"><%# "&nbsp;" + Eval("Name")%></span>
-             <span class="categorybuttons">
+            </asp:Panel>
+             <div class="categorybuttons" style="float:right;">
                     <asp:ImageButton ID="NewForum" SkinID="Folder" runat="server" Visible='<%# IsAdministrator %>' Text='<%$ Resources:webResources, lblNewForum %>'
                         ToolTip='<%$ Resources:webResources, lblNewForum %>' EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="NewUrl" SkinID="ForumUrl" runat="server" Visible='<%# IsAdministrator %>' Text='<% $ Resources:webResources, lblNewUrl  %>'
@@ -68,14 +69,9 @@
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="<%$ Resources:webResources, lblEditCategory %>" EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' 
                     runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-
-                </td>
-            </tr>
-                </table>
+            </div>
             </asp:Panel>
-            <asp:Panel ID="Cat_Panel" runat="server" CssClass="statsPanel" EnableViewState="False">
-
-            </asp:Panel>
+            <asp:Panel ID="Cat_Panel" runat="server" CssClass="statsPanel" EnableViewState="False"></asp:Panel>
             <br  style="line-height:0.5em;" />
             <asp:CollapsiblePanelEx ID="Cat_Panel_CollapsiblePanelExtender" SuppressPostBack="true" SkinID="CatExpandSkin"
                 CollapseControlID="catExpand" ExpandControlID="catExpand" Collapsed="true"

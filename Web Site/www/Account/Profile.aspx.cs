@@ -44,8 +44,8 @@ namespace SnitzUI
     public partial class ProfilePage : PageBase
     {
         private bool _editmode;
-        private bool _isMyProfile;
-        private string _userProfile;
+        protected bool IsMyProfile;
+        private string _profileUser;
         private MemberInfo _user;
         private ProfileCommon _profile;
         private string _cancelUrl;
@@ -67,19 +67,20 @@ namespace SnitzUI
             TabContainer1.ActiveTabIndex = 0;
             if (HttpContext.Current.Items["user"] != null)
             {
-                _userProfile = HttpContext.Current.Items["user"].ToString();
-            }else
-                _userProfile = !String.IsNullOrEmpty(Request.Params["user"]) ? Request.Params["user"] : Member.Username;
-            if (Session["CurrentProfile"] == null)
-                Session.Add("CurrentProfile", _userProfile);
+                _profileUser = HttpContext.Current.Items["user"].ToString();
+            }
             else
-                _userProfile = Session["CurrentProfile"].ToString();
-            _user = Members.GetMember(_userProfile);
+                _profileUser = !String.IsNullOrEmpty(Request.Params["user"]) ? Request.Params["user"] : Member.Username;
+            if (Session["CurrentProfile"] == null)
+                Session.Add("CurrentProfile", _profileUser);
+            else
+                _profileUser = Session["CurrentProfile"].ToString();
+            _user = Members.GetMember(_profileUser);
 
-            _profile = ProfileCommon.GetUserProfile(_userProfile);
-            Page.Title = String.Format(webResources.lblProfile, _userProfile);
-            _isMyProfile = _userProfile == Member.Username;
-            
+            _profile = ProfileCommon.GetUserProfile(_profileUser);
+            Page.Title = String.Format(webResources.lblProfile, _profileUser);
+            IsMyProfile = _profileUser == Member.Username;
+            ddTheme.AutoPostBack = IsMyProfile;
             if (!IsPostBack)
             {
                 _weblinks = _profile.FavLinks;
@@ -118,7 +119,7 @@ namespace SnitzUI
         private void SetupDynamicControls()
         {
             
-            _editmode = _editmode || _isMyProfile;
+            _editmode = _editmode || IsMyProfile;
             
             if (_editmode)
             {   //Quote
@@ -263,7 +264,7 @@ namespace SnitzUI
             {
                 TabGallery.Visible = true;
                 TabGallery.HeaderText = "Images";
-                dlImages.DataSource = GalleryFunctions.GetImages(_userProfile);
+                dlImages.DataSource = GalleryFunctions.GetImages(_profileUser);
                 dlImages.DataBind();
             }
             else
@@ -286,7 +287,7 @@ namespace SnitzUI
 
         private void SaveMemberProfile()
         {
-            _profile = ProfileCommon.GetUserProfile(_userProfile);
+            _profile = ProfileCommon.GetUserProfile(_profileUser);
             _profile.Gravatar = cbxGravatar.Checked;
             _profile.HideAge = cbxHideAge.Checked;
             _profile.Skype = tbxSkype.Text;
@@ -295,7 +296,7 @@ namespace SnitzUI
             _profile.Save();
 
             string folderPath = "/gallery/";
-            folderPath += _userProfile + "/public.txt";
+            folderPath += _profileUser + "/public.txt";
             string path = Server.MapPath("~" + folderPath);
             if (_profile.PublicGallery && Config.ShowGallery)
             {
@@ -356,7 +357,8 @@ namespace SnitzUI
             _user.Hobbies = ((TextBox)phHobby.FindControl("tbxHobby")).Text;
             _user.HomePage = ((TextBox)phHomePage.FindControl("tbxHomePage")).Text;
             _user.Theme = ddTheme.Text;
-            Config.UserTheme = _user.Theme;
+            if (IsMyProfile)
+                Config.UserTheme = _user.Theme;
             //fav links
 
             Members.SaveMember(_user);
@@ -364,14 +366,14 @@ namespace SnitzUI
 
         private void SetupTabs()
         {
-            _editmode = _editmode || _isMyProfile;
+            _editmode = _editmode || IsMyProfile;
 
             SetControlStatus();
 
             tbxName.Text = _user.Username;
             tbxRealName.Text = String.Format("{0} {1}", _user.Firstname, _user.Lastname);
             tbxAge.Text = Common.TranslateNumerals(Common.GetAgeFromDOB(_user.DateOfBirth));
-            if (_profile.HideAge && _userProfile != Member.Username)
+            if (_profile.HideAge && !IsMyProfile)
                 tbxAge.Text = @"Mind your own business";
             ddlMarStatus.SelectedValue = _user.MaritalStatus;
             ddlGender.SelectedValue = _user.Gender;
@@ -386,10 +388,7 @@ namespace SnitzUI
                 if (dateTime != null) DobPicker.SetDOB(dateTime.Value);
             }
             cbxDaylightSaving.Checked = _user.UseDaylightSaving;
-            if (!String.IsNullOrEmpty(_user.TimeZone))
-            {
-                ddlTimeZone.SelectedValue = _user.TimeZone;
-            }
+            ddlTimeZone.SelectedValue = !String.IsNullOrEmpty(_user.TimeZone) ? _user.TimeZone : Config.TimeZoneString;
             ddTheme.SelectedValue = Config.UserTheme;
             if (_profile.Gravatar)
             {
@@ -402,7 +401,7 @@ namespace SnitzUI
                     Rating = GravatarRating.Default
                 };
                 if(_user.AvatarUrl != "")
-                    grav.DefaultImage = _user.AvatarUrl;
+                    grav.DefaultImage = "/Avatars/" + _user.Avatar;
                 phAvatar.Controls.Add(grav);
             }else
             {
@@ -429,7 +428,7 @@ namespace SnitzUI
             rptRecentTopics.DataSource = Members.GetRecentTopics(_user.Id,Member);
             rptRecentTopics.DataBind();
 
-            string[] roles = Roles.GetRolesForUser(_userProfile);
+            string[] roles = Roles.GetRolesForUser(_profileUser);
             LitRoles.Text = String.Join("<br/>",roles);
             lblUserId.Text += @" : " + _user.Id;
             lblPosts.Text += @" : " + _user.PostCount;
@@ -491,21 +490,21 @@ namespace SnitzUI
             }
             newemail.Visible = _editmode;
 
-            pnlDOB.Visible = _isMyProfile || _editmode;
-            pnlSiteInf.Visible = _isMyProfile || _editmode;
+            pnlDOB.Visible = IsMyProfile || _editmode;
+            pnlSiteInf.Visible = IsMyProfile || _editmode;
             btnUpdate.Visible = _editmode;
             btnCancel.Visible = _editmode;
             btnEdit.Visible = IsAdministrator && !_editmode;
 
             btnAddLink.Enabled = _editmode;
-            btnAddLink.Visible = _editmode && _isMyProfile;
-            btnSaveLinks.Visible = _editmode && _isMyProfile;
+            btnAddLink.Visible = _editmode && IsMyProfile;
+            btnSaveLinks.Visible = _editmode && IsMyProfile;
             btnChangeEmail.Visible = _editmode;
             btnAvatar.Visible = _editmode;
             repFavLinks.Visible = _editmode;
-            TabBookmarks.Visible = _isMyProfile || IsAdministrator;
-            pnlPassword.Visible = _isMyProfile;
-            TabGallery.Visible = (_isMyProfile && Config.UserGallery) || IsAdministrator || (_profile.PublicGallery && Config.ShowGallery && Config.UserGallery);
+            TabBookmarks.Visible = IsMyProfile || IsAdministrator;
+            pnlPassword.Visible = IsMyProfile;
+            TabGallery.Visible = (IsMyProfile && Config.UserGallery) || IsAdministrator || (_profile.PublicGallery && Config.ShowGallery && Config.UserGallery);
             cbxPublic.Visible = Config.ShowGallery;
             TabSubscriptions.Visible = (Config.SubscriptionLevel != Enumerators.SubscriptionLevel.None);
         }
@@ -584,7 +583,7 @@ namespace SnitzUI
                 SiteMapNode currentNode = SiteMap.CurrentNode.Clone(true);
                 SiteMapNode tempNode = currentNode;
 
-                tempNode.Title = _userProfile;
+                tempNode.Title = _profileUser;
                 return currentNode;
             }
             return null;
@@ -727,7 +726,7 @@ namespace SnitzUI
         protected void BtnChangePassClick(object sender, EventArgs e)
         {
             var smp = new SnitzMembershipProvider();
-            bool result = smp.ChangePassword(_userProfile, tbxPassword.Text, tbxNewPass.Text);
+            bool result = smp.ChangePassword(_profileUser, tbxPassword.Text, tbxNewPass.Text);
 
             if(result)
             {
