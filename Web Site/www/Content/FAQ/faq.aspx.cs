@@ -131,7 +131,7 @@ namespace SnitzUI.Content.FAQ
                     hdnFaqId.Value = faq[0].Id.ToString();
                 }
                 btnDeleteFaq.OnClientClick =
-                    "setArgAndPostBack('Do you want to delete Question and answer?','Delete'," + hdnFaqId.Value + ");return false;";
+                    "confirmPostBack('Do you want to delete Question and answer?','Delete'," + hdnFaqId.Value + ");return false;";
                 btnEdit.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
                 btnDeleteFaq.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
             }

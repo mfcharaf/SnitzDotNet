@@ -51,36 +51,10 @@ namespace SnitzUI.UserControls.Post_Templates
             litViews.Text = String.Format("viewed {0} times", topic.Views);
             blgDay.Text = topic.Date.Day.ToString();
             blgMonth.Text = topic.Date.ToString("MMM");
-            hBookmark.OnClientClick = "setArgAndPostBack('Do you want to bookmark this Blog entry?','BookMarkBlog'," + topic.Id + ");return false;";
+            hBookmark.OnClientClick = "confirmBookMark('Do you want to bookmark this Blog entry?'," + topic.Id + ",-1);return false;";
             hComments.Text = String.Format("{0} {1}", topic.ReplyCount, webResources.lblComments);
-            if (Page.IsPostBack)
-            {
-                string postbackbtn = Request.Form["__EVENTTARGET"];
-                string argument = Request.Form["__EVENTARGUMENT"];
-                int id;
-                switch (postbackbtn)
-                {
-                    case "BookMarkBlog":
-                        id = Convert.ToInt32(argument);
-                        BookMarkBlog(id);
-                        break;
-                }
-            }
+
         }
 
-        private void BookMarkBlog(int id)
-        {
-            PageBase page = (PageBase)Page;
-            TopicInfo t = Topics.GetTopic(id);
-            string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
-            var profile = page.Profile;
-            List<SnitzLink> bookmarks = profile.BookMarks;
-            if (!bookmarks.Contains(new SnitzLink(t.Subject, url, 0)))
-            {
-                bookmarks.Add(new SnitzLink(t.Subject, url, bookmarks.Count));
-                profile.BookMarks = bookmarks;
-                profile.Save();
-            }
-        }
     }
 }

@@ -50,6 +50,8 @@ namespace SnitzUI.UserControls.Popups
 
         private void SetupPage(ForumInfo forum)
         {
+            CategoryInfo cat = Categories.GetCategory(forum.CatId);
+
             hdnForumId.Value = forum.Id.ToString();
 
             tbxSubject.Text = forum.Subject;
@@ -91,13 +93,13 @@ namespace SnitzUI.UserControls.Popups
                 ddlMod.SelectedValue = "0";
             }
             #region Subscriptions
-            if (Config.SubscriptionLevel > 0)
+            if (Config.SubscriptionLevel > 0 && cat.SubscriptionLevel > 0)
             {
                 ddlSub.Items.Clear();
                 ddlSub.Items.Add(new ListItem("No Subscriptions Allowed","0"));
-                if(Config.SubscriptionLevel < Enumerators.SubscriptionLevel.Topic)
+                if(cat.SubscriptionLevel < (int)Enumerators.CategorySubscription.TopicSubscription)
                 {
-                    ddlSub.Items.Add(new ListItem("Forum Subscriptions Allowed", "1"));
+                        ddlSub.Items.Add(new ListItem("Forum Subscriptions Allowed", "1"));
                 }
                 ddlSub.Items.Add(new ListItem("Topic Subscriptions Allowed", "2"));
                 ddlSub.SelectedValue = forum.SubscriptionLevel.ToString();

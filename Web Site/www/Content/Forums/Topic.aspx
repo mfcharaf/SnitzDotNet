@@ -98,7 +98,8 @@
 
         function pollloaded() { 
             BindControlEvents();
-        }       
+        }
+
     </script>
     <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
 <style type="text/css">

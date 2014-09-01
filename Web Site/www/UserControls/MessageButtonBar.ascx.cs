@@ -77,14 +77,6 @@ public partial class MessageButtonBar : UserControl
                     id = Convert.ToInt32(argument);
                     DeleteReply(id);
                     break;
-                case "BookMarkTopic":
-                    id = Convert.ToInt32(argument);
-                    BookMarkTopic(id);
-                    break;
-                case "BookMarkReply":
-                    id = Convert.ToInt32(argument);
-                    BookMarkReply(id);
-                    break;
             }
         }
         
@@ -157,8 +149,8 @@ public partial class MessageButtonBar : UserControl
             hEdit.Text = webResources.lblEditTopic;
             hEdit.ToolTip = webResources.lblEditTopic;
             TopicDelete.AlternateText = webResources.lblDelTopic;
-            TopicDelete.OnClientClick = "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + ThisId + ");return false;";
-            imgPosticon.OnClientClick = "setArgAndPostBack('Do you want to bookmark the Topic?','BookMarkTopic'," + ThisId + ");return false;";
+            TopicDelete.OnClientClick = "confirmPostBack('Do you want to delete the Topic?','DeleteTopic'," + ThisId + ");return false;";
+            imgPosticon.OnClientClick = "confirmBookMark('Do you want to bookmark the Topic?'," + ThisId + ",-1); return false;";
         }
         else if (_post is ReplyInfo)
         {
@@ -192,8 +184,9 @@ public partial class MessageButtonBar : UserControl
             SplitTopic.CommandArgument = ThisId.ToString();
             hEdit.ToolTip = webResources.lblEditReply;
             hEdit.Text = webResources.lblEditReply;
-            TopicDelete.OnClientClick = "setArgAndPostBack('Do you want to delete the Reply?','DeleteReply'," + ThisId + ");return false;";
-            imgPosticon.OnClientClick = "setArgAndPostBack('Do you want to bookmark the Reply?','BookMarkReply'," + ThisId + ");return false;";
+            TopicDelete.OnClientClick = "confirmPostBack('Do you want to delete the Reply?','DeleteReply'," + ThisId + ");return false;";
+            imgPosticon.OnClientClick = "confirmBookMark('Do you want to bookmark the Reply?'," + ThisId + "," + page.CurrentPage + ");return false;";
+
             SplitTopic.Visible = _isForumModerator || _isadmin;
             SplitTopic.OnClientClick = String.Format(
                     "mainScreen.LoadServerControlHtml('Split Topic',{{'pageID':6,'data':'{0},asc'}}, 'methodHandlers.BeginRecieve');return false;", reply.Id);
@@ -248,35 +241,6 @@ public partial class MessageButtonBar : UserControl
             ReplyDeleteClicked(this, EventArgs.Empty);
         }
         //Request.Form["__EVENTARGUMENT"] = null;
-    }
-
-    private void BookMarkTopic(int topicid)
-    {
-        PageBase page = (PageBase)Page;
-        TopicInfo t = Topics.GetTopic(topicid);
-        string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
-        List<SnitzLink> bookmarks = page.Profile.BookMarks;
-        if (!bookmarks.Contains(new SnitzLink(t.Subject, url, 0)))
-        {
-            bookmarks.Add(new SnitzLink(t.Subject, url, bookmarks.Count));
-            page.Profile.BookMarks = bookmarks;
-            page.Profile.Save();
-        }
-    }
-
-    private void BookMarkReply(int replyid)
-    {
-        PageBase page = (PageBase)Page;
-        ReplyInfo r = Replies.GetReply(replyid);
-        TopicInfo rt = Topics.GetTopic(r.TopicId);
-        string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page.CurrentPage + 1, r.Id);
-        List<SnitzLink> rbookmarks = page.Profile.BookMarks;
-        if (!rbookmarks.Contains(new SnitzLink(rt.Subject, rurl, 0)))
-        {
-            rbookmarks.Add(new SnitzLink(rt.Subject, rurl, rbookmarks.Count));
-            page.Profile.BookMarks = rbookmarks;
-            page.Profile.Save();
-        }
     }
 
     private void InvalidateForumCache()

@@ -146,8 +146,8 @@ namespace SnitzUI
                     ForumDiv.Visible = (IsAdministrator || (_inModeratedList && !Config.RestrictModeratorMove));
 
                     ForumDropDown.SelectedValue = ForumId.ToString();
-                    cbxSticky.Visible = (IsAdministrator || _inModeratedList);
-                    cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                    cbxSticky.Visible = _inModeratedList;
+                    cbxLock.Visible = _inModeratedList;
                     if (ForumId.HasValue)
                     {
                         if (_forum.Type == 3 && String.IsNullOrEmpty(Message.Text))
@@ -163,27 +163,27 @@ namespace SnitzUI
                 case "reply":
                     SubjectDiv.Visible = false;
                     cbxSticky.Visible = false;
-                    cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                    cbxLock.Visible = _inModeratedList;
                     ForumDiv.Visible = false;
                     break;
                 case "quote":
                     SubjectDiv.Visible = false;
                     cbxSticky.Visible = false;
                     ForumDiv.Visible = false;
-                    cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                    cbxLock.Visible = _inModeratedList;
                     Message.Text = GetQuotedMessage();
                     break;
                 case "edit":
                     switch (_type)
                     {
                         case "topics":
-                            cbxSticky.Visible = (IsAdministrator || _inModeratedList);
-                            cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                            cbxSticky.Visible = _inModeratedList;
+                            cbxLock.Visible = _inModeratedList;
                             SetupForEditMessage();
                             break;
                         case "reply":
                             cbxSticky.Visible = false;
-                            cbxLock.Visible = (IsAdministrator || _inModeratedList);
+                            cbxLock.Visible = _inModeratedList;
                             SetupForEditMessage();
                             break;
                         case "forum":
@@ -237,7 +237,8 @@ namespace SnitzUI
                 }
                 _topicLocked = _thisTopic.Status == (int)Enumerators.PostStatus.Closed;
             }
-
+            if (IsAdministrator) //bypass moderation for administrators
+                _inModeratedList = true;
             switch (_action)
             {
                 case "topic":
@@ -339,9 +340,9 @@ namespace SnitzUI
         {
             Replies.UpdateReply(_recId, Message.Text, Member, IsAdministrator, cbxSig.Checked);
 
-            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
+            if (cbxLock.Checked && _inModeratedList)
                 Topics.SetTopicStatus(_thisTopic.Id, (int) Enumerators.PostStatus.Closed);
-            if (_inModeratedList || IsAdministrator)
+            if (_inModeratedList)
                 Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + _recId);
         }
@@ -431,9 +432,9 @@ namespace SnitzUI
                     mailsender.Send();
                 }
             }
-            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
+            if (cbxLock.Checked && _inModeratedList)
                 Topics.SetTopicStatus(_thisTopic.Id, (int) Enumerators.PostStatus.Closed);
-            if (_inModeratedList || IsAdministrator)
+            if (_inModeratedList)
                 Topics.MakeSticky(_thisTopic.Id, cbxSticky.Checked);
 
             if (pingSiteMap)
@@ -560,7 +561,7 @@ namespace SnitzUI
             reply.ForumId = _thisTopic.ForumId;
             reply.Id = Replies.AddReply(reply);
 
-            if (cbxLock.Checked && (_inModeratedList || IsAdministrator))
+            if (cbxLock.Checked && _inModeratedList)
                 _thisTopic.Status = (int)Enumerators.PostStatus.Closed;
             Topics.Update(_thisTopic);
             if (pingSiteMap) { Ping(""); }

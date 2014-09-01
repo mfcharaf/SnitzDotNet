@@ -39,8 +39,6 @@
             EnableViewState="False"></asp:Label>
         <asp:DropDownList ID="ddlSub" runat="server" >
             <asp:ListItem Value="0">No Subscriptions Allowed</asp:ListItem>
-            <asp:ListItem Value="1">Forum Subscriptions Allowed</asp:ListItem>
-            <asp:ListItem Value="2">Topic Subscriptions Allowed</asp:ListItem>
         </asp:DropDownList>
         <br />
     </asp:Panel>

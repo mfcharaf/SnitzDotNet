@@ -85,14 +85,33 @@ namespace Snitz.OLEDbDAL
         {
             var membersubs = new List<SubscriptionInfo>();
 
-            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID, FORUM_ID, TOPIC_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
+            string SqlStr =
+                "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME,M.M_STATUS " +
+                "FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS SUBS " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "FORUM F ON F.FORUM_ID = SUBS.FORUM_ID " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "CATEGORY C ON C.CAT_ID = SUBS.CAT_ID " +
+                "LEFT JOIN " + Config.ForumTablePrefix + "TOPICS T ON T.TOPIC_ID = SUBS.TOPIC_ID " +
+                "LEFT JOIN " + Config.MemberTablePrefix + "MEMBERS M ON M.MEMBER_ID = SUBS.MEMBER_ID " +
+                "WHERE SUBS.MEMBER_ID = @Member"; 
             OleDbParameter parm = new OleDbParameter("@Member", OleDbType.Numeric) { Value = memberid };
             using (OleDbDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
             {
                 while (rdr.Read())
                 {
-                    membersubs.Add(new SubscriptionInfo { Id = rdr.GetInt32(0), MemberId = rdr.GetInt32(1), CategoryId = rdr.SafeGetInt32(2), ForumId = rdr.SafeGetInt32(3), TopicId = rdr.SafeGetInt32(4) });
+                    membersubs.Add(new SubscriptionInfo
+                    {
+                        Id = rdr.GetInt32(0),
+                        MemberId = rdr.GetInt32(1),
+                        CategoryId = rdr.SafeGetInt32(2),
+                        ForumId = rdr.SafeGetInt32(3),
+                        TopicId = rdr.SafeGetInt32(4),
+                        CategoryName = rdr.SafeGetInt32(2) == null ? "" : rdr.SafeGetString(5, "Category Deleted"),
+                        ForumSubject = rdr.SafeGetInt32(3) == null ? "" : rdr.SafeGetString(6, "Forum Deleted"),
+                        TopicSubject = rdr.SafeGetInt32(4) == 0 ? "" : rdr.SafeGetString(7, "Topic Deleted"),
+                        MemberName = rdr.SafeGetString(8) + (rdr.SafeGetInt16(9) == 0 ? "(Locked)" : "")
+                    });
                 }
+
             }
             return membersubs;
         }

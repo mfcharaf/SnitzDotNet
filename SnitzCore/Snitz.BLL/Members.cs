@@ -90,6 +90,12 @@ namespace Snitz.BLL
             return res.Any();
 
         }
+        public static bool IsSubscribedToCategory(int memberid, int catid)
+        {
+            var res = Subscriptions.GetCategorySubscriptions(catid).Where(s => s.MemberId == memberid);
+            return res.Any();
+
+        }
 
         public static void SaveMember(MemberInfo member)
         {

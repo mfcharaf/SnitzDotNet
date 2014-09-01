@@ -20,9 +20,11 @@
 */
 
 using System;
+using System.Web.UI.WebControls;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
+using SnitzConfig;
 
 
 namespace SnitzUI.UserControls.Popups
@@ -50,7 +52,33 @@ namespace SnitzUI.UserControls.Popups
             tbxSubject.Text = cat.Name;
             tbxOrder.Text = cat.Order.ToString();
             if (cat.ModerationLevel.HasValue) ddlMod.SelectedValue = cat.ModerationLevel.Value.ToString();
-            if (cat.SubscriptionLevel.HasValue) ddlSub.SelectedValue = cat.SubscriptionLevel.Value.ToString();
+            #region Subscriptions
+            if (Config.SubscriptionLevel > 0 && cat.SubscriptionLevel > 0)
+            {
+                ddlSub.Items.Clear();
+                ddlSub.Items.Add(new ListItem("No Subscriptions Allowed", "0"));
+                if (Config.SubscriptionLevel < Enumerators.SubscriptionLevel.Forum)
+                {
+                    ddlSub.Items.Add(new ListItem("Category Subscriptions Allowed", "1"));
+                }
+                if (cat.SubscriptionLevel < (int)Enumerators.SubscriptionLevel.Topic)
+                {
+                    ddlSub.Items.Add(new ListItem("Forum Subscriptions Allowed", "2"));
+                }
+                ddlSub.Items.Add(new ListItem("Topic Subscriptions Allowed", "3"));
+                ddlSub.SelectedValue = cat.SubscriptionLevel.ToString();
+
+            }
+            else
+            {
+                lblSub.Enabled = false;
+                ddlSub.Enabled = false;
+                ddlSub.Items.Clear();
+                ddlSub.Items.Add(new ListItem("No Subscriptions Allowed", "0"));
+                ddlSub.SelectedValue = "0";
+            }
+            #endregion
+
         }
     }
 }

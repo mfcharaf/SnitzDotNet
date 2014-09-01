@@ -194,7 +194,7 @@ namespace SnitzUI.Content.FAQ
             faqQuestion.Text = "<h1>" + faq.LinkTitle + "</h1>";
             faqAnswer.Text = faq.LinkBody.ReplaceNoParseTags().ParseVideoTags().ParseWebUrls();
             btnDeleteFaq.OnClientClick =
-"setArgAndPostBack('Do you want to delete Question and answer?','DeleteFaq'," + faqId.Value + ");return false;";
+"confirmPostBack('Do you want to delete Question and answer?','DeleteFaq'," + faqId.Value + ");return false;";
             btnEdit.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
             btnDeleteFaq.Visible = IsAdministrator || Roles.IsUserInRole("FAQEditor");
         }

@@ -2158,6 +2158,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subscribe to posts in this category.
+        /// </summary>
+        internal static string lblSubscribeCat {
+            get {
+                return ResourceManager.GetString("lblSubscribeCat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscribe to posts in this forum.
         /// </summary>
         internal static string lblSubscribeForum {
@@ -2307,6 +2316,15 @@ namespace Resources {
         internal static string lblUnstick {
             get {
                 return ResourceManager.GetString("lblUnstick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to remove category notifications.
+        /// </summary>
+        internal static string lblUnsubscribeCat {
+            get {
+                return ResourceManager.GetString("lblUnsubscribeCat", resourceCulture);
             }
         }
         

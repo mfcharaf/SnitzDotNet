@@ -79,14 +79,6 @@ public partial class Homepage : PageBase
                     id = Convert.ToInt32(argument);
                     EmptyForum(id);
                     break;
-                case "ForumSubscribe":
-                    id = Convert.ToInt32(argument);
-                    SubscribeForum(id, false);
-                    break;
-                case "ForumUnSubscribe":
-                    id = Convert.ToInt32(argument);
-                    SubscribeForum(id, true);
-                    break;
                 case "DeleteCategory":
                     id = Convert.ToInt32(argument);
                     DeleteCategory(id);
@@ -143,11 +135,12 @@ public partial class Homepage : PageBase
             var newIcon = item.FindControl("NewForum") as ImageButton;
             var newUrl = item.FindControl("NewUrl") as ImageButton;
 	        var delIcon = item.FindControl("CatDelete") as ImageButton;
-
+            var subscribe = item.FindControl("CatSub") as ImageButton;
+            var unsubscribe = item.FindControl("CatUnSub") as ImageButton;
             if(delIcon != null)
             {
                 delIcon.OnClientClick =
-                    "setArgAndPostBack('Do you want to delete the Category?','DeleteCategory'," + cat.Id + ");return false;";
+                    "confirmPostBack('Do you want to delete the Category?','DeleteCategory'," + cat.Id + ");return false;";
             }
             if (editIcon != null)
             {
@@ -172,16 +165,34 @@ public partial class Homepage : PageBase
             {
                 lockIcon.Visible = ((IsAdministrator) && (cat.Status == (int)Enumerators.PostStatus.Open));
                 lockIcon.OnClientClick =
-                    "setArgAndPostBack('Do you want to lock the Category?','LockCategory'," + cat.Id + ");return false;";
+                    "confirmPostBack('Do you want to lock the Category?','LockCategory'," + cat.Id + ");return false;";
             }
             if (unlockIcon != null)
             {
                 unlockIcon.Visible = ((IsAdministrator) && (cat.Status == (int)Enumerators.PostStatus.Closed));
                 unlockIcon.OnClientClick =
-                    "setArgAndPostBack('Do you want to unlock the Category?','UnLockCategory'," + cat.Id + ");return false;";
+                    "confirmPostBack('Do you want to unlock the Category?','UnLockCategory'," + cat.Id + ");return false;";
 
             }
-
+            if (subscribe != null)
+            {
+                subscribe.Visible = IsAuthenticated;
+                subscribe.Visible = subscribe.Visible && cat.SubscriptionLevel == (int)Enumerators.CategorySubscription.CategorySubscription;
+                subscribe.OnClientClick = "confirmCatSubscribe('Do you want to be notified when someone posts in this category?'," + cat.Id + ",false);return false;";
+            }
+            if (unsubscribe != null)
+            {
+                unsubscribe.Visible = false;
+                if (subscribe.Visible)
+                {
+                    if (Members.IsSubscribedToCategory(Member.Id,cat.Id))
+                    {
+                        subscribe.Visible = false;
+                        unsubscribe.Visible = true;
+                    }
+                }
+                unsubscribe.OnClientClick = "confirmCatSubscribe('Do you want to remove notifications in this category?'," + cat.Id + ",true);return false;";
+            }
 	        cat.ForumCount = Forums.GetForumsByCategory(cat.Id, 0, 1000).Count();
             if (!Categories.GetCategoryForums(cat.Id, Member).Any() && cat.ForumCount != 0)
                 e.Item.Visible = false;
@@ -223,14 +234,6 @@ public partial class Homepage : PageBase
     {
         Forums.EmptyForum(forumid);
         Response.Redirect(Request.RawUrl);
-    }
-
-    protected void SubscribeForum(int forumid, bool remove)
-    {
-        if(remove)
-            Subscriptions.RemoveForumSubscription(Member.Id, forumid);
-        else
-            Subscriptions.AddForumSubscription(Member.Id, forumid);
     }
 
     #endregion

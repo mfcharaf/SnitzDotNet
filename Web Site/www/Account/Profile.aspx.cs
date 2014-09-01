@@ -362,6 +362,8 @@ namespace SnitzUI
             //fav links
 
             Members.SaveMember(_user);
+            SetupTabs();
+            //SetupDynamicControls();
         }
 
         private void SetupTabs()
@@ -401,11 +403,11 @@ namespace SnitzUI
                     Rating = GravatarRating.Default
                 };
                 if(_user.AvatarUrl != "")
-                    grav.DefaultImage = "/Avatars/" + _user.Avatar;
+                    grav.DefaultImage = _user.AvatarUrl;
                 phAvatar.Controls.Add(grav);
             }else
             {
-                var img = new Literal {Text = _user.AvatarUrl};
+                var img = new Literal {Text = _user.AvatarImg};
                 phAvatar.Controls.Add(img);
             }
 

@@ -171,7 +171,7 @@ namespace SnitzUI.UserControls
                     archive.Visible = archive.Visible && (forum.Type != 1) && Config.Archive;
                     archive.ImageUrl = imagedir + "/admin/archive.png";
                     archive.OnClientClick =
-                         "setArgAndPostBack('Do you want to archive posts in this Forum?','ForumArchive'," + forum.Id + ");return false;";
+                         "confirmPostBack('Do you want to archive posts in this Forum?','ForumArchive'," + forum.Id + ");return false;";
                     
                 }
                 
@@ -184,7 +184,7 @@ namespace SnitzUI.UserControls
                                             forum.SubscriptionLevel == (int)Enumerators.Subscription.ForumSubscription;
                         subscribe.Visible = subscribe.Visible && (forum.Type != 1);
                         subscribe.OnClientClick =
-                             "setArgAndPostBack('Do you want to subscribe to new posts in the Forum?','ForumSubscribe'," + forum.Id + ");return false;";
+                             "confirmForumSubscribe('Do you want to subscribe to new posts in the Forum?'," + forum.Id + ",false);return false;";
                     }
                     if (unsubscribe != null)
                     {
@@ -200,7 +200,7 @@ namespace SnitzUI.UserControls
                         }
                         unsubscribe.Visible = unsubscribe.Visible && (forum.Type != 1);
                         unsubscribe.OnClientClick =
-                            "setArgAndPostBack('Do you want to remove your subscription for this Forum?','ForumUnSubscribe'," + forum.Id + ");return false;";
+                            "confirmForumSubscribe('Do you want to remove your subscription for this Forum?'," + forum.Id + ",true);return false;";
                     }
                     if (newIcon != null)
                     {
@@ -225,7 +225,7 @@ namespace SnitzUI.UserControls
                         lockIcon.Visible = ((IsAdministrator || isForumModerator) && (forum.Status == (int)Enumerators.PostStatus.Open));
                         lockIcon.Visible = lockIcon.Visible && (forum.Type != 1);
                         lockIcon.OnClientClick =
-                            "setArgAndPostBack('Do you want to lock the Forum?','ForumLock'," + forum.Id + ");return false;";
+                            "confirmPostBack('Do you want to lock the Forum?','ForumLock'," + forum.Id + ");return false;";
                     }
                     if (unlockIcon != null)
                     {
@@ -234,13 +234,13 @@ namespace SnitzUI.UserControls
                                               (forum.Status == (int)Enumerators.PostStatus.Closed));
                         unlockIcon.Visible = unlockIcon.Visible && (forum.Type != 1);
                         unlockIcon.OnClientClick =
-                            "setArgAndPostBack('Do you want to unlock the Forum?','ForumUnLock'," + forum.Id + ");return false;";
+                            "confirmPostBack('Do you want to unlock the Forum?','ForumUnLock'," + forum.Id + ");return false;";
                     }
                     if (delIcon != null)
                     {
                         delIcon.ImageUrl = imagedir + "/admin/trash.png";
                         delIcon.Visible = IsAdministrator;
-                        delIcon.OnClientClick = "setArgAndPostBack('Do you want to delete the Forum?','ForumDelete'," + forum.Id + ");return false;";
+                        delIcon.OnClientClick = "confirmPostBack('Do you want to delete the Forum?','ForumDelete'," + forum.Id + ");return false;";
                     }
                     if (editIcon != null)
                     {
@@ -255,7 +255,7 @@ namespace SnitzUI.UserControls
                         empty.ImageUrl = imagedir + "/admin/folderX.png";
                         empty.Visible = empty.Visible && (forum.Type != 1);
                         empty.OnClientClick =
-                            "setArgAndPostBack('Do you want to delete all the posts in the Forum?','ForumEmpty'," + forum.Id + ");return false;";
+                            "confirmPostBack('Do you want to delete all the posts in the Forum?','ForumEmpty'," + forum.Id + ");return false;";
                     }
                 }
                 else
@@ -269,8 +269,7 @@ namespace SnitzUI.UserControls
         }
         private static Image GetForumIcon(string username, DateTime lasthere, Enumerators.PostStatus fStatus, DateTime? tLastPost)
         {
-            var image = new Image { ID = "imgTopicIcon", EnableViewState = false };
-            image.SkinID = "FolderNew";
+            var image = new Image {ID = "imgTopicIcon", EnableViewState = false, SkinID = "FolderNew"};
             string imagedir = Config.ImageDirectory;
             switch (fStatus)
             {

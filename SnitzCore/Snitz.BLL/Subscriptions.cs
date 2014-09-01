@@ -127,7 +127,7 @@ namespace Snitz.BLL
         public static int AddCategorySubscription(int memberid, int categoryid)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
-            return dal.Add(new SubscriptionInfo { MemberId = memberid, CategoryId = categoryid });
+            return dal.Add(new SubscriptionInfo { MemberId = memberid, CategoryId = categoryid,ForumId = 0,TopicId = 0});
         }
 
         public static void RemoveCategorySubscription(SubscriptionInfo subscription)

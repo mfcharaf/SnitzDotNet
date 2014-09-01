@@ -109,14 +109,6 @@ public partial class ActiveTopicPage : PageBase
                         id = Convert.ToInt32(argument);
                         UnLockTopic(id);
                         break;     
-                    case "TopicSubscribe" :
-                        id = Convert.ToInt32(argument);
-                        TopicSubscribe(id);
-                        break;
-                    case "TopicUnSubscribe":
-                        id = Convert.ToInt32(argument);
-                        TopicUnSubscribe(id);
-                        break;
                     case "DeleteTopic" :
                         id = Convert.ToInt32(argument);
                         DeleteTopic(id);
@@ -217,13 +209,13 @@ public partial class ActiveTopicPage : PageBase
                 {
                     lockIcon.Visible = (IsAdministrator || inModeratedList);
                     lockIcon.OnClientClick =
-                        "setArgAndPostBack('Do you want to lock the Topic?','LockTopic'," + topicId + ");return false;";
+                        "confirmPostBack('Do you want to lock the Topic?','LockTopic'," + topicId + ");return false;";
                 }
                 if (delIcon != null)
                 {
                     delIcon.Visible = false;
                     delIcon.OnClientClick =
-                        "setArgAndPostBack('Do you want to delete the Topic?','DeleteTopic'," + topicId + ");return false;";
+                        "confirmPostBack('Do you want to delete the Topic?','DeleteTopic'," + topicId + ");return false;";
                 }
                 if (editIcon != null) editIcon.Visible = false;
                 if (approve != null)
@@ -243,7 +235,7 @@ public partial class ActiveTopicPage : PageBase
                     }
                     subscribe.Visible = subscribe.Visible && topic.AllowSubscriptions;
                     subscribe.OnClientClick =
-                        "setArgAndPostBack('Do you want to be notified when someone posts a reply?','TopicSubscribe'," + topicId + ");return false;";
+                        "confirmTopicSubscribe('Do you want to be notified when someone posts a reply?'," + topicId + ",false);return false;";
                 }
                 if (unsubscribe != null)
                 {
@@ -257,7 +249,7 @@ public partial class ActiveTopicPage : PageBase
                         }
                     }
                     unsubscribe.OnClientClick =
-                        "setArgAndPostBack('Do you want to remove notifications from topic?','TopicUnSubscribe'," + topicId + ");return false;";
+                        "confirmTopicSubscribe('Do you want to remove notifications from topic?'," + topicId + ",true);return false;";
                 }
 
                 e.Row.Cells[0].Controls.Add(GetRecentTopicIcon(topic, replyCount));
@@ -271,7 +263,7 @@ public partial class ActiveTopicPage : PageBase
                 {
                     unlockIcon.Visible = ((IsAdministrator || inModeratedList) && (topic.Status == (int)Enumerators.PostStatus.Closed));
                     unlockIcon.OnClientClick =
-                        "setArgAndPostBack('Do you want to unlock the Topic?','UnLockTopic'," + topicId + ");return false;";
+                        "confirmPostBack('Do you want to unlock the Topic?','UnLockTopic'," + topicId + ");return false;";
                 }
 
                 if (replyIcon != null)
@@ -644,12 +636,4 @@ public partial class ActiveTopicPage : PageBase
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void TopicSubscribe(int topicid)
-        {
-            Subscriptions.AddTopicSubscription(Member == null ? 0 : Member.Id, topicid);
-        }
-        protected void TopicUnSubscribe(int topicid)
-        {
-            Subscriptions.RemoveTopicSubscription(Member == null ? 0 : Member.Id, topicid);
-        }
     }

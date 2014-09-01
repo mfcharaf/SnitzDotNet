@@ -83,6 +83,36 @@ namespace SnitzConfig
             [Description("Topic Subscriptions Allowed")]
             TopicSubscription
         }
+        /// <summary>
+        /// Allowed Subscription level
+        /// </summary>
+        public enum CategorySubscription
+        {
+            [Description("No Subscriptions Allowed")]
+            None = 0,
+            [Description("Category Subscriptions Allowed")]
+            CategorySubscription,
+            [Description("Forum Subscriptions Allowed")]
+            ForumSubscription,
+            [Description("Topic Subscriptions Allowed")]
+            TopicSubscription
+        }
+        /// <summary>
+        /// Forum Subscription Level
+        /// </summary>
+        public enum SubscriptionLevel
+        {
+            [Description("No Subscriptions")]
+            None = 0,
+            [Description("Subscribe to Whole Board")]
+            Board,
+            [Description("Category Subscriptions")]
+            Category,
+            [Description("Forum Subscriptions")]
+            Forum,
+            [Description("Topic Subscriptions")]
+            Topic
+        }
 
         /// <summary>
         /// Event type enumerators
@@ -131,23 +161,6 @@ namespace SnitzConfig
             [Description("Pager using LinkButtons")]
             Linkbutton
         };
-
-        /// <summary>
-        /// Forum Subscription Level
-        /// </summary>
-        public enum SubscriptionLevel
-        {
-            [Description("No Subscriptions")]
-            None = 0,
-            [Description("Subscribe to Whole Board")]
-            Board,
-            [Description("Category Subscriptions")]
-            Category,
-            [Description("Forum Subscriptions")]
-            Forum,
-            [Description("Topic Subscriptions")]
-            Topic
-        }
 
         /// <summary>
         /// Forum Rank display type

@@ -483,7 +483,87 @@ namespace SnitzUI
             "<input type=\"hidden\" name=\"__VIEWSTATE\" id=\"__VIEWSTATE\" value=\".*?\" />",
             "", RegexOptions.IgnoreCase);
             return viewStateRemovedOutput;
-        } 
+        }
+
+        #region bookmarks
+        [WebMethod(EnableSession = true)]
+        public void BookMarkTopic(int topicid)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
+            ProfileCommon prof = ProfileCommon.GetUserProfile(user);
+
+            TopicInfo t = Topics.GetTopic(topicid);
+            string url = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}", t.Id);
+            List<SnitzLink> bookmarks = prof.BookMarks;
+            if (!bookmarks.Contains(new SnitzLink(t.Subject, url, 0)))
+            {
+                bookmarks.Add(new SnitzLink(t.Subject, url, bookmarks.Count));
+                prof.BookMarks = bookmarks;
+                prof.Save();
+            }
+        }
+        [WebMethod(EnableSession = true)]
+        public void BookMarkReply(int replyid,int page)
+        {
+            ReplyInfo r = Replies.GetReply(replyid);
+            TopicInfo rt = Topics.GetTopic(r.TopicId);
+            var user = HttpContext.Current.User.Identity.Name;
+            ProfileCommon prof = ProfileCommon.GetUserProfile(user);
+
+            string rurl = String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}&#{2}", r.TopicId, page + 1, r.Id);
+            List<SnitzLink> rbookmarks = prof.BookMarks;
+            if (!rbookmarks.Contains(new SnitzLink(rt.Subject, rurl, 0)))
+            {
+                rbookmarks.Add(new SnitzLink(rt.Subject, rurl, rbookmarks.Count));
+                prof.BookMarks = rbookmarks;
+                prof.Save();
+            }
+        }
+        #endregion
+
+        #region subscriptions
+        [WebMethod(EnableSession = true)]
+        public void CategorySubscribe(int catid, bool remove)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
+            var member = Membership.GetUser(user, true);
+            if (member != null && member.ProviderUserKey != null)
+            {
+                if (remove)
+                    Subscriptions.RemoveCategorySubscription((int)member.ProviderUserKey, catid);
+                else
+                    Subscriptions.AddCategorySubscription((int)member.ProviderUserKey, catid);
+            }
+        }
+        [WebMethod(EnableSession = true)]
+        public void ForumSubscribe(int forumid, bool remove)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
+            var member = Membership.GetUser(user, true);
+            if(member != null && member.ProviderUserKey != null)
+            {
+                if (remove)
+                    Subscriptions.RemoveForumSubscription((int) member.ProviderUserKey, forumid);
+                else
+                    Subscriptions.AddForumSubscription((int)member.ProviderUserKey, forumid);
+            }
+        }
+        [WebMethod(EnableSession = true)]
+        public void TopicSubscribe(int topicid, bool remove)
+        {
+            var user = HttpContext.Current.User.Identity.Name;
+            var member = Membership.GetUser(user, true);
+            if (member != null && member.ProviderUserKey != null)
+            {
+                if (remove)
+                    Subscriptions.RemoveTopicSubscription((int) member.ProviderUserKey, topicid);
+                else
+                    Subscriptions.AddTopicSubscription((int) member.ProviderUserKey, topicid);
+            }
+            
+        }
+
+        #endregion
 
         private void ProcessModeration(int mode, int topicid, int replyid, int adminmodid, string comments)
         {

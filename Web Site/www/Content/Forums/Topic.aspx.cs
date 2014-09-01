@@ -211,7 +211,7 @@ namespace SnitzUI
             {
                 //let's check what async call posted back and see if we need to refresh the page
                 string target = Request.Form["__EVENTTARGET"];
-                var listOfStrings = new List<string> { "TopicSend", "DeleteTopic", "DeleteReply", "imgPosticon", "BookMarkTopic", "BookMarkReply", "BookMarkBlog" };
+                var listOfStrings = new List<string> { "TopicSend", "DeleteTopic", "DeleteReply"};
                 bool refreshAfterPostback = listOfStrings.Any(target.EndsWith);
                 if (refreshAfterPostback)
                 {

@@ -975,4 +975,10 @@
   <data name="lblTo" xml:space="preserve">
     <value>To</value>
   </data>
+  <data name="lblSubscribeCat" xml:space="preserve">
+    <value>Subscribe to posts in this category</value>
+  </data>
+  <data name="lblUnsubscribeCat" xml:space="preserve">
+    <value>remove category notifications</value>
+  </data>
 </root>

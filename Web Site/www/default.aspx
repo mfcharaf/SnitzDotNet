@@ -69,6 +69,12 @@
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="<%$ Resources:webResources, lblEditCategory %>" EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' 
                     runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
+                    <asp:ImageButton ID="CatSub" SkinID="Subscribe" 
+                        runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeCat %>" OnClientClick=""
+                        CausesValidation="False" EnableViewState="False" />
+                    <asp:ImageButton ID="CatUnSub" SkinID="UnSubscribe"
+                        runat="server" ToolTip="<%$ Resources:webResources, lblUnsubscribeCat %>" OnClientClick=""
+                        CausesValidation="False" EnableViewState="False" />
             </div>
             </asp:Panel>
             <asp:Panel ID="Cat_Panel" runat="server" CssClass="statsPanel" EnableViewState="False"></asp:Panel>

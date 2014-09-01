@@ -14,12 +14,13 @@
             <asp:ListItem Value="1">Moderation Allowed</asp:ListItem>
         </asp:DropDownList>
         </li>
-         <li><asp:Label ID="Label5" runat="server" Text="Subscription Level" 
+         <li><asp:Label ID="lblSub" runat="server" Text="Subscription Level" 
             EnableViewState="False"></asp:Label>
         <asp:DropDownList ID="ddlSub" runat="server" CssClass="testClass">
             <asp:ListItem Value="0">No Subscriptions Allowed</asp:ListItem>
-            <asp:ListItem Value="1">Forum Subscriptions Allowed</asp:ListItem>
-            <asp:ListItem Value="2">Topic Subscriptions Allowed</asp:ListItem>
+            <asp:ListItem Value="1">Category Subscriptions Allowed</asp:ListItem>
+            <asp:ListItem Value="2">Forum Subscriptions Allowed</asp:ListItem>
+            <asp:ListItem Value="3">Topic Subscriptions Allowed</asp:ListItem>
         </asp:DropDownList></li>
         </ol>
     </asp:Panel>

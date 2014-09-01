@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using SnitzConfig;
 
 namespace Snitz.Entities
 {
@@ -99,5 +100,16 @@ namespace Snitz.Entities
         public int? ArchiveFrequency { get; set; }
 
         public int PrivateForum { get; set; }
+
+        public bool AllowSubscriptions
+        {
+            get
+            {
+                if (this.SubscriptionLevel < (int)Enumerators.Subscription.TopicSubscription)
+                    if(this.SubscriptionLevel > 0)
+                    return true;
+                return false;
+            }
+        }
     }
 }

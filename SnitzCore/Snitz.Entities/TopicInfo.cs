@@ -60,7 +60,7 @@ namespace Snitz.Entities
         {
             get
             {
-                if (this.Forum.SubscriptionLevel == (int)Enumerators.Subscription.TopicSubscription)
+                if (this.Forum.SubscriptionLevel > (int)Enumerators.Subscription.None)
                     return true;
                 return false;
             }

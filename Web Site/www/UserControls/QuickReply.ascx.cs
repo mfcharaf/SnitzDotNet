@@ -121,14 +121,16 @@ public partial class QuickReply : UserControl
                               Date = newdate
                           };
         var forum = Forums.GetForum(thisTopic.ForumId);
-        if (forum.ModerationLevel == (int) Enumerators.Moderation.AllPosts ||
-            forum.ModerationLevel == (int) Enumerators.Moderation.Replies)
+        if(!(page.IsAdministrator || page.IsModerator))
         {
-            reply.Status = (int) Enumerators.PostStatus.UnModerated;
-            thisTopic.UnModeratedReplies += 1;
-            Topics.Update(thisTopic);
+            if (forum.ModerationLevel == (int) Enumerators.Moderation.AllPosts ||
+                forum.ModerationLevel == (int) Enumerators.Moderation.Replies)
+            {
+                reply.Status = (int) Enumerators.PostStatus.UnModerated;
+                thisTopic.UnModeratedReplies += 1;
+                Topics.Update(thisTopic);
+            }
         }
-
         int replyid = Replies.AddReply(reply);
         if (Session["LastPostMade"] == null)
         {
