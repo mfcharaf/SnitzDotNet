@@ -10,11 +10,13 @@ using System.Threading;
 using System.Web;
 using System.Web.Security;
 using System.Web.Services;
+using System.Web.Services.Protocols;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
+using Snitz.IDAL;
 using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
@@ -563,6 +565,32 @@ namespace SnitzUI
             
         }
 
+        [SoapDocumentMethod(OneWay = true)]
+        [WebMethod(EnableSession = true)]
+        public void ProcessForumSubscriptions(int topicid, HttpContext context)
+        {
+            TopicInfo topic = Topics.GetTopic(topicid);
+            HttpContext.Current = context;
+            var t = new Thread(() => SendSubscriptions(Enumerators.Subscription.ForumSubscription, topic, null,context))
+            {
+                IsBackground = true
+            };
+            t.Start();         
+        }
+
+        [SoapDocumentMethod(OneWay = true)]
+        [WebMethod(EnableSession = true)]
+        public void ProcessTopicSubscriptions(int topicid, int replyid,HttpContext context)
+        {
+            TopicInfo topic = Topics.GetTopic(topicid);
+            ReplyInfo reply = Replies.GetReply(replyid);
+            
+            var t = new Thread(() => SendSubscriptions(Enumerators.Subscription.TopicSubscription, topic, reply,context))
+            {
+                IsBackground = true
+            };
+            t.Start();            
+        }
         #endregion
 
         private void ProcessModeration(int mode, int topicid, int replyid, int adminmodid, string comments)
@@ -643,6 +671,74 @@ namespace SnitzUI
                 return false;
             }
             return username.ReplaceBadWords() == username;
+        }
+        private static void SendSubscriptions(Enumerators.Subscription subType, TopicInfo topic, ReplyInfo reply,HttpContext context)
+        {
+            int replyid = -1;
+            int authorid = topic.AuthorId;
+            int[] memberids = { };
+            StringBuilder Message = new StringBuilder("<html><body>Hello {0}");
+            string strSubject = String.Empty;
+            HttpContext.Current = context;
+            if (reply != null)
+            {
+                replyid = reply.Id;
+                authorid = reply.AuthorId;
+            }
+            Message.Append("<br/><p>");
+
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            switch (subType)
+            {
+                case Enumerators.Subscription.ForumSubscription:
+                    
+                    memberids = dal.GetForumSubscriptionList(topic.ForumId);
+
+                    if (memberids.Length > 0)
+                    {
+                        strSubject = Config.ForumTitle.Replace("&trade;", "").Replace("&copy;", "") + " - New posting";
+
+                        Message.AppendFormat(
+                            "{0} has posted to the forum {1} at {2} that you requested notification on.",
+                            topic.AuthorName, topic.Forum.Subject, Config.ForumTitle);
+                    }
+                    break;
+                case Enumerators.Subscription.TopicSubscription:
+
+                    memberids = dal.GetTopicSubscriptionList(topic.Id);
+
+                    if (memberids.Length > 0)
+                    {
+                        strSubject = Config.ForumTitle.Replace("&trade;", "").Replace("&copy;", "") + " - Reply to a posting";
+                        Message.AppendFormat("{0} has replied to a topic on <b>{1}</b> that you requested notification to.", reply.AuthorName, Config.ForumTitle);
+                    }
+
+                    break;
+            }
+            Message.AppendFormat(" Regarding the subject - {0}.", topic.Subject);
+            Message.Append("<br/>");
+            Message.Append("<br/>");
+            Message.AppendFormat("You can view the posting <a href=\"{0}Content/Forums/topic.aspx?whichpage=-1&TOPIC={1}", Config.ForumUrl, topic.Id);
+            if (replyid > 0)
+                Message.AppendFormat("#{0}", replyid);
+            Message.Append("\">here</a>");
+            Message.Append("</p></body></html>");
+            foreach (int id in memberids)
+            {
+                MemberInfo member = Members.GetMember(id);
+                //don't send the author notification of their own posts
+                if (id == authorid)
+                    continue;
+                SnitzEmail email = new SnitzEmail
+                {
+                    subject = strSubject,
+                    msgBody = String.Format(Message.ToString(), member.Username),
+                    toUser = new MailAddress(member.Email, member.Username),
+                    IsHtml = true,
+                    FromUser = "Forum Administrator"
+                };
+                email.Send();
+            }
         }
 
     }

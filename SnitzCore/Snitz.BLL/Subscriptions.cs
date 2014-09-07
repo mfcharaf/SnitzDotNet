@@ -32,89 +32,6 @@ namespace Snitz.BLL
 {
     public static class Subscriptions
     {
-        public static void ProcessForumSubscriptions(TopicInfo topic)
-        {
-            var t = new Thread(() => SendSubscriptions(Enumerators.Subscription.ForumSubscription, topic, null))
-                {
-                    IsBackground = true
-                };
-            t.Start();
-        }
-        public static void ProcessTopicSubscriptions(TopicInfo topic, ReplyInfo reply)
-        {
-            var t = new Thread(() => SendSubscriptions(Enumerators.Subscription.TopicSubscription, topic, reply))
-            {
-                IsBackground = true
-            };
-            t.Start();
-        }
-        private static void SendSubscriptions(Enumerators.Subscription subType, TopicInfo topic, ReplyInfo reply)
-        {
-            int replyid = -1;
-            int authorid = topic.AuthorId;
-            int[] memberids = { };
-            StringBuilder Message = new StringBuilder("<html><body>Hello {0}");
-            string strSubject = String.Empty;
-
-            if (reply != null)
-            {
-                replyid = reply.Id;
-                authorid = reply.AuthorId;
-            }
-            Message.Append("<br/><p>");
-
-            ISubscription dal = Factory<ISubscription>.Create("Subscription");
-            switch (subType)
-            {
-                case Enumerators.Subscription.ForumSubscription:
-                    memberids = dal.GetForumSubscriptionList(topic.ForumId);
-
-                    if (memberids.Length > 0)
-                    {
-                        strSubject = Config.ForumTitle + " - New posting";
-
-                        Message.AppendFormat(
-                            "{0} has posted to the forum {1} at {2} that you requested notification on.",
-                            topic.Author.Username, topic.Forum.Subject, Config.ForumTitle);
-                    }
-                    break;
-                case Enumerators.Subscription.TopicSubscription:
-                    
-                    memberids = dal.GetTopicSubscriptionList(topic.ForumId);
-
-                    if (memberids.Length > 0)
-                    {
-                        strSubject = Config.ForumTitle + " - Reply to a posting";
-                        Message.AppendFormat("{0} has replied to a topic on <b>{1}</b> that you requested notification to.", reply.Author.Username, Config.ForumTitle);
-                    }
-
-                    break;
-            }
-            Message.AppendFormat(" Regarding the subject - {0}.", topic.Subject);
-            Message.Append("<br/>");
-            Message.Append("<br/>");
-            Message.AppendFormat("You can view the posting <a href=\"{0}/Content/Forums/topic.aspx?whichpage=-1&TOPIC={1}", Config.ForumUrl, topic.Id);
-            if (replyid > 0)
-                Message.AppendFormat("#{0}", replyid);
-            Message.Append("\">here</a>");
-            Message.Append("</p></body></html>");
-            foreach (int id in memberids)
-            {
-                MemberInfo member = Members.GetMember(id);
-                //don't send the author notification of their own posts
-                if (id == authorid)
-                    continue;
-                SnitzEmail email = new SnitzEmail
-                {
-                    subject = strSubject,
-                    msgBody = String.Format(Message.ToString(), member.Username),
-                    toUser = new MailAddress(member.Email, member.Username),
-                    IsHtml = true,
-                    FromUser = "Forum Administrator"
-                };
-                email.Send();
-            }
-        }
 
         #region CATEGORY
 
@@ -140,12 +57,16 @@ namespace Snitz.BLL
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
             dal.RemoveMembersCategorySubscriptions(memberid, categoryid);
         }
-        public static void RemoveAllCategorySubscriptions(int categoryid)
+        public static void RemoveAllCategorySubscriptions(int categoryid, bool deletingcat)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
-            dal.RemoveAllCategorySubscriptions(categoryid);
+            dal.RemoveAllCategorySubscriptions(categoryid,deletingcat);
         }
-
+        public static void RemoveAllCategorySubscriptions()
+        {
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            dal.RemoveAllCategorySubscriptions();
+        }
         #endregion
 
         #region FORUM
@@ -163,12 +84,16 @@ namespace Snitz.BLL
             return dal.Add(new SubscriptionInfo { MemberId = memberid, ForumId = forumid, CategoryId = forum.CatId, TopicId = 0 });
         }
 
-        public static void RemoveAllForumSubscriptions(int forumid)
+        public static void RemoveAllForumSubscriptions(int forumid, bool deletingforum)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
-            dal.RemoveAllForumSubscriptions(forumid);
+            dal.RemoveAllForumSubscriptions(forumid, deletingforum);
         }
-
+        public static void RemoveAllForumSubscriptions()
+        {
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            dal.RemoveAllForumSubscriptions();
+        }
         public static void RemoveForumSubscription(int memberid, int forumid)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
@@ -204,9 +129,18 @@ namespace Snitz.BLL
             ISubscription dal = Factory<ISubscription>.Create("Subscription");
             dal.RemoveAllTopicSubscriptions(topicid);
         }
-
+        public static void RemoveAllTopicSubscriptions()
+        {
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            dal.RemoveAllTopicSubscriptions();
+        }
         #endregion
 
+        public static void RemoveAllSubscriptions()
+        {
+            ISubscription dal = Factory<ISubscription>.Create("Subscription");
+            dal.RemoveAllSubscriptions();            
+        }
         public static void RemoveMemberSubscriptions(int memberid)
         {
             ISubscription dal = Factory<ISubscription>.Create("Subscription");

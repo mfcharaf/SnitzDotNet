@@ -115,8 +115,8 @@ namespace SnitzUI
                 int topicId = row.Id;
                 TopicInfo topic = Topics.GetTopic(topicId);
                 string sTitle = topic.Subject;
-                string sGuid = string.Format("{0}/Content/Forums/Topic/{1}", Config.ForumUrl, topicId);
-                string sLink = string.Format("{0}/Content/Forums/topic.aspx?TOPIC={1}&amp;whichpage=-1", Config.ForumUrl, topicId);
+                string sGuid = string.Format("{0}Content/Forums/Topic/{1}", Config.ForumUrl, topicId);
+                string sLink = string.Format("{0}Content/Forums/topic.aspx?TOPIC={1}&amp;whichpage=-1", Config.ForumUrl, topicId);
                 if (topic.LastReplyId > 0)
                     sLink += "#" + topic.LastReplyId;
 

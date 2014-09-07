@@ -314,12 +314,32 @@ namespace SnitzUI
             {
                 case "topic":
                     Session.Add("LastPostMade", DateTime.UtcNow.ToForumDateStr());
-                    PostNewTopic();
+                    int topicid = PostNewTopic();
+                    if (_forum.AllowSubscriptions)
+                    {
+                        var ws = new CommonFunc();
+                        ws.ProcessForumSubscriptions(topicid,HttpContext.Current);
+                    }
+                    Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + topicid);
                     break;
                 case "reply":
                 case "quote":
                     Session.Add("LastPostMade", DateTime.UtcNow.ToForumDateStr());
-                    PostNewReply();
+                    
+                    int replyid = PostNewReply();
+                    var topic = Topics.GetTopic(TopicId.Value);
+                    _forum = Forums.GetForum(topic.ForumId);
+                    if (_forum.AllowSubscriptions)
+                    {
+                        var ws = new CommonFunc();
+                        ws.ProcessForumSubscriptions(TopicId.Value, HttpContext.Current);
+                    }
+                    if (topic.AllowSubscriptions)
+                    {
+                        var ws = new CommonFunc();
+                        ws.ProcessTopicSubscriptions(TopicId.Value, replyid, HttpContext.Current);
+                    }
+                    Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + replyid);
                     break;
                 case "edit":
                     switch (_type)
@@ -445,7 +465,7 @@ namespace SnitzUI
             Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id);
         }
 
-        private void PostNewTopic()
+        private int PostNewTopic()
         {
             string ipaddress = Common.GetIP4Address();
             #region Poll check code
@@ -495,7 +515,7 @@ namespace SnitzUI
             if (topicPoll != String.Empty && topic.Forum.AllowPolls)
                 CreatePoll(topicPoll, topic.Id);
             InvalidateForumCache();
-            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + topic.Id);
+            return topic.Id;
         }
 
         private static void CreatePoll(string topicPoll, int topicid)
@@ -524,7 +544,7 @@ namespace SnitzUI
             }
         }
 
-        private void PostNewReply()
+        private int PostNewReply()
         {
             string ipaddress = Common.GetIP4Address();
 
@@ -566,7 +586,7 @@ namespace SnitzUI
             Topics.Update(_thisTopic);
             if (pingSiteMap) { Ping(""); }
             InvalidateForumCache();
-            Response.Redirect("/Content/Forums/topic.aspx?TOPIC=" + TopicId + "&whichpage=-1#" + reply.Id);
+            return reply.Id;
         }
 
         private void InvalidateForumCache()

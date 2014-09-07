@@ -31,6 +31,7 @@ using Snitz.BLL.modconfig;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
+using SnitzUI;
 
 
 public partial class QuickReply : UserControl
@@ -132,6 +133,16 @@ public partial class QuickReply : UserControl
             }
         }
         int replyid = Replies.AddReply(reply);
+        if (forum.AllowSubscriptions)
+        {
+            var ws = new CommonFunc();
+            ws.ProcessForumSubscriptions(reply.TopicId, HttpContext.Current);
+        }
+        if (thisTopic.AllowSubscriptions)
+        {
+            var ws = new CommonFunc();
+            ws.ProcessTopicSubscriptions(reply.TopicId, replyid, HttpContext.Current);
+        }
         if (Session["LastPostMade"] == null)
         {
             Session.Add("LastPostMade", newdate.ToForumDateStr());

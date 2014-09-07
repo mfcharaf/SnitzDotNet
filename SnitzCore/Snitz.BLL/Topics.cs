@@ -137,6 +137,7 @@ namespace Snitz.BLL
         }
         public static void Delete(int topicid)
         {
+            Subscriptions.RemoveAllTopicSubscriptions(topicid);
             ITopic dal = Factory<ITopic>.Create("Topic");
             TopicInfo topic = GetTopic(topicid);
             dal.Delete(topic);

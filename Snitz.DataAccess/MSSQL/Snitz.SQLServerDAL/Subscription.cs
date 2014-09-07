@@ -22,9 +22,9 @@ namespace Snitz.SQLServerDAL
         {
             var topicsubs = new List<SubscriptionInfo>();
 
-            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, TOPIC_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            string sqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, TOPIC_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
             SqlParameter parm = new SqlParameter("@Topic", SqlDbType.Int) {Value = topicid};
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {
@@ -38,9 +38,9 @@ namespace Snitz.SQLServerDAL
         {
             var forumsubs = new List<SubscriptionInfo>();
 
-            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, FORUM_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
+            string sqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, FORUM_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
             SqlParameter parm = new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid};
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {
@@ -54,9 +54,9 @@ namespace Snitz.SQLServerDAL
         {
             var catsubs = new List<SubscriptionInfo>();
 
-            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
+            string sqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID, CAT_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
             SqlParameter parm = new SqlParameter("@Category", SqlDbType.Int) {Value = catid};
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {
@@ -71,8 +71,8 @@ namespace Snitz.SQLServerDAL
             //OR (S.CAT_ID = 0 AND S.FORUM_ID = 0 AND S.TOPIC_ID = 0)
             var boardsubs = new List<SubscriptionInfo>();
 
-            string SqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
+            string sqlStr = "SELECT SUBSCRIPTION_ID, MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, null))
             {
                 while (rdr.Read())
                 {
@@ -85,7 +85,7 @@ namespace Snitz.SQLServerDAL
         public IEnumerable<SubscriptionInfo> GetMemberSubscriptions(int memberid)
         {
             var membersubs = new List<SubscriptionInfo>();
-            string SqlStr =
+            string sqlStr =
                 "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME,M.M_STATUS " +
                 "FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS SUBS " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "FORUM F ON F.FORUM_ID = SUBS.FORUM_ID " +
@@ -94,7 +94,7 @@ namespace Snitz.SQLServerDAL
                 "LEFT JOIN " + Config.MemberTablePrefix + "MEMBERS M ON M.MEMBER_ID = SUBS.MEMBER_ID " +
                 "WHERE SUBS.MEMBER_ID = @Member";
             SqlParameter parm = new SqlParameter("@Member", SqlDbType.Int) {Value = memberid};
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {
@@ -112,86 +112,119 @@ namespace Snitz.SQLServerDAL
             return membersubs;
         }
 
-        public void RemoveAllCategorySubscriptions(int categoryid)
+        public void RemoveAllCategorySubscriptions()
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category AND FORUM_ID=0 AND TOPIC_ID=0";
-            SqlParameter parm = new SqlParameter("@Category", SqlDbType.Int) {Value = categoryid};
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID > 0 AND FORUM_ID=0 AND TOPIC_ID=0";
+            
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, null);
         }
 
-        public void RemoveAllForumSubscriptions(int forumid)
+        public void RemoveAllCategorySubscriptions(int categoryid, bool deletingcat)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND TOPIC_ID=0";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = @Category ";
+            if(!deletingcat)
+            sqlStr += "AND FORUM_ID=0 AND TOPIC_ID=0";
+            SqlParameter parm = new SqlParameter("@Category", SqlDbType.Int) {Value = categoryid};
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parm);
+        }
+
+        public void RemoveAllForumSubscriptions()
+        {
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID > 0 AND TOPIC_ID=0";
+            
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, null);
+        }
+
+        public void RemoveAllForumSubscriptions(int forumid,bool deletingforum)
+        {
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum ";
+            if(!deletingforum)
+            sqlStr += "AND TOPIC_ID=0";
             SqlParameter parm = new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid};
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parm);
+        }
+
+        public void RemoveAllTopicSubscriptions()
+        {
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID > 0";
+            
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, null);
         }
 
         public void RemoveAllTopicSubscriptions(int topicid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
             SqlParameter parm = new SqlParameter("@Topic", SqlDbType.Int) {Value = topicid};
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parm);
         }
 
         public void RemoveAllBoardSubscriptions()
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE CAT_ID = 0 AND FORUM_ID=0 AND TOPIC_ID=0";
             
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, null);
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, null);
         }
 
         public void RemoveAllMemberSubscriptions(int memberid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member";
             SqlParameter parm = new SqlParameter("@Member", SqlDbType.Int) {Value = memberid};
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parm);
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parm);
         }
 
         public void RemoveMembersForumSubscriptions(int memberid, int forumid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum AND TOPIC_ID=0";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND FORUM_ID = @Forum AND TOPIC_ID=0";
             List<SqlParameter> parms = new List<SqlParameter>(new SqlParameter[2])
                 {
                     new SqlParameter("@Member", SqlDbType.Int) {Value = memberid},
                     new SqlParameter("@Forum", SqlDbType.Int) {Value = forumid}
                 };
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parms.ToArray());
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parms.ToArray());
         }
 
         public void RemoveMembersTopicSubscription(int memberid, int topicid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND TOPIC_ID=@TopicId";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND TOPIC_ID=@TopicId";
             List<SqlParameter> parms = new List<SqlParameter>
             {
                 new SqlParameter("@Member", SqlDbType.Int) {Value = memberid},
                 new SqlParameter("@TopicId", SqlDbType.Int) {Value = topicid}
             };
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parms.ToArray());
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parms.ToArray());
         }
 
         public void RemoveMembersCategorySubscriptions(int memberid, int categoryid)
         {
-            string SqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND CAT_ID=@CatId AND FORUM_ID=0 AND TOPIC_ID=0";
+            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE MEMBER_ID = @Member AND CAT_ID=@CatId AND FORUM_ID=0 AND TOPIC_ID=0";
             List<SqlParameter> parms = new List<SqlParameter>(new SqlParameter[2])
                 {
                     new SqlParameter("@Member", SqlDbType.Int) {Value = memberid},
                     new SqlParameter("@CatId", SqlDbType.Int) {Value = categoryid}
                 };
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, SqlStr, parms.ToArray());
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parms.ToArray());
+        }
+
+        public void RemoveAllSubscriptions()
+        {
+            string sqlStr = "TRUNCATE TABLE " + Config.ForumTablePrefix + "SUBSCRIPTIONS";
+
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, null);
+
         }
 
         public IEnumerable<SubscriptionInfo> GetAllSubscriptions()
         {
             var allsubs = new List<SubscriptionInfo>();
 
-            string SqlStr =
+            string sqlStr =
                 "SELECT SUBSCRIPTION_ID, SUBS.MEMBER_ID, SUBS.CAT_ID, SUBS.FORUM_ID, SUBS.TOPIC_ID,C.CAT_NAME,F.F_SUBJECT,T.T_SUBJECT,M.M_NAME,M.M_STATUS " +
                 "FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS SUBS " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "FORUM F ON F.FORUM_ID = SUBS.FORUM_ID " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "CATEGORY C ON C.CAT_ID = SUBS.CAT_ID " +
                 "LEFT JOIN " + Config.ForumTablePrefix + "TOPICS T ON T.TOPIC_ID = SUBS.TOPIC_ID " +
                 "LEFT JOIN " + Config.MemberTablePrefix + "MEMBERS M ON M.MEMBER_ID = SUBS.MEMBER_ID";
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, null))
             {
                 while (rdr.Read())
                 {
@@ -213,9 +246,9 @@ namespace Snitz.SQLServerDAL
         public int[] GetForumSubscriptionList(int forumId)
         {
             var forumsubscribers = new List<int>();
-            string SqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND COALESCE(TOPIC_ID, 0) = 0";
-            SqlParameter parm = new SqlParameter("@Forum", SqlDbType.Int);
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            string sqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE FORUM_ID = @Forum AND COALESCE(TOPIC_ID, 0) = 0";
+            SqlParameter parm = new SqlParameter("@Forum", SqlDbType.Int) {Value = forumId};
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {
@@ -225,12 +258,12 @@ namespace Snitz.SQLServerDAL
             return forumsubscribers.ToArray();
         }
 
-        public int[] GetTopicSubscriptionList(int forumId)
+        public int[] GetTopicSubscriptionList(int topicId)
         {
             var topicsubscribers = new List<int>();
-            string SqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
-            SqlParameter parm = new SqlParameter("@Topic", SqlDbType.Int);
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, parm))
+            string sqlStr = "SELECT MEMBER_ID FROM " + Config.ForumTablePrefix + "SUBSCRIPTIONS WHERE TOPIC_ID = @Topic";
+            SqlParameter parm = new SqlParameter("@Topic", SqlDbType.Int) {Value = topicId};
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sqlStr, parm))
             {
                 while (rdr.Read())
                 {

@@ -53,7 +53,7 @@ namespace SnitzUI.UserControls.Popups
             tbxOrder.Text = cat.Order.ToString();
             if (cat.ModerationLevel.HasValue) ddlMod.SelectedValue = cat.ModerationLevel.Value.ToString();
             #region Subscriptions
-            if (Config.SubscriptionLevel > 0 && cat.SubscriptionLevel > 0)
+            if (Config.SubscriptionLevel > 0)
             {
                 ddlSub.Items.Clear();
                 ddlSub.Items.Add(new ListItem("No Subscriptions Allowed", "0"));

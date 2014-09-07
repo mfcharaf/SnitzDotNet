@@ -34,9 +34,12 @@ namespace Snitz.IDAL
         IEnumerable<SubscriptionInfo> GetAllSubscriptions();
         int Add(SubscriptionInfo subscription);
         int[] GetForumSubscriptionList(int forumId);
-        int[] GetTopicSubscriptionList(int forumId);
-        void RemoveAllCategorySubscriptions(int categoryid);
-        void RemoveAllForumSubscriptions(int forumid);
+        int[] GetTopicSubscriptionList(int topicId);
+        void RemoveAllCategorySubscriptions();
+        void RemoveAllCategorySubscriptions(int categoryid,bool deletingcat);
+        void RemoveAllForumSubscriptions();
+        void RemoveAllForumSubscriptions(int forumid, bool deletingforum);
+        void RemoveAllTopicSubscriptions();
         void RemoveAllTopicSubscriptions(int topicid);
         void RemoveAllBoardSubscriptions();
         void RemoveAllMemberSubscriptions(int memberid);
@@ -45,5 +48,6 @@ namespace Snitz.IDAL
         void RemoveMembersForumSubscriptions(int memberid, int forumid);
         void RemoveMembersTopicSubscription(int memberid, int topicid);
         void RemoveMembersCategorySubscriptions(int memberid, int categoryid);
+        void RemoveAllSubscriptions();
     }
 }

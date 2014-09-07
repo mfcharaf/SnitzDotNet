@@ -206,6 +206,7 @@ public partial class Homepage : PageBase
 
     protected void DeleteCategory(int catid)
     {
+        Subscriptions.RemoveAllCategorySubscriptions(catid,true);
         Categories.DeleteCategory(catid);
         Response.Redirect(Request.RawUrl);
     }
@@ -226,14 +227,17 @@ public partial class Homepage : PageBase
 
     protected void DeleteForum(int forumid)
     {
+        Subscriptions.RemoveAllForumSubscriptions(forumid, true);
         Forums.DeleteForum(forumid);
         Response.Redirect(Request.RawUrl);
     }
 
     protected void EmptyForum(int forumid)
     {
+        Subscriptions.RemoveAllForumSubscriptions(forumid, true);
         Forums.EmptyForum(forumid);
         Response.Redirect(Request.RawUrl);
+
     }
 
     #endregion

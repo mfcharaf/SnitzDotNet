@@ -10,7 +10,12 @@
         }
 
  }
+    function UnCheckAll(oCheckbox) {
+        var chkall = document.getElementById("<%=grdSubs.HeaderRow.ClientID %>" + "_chkAll");
+        if (!oCheckbox.checked && chkall.checked)
+            chkall.checked = false;
 
+    }
  //]]>
  </script>
 
@@ -39,10 +44,10 @@
         <asp:BoundField DataField="MemberName" HeaderText="User" />
         <asp:TemplateField ShowHeader="False">
             <ItemTemplate>
-                <input type="checkbox" ID="cbxDel" />
+                <input type="checkbox" ID="cbxDel" runat="server" onclick="UnCheckAll(this)"/>
             </ItemTemplate>
             <HeaderTemplate>
-                <input type="checkbox" onclick="CheckAll(this)" id="chkAll"/>
+                <asp:CheckBox runat="server" ID="chkAll" onclick="CheckAll(this)"/>
             </HeaderTemplate>
             <HeaderStyle Width="20px" />
             <ControlStyle CssClass="msgIcons" />

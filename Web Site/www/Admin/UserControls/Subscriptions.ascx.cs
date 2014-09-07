@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Snitz.BLL;
 using Snitz.Entities;
@@ -51,7 +52,7 @@ public partial class Admin_Subscriptions : System.Web.UI.UserControl
                 {
                     CategoryInfo category = Categories.GetCategoryByName(currentCat).First();
                     var subscriptions =
-                        Enumerators.GetEnumDescription((Enumerators.Subscription) category.SubscriptionLevel);
+                        Enumerators.GetEnumDescription((Enumerators.CategorySubscription) category.SubscriptionLevel);
                     string catLink = String.Format("{0} ({1})", category.Name,
                                                    subscriptions);
 
@@ -131,19 +132,39 @@ public partial class Admin_Subscriptions : System.Web.UI.UserControl
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            foreach (GridViewRow row in grdSubs.Rows)
+            var removeall = Request.Form[grdSubs.HeaderRow.UniqueID + "$chkAll"];
+            if (removeall == "on")
             {
-                int topicid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["TopicId"]);
-                int forumid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["ForumId"]);
-                int categoryid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["CategoryId"]);
-                int memberid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["MemberId"]);
+                if(rbAll.Checked)
+                    Subscriptions.RemoveAllSubscriptions();
+                if(rbCategory.Checked)
+                    Subscriptions.RemoveAllCategorySubscriptions();
+                if(rbForum.Checked)
+                    Subscriptions.RemoveAllForumSubscriptions();
+                if(rbTopic.Checked)
+                    Subscriptions.RemoveAllTopicSubscriptions();
+            }
+            else
+            {
+                foreach (GridViewRow row in grdSubs.Rows)
+                {
+                    HtmlInputCheckBox select = (HtmlInputCheckBox) row.FindControl("cbxDel");
+                    if (select.Checked)
+                    {
+                        int topicid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["TopicId"]);
 
-                if (topicid > 0)
-                    Subscriptions.RemoveTopicSubscription(memberid, topicid);
-                else if (forumid > 0)
-                    Subscriptions.RemoveForumSubscription(memberid, forumid);
-                else if (categoryid > 0)
-                    Subscriptions.RemoveCategorySubscription(memberid, categoryid);
+                        int forumid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["ForumId"]);
+                        int categoryid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["CategoryId"]);
+                        int memberid = Convert.ToInt32(grdSubs.DataKeys[row.RowIndex]["MemberId"]);
+
+                        if (topicid > 0)
+                            Subscriptions.RemoveTopicSubscription(memberid, topicid);
+                        else if (forumid > 0)
+                            Subscriptions.RemoveForumSubscription(memberid, forumid);
+                        else if (categoryid > 0)
+                            Subscriptions.RemoveCategorySubscription(memberid, categoryid);
+                    }
+                }
             }
         }
     }

@@ -54,14 +54,14 @@ namespace Snitz.BLL
 
                 if (value.Contains("Administrator"))
                 {
-                    _fromUser = new MailAddress(Config.AdminEmail, Config.ForumTitle);
-                    _replyTo = new MailAddress(Config.AdminEmail, Config.ForumTitle);
+                    _fromUser = new MailAddress(Config.AdminEmail, Config.ForumTitle.Replace("&trade;","").Replace("&copy;",""));
+                    _replyTo = new MailAddress(Config.AdminEmail, Config.ForumTitle.Replace("&trade;", "").Replace("&copy;", ""));
                 }
                 else
                 {
                     _user = Members.GetMember(value);
                     _replyTo = new MailAddress(_user.Email, _user.Username);
-                    _fromUser = new MailAddress(Config.AdminEmail, Config.ForumTitle);
+                    _fromUser = new MailAddress(Config.AdminEmail, Config.ForumTitle.Replace("&trade;", "").Replace("&copy;", ""));
                 }
             }
         }
