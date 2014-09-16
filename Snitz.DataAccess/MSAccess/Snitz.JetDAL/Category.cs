@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Text;
 using Snitz.Entities;
 using Snitz.IDAL;
 using Snitz.OLEDbDAL.Helpers;
@@ -41,6 +42,16 @@ namespace Snitz.OLEDbDAL
             int res =
                 Convert.ToInt32(SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql, new OleDbParameter("@CatId", OleDbType.Integer) { Value = catid }));
             return res > 0;
+        }
+
+        public void UpdateCategoryOrder(Dictionary<int, int> catlist)
+        {
+            StringBuilder sql = new StringBuilder();
+            foreach (KeyValuePair<int, int> cat in catlist)
+            {
+                sql.AppendFormat("UPDATE {0}CATEGORY SET CAT_ORDER={1} WHERE CAT_ID={2}", Config.FilterTablePrefix, cat.Value, cat.Key).AppendLine(";");
+            }
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql.ToString(), null);
         }
 
         public IEnumerable<CategoryInfo> GetByParent(int groupid)

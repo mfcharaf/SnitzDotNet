@@ -30,5 +30,6 @@ namespace Snitz.IDAL
         IEnumerable<CategoryInfo> GetByParent(int groupid);
         void SetStatus(int catid, int status);
         bool HasPosts(int catid);
+        void UpdateCategoryOrder(Dictionary<int, int> catlist);
     }
 }

@@ -28,3 +28,4 @@
 <asp:ImageButton SkinID="archiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/archive.png"/>
 
 <asp:ImageButton SkinID="EmptyForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder.png"/>
+<asp:ImageButton SkinID="SetOrder" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/order.png"/>

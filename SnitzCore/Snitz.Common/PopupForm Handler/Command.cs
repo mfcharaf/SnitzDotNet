@@ -127,7 +127,8 @@ namespace SnitzCommon
                  new KeyValuePair<int, string>(10,Pages.Controls.Common.EmailMember),
                  new KeyValuePair<int, string>(11,Pages.Controls.Common.ViewEvent),
                  new KeyValuePair<int, string>(12,Pages.Controls.Common.BugReport),
-                 new KeyValuePair<int, string>(13,Pages.Controls.Modules.Profile.SendPrivateMessage)
+                 new KeyValuePair<int, string>(13,Pages.Controls.Modules.Profile.SendPrivateMessage),
+                 new KeyValuePair<int, string>(14,Pages.Controls.Modules.Admin.SetOrder)
             };
 
         #endregion

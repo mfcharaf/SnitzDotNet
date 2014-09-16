@@ -233,6 +233,16 @@ namespace Snitz.SQLServerDAL
             SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql, parms.ToArray());
         }
 
+        public void UpdateForumOrder(Dictionary<int, int> forumlist)
+        {
+            StringBuilder sql = new StringBuilder();
+            foreach (KeyValuePair<int, int> forum in forumlist)
+            {
+                sql.AppendFormat("UPDATE {0}FORUM SET F_ORDER={1} WHERE FORUM_ID={2}", Config.FilterTablePrefix, forum.Value, forum.Key).AppendLine(";");
+            }
+            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sql.ToString(), null);
+        }
+
         #endregion
 
         #region IBaseObject<ForumInfo> Members

@@ -24,6 +24,7 @@ namespace SnitzCommon.Account
                         public const string EditCategory = "~/usercontrols/popups/categoryproperties.ascx";
                         public const string SplitTopic = "~/usercontrols/popups/splittopic.ascx";
                         public const string Moderate = "~/usercontrols/popups/moderatePreview.ascx";
+                        public const string SetOrder = "~/usercontrols/popups/OrderForums.ascx";
                     }
 
                     public static class Profile

@@ -25,11 +25,11 @@ input { text-indent : 2px; }
 
 a:link, a:active
 {
-    color: #00008B;text-decoration: underline;
+    color: #0000EE;text-decoration: underline;
 }
 a:visited
 {
-    color: #0000FF;
+    color: #551A8B;
     text-decoration: underline;
 }
 a:hover
@@ -89,7 +89,7 @@ img.captchaImage
     vertical-align:top;
     overflow:hidden;
 }
-.row td.CatHeaderRow{background-color:#191970;border:0px;}
+.row td.CatHeaderRow{background-color:#6a5acd;border:0px;}
 .row td.ForumHeaderRow {background-color: rgb(200,200,200); color:silver;border:0px;}
 .row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;}
 .row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;}
@@ -97,9 +97,9 @@ img.captchaImage
 
 .emptyrow{text-align:center;}
 
-.category{background-color: #191970; height: 24px;}
+.category{background-color: #6a5acd; height: 24px;}
 
-td.category, .row td.categorylink{background-color: #191970; height: 24px;padding-top:4px;}
+td.category, .row td.categorylink{background-color: #6a5acd; height: 24px;padding-top:4px;}
 .categorylink,th.categorylink ,td.categorylink {color:#ffffff;font-size:1.2em;font-weight:bold;}
 .CategoryExpanded{
 	background-image: url(/images/collapse_blue.png);
@@ -116,7 +116,7 @@ td.category, .row td.categorylink{background-color: #191970; height: 24px;paddin
 .tableheader, th.tableheader, .tableheader th,  td.tableheader {
     color: #fff;
     font-weight: normal;
-    background-color: #6a5acd;
+    background-color: #191970;
     font-size: smaller;
 }
 th.iconCol{    
@@ -183,7 +183,7 @@ td.authorCol{
 	color:#FFF;
 	height:30px;
 	font-weight:bold;
-	background-color:#191970;
+	background-color:#6a5acd;
 	vertical-align:text-bottom;
 	overflow:hidden;
 }
@@ -541,7 +541,7 @@ span.moderation{font-weight:bolder; color:Red;}
 .PollBox
 {
     background-color: white;
-	border: 1px solid #000000;
+	/*border: 1px solid #000000;*/
 }
 .seperator{line-height: 0.4em;}
 .sideBox {
@@ -631,7 +631,7 @@ a.Snitzbutton:hover span{
 .snitzMenu   div.AspNet-Menu-Horizontal:after{content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 .snitzMenu div.AspNet-Menu-Horizontal
 {
-    background-color: #f5f5f5;
+    background-color:#8199DA;
     z-index: 10000;
     margin-left:auto;margin-right:auto;
     text-align:center;
@@ -662,7 +662,7 @@ a.Snitzbutton:hover span{
 .snitzMenu ul.AspNet-Menu li a,
 .snitzMenu ul.AspNet-Menu li span
 {
-    text-decoration: underline;
+    text-decoration: none;
     padding: 4px 4px 4px 6px;
     border-bottom: 0;
 }
@@ -670,7 +670,7 @@ a.Snitzbutton:hover span{
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span
 {
     background-image: none;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .snitzMenu ul.AspNet-Menu li:hover, 
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Hover
@@ -689,7 +689,7 @@ a.Snitzbutton:hover span{
 
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul
 {
-    width: 10.5em;
+    width: 12.5em;
     left: 0;
     top: 100%;
 }
@@ -712,7 +712,7 @@ a.Snitzbutton:hover span{
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li
 {
     text-align:left;
-    width: 10.5em;
+    width: 12.5em;
 }
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul li
 {
@@ -736,7 +736,7 @@ a.Snitzbutton:hover span{
  }
 .PostForm
 {
-    background-color:White;
+    background-color:#8199DA;
     margin: 0 auto;
             
 }

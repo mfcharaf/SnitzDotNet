@@ -5,19 +5,18 @@
 	width:450px;
 	width:auto !important;
 	max-width:800px;
-	background-color:#ffffff;
+	background-color:#8199DA;
 	padding:0px;
     max-height: 90%;
     line-height: 1em;
     font-size: 0.8em;
 }
 .mainModalPopup fieldset{ font-size: inherit;}
-.mainModalBorder
-{
-	border-left: 1px solid #ECE9D8; 
-	border-right: 1px solid #716F64; 
-	border-top: 1px solid #ECE9D8;
-	border-bottom: 1px solid #716F64;
+.mainModalBorder {
+    border-left: 1px solid #191970;
+    border-right: 1px solid #000028;
+    border-top: 1px solid #191970;
+    border-bottom: 1px solid #000028;
 }
 .mainModalInnerDiv
 {
@@ -26,10 +25,10 @@
 }
 .mainModalInnerBorder
 {
-	border-left: 1px solid #FFFFFF; 
-	border-right: 1px solid #ACA899; 
-	border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #ACA899;
+	border-left: 1px solid #191970; 
+	border-right: 1px solid #000028; 
+	border-top: 1px solid #191970;
+    border-bottom: 1px solid #000028;
 }
 .mainModalDraggablePanelDiv
 {
@@ -58,7 +57,7 @@
 .mainModalContent
 {
 
-	background-color:#FFFFFF;
+	background-color:#8199DA;
 	margin:0px;
 }
 .modalBackground {

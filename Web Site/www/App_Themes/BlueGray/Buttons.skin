@@ -23,3 +23,4 @@
 <asp:ImageButton SkinID="ShowIP" runat="server" ImageUrl="Images/message/ip.png" cssclass="msgIcons" />
 <asp:ImageButton SkinID="MarkRead" runat="server" ImageUrl="images/admin/markread.png" cssclass="msgIcons"/>
 <asp:ImageButton SkinID="Save" runat="server" ImageUrl="Images/message/save.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="SetOrder" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/order.png"/>

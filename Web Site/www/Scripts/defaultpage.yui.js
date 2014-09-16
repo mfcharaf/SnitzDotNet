@@ -100,7 +100,14 @@ function SaveCategory() {
         location.reload();
     }, millisecondsToWait);
 }
-
+function SaveForumOrder() {
+    SnitzUI.CommonFunc.SaveForumOrder($("form").serializeNoViewState());
+    var millisecondsToWait = 500;
+    setTimeout(function () {
+        mainScreen.CancelModal();
+        location.reload();
+    }, millisecondsToWait);
+}
 function pageLoad() {
     var allBehaviors = window.Sys.Application.getComponents();
     for (var loopIndex = 0; loopIndex < allBehaviors.length; loopIndex++) {

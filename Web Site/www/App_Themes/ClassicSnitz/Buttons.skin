@@ -39,3 +39,4 @@ Default skin template. The following skins are provided as examples only.
 <asp:ImageButton SkinID="NewUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/message/weblink.png"/>
 <asp:ImageButton SkinID="ForumUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/weblink.png"/>
 <asp:ImageButton SkinID="Save" runat="server" ImageUrl="Images/message/save.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="SetOrder" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/order.png"/>

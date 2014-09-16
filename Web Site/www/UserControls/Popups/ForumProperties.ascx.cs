@@ -43,7 +43,7 @@ namespace SnitzUI.UserControls.Popups
                 _catid = Convert.ToInt32(ids[1]);
                 _forumtype = Convert.ToInt16(ids[2]);
 
-                ForumInfo forum = forumid > 0 ? Forums.GetForum(forumid) : new ForumInfo { Id = -1 };
+                ForumInfo forum = forumid > 0 ? Forums.GetForum(forumid) : new ForumInfo { Id = -1 ,CatId = _catid};
                 SetupPage(forum);
             }
         }

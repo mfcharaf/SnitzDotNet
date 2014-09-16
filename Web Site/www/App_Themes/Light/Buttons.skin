@@ -26,5 +26,5 @@
 <asp:ImageButton SkinID="ForumUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/weblink.png"/>
 <asp:ImageButton SkinID="NoArchiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/notarchive.png"/>
 <asp:ImageButton SkinID="archiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/archive.png"/>
-
+<asp:ImageButton SkinID="SetOrder" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/order.png"/>
 <asp:ImageButton SkinID="EmptyForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder.png"/>

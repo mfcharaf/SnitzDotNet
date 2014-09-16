@@ -32,8 +32,9 @@
         {
             margin: 0px 0px 0px 300px;
             padding: 10px;
-            border-left: 1px solid #0FA1B8;
+            border-left: 1px solid #191970;
             border-collapse: collapse;
+
         }
         
         #sidebar
@@ -41,11 +42,12 @@
             float: left;
             width: 300px !important;
             padding: 0px;
-            border-right: 1px solid #0FA1B8;
+            border-right: 1px solid #191970;
             border-collapse: collapse;
             height: auto;
             margin-top: 0px;
             margin-bottom: 0px;
+            background-color: #8199DA
         }
         .floatright{ float: right;}
         #footer
@@ -61,11 +63,12 @@
         {
             height: 1px;
         }
-        .faqQuestion{background: #FFFFFF; padding: 4px;}
+        .faqQuestion{background: #8199DA; padding: 4px;}
+        .faqQuestion a { text-decoration: none;}
         .category{padding: 3px;}
         .codebox{ max-height: 2000px;}
         
-        div.faqtable{ border: 1px solid #ff6600;border-radius: 5px;}
+        div.faqtable{ border: 1px solid #191970;background-color: #8199DA}
          .faqtable label{ display: inline-block;width: 120px;}
-        h1 {text-shadow: 1px 1px #ff3300;}
+        h1 {text-shadow: 1px 1px silver}
 

@@ -163,6 +163,7 @@
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
     <Content Include="App_Themes\BlueGray\images\admin\folderX.png" />
+    <Content Include="App_Themes\BlueGray\images\admin\order.png" />
     <Content Include="App_Themes\BlueGray\images\admin\weblink.png" />
     <Content Include="App_Themes\BlueGray\images\bar.JPG" />
     <Content Include="App_Themes\BlueGray\images\blank.png" />
@@ -235,7 +236,10 @@
     <Content Include="App_Themes\BlueGray\pm\pmreplyquote.png" />
     <Content Include="App_Themes\BlueGray\pm\pmtrash.png" />
     <Content Include="App_Themes\BlueGray\pm\sent.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\admin\order.png" />
     <Content Include="App_Themes\ClassicSnitz\images\bar.JPG" />
+    <Content Include="App_Themes\ClassicSnitz\images\collapse.jpg" />
+    <Content Include="App_Themes\ClassicSnitz\images\expand.jpg" />
     <Content Include="App_Themes\ClassicSnitz\pm\inbox.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\mail_box.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\minus.png" />
@@ -250,6 +254,7 @@
     <Content Include="App_Themes\ClassicSnitz\pm\pmreplyquote.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmtrash.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\sent.png" />
+    <Content Include="App_Themes\Dark\images\admin\order.png" />
     <Content Include="App_Themes\Dark\images\bar.JPG" />
     <Content Include="App_Themes\Dark\pm\inbox.png" />
     <Content Include="App_Themes\Dark\pm\mail_box.png" />
@@ -266,6 +271,7 @@
     <Content Include="App_Themes\Dark\pm\pmtrash.png" />
     <Content Include="App_Themes\Dark\pm\sent.png" />
     <None Include="App_Themes\Mushroom\base.css" />
+    <Content Include="App_Themes\Light\images\admin\order.png" />
     <Content Include="App_Themes\Light\images\bar.JPG" />
     <Content Include="App_Themes\Mushroom\images\activity.gif" />
     <Content Include="App_Themes\Mushroom\images\admin\archive.png" />
@@ -510,7 +516,6 @@
     <Content Include="App_Themes\ClassicSnitz\images\buttons\button_right.png" />
     <Content Include="App_Themes\ClassicSnitz\images\close.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\close.png" />
-    <Content Include="App_Themes\ClassicSnitz\images\collapse_blue.jpg" />
     <Content Include="App_Themes\ClassicSnitz\images\editor\align_center.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\editor\align_left.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\editor\align_right.gif" />
@@ -571,7 +576,6 @@
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\Lock.png" />
     <Content Include="App_Themes\ClassicSnitz\images\emoticons\pencil.png" />
     <Content Include="App_Themes\ClassicSnitz\images\error.png" />
-    <Content Include="App_Themes\ClassicSnitz\images\expand_blue.jpg" />
     <Content Include="App_Themes\ClassicSnitz\images\folders\foldernewposts.png" />
     <Content Include="App_Themes\ClassicSnitz\images\folders\foldernoposts.png" />
     <Content Include="App_Themes\ClassicSnitz\images\folders\folder_locked.png" />
@@ -1564,6 +1568,7 @@
     <Content Include="ResourceEditor\Default.aspx" />
     <Content Include="ResourceEditor\ResXEditor.ascx" />
     <Content Include="UserControls\Popups\BugReport.ascx" />
+    <Content Include="UserControls\Popups\OrderForums.ascx" />
     <Content Include="UserControls\Post Templates\BlogTemplate.ascx" />
     <Content Include="UserControls\Post Templates\BlogReplyTemplate.ascx" />
     <Content Include="UserControls\Post Templates\PollTemplate.ascx" />
@@ -2261,6 +2266,13 @@
     </Compile>
     <Compile Include="UserControls\Popups\BugReport.ascx.designer.cs">
       <DependentUpon>BugReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Popups\OrderForums.ascx.cs">
+      <DependentUpon>OrderForums.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Popups\OrderForums.ascx.designer.cs">
+      <DependentUpon>OrderForums.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Post Templates\BlogTemplate.ascx.cs">
       <DependentUpon>BlogTemplate.ascx</DependentUpon>

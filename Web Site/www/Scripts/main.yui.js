@@ -45,7 +45,7 @@ mainScreen.LoadServerControlHtml = function (a, b, c) {
 };
 mainScreen.ExecuteCommand = function (a, b, c) {
 
-    PageMethods.ExecuteCommand(a, b, c, mainScreen.ExecuteCommandCallback, mainScreen.ExecuteCommandFailed);
+    SnitzUI.CommonFunc.ExecuteCommand(a, b, c, mainScreen.ExecuteCommandCallback, mainScreen.ExecuteCommandFailed);
     
 };
 mainScreen.ExecuteCommandCallback = function (result) {

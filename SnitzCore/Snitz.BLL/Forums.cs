@@ -50,7 +50,11 @@ namespace Snitz.BLL
             // Run a search against the data store
             return dal.GetByParent(categoryId);
         }
-
+        public static void UpdateOrder(Dictionary<int, int> forumlist)
+        {
+            IForum dal = Factory<IForum>.Create("Forum");
+            dal.UpdateForumOrder(forumlist);
+        }
         /// <summary>
         /// A method to return a specific forum
         /// </summary>

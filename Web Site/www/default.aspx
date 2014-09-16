@@ -67,6 +67,8 @@
                             runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                     <asp:ImageButton ID="EditCat" SkinID="Properties" runat="server" Visible='<%# IsAdministrator %>'
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="<%$ Resources:webResources, lblEditCategory %>" EnableViewState="False"></asp:ImageButton>
+                    <asp:ImageButton ID="SetOrder" SkinID="SetOrder" runat="server" Visible='<%# IsAdministrator %>'
+                        Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="Set Category/Forum order" EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' 
                     runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                     <asp:ImageButton ID="CatSub" SkinID="Subscribe" 

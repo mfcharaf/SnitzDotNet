@@ -434,42 +434,24 @@ namespace SnitzCommon
 
         }
 
-        #region Page methods
-
-        [WebMethod]
-        public static object[] ExecuteCommand(string commandName, string targetMethod, object data)
-        {
-            try
-            {
-                object[] result = new object[2];
-                result[0] = Command.Create(commandName).Execute(data);
-                result[1] = targetMethod;
-                return result;
-            }
-            catch
-            {
-                // TODO: add logging functionality 
-                throw;
-            }
-        }
+        //#region Page methods
 
         //[WebMethod]
-        //public static string CastVote(string responseid)
+        //public static object[] ExecuteCommand(string commandName, string targetMethod, object data)
         //{
-        //    //var test = HttpUtility.UrlDecode(jsonform);
-        //    //System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
-        //    //ctl00$rblPollAnswer
-        //    string answerid = responseid;
-        //    if (answerid != null)
+        //    try
         //    {
-        //        bool res = Polls.CastVote(Membership.GetUser().ProviderUserKey, Convert.ToInt32(answerid));
-        //        if (res)
-        //            return "Your vote was cast";
+        //        object[] result = new object[2];
+        //        result[0] = Command.Create(commandName).Execute(data);
+        //        result[1] = targetMethod;
+        //        return result;
         //    }
-        //    throw new Exception("Error casting vote");
-
+        //    catch
+        //    {
+        //        throw;
+        //    }
         //}
 
-        #endregion
+        //#endregion
     }
 }

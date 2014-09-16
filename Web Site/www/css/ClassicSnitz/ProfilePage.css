@@ -17,26 +17,26 @@ fieldset li {
 .ajax__tab_default .ajax__tab_tab {overflow:hidden;text-align:center;display:-moz-inline-box;display:inline-block}
 
 /* xp theme */
-.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('/App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
+.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('/App_Themes/ClassicSnitz/images/tab/tabline.gif') repeat-x 50% bottom;
 }
-.ajax__tab_xp2 .ajax__tab_outer {padding-right:4px;padding-top:0px;background:url('/App_Themes/BlueGray/images/tab/tabr.gif') no-repeat right 50%;
+.ajax__tab_xp2 .ajax__tab_outer {padding-right:4px;padding-top:0px;background:url('/App_Themes/ClassicSnitz/images/tab/tabr.gif') no-repeat right 50%;
 height:21px;
 }
-.ajax__tab_xp2 .ajax__tab_inner {padding-left:3px;background:url('/App_Themes/BlueGray/images/tab/tabl.gif') no-repeat;
+.ajax__tab_xp2 .ajax__tab_inner {padding-left:3px;background:url('/App_Themes/ClassicSnitz/images/tab/tabl.gif') no-repeat;
 }
-.ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('/App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('/App_Themes/ClassicSnitz/images/tab/tab.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_tab {cursor:pointer;}
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/BlueGray/images/tab/tab-activer.gif') no-repeat right 50%;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_outer {background:url('/App_Themes/ClassicSnitz/images/tab/tab-activer.gif') no-repeat right 50%;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/BlueGray/images/tab/tab-activel.gif') no-repeat;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_inner {background:url('/App_Themes/ClassicSnitz/images/tab/tab-activel.gif') no-repeat;
 }
-.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('/App_Themes/BlueGray/images/tab/tab-active.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_active .ajax__tab_tab {background:url('/App_Themes/ClassicSnitz/images/tab/tab-active.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_disabled { color: #A0A0A0;}
-.ajax__tab_xp2 .ajax__tab_body {border:1px solid #999999;border-top:0;padding:8px;background-color:#ffffff;}
+.ajax__tab_xp2 .ajax__tab_body {border:1px solid #999999;border-top:0;padding:8px;background-color:#8199DA;}
 
 /* scrolling */
 .ajax__scroll_horiz {overflow:scroll;}
@@ -48,7 +48,7 @@ height:21px;
 .ajax__tab_plain .ajax__tab_inner {text-align: center; vertical-align: middle; }
 .ajax__tab_plain .ajax__tab_body {text-align: center; vertical-align: middle;}
 .ajax__tab_plain .ajax__tab_header {text-align: center; vertical-align: middle;}
-.ajax__tab_plain .ajax__tab_active .ajax__tab_outer {background:#FFFFE1;}
+.ajax__tab_plain .ajax__tab_active .ajax__tab_outer {background:#8199DA;}
 
 .profileform{
  margin:0 auto;
@@ -68,7 +68,7 @@ height:21px;
  margin-bottom:8px;
  }
  #profileDIV p{
- color:#666666;
+ color:#191970;
  margin-bottom:20px;
  border-bottom:solid 1px #b7ddf2;
  padding-bottom:10px;
@@ -79,7 +79,7 @@ height:21px;
  }
 
  #profileDIV .small{
- color:#666666;
+ color:#191970;
  display:block;
  font-weight:normal;
  text-align:right;
@@ -87,12 +87,12 @@ height:21px;
  }
  #profileDIV input{
  
- border:solid 1px #aacfe4;
+ border:solid 1px #191970;
  width:150px;
  margin:0px 0 10px 10px;
  }
  #profileDIV select{
- border:solid 1px #aacfe4;
+ border:solid 1px #191970;
  min-width:60px;
  width:60px;
  width:auto !important;
@@ -146,5 +146,5 @@ height:21px;
         .thumb
         {
             margin: 3px;
-            border: 1px solid silver;
+            border: 1px solid #191970;
         }

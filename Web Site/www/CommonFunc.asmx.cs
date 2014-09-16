@@ -438,6 +438,43 @@ namespace SnitzUI
         }
 
         [WebMethod]
+        [PrincipalPermission(SecurityAction.Demand, Role = "Administrator")]
+        public void SaveForumOrder(string jsonform)
+        {
+            var test = HttpUtility.UrlDecode(jsonform);
+            System.Collections.Specialized.NameValueCollection formresult = HttpUtility.ParseQueryString(test);
+            
+            Dictionary<int,int> catList = new Dictionary<int, int>();
+            Dictionary<int, int> forumList = new Dictionary<int, int>();
+
+            var orderkeys = formresult.AllKeys.Where(k => k.StartsWith("ctl00$rptCatOrder"));
+            foreach (string key in orderkeys)
+            {
+                //ctl00$rptCatOrder
+                var stripkey = key.Replace("ctl00$rptCatOrder", "");
+                if (stripkey.EndsWith("hdnCatOrderId"))
+                {
+                    var orderkey = key.Replace("hdnCatOrderId", "cOrder");
+                    int catid = Convert.ToInt32(formresult[key]);
+                    int catorder = Convert.ToInt32(formresult[orderkey]);
+                    catList.Add(catid,catorder);
+                }
+                if (stripkey.Contains("rptForumOrder"))
+                {
+                    if (stripkey.EndsWith("hdnForumOrderId"))
+                    {
+                        var orderkey = key.Replace("hdnForumOrderId", "fOrder");
+                        int forumid = Convert.ToInt32(formresult[key]);
+                        int forumorder = Convert.ToInt32(formresult[orderkey]);
+                        forumList.Add(forumid,forumorder);
+                    }
+                }
+            }
+            Categories.UpdateOrder(catList);
+            Forums.UpdateOrder(forumList);
+        }
+
+        [WebMethod]
         public bool CheckUserName(string userName)
         {
             Thread.Sleep(500);
@@ -489,6 +526,7 @@ namespace SnitzUI
 
         #region bookmarks
         [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public void BookMarkTopic(int topicid)
         {
             var user = HttpContext.Current.User.Identity.Name;
@@ -505,6 +543,7 @@ namespace SnitzUI
             }
         }
         [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public void BookMarkReply(int replyid,int page)
         {
             ReplyInfo r = Replies.GetReply(replyid);
@@ -525,6 +564,7 @@ namespace SnitzUI
 
         #region subscriptions
         [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public void CategorySubscribe(int catid, bool remove)
         {
             var user = HttpContext.Current.User.Identity.Name;
@@ -538,6 +578,7 @@ namespace SnitzUI
             }
         }
         [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public void ForumSubscribe(int forumid, bool remove)
         {
             var user = HttpContext.Current.User.Identity.Name;
@@ -551,6 +592,7 @@ namespace SnitzUI
             }
         }
         [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
         public void TopicSubscribe(int topicid, bool remove)
         {
             var user = HttpContext.Current.User.Identity.Name;
@@ -593,6 +635,23 @@ namespace SnitzUI
         }
         #endregion
 
+        [WebMethod(EnableSession = true)]
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true)]
+        public object[] ExecuteCommand(string dialogName, string targetMethod, object data)
+        {
+            try
+            {
+                object[] result = new object[2];
+                result[0] = Command.Create(dialogName).Execute(data);
+                result[1] = targetMethod;
+                return result;
+            }
+            catch
+            {
+                // TODO: add logging functionality 
+                throw;
+            }
+        }
         private void ProcessModeration(int mode, int topicid, int replyid, int adminmodid, string comments)
         {
             ReplyInfo reply = null;

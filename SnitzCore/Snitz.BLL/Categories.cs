@@ -36,6 +36,11 @@ namespace Snitz.BLL
             return dal.GetByParent(categoryid).Where(catforum => allowedforums.Contains(catforum.Id));
         }
 
+        public static void UpdateOrder(Dictionary<int, int> catlist)
+        {
+            ICategory dal = Factory<ICategory>.Create("Category");
+            dal.UpdateCategoryOrder(catlist);
+        }
         public static CategoryInfo GetCategory(int categoryid)
         {
             ICategory dal = Factory<ICategory>.Create("Category");

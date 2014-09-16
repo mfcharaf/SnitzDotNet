@@ -43,8 +43,8 @@ h3{font-weight:bold;font-size:.9em;padding-left:4px;text-decoration:none;line-he
 p{font-size:.9em;padding:0 4px 0 4px}
 input,textarea,select{color:#000;border-color:#000;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px}
 input{text-indent:2px}
-a:link,a:active{color:#00008B;text-decoration:underline}
-a:visited{color:#00F;text-decoration:underline}
+a:link,a:active{color:#00E;text-decoration:underline}
+a:visited{color:#551A8B;text-decoration:underline}
 a:hover{text-decoration:underline;color:#F00}
 a.active:visited{color:#FFF}
 .tableheader a{color:#FFF;font-weight:bold;text-decoration:none}
@@ -60,18 +60,18 @@ img.captchaImage{border:1px solid #808080;margin:2px}
 .smallText{font-Size:.8em}
 .row td{background-color:#f5f5f5;border-bottom:1px solid #000;border-right:1px solid #000;vertical-align:top;overflow:hidden}
 .altrow td{background-color:#f5f5f5;border-bottom:1px solid #000;border-right:1px solid #000;vertical-align:top;overflow:hidden}
-.row td.CatHeaderRow{background-color:#191970;border:0}
+.row td.CatHeaderRow{background-color:#6a5acd;border:0}
 .row td.ForumHeaderRow{background-color:#c8c8c8;color:silver;border:0}
 .row td.iconCol,.altrow td.iconCol{max-width:20px;width:20px;vertical-align:top}
 .row td.buttonCol,.altrow td.buttonCol{min-width:110px;width:110px;max-width:110px;vertical-align:top}
 .row td.subjectCol,.altrow td.subjectCol{overflow:hidden;max-width:300px;width:300px}
 .emptyrow{text-align:center}
-.category{background-color:#191970;height:24px}
-td.category,.row td.categorylink{background-color:#191970;height:24px;padding-top:4px}
+.category{background-color:#6a5acd;height:24px}
+td.category,.row td.categorylink{background-color:#6a5acd;height:24px;padding-top:4px}
 .categorylink,th.categorylink,td.categorylink{color:#fff;font-size:1.2em;font-weight:bold}
 .CategoryExpanded{background-image:url(/images/collapse_blue.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
 .CategoryCollapsed{background-image:url(/images/expand_blue.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
-.tableheader,th.tableheader,.tableheader th,td.tableheader{color:#fff;font-weight:normal;background-color:#6a5acd;font-size:smaller}
+.tableheader,th.tableheader,.tableheader th,td.tableheader{color:#fff;font-weight:normal;background-color:#191970;font-size:smaller}
 th.iconCol{max-width:26px;width:26px}
 th.forumCol{width:auto}
 th.subjCol{width:auto}
@@ -88,7 +88,7 @@ td.authorCol{text-align:center}
 #statsControl{width:100%;margin:auto}
 #contentfooterDIV .statsPanel{background-color:white;padding:5px;overflow:hidden}
 .categorybuttons{float:right;vertical-align:middle;margin-top:5px;margin-right:5px}
-.statsPanelHeader{width:100%;color:#FFF;height:30px;font-weight:bold;background-color:#191970;vertical-align:text-bottom;overflow:hidden}
+.statsPanelHeader{width:100%;color:#FFF;height:30px;font-weight:bold;background-color:#6a5acd;vertical-align:text-bottom;overflow:hidden}
 .statsPanelHeader img{margin:0}
 .stickytable{background-color:#ECFFFF;border:1px solid #000;width:100%;display:inline-table;table-layout:fixed}
 tr.rowsticky{border-bottom:1px solid #000}
@@ -179,7 +179,7 @@ span.moderation{font-weight:bolder;color:Red}
 .Poll_DisplayText{font-weight:normal}
 .Poll_TotalVotes{font-style:italic}
 .Poll_TakePoll,.Poll_PollResults{border:1px dashed #BEF2FA;padding:5px;margin-top:5px;margin-left:10px}
-.PollBox{background-color:white;border:1px solid #000}
+.PollBox{background-color:white}
 .seperator{line-height:.4em}
 .sideBox{background-color:white;border:1px solid #000;table-layout:fixed;width:100%;border-top-style:none;line-height:1em}
 .sideBox h3{padding-top:6px;padding-bottom:3px}
@@ -212,25 +212,25 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 .table-bottom-right{margin:0;float:right;width:50%;text-align:right}
 .table-bottom-footer{clear:both}
 .snitzMenu div.AspNet-Menu-Horizontal:after{content:".";display:block;height:0;clear:both;visibility:hidden}
-.snitzMenu div.AspNet-Menu-Horizontal{background-color:#f5f5f5;z-index:10000;margin-left:auto;margin-right:auto;text-align:center;width:auto}
+.snitzMenu div.AspNet-Menu-Horizontal{background-color:#8199DA;z-index:10000;margin-left:auto;margin-right:auto;text-align:center;width:auto}
 .snitzMenu ul{background:#efefef}
 .snitzMenu ul.AspNet-Menu ul{width:9.5em;top:-1em;z-index:400}
 .snitzMenu ul.AspNet-Menu ul ul{width:10.5em;left:10.4em}
 .snitzMenu ul.AspNet-Menu li{white-space:nowrap;height:auto!important;line-height:1em}
-.snitzMenu ul.AspNet-Menu li a,.snitzMenu ul.AspNet-Menu li span{text-decoration:underline;padding:4px 4px 4px 6px;border-bottom:0}
-.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span{background-image:none;text-decoration:underline}
+.snitzMenu ul.AspNet-Menu li a,.snitzMenu ul.AspNet-Menu li span{text-decoration:none;padding:4px 4px 4px 6px;border-bottom:0}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span{background-image:none;text-decoration:none}
 .snitzMenu ul.AspNet-Menu li:hover,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Hover{background:transparent}
 .snitzMenu ul.AspNet-Menu li a:hover,.snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover{background:transparent url(images/menu-expand.gif) right center no-repeat}
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a:hover{background-image:none}
-.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul{width:10.5em;left:0;top:100%}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul{width:12.5em;left:0;top:100%}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul{top:-0.3em}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul{width:11.5em}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li{width:auto;min-width:6em;border-left:1px solid #efefef;border-right:1px solid gray;text-align:center}
-.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li{text-align:left;width:10.5em}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li{text-align:left;width:12.5em}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul li{width:11.5em}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li ul li ul{margin:-1.4em 0 0 10.35em}
 .snitzMenu .AspNet-Menu-Horizontal li.AspNet-Menu-WithChildren ul{white-space:nowrap;border:solid 1px #999!important;-moz-box-shadow:3px 3px 4px #000;-webkit-box-shadow:3px 3px 4px #000;box-shadow:3px 3px 4px #000}
-.PostForm{background-color:White;margin:0 auto}
+.PostForm{background-color:#8199DA;margin:0 auto}
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none}
 .announceBox{text-align:center;width:80%;margin:auto;border:3px ridge #EFEFEF;background-color:#efefef}
 .hidden{display:none;visibility:hidden}
@@ -264,16 +264,16 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 #popup_message{padding-left:48px}
 #popup_panel{text-align:center;margin:1em 0 0 1em}
 #popup_prompt{margin:.5em 0}
-.mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#fff;padding:0;max-height:90%;line-height:1em;font-size:.8em}
+.mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#8199DA;padding:0;max-height:90%;line-height:1em;font-size:.8em}
 .mainModalPopup fieldset{font-size:inherit}
-.mainModalBorder{border-left:1px solid #ECE9D8;border-right:1px solid #716F64;border-top:1px solid #ECE9D8;border-bottom:1px solid #716F64}
+.mainModalBorder{border-left:1px solid #191970;border-right:1px solid #000028;border-top:1px solid #191970;border-bottom:1px solid #000028}
 .mainModalInnerDiv{border-width:0;width:auto}
-.mainModalInnerBorder{border-left:1px solid #FFF;border-right:1px solid #ACA899;border-top:1px solid #FFF;border-bottom:1px solid #ACA899}
+.mainModalInnerBorder{border-left:1px solid #191970;border-right:1px solid #000028;border-top:1px solid #191970;border-bottom:1px solid #000028}
 .mainModalDraggablePanelDiv{white-space:nowrap;height:20px;width:90%;float:left;padding-top:3px}
 .mainModalDraggablePanelCloseDiv{float:right;height:20px;padding-top:3px}
 .mainModalDraggablePanel{width:100%}
 .mainModalTitle{color:#FFF;font-weight:bold}
-.mainModalContent{background-color:#FFF;margin:0}
+.mainModalContent{background-color:#8199DA;margin:0}
 .modalBackground{background-color:#666;opacity:.8}
 .modalBackgroundDark{background-color:#000}
 #header,#upheader,#brwsheader{width:100%;background:#191970;height:26px;vertical-align:middle}

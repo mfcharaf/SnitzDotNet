@@ -137,6 +137,8 @@ public partial class Homepage : PageBase
 	        var delIcon = item.FindControl("CatDelete") as ImageButton;
             var subscribe = item.FindControl("CatSub") as ImageButton;
             var unsubscribe = item.FindControl("CatUnSub") as ImageButton;
+	        var order = item.FindControl("SetOrder") as ImageButton;
+
             if(delIcon != null)
             {
                 delIcon.OnClientClick =
@@ -149,10 +151,17 @@ public partial class Homepage : PageBase
                         cat.Id);
                 editIcon.Visible = IsAdministrator;
             }
+            if (order != null)
+            {
+                order.OnClientClick = string.Format(
+                        "mainScreen.LoadServerControlHtml('Order Forums',{{'pageID':14,'data':'{0}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        cat.Id);
+                order.Visible = IsAdministrator;
+            }
             if (newIcon != null)
             {
                 newIcon.OnClientClick = string.Format(
-                        "mainScreen.LoadServerControlHtml(' Forum Properties',{{'pageID':8,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
+                        "mainScreen.LoadServerControlHtml('Forum Properties',{{'pageID':8,'data':'{0},{1},{2}'}}, 'methodHandlers.BeginRecieve');return false;",
                         -1, cat.Id,0);
             }
             if (newUrl != null)
