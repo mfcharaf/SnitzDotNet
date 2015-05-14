@@ -40,6 +40,26 @@ namespace SnitzConfig
 
         #region Config Properties
 
+        [Description("strAnonMembers")]
+        public static List<string> AnonMembers
+        {
+            get
+            {
+                return (ConfigurationManager.AppSettings["strAnonMembers"].Split(',').ToList());
+            }
+            set { UpdateConfig("strAnonMembers", String.Join(",", value.ToArray())); }
+
+        }
+        [Description("boolAllowThemeChange")]
+        public static bool AllowThemeChange
+        {
+            get
+            {
+                return (ConfigurationManager.AppSettings["boolAllowThemeChange"] == "1");
+            }
+            set { UpdateConfig("boolAllowThemeChange", value ? "1" : "0"); }
+
+        }
         [Description("boolMoveTopicMode")]
         public static bool RestrictModeratorMove
         {
@@ -481,19 +501,19 @@ namespace SnitzConfig
             }
         }
 
-        [Description("strEventAdminRoles")]
-        public static List<string> EventAdminRoles
-        {
-            get
-            {
-                string allowedRoles = ConfigurationManager.AppSettings["strEventAdminRoles"] ?? "Administrator,Moderator";
-                return new List<string>(Regex.Split(allowedRoles, ",", RegexOptions.Singleline));
-            }
-            set
-            {
-                UpdateConfig("strEventAdminRoles", String.Join(",", value.ToArray()));
-            }
-        }
+        //[Description("strEventAdminRoles")]
+        //public static List<string> EventAdminRoles
+        //{
+        //    get
+        //    {
+        //        string allowedRoles = ConfigurationManager.AppSettings["strEventAdminRoles"] ?? "Administrator,Moderator";
+        //        return new List<string>(Regex.Split(allowedRoles, ",", RegexOptions.Singleline));
+        //    }
+        //    set
+        //    {
+        //        UpdateConfig("strEventAdminRoles", String.Join(",", value.ToArray()));
+        //    }
+        //}
 
         [Description("showRankStars")]
         public static bool ShowRankStars
@@ -529,7 +549,7 @@ namespace SnitzConfig
         [Description("intShowRankType")]
         public static Enumerators.RankType ShowRankType
         {
-            get { return ConfigurationManager.AppSettings["intShowRankType"] == null ? Enumerators.RankType.Both : (Enumerators.RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRank"]); }
+            get { return ConfigurationManager.AppSettings["intShowRankType"] == null ? Enumerators.RankType.Both : (Enumerators.RankType)Convert.ToInt32(ConfigurationManager.AppSettings["intShowRankType"]); }
             set { UpdateConfig("intShowRankType", ((int)value).ToString()); }
         }
 
@@ -1015,7 +1035,7 @@ namespace SnitzConfig
         [Description("strCookiePath")]
         public static string CookiePath
         {
-            get { return ConfigurationManager.AppSettings["strCookiePath"]; }
+            get { return ConfigurationManager.AppSettings["strCookiePath"]=="" ? "/" : ConfigurationManager.AppSettings["strCookiePath"]; }
             set { UpdateConfig("strCookiePath", value); }
         }
         [Description("strAnnounceAnon")]
@@ -1069,8 +1089,13 @@ namespace SnitzConfig
             get { return ConfigurationManager.AppSettings["boolAllowSearchAllForums"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolRequiresUpperAndLowerCaseCharacters"]) == 1; }
             set { UpdateConfig("boolRequiresUpperAndLowerCaseCharacters", value ? "1" : "0"); }
         }
-
-
+        //TopicAvatar
+        [Description("boolTopicAvatar")]
+        public static bool TopicAvatar
+        {
+            get { return ConfigurationManager.AppSettings["boolTopicAvatar"] != null && Convert.ToInt32(ConfigurationManager.AppSettings["boolTopicAvatar"]) == 1; }
+            set { UpdateConfig("boolTopicAvatar", value ? "1" : "0"); }
+        }
         #endregion
 
         #region Config Methods

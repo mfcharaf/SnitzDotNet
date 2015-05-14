@@ -1,0 +1,13 @@
+﻿<asp:SiteMapPath runat="server" SkinID="TopicBreadCrumb">   
+    <PathSeparatorTemplate>
+    <br/>
+    </PathSeparatorTemplate>
+    <NodeTemplate> 
+        <img runat="server" src="images/icon_spacer.gif" alt="*"/><asp:Image ID="Image1" runat="server" AlternateText="*" ImageUrl='images/icon_bar.gif' />
+        <asp:HyperLink runat="server" ID="HyperLink1" NavigateUrl='<%# Eval("url") %>'   Text='<%# Eval("title") %>'></asp:HyperLink>
+    </NodeTemplate> 
+    <CurrentNodeTemplate>
+        <img runat="server" src="images/icon_spacer.gif" alt="*"/><img runat="server" src="images/icon_spacer.gif" alt="*"/><asp:Image ID="Image1" runat="server" AlternateText="*" ImageUrl='images/icon_bar.gif' />
+        <asp:Label CssClass="bbcode" runat="server" ID="Label1" Text='<%# Eval("title") %>' ></asp:Label>                  
+    </CurrentNodeTemplate> 
+</asp:SiteMapPath>  

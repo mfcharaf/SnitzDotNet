@@ -45,7 +45,7 @@ namespace Snitz.Entities
             this.Signature = member.Signature;
             this.ReceiveEmails = member.ReceiveEmails;
             this.Status = member.Status;
-            this.Rank = new RankInfo(member.Username, ref title, member.PostCount);
+            //this.Rank = new RankInfo(member.Username, ref title, member.PostCount);
             this.Title = title;
             this.Yahoo = member.Yahoo;
             this.AIM = member.AIM;

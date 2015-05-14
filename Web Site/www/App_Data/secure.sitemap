@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <siteMap enableLocalization="true">
-  <siteMapNode roles="*" title="root">
+  <siteMapNode roles="*" title="root" >
     <siteMapNode key="Home" url="~\default.aspx"  title="$resources:SiteMapLocalizations,HomePageTitle,?Home?" description="$resources:SiteMapLocalizations,HomePageDescription,Home" />
     <siteMapNode key="Account" title="$resources:SiteMapLocalizations,AccountTitle,?Account?" description="$resources:SiteMapLocalizations,AccountDescription,?Description?" roles="Member" >
-      <siteMapNode key="Profile" url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,?Profile?" description="$resources:SiteMapLocalizations,ProfilePageDescription,Profile"/>
-      <siteMapNode  url="~\PrivateMessages" title="$resources:SiteMapLocalizations,PMTitle,?Private Messages?" description="Private Message Inbox"/>
-      <siteMapNode  url="~\mygallery.aspx" title="$resources:SiteMapLocalizations,MyGalleryTitle,?Gallery?" description="My Gallery" />
-      <siteMapNode  url="~\Account\bookmark.aspx" title="$resources:SiteMapLocalizations,BookMarkTitle,?BookMarks?" description="My Bookmarks" />
+        <siteMapNode key="Profile" url="~\Account\profile.aspx" title="$resources:SiteMapLocalizations,ProfilePageTitle,?Profile?" description="$resources:SiteMapLocalizations,ProfilePageDescription,Profile"/>
+        <siteMapNode  url="~\PrivateMessages" title="$resources:SiteMapLocalizations,PMTitle,?Private Messages?" description="Private Message Inbox"/>
+        <siteMapNode  url="~\mygallery.aspx" title="$resources:SiteMapLocalizations,MyGalleryTitle,?Gallery?" description="My Gallery" />
+        <siteMapNode  url="~\Account\bookmark.aspx" title="$resources:SiteMapLocalizations,BookMarkTitle,?BookMarks?" description="My Bookmarks" />
     </siteMapNode>
-    <siteMapNode key="Active"  url="~\ActiveTopics" title="$resources:SiteMapLocalizations,ActivePageTitle,?Active?" description="$resources:SiteMapLocalizations,ActivePageDescription,Active"/>
+    <siteMapNode key="Topics" title="Topics" description="Forum Posts" roles="*">
+      <siteMapNode url="~\ActiveTopics" title="$resources:SiteMapLocalizations,ActivePageTitle,?Active?" description="$resources:SiteMapLocalizations,ActivePageDescription,Active"/>
+      <siteMapNode url="~\Search" title="$resources:SiteMapLocalizations,SearchPageTitle,?Search?" description="$resources:SiteMapLocalizations,SearchPageDescription,Search"/>
+    </siteMapNode>
     <siteMapNode key="Members" url="~\Members" title="$resources:SiteMapLocalizations,MembersPageTitle,?Members?" description="$resources:SiteMapLocalizations,MembersPageDescription,Members" roles="Member" />
-    <siteMapNode key="Search" url="~\Search" title="$resources:SiteMapLocalizations,SearchPageTitle,?Search?" description="$resources:SiteMapLocalizations,SearchPageDescription,Search"/>
     <siteMapNode key="PublicGallery" url="~\Content\Gallery\gallery.aspx" title="$resources:SiteMapLocalizations,PublicGalleryTitle,?Public Galleries?" description="Public Galleries" roles="Member"/>
     <siteMapNode key="Admin" roles="Administrator" title="$resources:SiteMapLocalizations,AdminPageTitle,?Admin?">
       <siteMapNode url="~\admin\default.aspx" title="$resources:SiteMapLocalizations,AdminDefaultTitle,?Forum Settings?" description="$resources:SiteMapLocalizations,AdminPageDescription,Admin"/>

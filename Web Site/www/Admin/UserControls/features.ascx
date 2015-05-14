@@ -90,7 +90,10 @@
         </asp:Panel>
         <asp:Panel ID="Panel5" runat="server" GroupingText="Topic Features" 
             CssClass="featuresform" meta:resourcekey="Panel5Resource1">
-
+            <asp:Label ID="Label3" runat="server" 
+                Text="Show Topic Avatar" AssociatedControlID="rblTopicAvatar" ></asp:Label>
+            <uc1:AdminRadioButton ID="rblTopicAvatar" runat="server"/> 
+            <br />
             <asp:Label ID="lblEditedBy" runat="server" Text="Show Edited By on Date" 
                 AssociatedControlID="rblEditedBy" meta:resourcekey="lblEditedByResource1"></asp:Label>
             <uc1:AdminRadioButton ID="rblEditedBy" runat="server" /> 
@@ -158,6 +161,9 @@
         </asp:Panel>
         <asp:Panel ID="Panel7" runat="server" GroupingText="Misc Features" 
             CssClass="featuresform" meta:resourcekey="Panel7Resource1">
+            <asp:Label ID="lblAnon" runat="server" Text="Hide Members" 
+                AssociatedControlID="tbxAnonAnnouncement"></asp:Label>
+            <asp:TextBox runat="server" ID="txtAnonMembers" TextMode="SingleLine" Width="80%"></asp:TextBox>
 
             <asp:Label ID="lblTimer" runat="server" Text="Show Page Timer" 
                 AssociatedControlID="rblPageTimer" meta:resourcekey="lblTimerResource1"></asp:Label>

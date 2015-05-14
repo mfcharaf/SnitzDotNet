@@ -41,6 +41,7 @@ public partial class QuickReply : UserControl
     public string AllowedFileTypes { get; set; }
     public bool AllowAttachments { get; set; }
     public bool AllowImageUploads { get; set; }
+    public int FileSizeLimit { get; set; }
 
     protected override void OnInit(EventArgs e)
     {
@@ -49,7 +50,7 @@ public partial class QuickReply : UserControl
         page = (PageBase)this.Page;
         cbxSig.Checked = page.Member.UseSignature;
         ModConfigBase controller = (ModConfigBase)ConfigHelper.ModClass("UploadConfig");
-
+        FileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString());
         AllowedFileTypes = "";
         AllowAttachments = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowAttachments"]));
         AllowImageUploads = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowImageUpload"]));
@@ -186,7 +187,7 @@ public partial class QuickReply : UserControl
             types += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
         }
         string[] allowedTypes = types.Split(',');
-        int fileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()) * 1024;
+        //int fileSizeLimit = 10; //Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString());
         string uploadpath = controller.ModConfiguration.Settings["FileUploadLocation"].ToString();
         string filext = Path.GetExtension(AsyncFileUpload1.PostedFile.FileName).Replace(".", "");
         string contentType = AsyncFileUpload1.PostedFile.ContentType;
@@ -215,7 +216,7 @@ public partial class QuickReply : UserControl
                 break;
             }
         }
-        if (!allowed || (int.Parse(e.FileSize) > fileSizeLimit))
+        if (!allowed || (int.Parse(e.FileSize) > (FileSizeLimit * (1024 * 1024))))
         {
             AsyncFileUpload1.FailedValidation = true;
             return;

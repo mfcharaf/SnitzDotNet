@@ -41,5 +41,12 @@ namespace Snitz.BLL.modconfig
         /// <returns></returns>
         protected abstract ModInfo LoadDefaultConfig(ModController controller);
 
+        /// <summary>
+        /// Run any mod setup scripts etc
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        protected abstract bool SetupMod(ModController controller);
+
     }
 }

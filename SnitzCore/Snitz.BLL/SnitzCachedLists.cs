@@ -52,6 +52,20 @@ namespace Snitz.BLL
             return result;
         }
 
+        public static Dictionary<int, Ranking> GetRankings()
+        {
+            Dictionary<int, Ranking> rankings;
+            if (HttpContext.Current.Cache["rankinglist"] != null)
+            {
+                rankings = (Dictionary<int, Ranking>)HttpContext.Current.Cache["rankinglist"];
+            }
+            else
+            {
+                rankings = Admin.GetRankings();
+                HttpContext.Current.Cache["rankinglist"] = rankings;
+            }
+            return rankings;
+        }
         public static List<ForumJumpto> GetCachedForumList(bool search)
         {
             List<ForumJumpto> fullforumlist;

@@ -45,7 +45,6 @@
 <asp:Content ID="Content8" ContentPlaceHolderID="CPM" runat="server">
 <div class="galleryView clearfix">
     <div style="width:120px;float:left;height:100%;margin:0px;margin-right:10px;background-color:White;" class="forumtable">
-
         <asp:ListView ID="ListView1" runat="server" OnItemCommand="ShowGallery">
             <LayoutTemplate>
                 <ul >
@@ -66,17 +65,23 @@
                 </li>
             </ItemTemplate>
             <EmptyDataTemplate>No public galleries</EmptyDataTemplate>
-        </asp:ListView></div>
-<div style="float:left;width:auto;border:1px solid gray;background-color:White;">
+        </asp:ListView>
+    </div>
+    <div style="float:left;width:auto;border:1px solid gray;background-color:White;">
         <asp:Repeater ID="rptImage" runat="server" >
             <ItemTemplate >  
             <asp:HyperLink NavigateUrl='<%# Eval("ImagePath") %>' ToolTip='<%# Eval("Name") %>'
                                         ID="hypImg" runat="server" rel='<%# Eval("ImagePath") %>' CssClass="gallerylnk">
                 <image src='<%# Eval("ThumbPath") %>' id="imgThumb" class="thumb" /></asp:HyperLink>
+                <asp:CheckBox runat="server" ID="selImg" Visible="<%# ShowEdit %>"/>
             </ItemTemplate>
-        </asp:Repeater></div>
+        </asp:Repeater>
+    </div>
 </div>
-
+    <asp:Label runat="server" ID="strMsg"></asp:Label>
+    <asp:Panel runat="server" ID="btnPanel" Visible="<%# ShowEdit %>">
+        <asp:LinkButton ID="delImages" CssClass="Snitzbutton" runat="server"  Text='<%$ Resources:webResources,lblDelete %>' OnClick="delImages_Click"/>
+    </asp:Panel>
 </asp:Content>
 <asp:Content ID="Content9" ContentPlaceHolderID="CPF1" runat="server">
 </asp:Content>

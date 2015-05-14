@@ -10,6 +10,7 @@ namespace ModConfig
     {
         public bool ShowOnMenu { get { return false; } }
         public ModMenuItem Menu { get { return null; } }
+        public bool NeedsSetup { get { return false; } }
 
         #region Mod specific Properties
 
@@ -49,5 +50,9 @@ namespace ModConfig
             return modinfo;
         }
 
+        protected override bool SetupMod(ModController controller)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

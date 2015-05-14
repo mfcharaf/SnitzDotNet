@@ -127,7 +127,7 @@
     <value>View Posts since my last visit</value>
   </data>
   <data name="ActivePageTitle" xml:space="preserve">
-    <value>Active Topics</value>
+    <value>Recent Posts</value>
   </data>
   <data name="AdminDefaultTitle" xml:space="preserve">
     <value>Forum Settings</value>
@@ -151,7 +151,7 @@
     <value>Frequently Asked Questions</value>
   </data>
   <data name="FAQPageTitle" xml:space="preserve">
-    <value>Forum FAQ</value>
+    <value>FAQ</value>
   </data>
   <data name="ForumPageDescription" xml:space="preserve">
     <value>Forum View</value>
@@ -220,12 +220,15 @@
     <value>Register</value>
   </data>
   <data name="SearchPageDescription" xml:space="preserve">
-    <value>Searching for ... </value>
+    <value>Find Posts</value>
   </data>
   <data name="SearchPageTitle" xml:space="preserve">
-    <value>Forum Search</value>
+    <value>Search</value>
   </data>
   <data name="TopicPageTitle" xml:space="preserve">
     <value>Topic View</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>Posts</value>
   </data>
 </root>

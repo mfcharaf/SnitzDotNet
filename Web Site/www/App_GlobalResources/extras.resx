@@ -184,7 +184,7 @@
     <value>If you do not have an account you may register using the link below&lt;br/&gt;&lt;a href='/Account/register.aspx'&gt; register here&lt;/a&gt;</value>
   </data>
   <data name="lblRetrieve" xml:space="preserve">
-    <value>If you have forgotten your password, you may reset it using the link below</value>
+    <value>Forgot your password?</value>
   </data>
   <data name="lblRetrievePasswordText" xml:space="preserve">
     <value>Enter your Username to reset your password.&lt;br /&gt;Your new password will be emailed to the address in your profile.&lt;br /&gt;&lt;br /&gt;</value>
@@ -272,5 +272,8 @@
   </data>
   <data name="GuestLabel" xml:space="preserve">
     <value>Guests : </value>
+  </data>
+  <data name="lblRetrieveLnk" xml:space="preserve">
+    <value>Click here to reset it</value>
   </data>
 </root>

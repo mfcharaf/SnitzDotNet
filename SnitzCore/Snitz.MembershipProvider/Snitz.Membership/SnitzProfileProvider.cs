@@ -34,7 +34,8 @@
     using Snitz.Membership.IDal;
 
 public class SnitzProfileProvider : ProfileProvider
-    {
+{
+        public string OldValues { get; set; }
         private string _appName;
         private Guid _appId;
         private bool _appIdSet;
@@ -129,9 +130,10 @@ public class SnitzProfileProvider : ProfileProvider
         {
             IProfile dal = Snitz.Membership.Helpers.Factory<IProfile>.Create("Profile");
             dal.TableName = _table;
-            return dal.GetPropertyValues(context, collection);
+            SettingsPropertyValueCollection vc =  dal.GetPropertyValues(context, collection);
+            return vc;
         }
-
+        
         // Container struct for use in aggregating columns for queries
         private struct ProfileColumnData
         {

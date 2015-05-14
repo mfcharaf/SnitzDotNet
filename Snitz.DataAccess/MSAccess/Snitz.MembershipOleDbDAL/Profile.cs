@@ -8,6 +8,7 @@ using System.Text;
 using System.Web.Profile;
 using Snitz.Entities;
 using Snitz.Membership.IDal;
+using Snitz.OLEDbDAL;
 using Snitz.OLEDbDAL.Helpers;
 using SnitzConfig;
 using ProfileInfo = System.Web.Profile.ProfileInfo;
@@ -60,6 +61,7 @@ namespace Snitz.Membership.OLEDbDAL
                 SettingsPropertyValue value = new SettingsPropertyValue(prop);
                 if (prop.PropertyType == typeof(List<SnitzLink>))
                 {
+
                     prop.ThrowOnErrorDeserializing = true;
                     prop.SerializeAs = SettingsSerializeAs.Xml;
                     value.Deserialized = false;
@@ -142,6 +144,25 @@ namespace Snitz.Membership.OLEDbDAL
                     }
 
                     //UpdateLastActivityDate(conn, userId);
+                }
+                else
+                {
+                    object val = GetBookMarkModValues(username);
+                    ProfileColumnData colData = columnData.Find(c => c.ColumnName == "BookMarks");
+                    SettingsPropertyValue propValue = new SettingsPropertyValue(colData.PropertyValue);
+                    propValue.IsDirty = false;
+                    if (propValue.Property.SerializeAs == SettingsSerializeAs.Xml)
+                    {
+                        if (propValue.Name == "BookMarks")
+                        {
+                            svc.Remove("BookMarks");
+                            propValue.Deserialized = false;
+                            object test = "";
+                            if (!val.Equals(test))
+                                propValue.SerializedValue = val;
+                            svc.Add(propValue); 
+                        }
+                    }
                 }
             }
             finally
@@ -455,7 +476,7 @@ namespace Snitz.Membership.OLEDbDAL
                     columnStr.Append(data.ColumnName);
                     string valueParam = "@Value" + count;
                     valueStr.Append(valueParam);
-                    OleDbParameter p = new OleDbParameter(valueParam,data.DataType){Value=data.Value};
+                    OleDbParameter p = new OleDbParameter(valueParam,data.DataType){Value=data.Value ?? 0};
                     parms.Add(p);
 
 
@@ -738,6 +759,32 @@ namespace Snitz.Membership.OLEDbDAL
             }
 
             return DeleteProfiles(usernames);
+        }
+        public string GetBookMarkModValues(string username)
+        {
+            string returnvalue = "";
+
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("SELECT");
+            sql.AppendLine("ROW_NUMBER() OVER (ORDER BY Bookmark.B_MEMBERID)-1 AS ID,");
+            sql.AppendLine("SnitzLink.T_SUBJECT AS Name,'~/Content/Forums/topic.aspx?TOPIC=' + CAST(SnitzLink.TOPIC_ID AS varchar) AS Url");
+            sql.AppendLine("FROM FORUM_BOOKMARKS Bookmark INNER JOIN");
+            sql.AppendLine("FORUM_TOPICS SnitzLink ON Bookmark.B_TOPICID = SnitzLink.TOPIC_ID");
+            sql.AppendLine("WHERE Bookmark.B_MEMBERID = (SELECT MEMBER_ID FROM FORUM_MEMBERS WHERE M_NAME=@Username)");
+            sql.AppendLine("FOR XML AUTO");
+
+            using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sql.ToString(), new OleDbParameter("@Username", SqlDbType.VarChar) { Value = username }))
+            {
+                while (rdr.Read())
+                {
+                    returnvalue = rdr.SafeGetString(0, "");
+                }
+            }
+            if (returnvalue != "")
+            {
+                returnvalue = "<?xml version=\"1.0\" encoding=\"utf-16\"?><ArrayOfSnitzLink>" + returnvalue + "</ArrayOfSnitzLink>";
+            }
+            return returnvalue;
         }
     }
 }

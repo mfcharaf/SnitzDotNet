@@ -13,27 +13,41 @@
     CodeBehind="Search.aspx.cs" Inherits="SnitzUI.Search" %>
 
 <%@ Import Namespace="Snitz.BLL" %>
-<%@ Import Namespace="SnitzCommon" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
 <asp:Content ID="head" ContentPlaceHolderID="CPHead" runat="server">
     <link rel="stylesheet" type="text/css" runat="server" id="pageCSS"/>
     <script src="/scripts/common.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         //Parse the bbcode
         var urltarget = '<%# Profile.LinkTarget %>';
         $(document).ready(function () {
+
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+            function EndRequestHandler(sender, args) {
+                if (args.get_error() != undefined) {
+                    alert(args.get_error());
+                    args.set_errorHandled(true);
+                }
+            }
+
             $(".bbcode").each(function () {
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+            });
+            $(".minibbcode").each(function () {
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
         });
     </script>
+
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="CPM" runat="server">
-    <div id="searchPanel" class="forumtable" style="padding:8px;" >
-        <asp:UpdatePanel ID="updSearch" runat="server" ChildrenAsTriggers="true">
+    <div id="searchPanel" class="forumtable">
+        <asp:UpdatePanel ID="updSearch" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="lnkAdvanced" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="btnSearch" EventName="Click" />
             </Triggers>
             <ContentTemplate>
                 <asp:Panel ID="pnlSearch" CssClass="topicTable" runat="server" 
@@ -49,14 +63,14 @@
                     <br />
                     <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblSearchKeywords %>"
                         AssociatedControlID="searchFor" EnableViewState="False"></asp:Label>
-                    <asp:TextBox ID="searchFor" runat="server" EnableViewState="true"></asp:TextBox><asp:RequiredFieldValidator
-                        ID="RequiredFieldValidator2" runat="server" ErrorMessage="You must supply a search term"
-                        ControlToValidate="searchFor" ValidationGroup="Search">*</asp:RequiredFieldValidator>
+                    <asp:TextBox ID="searchFor" runat="server" EnableViewState="true"></asp:TextBox>&nbsp;
                     <asp:DropDownList ID="ddlMatch" runat="server" EnableViewState="False">
                         <asp:ListItem Text="Exact Phrase" Value="exact" Selected="True"></asp:ListItem>
                         <asp:ListItem Text="All words" Value="all"></asp:ListItem>
                         <asp:ListItem Text="Any word" Value="any"></asp:ListItem>
-                    </asp:DropDownList><br />
+                    </asp:DropDownList><asp:RequiredFieldValidator
+                        ID="RequiredFieldValidator2" runat="server" ErrorMessage="You must supply a search term"
+                        ControlToValidate="searchFor" ValidationGroup="Search">*</asp:RequiredFieldValidator><br />
                 
                     <br />
                     <asp:ValidationSummary ID="ValidationSummary1" runat="server" 
@@ -119,17 +133,14 @@
                 </asp:Panel>
             </ContentTemplate>
         </asp:UpdatePanel>
-        <asp:UpdatePanel runat="server" ID="updButtons" UpdateMode="Always" ChildrenAsTriggers="True">
-            <ContentTemplate>
-                <asp:Panel ID="SearchButtons" runat="server" CssClass="topicTable clearfix" HorizontalAlign="Right" >
-                    <asp:LinkButton ID="lnkAdvanced" runat="server" CausesValidation="False" 
-                                OnClick="LinkButton1Click" EnableViewState="False">expand search ...</asp:LinkButton>
-                    <asp:LinkButton ID="btnSearch" runat="server" 
-                        Text="<%$ Resources:webResources, lblSearch %>" OnClick="SearchForums"
-                        ValidationGroup="Search" style="float:right;" EnableViewState="False"/>
-                </asp:Panel>         
-            </ContentTemplate>
-        </asp:UpdatePanel>
+        <asp:Panel ID="SearchButtons" runat="server" CssClass="topicTable clearfix" HorizontalAlign="Right" >
+            <asp:LinkButton ID="lnkAdvanced" runat="server" CausesValidation="False" 
+                        OnClick="LinkButton1Click" EnableViewState="False">expand search ...</asp:LinkButton>
+            <asp:LinkButton ID="btnSearch" runat="server" 
+                Text="<%$ Resources:webResources, lblSearch %>" OnClick="SearchForums"
+                ValidationGroup="Search" style="float:right;" EnableViewState="False"/>
+        </asp:Panel>        
+
     </div>
     <br />
     <asp:UpdatePanel runat="server" ID="updResults" ChildrenAsTriggers="True" >
@@ -156,39 +167,31 @@
                     <asp:TemplateField HeaderText=" ">
                         <ItemTemplate>
                         </ItemTemplate>
-                        <HeaderStyle Width="20px"></HeaderStyle>
+                        <HeaderStyle CssClass="iconCol"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" CssClass="iconcol" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblTopic %>" SortExpression="Subject">
                         <ItemTemplate>
                             <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="False"
                                 GenerateEmptyAlternateText="true" />
-                            <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>" target='<%# Eval("AuthorProfile") %>'
-                                title="<%# Eval("Subject") %>">
-                                <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>
-                            </a>
+                            <a class="TopicLnk bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>" target='_blank'
+                                title="<%# Eval("Subject") %>"><%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></a>
                         </ItemTemplate>
                         <ItemStyle VerticalAlign="Top" />
+                        <HeaderStyle CssClass="subjCol"></HeaderStyle>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Name">
                         <ItemTemplate>
-                            <a href='<%# Eval("AuthorProfile") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName") %></a>
+                            <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName") %></a>
                         </ItemTemplate>
                         <HeaderStyle Width="140px"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblRepliesViews %>" SortExpression="Views">
                         <ItemTemplate>
-                            <%# Eval("ReplyCount")%>
+                            <%# Eval("Views") %><br/><%# Eval("ReplyCount")%>
                         </ItemTemplate>
-                        <HeaderStyle Width="60px"></HeaderStyle>
-                        <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="Views">
-                        <ItemTemplate>
-                            <%# Eval("Views") %>
-                        </ItemTemplate>
-                        <HeaderStyle Width="60px"></HeaderStyle>
+                        <HeaderStyle CssClass="countCol"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
@@ -199,7 +202,7 @@
                             <br />
                             <%# SnitzTime.TimeAgoTag((DateTime) DataBinder.Eval(Container.DataItem, "LastPostDate"), IsAuthenticated,Member)%>
                         </ItemTemplate>
-                        <HeaderStyle Width="122px"></HeaderStyle>
+                        <HeaderStyle CssClass="lastpostCol"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" />
                     </asp:TemplateField>
                 </Columns>

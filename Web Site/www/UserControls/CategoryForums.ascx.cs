@@ -87,12 +87,24 @@ namespace SnitzUI.UserControls
         {
             RepeaterItem item = e.Item;
             string imagedir = Config.ImageDirectory;
+            if ((item.ItemType == ListItemType.Header))
+            {
+                if (!IsAuthenticated)
+                {
+                    var buttonColH = (HtmlTableCell)item.FindControl("adminBtnH");
+                    var pCountH = (HtmlTableCell)item.FindControl("pCountH");
+                    if (buttonColH != null)
+                    {
+                        buttonColH.Visible = false;
+                        pCountH.ColSpan = 2;                        
+                    }
 
+                }
+            }
             if ((item.ItemType == ListItemType.Item) || (item.ItemType == ListItemType.AlternatingItem))
             {
 
                 var forum = (ForumInfo)item.DataItem;
-
                 var lockIcon = item.FindControl("ForumLock") as ImageButton;
                 var unlockIcon = item.FindControl("ForumUnLock") as ImageButton;
                 var delIcon = item.FindControl("ForumDelete") as ImageButton;
@@ -103,7 +115,6 @@ namespace SnitzUI.UserControls
                 var archive = item.FindControl("ArchiveForum") as ImageButton;
                 var newIcon = item.FindControl("hypNewTopic") as HyperLink;
                 var viewarchive = item.FindControl("hypViewArchive") as HyperLink;
-
                 var popuplink = item.FindControl("popuplink") as Literal;
                 var ldate = (Literal)item.FindControl("lDate");
                 var iconPh = (PlaceHolder)item.FindControl("Ticons");
@@ -135,7 +146,6 @@ namespace SnitzUI.UserControls
                     if (iconPh != null)
                     {
                         var img = new Image { ID = "imgTopicIcon", ImageUrl = imagedir + "message/weblink.png", AlternateText = "", EnableViewState = false };
-                        //img.ApplyStyleSheetSkin(page);
                         iconPh.Controls.Add(img);
                     }
                     if (!IsAuthenticated)
@@ -144,7 +154,6 @@ namespace SnitzUI.UserControls
                         linkcol.ColSpan = 5;
                         return;
                     }
-
                 }
 
                 header.Visible = true;
@@ -156,10 +165,8 @@ namespace SnitzUI.UserControls
                         offset = Member.TimeOffset;
                     if (forum.LastPostDate.HasValue && !(forum.LastPostDate.Value == DateTime.MinValue))
                         ldate.Text = SnitzTime.TimeAgoTag(forum.LastPostDate.Value, IsAuthenticated, Member);
-                    //Common.TimeAgoTag(forum.LastPostDate.Value, IsAuthenticated, offset);
                 }
                 bool isForumModerator = Moderators.IsUserForumModerator(HttpContext.Current.User.Identity.Name, forum.Id);
-
 
                 if (popuplink != null)
                 {
@@ -172,7 +179,6 @@ namespace SnitzUI.UserControls
                     archive.ImageUrl = imagedir + "/admin/archive.png";
                     archive.OnClientClick =
                          "confirmPostBack('Do you want to archive posts in this Forum?','ForumArchive'," + forum.Id + ");return false;";
-                    
                 }
                 
                 if (IsAuthenticated)
@@ -261,9 +267,9 @@ namespace SnitzUI.UserControls
                 else
                 {
                     var buttonCol = (HtmlTableCell)item.FindControl("adminBtn");
-                    var lastpost = (HtmlTableCell)item.FindControl("lastpost");
+                    var pCount = (HtmlTableCell)item.FindControl("pCount");
                     buttonCol.Visible = false;
-                    lastpost.ColSpan = 2;
+                    pCount.ColSpan = 2;
                 }
             }
         }
@@ -312,8 +318,6 @@ namespace SnitzUI.UserControls
                 }
             }
         }
-
-
 
     }
 }

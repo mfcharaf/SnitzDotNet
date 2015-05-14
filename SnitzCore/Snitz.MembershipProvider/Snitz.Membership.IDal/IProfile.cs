@@ -24,6 +24,6 @@ namespace Snitz.Membership.IDal
         ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption,
             string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords);
 
-        
+        string GetBookMarkModValues(string username);
     }
 }

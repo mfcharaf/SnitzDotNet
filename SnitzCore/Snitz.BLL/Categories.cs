@@ -30,9 +30,12 @@ namespace Snitz.BLL
     {
         public static IEnumerable<ForumInfo> GetCategoryForums(int categoryid, MemberInfo member)
         {
-            var allowedforums = Forums.AllowedForums(member);
             IForum dal = Factory<IForum>.Create("Forum");
-
+            var allowedforums = Forums.AllowedForums(member);
+            if (member == null)
+            {
+                allowedforums = Forums.ViewableForums();
+            }
             return dal.GetByParent(categoryid).Where(catforum => allowedforums.Contains(catforum.Id));
         }
 
@@ -97,12 +100,6 @@ namespace Snitz.BLL
             ICategory dal = Factory<ICategory>.Create("Category");
             dal.SetStatus(catid, status);
         }
-
-        //public static IEnumerable<ForumInfo> AllowedForums(int catid, MemberInfo member, bool isAdministrator)
-        //{
-        //    var allowed = member.AllowedForums;
-        //    return GetCategoryForums(catid).Where(forum => allowed.Contains(forum.Id)).ToList();
-        //}
 
         public static bool CategoryHasPosts(int catid)
         {

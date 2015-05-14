@@ -25,10 +25,10 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PersianCulture;
@@ -39,9 +39,15 @@ using SnitzMembership;
 
 namespace SnitzCommon
 {
-	public class PageBase : Page
+    public interface ISiteMapResolver
+    {
+        SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e);
+    }
+
+    public class PageBase : Page
 	{
         private ScriptManager _pageScriptManager;
+        private bool _isMobile;
         /// <summary>
         /// Private property to handle the lastvisit cookie
         /// </summary>
@@ -121,7 +127,7 @@ namespace SnitzCommon
             }
         }
         /// <summary>
-        /// True if the current user
+        /// True if the current user is an administrator
         /// </summary>
         public bool IsAdministrator
         {
@@ -160,6 +166,7 @@ namespace SnitzCommon
 	    }
 
         public Stopwatch stopWatch = Stopwatch.StartNew();
+
         public ScriptManager PageScriptManager
         {
             get { return _pageScriptManager ?? (_pageScriptManager = ScriptManager.GetCurrent(this)); }
@@ -168,7 +175,7 @@ namespace SnitzCommon
         /// <summary>
         /// Sitemap page handler
         /// </summary>
-		public event SiteMapResolveEventHandler SiteMapResolve;
+		public event SiteMapResolveEventHandler OnSiteMapResolve;
         
         protected override void OnPreInit(EventArgs e)
         {
@@ -187,23 +194,30 @@ namespace SnitzCommon
 
             base.OnPreInit(e);
 
-            #region Theme Setting
-            try
-            {
-                Page.Theme = Config.UserTheme;
-                Session.Add("PageTheme", Page.Theme);
-            }
-            catch (Exception)
-            {
-                throw new Exception("Problem loading default Theme");
-            }
-            #endregion
 
+            #region Set Master Template
+            var useragent = Request.UserAgent;
+            var isAndroid = false;
+            
+            if (useragent != null)
+            {
+                if (useragent.ToLower().Contains("android"))
+                {
+                    isAndroid = true;
+                }
+            }
+            _isMobile = false;
             try
             {
-                if (!Config.ShowRightColumn)
+                
+                if (Request.Browser.IsMobileDevice || isAndroid || Page.Theme == "Mobile")
                 {
-                    Session.Add("_MasterPage", "~/MasterTemplates/SingleCol.Master");
+                    Session.Add("_MasterPage", "/MasterTemplates/Mobile.Master");
+                    _isMobile = true;
+                }
+                else if (!Config.ShowRightColumn)
+                {
+                    Session.Add("_MasterPage", "/MasterTemplates/SingleCol.Master");
                 }
                 if (Session["_MasterPage"] == null)
                 {
@@ -222,18 +236,31 @@ namespace SnitzCommon
             {
                 throw new Exception("Problem loading Master Template");
             }
+            #endregion
 
+            #region Theme Setting
+            try
+            {
+                Page.Theme = _isMobile ? "Mobile" : Config.UserTheme;
+
+                Session.Add("PageTheme", Page.Theme);
+            }
+            catch (Exception)
+            {
+                //set to default
+                Page.Theme = Config.DefaultTheme;
+            }
+            #endregion
+
+            #region Update Last Visit cookie
             HttpContext current = HttpContext.Current;
 
             //Check for the _LastVisit Session
-            int counter = 0;
             try
-            {
-                
+            {                
                 if (current.Session["_LastVisit"] == null)
                 {
                     //Is there a last vist cookie
-
                     if (LastVisitCookie != null)
                     {
                         current.Session.Add("_LastVisit", LastVisitCookie);
@@ -246,7 +273,6 @@ namespace SnitzCommon
 
                             if (mu != null)
                             {
-                                counter = 6;
                                 mu.LastActivityDate = mu.LastLoginDate;
                                 var dateTime = LastVisitCookie.ToDateTime();
                                 if (dateTime.HasValue)
@@ -255,16 +281,16 @@ namespace SnitzCommon
                             }
                         }
                     }
-                    counter = 7;
                     //set the last visit cookie now 
                     LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
-                    counter = 8;
                 }
             }
             catch (Exception)
             {
-                throw new Exception("Problem setting Last Visit cookie:" + counter);
+                //there was a problem so set it to now
+                LastVisitCookie = DateTime.UtcNow.ToForumDateStr();
             }
+            #endregion
 
             current.Session.Add("_IsAdminOrModerator", IsModerator || IsAdministrator);
         }
@@ -277,15 +303,15 @@ namespace SnitzCommon
 	    protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			//attach to the static SiteMapResolve event
-			SiteMap.SiteMapResolve += SiteMapSiteMapResolve;
-            if (HttpContext.Current.User.Identity.Name == "")
+
+            //If not logged in and registration required, redirect to login page
+            if (HttpContext.Current.User.Identity.Name == "" || Member.Username.ToLower() == "guest")
             {
-                if (Config.RequireRegistration && !HttpContext.Current.User.Identity.IsAuthenticated)
+                if (Config.RequireRegistration && (!HttpContext.Current.User.Identity.IsAuthenticated || Member.Username.ToLower() == "guest"))
                     if(!Request.Path.ContainsAny(new[]{"register","activate","passreset","login"}))
                         Response.Redirect("\\Account\\login.aspx");
             }
-            //turn on the validator links in the footer
+            //turn on the validator links in the footer if they exist
             if (Master != null)
             {
                 var w3CVal = (ContentPlaceHolder)Master.FindControl("W3CVal");
@@ -298,18 +324,15 @@ namespace SnitzCommon
             //let's capture the querystring params here
             if (!String.IsNullOrEmpty(Request.Params["CAT"]) || !String.IsNullOrEmpty(Request.Params["CAT_ID"]))
             {
-                string category = Request.Params["CAT"] ?? Request.Params["CAT_ID"];
-                CatId = Int32.Parse(category);
+                CatId = Int32.Parse(Request.Params["CAT"] ?? Request.Params["CAT_ID"]);
             }
 
             if (!String.IsNullOrEmpty(Request.Params["FORUM"]) || !String.IsNullOrEmpty(Request.Params["FORUM_ID"]))
             {
-                string forum = Request.Params["FORUM"] ?? Request.Params["FORUM_ID"];
                 try
                 {
-                    ForumId = Int32.Parse(forum);
-                    Session["ForumId"] = ForumId;
-
+                    ForumId = Int32.Parse(Request.Params["FORUM"] ?? Request.Params["FORUM_ID"]);
+                    Session["FORUMID"] = ForumId;
                 }
                 catch
                 {
@@ -320,7 +343,6 @@ namespace SnitzCommon
             }
             if (!String.IsNullOrEmpty(Request.Params["TOPIC"]) || !String.IsNullOrEmpty(Request.Params["TOPIC_ID"]) || HttpContext.Current.Items["TopicId"] != null)
             {
-
                 string topic = Request.Params["TOPIC"] ?? Request.Params["TOPIC_ID"];
                 if (HttpContext.Current.Items["TopicId"] != null)
                     topic = HttpContext.Current.Items["TopicId"].ToString();
@@ -329,13 +351,6 @@ namespace SnitzCommon
             }
 
 		}
-
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            //detach from the static SiteMapResolve event - it's no longer needed because the request is finished
-            SiteMap.SiteMapResolve -= SiteMapSiteMapResolve;
-        }
 
 	    protected virtual void Page_PreRender(object sender, EventArgs e)
         {
@@ -352,7 +367,12 @@ namespace SnitzCommon
             {
                 Exception objErr = Server.GetLastError().GetBaseException();
                 string err = "";
-                if (objErr.Message == "FloodCheck")
+                if (objErr is SecurityException)
+                {
+                    err = "<b>Authentication Problem</b><hr><br/>" +
+                             "<br/><b>Only authorised members are allowed access.<br/>Please login to view content.</b>";                     
+                }
+                else if (objErr.Message == "FloodCheck")
                 {
                     err = "<b>Flood control enabled</b><hr><br/>" +
                              "<br/><b>Please try later</b>";   
@@ -363,7 +383,6 @@ namespace SnitzCommon
                              "<br/><b>Error in: </b>" + Request.Url.ToString() +
                              "<br/><b>Error Message: </b>" + objErr.Message.ToString();                    
                 }
-
 
                 if (Config.DebugMode)
                     err += "<br/><b>Stack Trace:</b><br/>" + objErr.StackTrace.ToString();
@@ -378,32 +397,13 @@ namespace SnitzCommon
                 Server.ClearError();
             }
         }
-
+        /// <summary>
+        /// Public Method to refresh pages
+        /// </summary>
 	    public void ReloadPage()
 	    {
             Response.Redirect(Request.RawUrl);
 	    }
-
-		SiteMapNode SiteMapSiteMapResolve(object sender, SiteMapResolveEventArgs e)
-		{
-
-		    //only raise the event if the request is for this page - remember this handler is handling a static event that fires for all pages
-			//therefore, we don't automatically know that the event is being fired for this page - that is what IsSameRequest's is for
-		    return IsSamePage(Context, e.Context) ? OnSiteMapResolve(e) : SiteMap.CurrentNode;
-		}
-
-	    /// <summary>
-		/// Raises the <see cref="SiteMapResolve"/> event for this page.
-		/// </summary>
-		protected virtual SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
-		{
-			if (SiteMapResolve != null)
-			{
-				return SiteMapResolve(this, e);
-			}
-
-			return SiteMap.CurrentNode;
-		}
 
 		/// <summary>
 		/// Determines whether the two contexts are equal and, therefore, whether the SiteMap.SiteMapResolve event should be fired.
@@ -415,6 +415,9 @@ namespace SnitzCommon
 				&& (context1.Request.QueryString == context2.Request.QueryString));
 		}
         
+        /// <summary>
+        /// Set the page culture and load calendar if required
+        /// </summary>
         protected override void InitializeCulture()
         {
             string lang = SnitzCookie.GetDefaultLanguage();
@@ -434,24 +437,5 @@ namespace SnitzCommon
 
         }
 
-        //#region Page methods
-
-        //[WebMethod]
-        //public static object[] ExecuteCommand(string commandName, string targetMethod, object data)
-        //{
-        //    try
-        //    {
-        //        object[] result = new object[2];
-        //        result[0] = Command.Create(commandName).Execute(data);
-        //        result[1] = targetMethod;
-        //        return result;
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //#endregion
-    }
+	}
 }

@@ -38,6 +38,14 @@
             </tr>
             <tr>
                 <td style="width: 50%;text-align:right;">
+                    <asp:Label ID="lblSetCookie" runat="server" Text="Set Cookie to"></asp:Label>&nbsp;:&nbsp;
+                </td>
+                <td style="width: 50%;text-align:left">
+                    <asp:RadioButton runat="server" ID="rbForum" Text="Forum"/><asp:RadioButton ID="rbWebSite" Text="Website" runat="server" Checked="True"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;text-align:right;">
                     <asp:Label ID="lblVersion" runat="server" Text="Snitz Version"></asp:Label>&nbsp;:&nbsp;
                 </td>
                 <td style="width: 50%;text-align:left">
@@ -56,6 +64,15 @@
                 </td>
                 <td style="width: 50%; text-align: left">
                     <a:ThemeDropDownList ID="ddTheme" runat="server" AutoPostBack="False"></a:ThemeDropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%; text-align: right">
+                    <asp:Label ID="Label7" runat="server" Text="Allow Users to change Theme"></asp:Label>
+                    :&nbsp;
+                </td>
+                <td style="width: 50%; text-align: left">
+                    <uc1:AdminRadioButton ID="rblThemeChange" runat="server" />
                 </td>
             </tr>
             <tr>

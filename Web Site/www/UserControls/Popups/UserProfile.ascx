@@ -6,7 +6,7 @@
     <ItemTemplate>
         <asp:Literal ID="AvatarLabel" runat="server" Text='<%# Bind("AvatarImg") %>' />
         <asp:PlaceHolder ID="phAvatar" runat="server"></asp:PlaceHolder>
-        <asp:Label ID="MemberTitleLabel" runat="server" CSSClass="usertitle" Text='<%# Bind("Rank.Title") %>' /><br />
+        <br/><asp:Label ID="MemberTitleLabel" runat="server" CSSClass="usertitle" Text='' /><br />
         <asp:Label CssClass="usrlabel" ID="Label1" runat="server" Text="<%$ Resources:webResources, lblName %>"></asp:Label>:
         <asp:Label ID="NameLabel" runat="server" Text='<%# Bind("Username") %>' /><br />
         <asp:Label CssClass="usrlabel" ID="Label2" runat="server" Text="<%$ Resources:webResources, lblCountry %>"></asp:Label>:

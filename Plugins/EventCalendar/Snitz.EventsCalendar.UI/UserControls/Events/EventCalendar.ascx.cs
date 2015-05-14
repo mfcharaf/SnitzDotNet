@@ -29,7 +29,9 @@ using System.Threading;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ModConfig;
 using Snitz.BLL;
+using Snitz.BLL.modconfig;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
@@ -54,9 +56,11 @@ namespace EventsCalendar.UserControls
     
     public partial class EventCalendar : UserControl
     {
-        
-        private Collection<CalDate> _calEvents;
+        private List<IEvent> _events;
+        //private Collection<CalDate> _calEvents;
         private DateTime _tempDate;
+        private bool _showholidays;
+
         private int CurrentYear
         {
             get
@@ -77,11 +81,22 @@ namespace EventsCalendar.UserControls
                 }
             }
         }
-
+        public bool ShowHolidays
+        {
+            protected get { return _showholidays; }
+            set { _showholidays = value; }
+        }
         private static bool EventAdmin
         {
             get
-            { return Config.EventAdminRoles.Any(Roles.IsUserInRole); }
+            {
+                var modcontroler = new ModController("Events");
+                var allowedRoles = modcontroler.ModInfo.Settings["EventAdminRoles"] != null
+                    ? modcontroler.ModInfo.Settings["EventAdminRoles"].ToString()
+                    : String.Empty;
+                var dsRoles = allowedRoles.Split(',').ToList();
+                return dsRoles.Any(Roles.IsUserInRole);
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -155,24 +170,21 @@ namespace EventsCalendar.UserControls
 
         private void GetEvents(DateTime start, DateTime end)
         {
-            _calEvents = new Collection<CalDate>();
-            foreach (EventInfo calEvent in ForumEvents.GetEvents(start,end))
-            {
-                
-                CalDate cal = new CalDate { Id= calEvent.Id, Date = calEvent.Date, Title = calEvent.Title, Type = calEvent.Type };
-                if ( String.IsNullOrEmpty(calEvent.Audience) || calEvent.Audience == "All" || Roles.IsUserInRole(calEvent.Audience) || Roles.IsUserInRole("Administrator"))
-                _calEvents.Add(cal);                
-            }
-
+            _events = ForumEvents.GetEvents(start, end);
+            if (_showholidays)
+                _events.AddRange(ForumEvents.PresetHolidays());
         }
 
         protected void Calendar1DayRender(object sender, DayRenderEventArgs e)
         {
+            var dt = new DateTime(e.Day.Date.Year, e.Day.Date.Month, e.Day.Date.Day, 23, 59, 0);
+            List<IEvent> evnts = _events.Where(evnt => ForumEvents.NeedsRendering(evnt, dt)).ToList().OrderBy(d => d.Date).ToList();
+
             StringBuilder temp = new StringBuilder(); 
             bool dayTextHasChanged = false;
             DateTime dayHold = DateTime.MinValue;
 
-            foreach (CalDate item in _calEvents)
+            foreach (var item in evnts)
             {
                 string headerstyle;
                 if (dayHold != item.Date)
@@ -184,39 +196,35 @@ namespace EventsCalendar.UserControls
                     dayHold = item.Date;
                 }
 
-                if (e.Day.Date.DayOfYear == item.Date.DayOfYear)
+                switch (item.Type)
                 {
-                    
-                    switch (item.Type)
-                    {
-                        case 1:
-                            headerstyle = "cal-head-event";
-                            break;
-                        case 2:
-                            headerstyle = "cal-head-birthday";
-                            break;
-                        case 3:
-                            headerstyle = "cal-head-anniversary";
-                            break;
-                        case 4:
-                            headerstyle = "cal-head-holiday";
-                            break;
-                        case 5:
-                            headerstyle = "cal-head-special";
-                            break;
-                        default:
-                            headerstyle = "cal-head";
-                            break;
-                    }
-                  
-                    if(EventAdmin)
-                        temp.AppendFormat("<br><a href=\"/Content/Events/Events.aspx?mode=edit&id={0}\" title=\"Edit event: {1}\">{1}</a>", item.Id, item.Title);
-                    else
-                        temp.AppendFormat("<span class=\"{0}\" ><br>{1}</span>", headerstyle, item.Title);
-
-                    dayTextHasChanged = true;
-                    ////Set the flag
+                    case 1:
+                        headerstyle = "cal-head-event";
+                        break;
+                    case 2:
+                        headerstyle = "cal-head-birthday";
+                        break;
+                    case 3:
+                        headerstyle = "cal-head-anniversary";
+                        break;
+                    case 4:
+                        headerstyle = "cal-head-holiday";
+                        break;
+                    case 5:
+                        headerstyle = "cal-head-special";
+                        break;
+                    default:
+                        headerstyle = "cal-head";
+                        break;
                 }
+
+                if (EventAdmin)
+                    temp.AppendFormat("<br><a href=\"/Content/Events/Events.aspx?mode=edit&id={0}\" title=\"Edit event: {1}\">{1}</a>", item.Id, item.Title);
+                else
+                    temp.AppendFormat("<span class=\"{0}\" ><br>{1}</span>", headerstyle, item.Title);
+
+                dayTextHasChanged = true;
+                ////Set the flag
 
             }
 
@@ -248,7 +256,7 @@ namespace EventsCalendar.UserControls
             Calendar currentCal = sender as Calendar;
             if (currentCal != null) _tempDate = currentCal.SelectedDate;
             // fetch todays events from db
-            List<EventInfo> todaysEvents = GetEventsForToday(_tempDate).ToList();
+            List<IEvent> todaysEvents = GetEventsForToday(_tempDate).ToList();
             if (todaysEvents.Any())
                 temp = "";
             foreach (EventInfo item in todaysEvents)
@@ -291,7 +299,7 @@ namespace EventsCalendar.UserControls
 
         }
 
-        private static IEnumerable<EventInfo> GetEventsForToday(DateTime date)
+        private static IEnumerable<IEvent> GetEventsForToday(DateTime date)
         {
 
             return ForumEvents.GetEventsForToday(date.ToForumDateStr());
@@ -343,11 +351,15 @@ namespace EventsCalendar.UserControls
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 ExtendedCalendar cal = e.Item.FindControl("ExtendedCalendar1") as ExtendedCalendar;
+                
                 var test = (CalMonths)e.Item.DataItem;
                 if(test.Date.Month == DateTime.UtcNow.Month)
                     cal.TodaysDate = DateTime.UtcNow.Date;
                 if (cal != null)
+                {
+                    cal.ShowHolidays = ConfigHelper.GetBoolValue("EventsConfig", "EventShowHolidays");
                     cal.DaySelected += Calendar1SelectionChanged;
+                }
             }
             if (e.Item.ItemType == ListItemType.Separator)
             {

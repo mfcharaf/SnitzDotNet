@@ -25,7 +25,7 @@
 
         private const string CREATE_DATABASE = "";
 
-        private const string ASPNET_ROLES = "CREATE TABLE [aspnet_Roles]( " +
+        private const string ASPNET_ROLES = "CREATE TABLE [snitz_Roles]( " +
                                             "    [ApplicationId] [uniqueidentifier] NOT NULL," +
                                             "    [RoleName] [varchar](255) NOT NULL," +
                                             "    [LoweredRoleName] [varchar](255) NOT NULL," +
@@ -43,7 +43,7 @@
                                             "[LastActivityDate] [datetime] NOT NULL" +
                                             ") ON [PRIMARY]";
 
-        private const string ASPNET_USERSINROLES = "CREATE TABLE [aspnet_UsersInRoles](" +
+        private const string ASPNET_USERSINROLES = "CREATE TABLE [snitz_UsersInRoles](" +
                                                    "    [UserId] [int] NOT NULL," +
                                                    "    [RoleId] [int] NOT NULL," +
                                                    "CONSTRAINT pk_UsersInRoles PRIMARY KEY (UserId,RoleId)" +
@@ -97,7 +97,7 @@
                                            "    [DisplayText] [varchar](500) NOT NULL," +
                                            "    [TopicId] [int] NULL," +
                                            "    [CloseAfterDays] [int] NULL," +
-                                           "    [ShowResultsBeforeClose] [smallint] NOT NULL" +
+                                           "    [ShowResultsBeforeClose] [smallint] NOT NULL DEFAULT (0)" +
                                            ") ON [PRIMARY]";
 
         private const string FORUM_ROLES = "CREATE TABLE [FORUM_ROLES](" +
@@ -127,6 +127,8 @@
                                       "[Audience] [varchar](255)  NULL," +
                                       "[Author] [int] NOT NULL," +
                                       "[EventDate] [varchar](50)  NOT NULL," +
+                                      "[Recur] [int]  NOT NULL DEFAULT (0)," +
+                                      "[Enabled] [smallint]  NOT NULL DEFAULT (1)," +
                                       "[Description] [varchar](400)  NULL" +
                                       ") ON [PRIMARY]";
     }

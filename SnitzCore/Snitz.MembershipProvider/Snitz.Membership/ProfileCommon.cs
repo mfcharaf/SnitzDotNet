@@ -237,7 +237,7 @@ namespace SnitzMembership
             }
             set
             {
-                this.SetPropertyValue("PMEmail", value);
+                this.SetPropertyValue("PMEmail", value ?? 0);
             }
         }
 

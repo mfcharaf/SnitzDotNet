@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Xml.Linq;
 using SnitzConfig;
@@ -50,9 +51,12 @@ namespace Snitz.BLL
                 {
                     string appdatafolder = AppDomain.CurrentDomain.GetData("DataDirectory").ToString(); //Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "App_Data");
                     XDocument loaded = XDocument.Load(appdatafolder + @"\emoticons.xml");
-                    var q = from c in loaded.Descendants("emoticon")
-                            select c;
-            
+                    //IEnumerable<XElement> q = from c in loaded.Descendants("emoticon")
+                    //        select c;
+                    var q = from e in loaded.Descendants("emoticon")
+                            group e by e.Attribute("image").Value into g
+                            select g.First();
+
                     var list = new List<Emoticon>();
                     foreach (XElement element in q)
                     {

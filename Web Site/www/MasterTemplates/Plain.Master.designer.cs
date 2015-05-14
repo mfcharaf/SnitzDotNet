@@ -31,13 +31,13 @@ namespace SnitzUI.MasterTemplates {
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
         
         /// <summary>
-        /// CPHead control.
+        /// CPMeta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder CPHead;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder CPMeta;
         
         /// <summary>
         /// rtlCss control.
@@ -47,6 +47,15 @@ namespace SnitzUI.MasterTemplates {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal rtlCss;
+        
+        /// <summary>
+        /// CPHead control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder CPHead;
         
         /// <summary>
         /// form1 control.
@@ -209,23 +218,5 @@ namespace SnitzUI.MasterTemplates {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal Literal1;
-        
-        /// <summary>
-        /// validXHTML control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image validXHTML;
-        
-        /// <summary>
-        /// validCSS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image validCSS;
     }
 }

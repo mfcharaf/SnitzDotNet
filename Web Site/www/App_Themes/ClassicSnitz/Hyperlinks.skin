@@ -1,13 +1,4 @@
-
-
-
-<asp:HyperLink SkinID="NewForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
-
-<asp:HyperLink SkinID="DeleteTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/trash.png"></asp:HyperLink>
-<asp:HyperLink SkinID="EditTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/properties.png"></asp:HyperLink>
-<asp:HyperLink SkinID="NoArchiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/notarchive.png"></asp:HyperLink>
-<asp:HyperLink SkinID="archiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/archive.png"></asp:HyperLink>
-<asp:HyperLink SkinID="SendTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/icon_send_topic.gif"></asp:HyperLink>
+<asp:HyperLink SkinID="EditTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/write.png"></asp:HyperLink>
 <asp:HyperLink SkinID="ReplyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/reply.png"></asp:HyperLink>
 <asp:HyperLink SkinID="NewTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
 <asp:HyperLink SkinID="JumpTo" CssClass="msgIcons" runat="server" ImageUrl="Images/page_go.png"></asp:HyperLink>
@@ -33,5 +24,9 @@
 
 <asp:HyperLink SkinID="GoUpFooter" runat="server" ImageUrl="Images/message/up.png"></asp:HyperLink>
 <asp:HyperLink SkinID="RSS" runat="server" Text="RSS Feed" ImageUrl="Images/rss.png"></asp:HyperLink>
+
+<asp:HyperLink SkinID="NewForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder2.png"></asp:HyperLink>
+<asp:HyperLink SkinID="DeleteTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/trash.png"></asp:HyperLink>
+<asp:HyperLink SkinID="SendTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/icon_send_topic.gif"></asp:HyperLink>
 <asp:HyperLink SkinID="sknEditLnk" runat="server" ImageUrl="images/admin/write.png" Text="Edit"></asp:HyperLink>
 <asp:HyperLink SkinID="sknHomePage" runat="server" Text="Visit my homepage"></asp:HyperLink>

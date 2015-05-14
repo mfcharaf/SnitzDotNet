@@ -4,6 +4,8 @@
     <asp:Label ID="Label3" runat="server" Text="Mod Enabled" AssociatedControlID="rblEnabled" CssClass="mod_enabled_lbl" ></asp:Label><br/>
     <a:AdminRadioButtonList ID="rblEnabled" runat="server" Visible="True"  /> 
     <asp:Panel ID="edtPanel" runat="server" style="padding:6px;" GroupingText="Settings">
+        <asp:Label ID="lblHolidays" runat="server" Text="Show public holidays(UK)" AssociatedControlID="rblHolidays"></asp:Label><br/>
+        <a:AdminRadioButtonList ID="rblHolidays" runat="server" Visible="True"  /> <br/>
         <asp:Label ID="lblAllowed" runat="server" Text="Roles allowed to Add events" AssociatedControlID="lbRoles"></asp:Label><br/>
         <a:RolesListBox runat="server" ID="lbRoles" Rows="6"/>
         <asp:ListBox runat="server" ID="AllowedRoles" Rows="6"/>

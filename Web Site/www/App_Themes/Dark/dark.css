@@ -340,6 +340,22 @@ tr.rowsticky{border-bottom:1px solid #000;}
     width:80px;
     height:80px;
 }
+.avatarsmall
+{
+    border: 1px solid black;
+    width:36px;
+    height:36px;
+    z-index: -1;
+}
+.icon-overlay
+{
+position:relative;
+left:20px;
+top:-15px;
+z-index:10;
+}
+    img.avatar,img.avatarsmall{opacity: 0.4;}
+    img.online{opacity: 1;}
 .usrlabel
 {
     width:160px;
@@ -786,5 +802,6 @@ a.Snitzbutton:hover span{
 .popup-button-panel {
     margin: 5px;
 }
+.selected{ background-color: #fff;}
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

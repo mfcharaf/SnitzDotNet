@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" StyleSheetTheme="Light" CodeBehind="PropertyTest.aspx.cs" Inherits="SnitzUI.Admin.PropertyTest" %>
-<%@ Register TagPrefix="udc" Namespace="SnitzCommon.Controls" Assembly="SnitzCommon" %>
 <%@ Register TagPrefix="ajaxtoolkit" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.5.7.1213, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 <%@ Register Src="~/Admin/UserControls/Registration.ascx" TagPrefix="captcha" TagName="Registration" %>
 
@@ -36,7 +35,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-            <ajaxtoolkit:ToolkitScriptManager ID="MainSM" runat="server" ScriptMode="Release" CombineScripts="True" LoadScriptsBeforeUI="true" EnablePageMethods="true" EnableScriptGlobalization="true" EnableScriptLocalization="true">
+            <ajaxtoolkit:ToolkitScriptManager ID="MainSM" runat="server" ScriptMode="Release" CombineScripts="True" LoadScriptsBeforeUI="true" EnablePageMethods="false" EnableScriptGlobalization="true" EnableScriptLocalization="true">
         <Scripts>
             <asp:ScriptReference Path="~/Scripts/main.min.js" />
         </Scripts>

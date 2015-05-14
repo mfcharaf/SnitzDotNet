@@ -16,7 +16,7 @@ namespace Snitz.Membership.SQLServerDAL
         {
             if (!RoleExists(role.RoleName))
             {
-                const string strSql = "INSERT INTO aspnet_Roles (ApplicationId,RoleName, LoweredRoleName,Description,RoleId) VALUES (@AppId,@Name,@LoweredName,@Description,@RoleId)";
+                const string strSql = "INSERT INTO snitz_Roles (ApplicationId,RoleName, LoweredRoleName,Description,RoleId) VALUES (@AppId,@Name,@LoweredName,@Description,@RoleId)";
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@AppId", SqlDbType.VarChar){Value= new Guid().ToString()},
@@ -34,7 +34,7 @@ namespace Snitz.Membership.SQLServerDAL
         {
             if (!RoleExists(roleName))
             {
-                const string strSql = "INSERT INTO aspnet_Roles (RoleName, LoweredRoleName,Description) VALUES (@Name,@LoweredName,@Description)";
+                const string strSql = "INSERT INTO snitz_Roles (RoleName, LoweredRoleName,Description) VALUES (@Name,@LoweredName,@Description)";
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@Name", SqlDbType.VarChar){Value=roleName},
@@ -47,7 +47,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public void DeleteRole(string roleName)
         {
-            const string strSql = "DELETE FROM aspnet_Roles WHERE RoleName=@Name";
+            const string strSql = "DELETE FROM snitz_Roles WHERE RoleName=@Name";
             List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@Name", SqlDbType.VarChar){Value=roleName}
@@ -58,7 +58,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public void DeleteRole(string roleName, bool throwOnPopulatedRole)
         {
-            const string strSql = "DELETE FROM aspnet_Roles WHERE RoleName=@Name";
+            const string strSql = "DELETE FROM snitz_Roles WHERE RoleName=@Name";
             string[] users = GetUsersInRole(roleName);
             if (throwOnPopulatedRole)
             {
@@ -92,7 +92,7 @@ namespace Snitz.Membership.SQLServerDAL
                 foreach (string role in roles)
                 {
                     var roleinfo = GetRole(role);
-                    string sql = "INSERT INTO aspnet_UsersInRoles (RoleId,UserId) SELECT @RoleId,MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME=@Name";
+                    string sql = "INSERT INTO snitz_UsersInRoles (RoleId,UserId) SELECT @RoleId,MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME=@Name";
 
                     foreach (string username in usernames)
                     {
@@ -118,8 +118,8 @@ namespace Snitz.Membership.SQLServerDAL
             {
                 foreach (string role in roles)
                 {
-                    string sql = "DELETE FROM aspnet_UsersInRoles WHERE " + 
-                                       "RoleId=(SELECT RoleId FROM aspnet_Roles WHERE LoweredRolename=@Rolename) AND " +
+                    string sql = "DELETE FROM snitz_UsersInRoles WHERE " + 
+                                       "RoleId=(SELECT RoleId FROM snitz_Roles WHERE LoweredRolename=@Rolename) AND " +
                                        "UserId = (SELECT MEMBER_ID FROM " + Config.MemberTablePrefix + "MEMBERS WHERE M_NAME=@Name)";
                     foreach (string username in usernames)
                     {
@@ -135,8 +135,8 @@ namespace Snitz.Membership.SQLServerDAL
         public bool IsUserInRole(string username, string roleName)
         {
             string strSql = "SELECT COUNT(M.MEMBER_ID) " +
-                      "FROM aspnet_UsersInRoles AS UR INNER JOIN " +
-                      "aspnet_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
+                      "FROM snitz_UsersInRoles AS UR INNER JOIN " +
+                      "snitz_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
                       Config.MemberTablePrefix + "MEMBERS AS M ON UR.UserId = M.MEMBER_ID " +
                       "WHERE M.M_NAME=@Username AND R.RoleName=@Rolename";
             List<SqlParameter> parms = new List<SqlParameter>
@@ -159,7 +159,7 @@ namespace Snitz.Membership.SQLServerDAL
         public bool RoleExists(string roleName)
         {
             const string strSql = "SELECT COUNT(RoleId) " +
-                      "FROM aspnet_Roles " +
+                      "FROM snitz_Roles " +
                       "WHERE LoweredRoleName=@LoweredRole";
             List<SqlParameter> parms = new List<SqlParameter>
                                        {
@@ -177,7 +177,7 @@ namespace Snitz.Membership.SQLServerDAL
         public bool RoleExists(int roleid)
         {
             const string strSql = "SELECT COUNT(RoleId) " +
-                      "FROM aspnet_Roles " +
+                      "FROM snitz_Roles " +
                       "WHERE RoleId=@RoleId";
             List<SqlParameter> parms = new List<SqlParameter>
                                        {
@@ -194,7 +194,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public string[] GetAllRoles()
         {
-            const string strSql = "SELECT RoleName FROM aspnet_Roles";
+            const string strSql = "SELECT RoleName FROM snitz_Roles";
             List<string> rolenames = new List<string>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
             {
@@ -210,8 +210,8 @@ namespace Snitz.Membership.SQLServerDAL
         {
             List<string> rolenames = new List<string>();
             string strSql = "SELECT R.RoleName " +
-                                  "FROM aspnet_UsersInRoles AS UR INNER JOIN " +
-                                  "aspnet_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
+                                  "FROM snitz_UsersInRoles AS UR INNER JOIN " +
+                                  "snitz_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
                                   Config.MemberTablePrefix + "MEMBERS M ON UR.UserId = M.MEMBER_ID " +
                                   "WHERE M.M_NAME=@Username";
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Username",SqlDbType.VarChar){Value = username}))
@@ -228,8 +228,8 @@ namespace Snitz.Membership.SQLServerDAL
         {
             List<string> usernames = new List<string>();
             string strSql = "SELECT M.M_NAME " +
-                                  "FROM aspnet_UsersInRoles AS UR INNER JOIN " +
-                                  "aspnet_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
+                                  "FROM snitz_UsersInRoles AS UR INNER JOIN " +
+                                  "snitz_Roles AS R ON UR.RoleId = R.RoleId INNER JOIN " +
                                   Config.MemberTablePrefix + "MEMBERS M ON UR.UserId = M.MEMBER_ID " +
                                   "WHERE R.Rolename=@Rolename";
 
@@ -245,8 +245,8 @@ namespace Snitz.Membership.SQLServerDAL
 
         public string[] GetForumRoles(int forumId)
         {
-            string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN aspnet_Roles " +
-                                            "ON FR.Role_Id = aspnet_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
+            string strForumRolesSql = "SELECT snitz_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN snitz_Roles " +
+                                            "ON FR.Role_Id = snitz_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
 
             List<string> currentroles = new List<string>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strForumRolesSql, new SqlParameter("@ForumId", SqlDbType.Int) { Value = forumId }))
@@ -287,10 +287,10 @@ namespace Snitz.Membership.SQLServerDAL
 
         public Dictionary<int, string> ListAllRolesForUser(string username)
         {
-            string strSql = "SELECT aspnet_Roles.RoleId, aspnet_Roles.RoleName " +
-                                  "FROM aspnet_Roles INNER JOIN " +
-                                  "aspnet_UsersInRoles ON aspnet_Roles.RoleId = aspnet_UsersInRoles.RoleId INNER JOIN " +
-                                  Config.MemberTablePrefix + "MEMBERS M ON aspnet_UsersInRoles.UserId = M.MEMBER_ID " +
+            string strSql = "SELECT snitz_Roles.RoleId, snitz_Roles.RoleName " +
+                                  "FROM snitz_Roles INNER JOIN " +
+                                  "snitz_UsersInRoles ON snitz_Roles.RoleId = snitz_UsersInRoles.RoleId INNER JOIN " +
+                                  Config.MemberTablePrefix + "MEMBERS M ON snitz_UsersInRoles.UserId = M.MEMBER_ID " +
                                   "WHERE (M.M_NAME = @Username)";
 
             Dictionary<int, string> roles = new Dictionary<int, string>();
@@ -311,7 +311,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public void UpdateRoleInfo(int roleid, string name, string description)
         {
-            const string strSql = "UPDATE aspnet_Roles SET Rolename=@RoleName,Description=@Description,LoweredRolename=@loweredname WHERE RoleId=@RoleId";
+            const string strSql = "UPDATE snitz_Roles SET Rolename=@RoleName,Description=@Description,LoweredRolename=@loweredname WHERE RoleId=@RoleId";
             List<SqlParameter> parms = new List<SqlParameter>
                                        {
                                            new SqlParameter("@RoleId", SqlDbType.Int)
@@ -338,7 +338,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public IEnumerable<RoleInfo> GetAllRolesFull()
         {
-            const string strSql = "SELECT RoleId,RoleName,Description FROM aspnet_Roles";
+            const string strSql = "SELECT RoleId,RoleName,Description FROM snitz_Roles";
             List<RoleInfo> roles = new List<RoleInfo>();
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, null))
             {
@@ -357,7 +357,7 @@ namespace Snitz.Membership.SQLServerDAL
 
         public RoleInfo GetRole(int roleid)
         {
-            const string strSql = "SELECT RoleId,RoleName,Description FROM aspnet_Roles WHERE RoleId=@Roleid";
+            const string strSql = "SELECT RoleId,RoleName,Description FROM snitz_Roles WHERE RoleId=@Roleid";
             RoleInfo role = null;
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@Roleid",SqlDbType.Int){Value = roleid}))
             {
@@ -375,7 +375,7 @@ namespace Snitz.Membership.SQLServerDAL
         }
         public RoleInfo GetRole(string rolename)
         {
-            const string strSql = "SELECT RoleId,RoleName,Description FROM aspnet_Roles WHERE RoleName=@RoleName";
+            const string strSql = "SELECT RoleId,RoleName,Description FROM snitz_Roles WHERE RoleName=@RoleName";
             RoleInfo role = null;
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, strSql, new SqlParameter("@RoleName", SqlDbType.VarChar) { Value = rolename }))
             {
@@ -394,8 +394,8 @@ namespace Snitz.Membership.SQLServerDAL
 
         public void AddRolesToForum(int forumId, string[] newroles)
         {
-            string strForumRolesSql = "SELECT aspnet_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN aspnet_Roles " + 
-                                            "ON FR.Role_Id = aspnet_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
+            string strForumRolesSql = "SELECT snitz_Roles.RoleName FROM " + Config.ForumTablePrefix + "ROLES FR INNER JOIN snitz_Roles " + 
+                                            "ON FR.Role_Id = snitz_Roles.RoleId WHERE (FR.Forum_id=@ForumId)";
 
             string strRemoveSql = "DELETE FROM " + Config.ForumTablePrefix + "ROLES WHERE FORUM_ID=@ForumId ";
             string newrolelist = "";
@@ -420,8 +420,8 @@ namespace Snitz.Membership.SQLServerDAL
 
             foreach (string role in rolestoadd)
             {
-                //INSERT INTO FORUM_ROLES (FORUM_ID,ROLE_ID) SELECT 130,RoleId FROM aspnet_Roles WHERE RoleName='administrator'
-                string strInsertSql = "INSERT INTO " + Config.ForumTablePrefix + "ROLES (FORUM_ID,ROLE_ID) SELECT @ForumId,RoleId FROM aspnet_Roles WHERE RoleName=@Rolename";
+                //INSERT INTO FORUM_ROLES (FORUM_ID,ROLE_ID) SELECT 130,RoleId FROM snitz_Roles WHERE RoleName='administrator'
+                string strInsertSql = "INSERT INTO " + Config.ForumTablePrefix + "ROLES (FORUM_ID,ROLE_ID) SELECT @ForumId,RoleId FROM snitz_Roles WHERE RoleName=@Rolename";
                 List<SqlParameter> parms = new List<SqlParameter>
                                            {
                                                new SqlParameter("@ForumId", SqlDbType.Int)

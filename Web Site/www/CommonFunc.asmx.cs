@@ -318,6 +318,7 @@ namespace SnitzUI
             forum.ModerationLevel = 0;
             var roles = new string[] { };
             var moderators = new string[] { };
+            var removemoderators = new string[] { };
             string password = "";
 
             if (!formresult.AllKeys.Contains("ctl00$cbxCountPost"))
@@ -379,6 +380,9 @@ namespace SnitzUI
                             case "hdnModerators":
                                 moderators = formresult[key].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                                 break;
+                            case "hdnRemoveMods":
+                                removemoderators = formresult[key].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                break;
                             case "tbxPassword":
                                 password = formresult[key];
                                 break;
@@ -396,7 +400,8 @@ namespace SnitzUI
             if (forumMoved)
                 Forums.MoveForumPosts(forum);
             SnitzRoleProvider.AddRolesToForum(newId, roles);
-            Forums.AddForumModerators(newId, moderators);
+            Forums.AddForumModerators(newId, moderators,removemoderators);
+
         }
 
         [WebMethod]

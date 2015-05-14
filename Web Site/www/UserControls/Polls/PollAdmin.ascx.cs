@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.UI.WebControls;
 using Snitz.Entities;
 
 namespace SnitzUI.Admin
@@ -14,6 +15,15 @@ namespace SnitzUI.Admin
             DetailsView1.DataBind();
             PollGridView.DataSource = polls;
             PollGridView.DataBind();
+        }
+
+        protected void InsertItem(object sender, DetailsViewInsertEventArgs e)
+        {
+            TextBox question = (TextBox)DetailsView1.FindControl("NewPollQuestion");
+            Snitz.BLL.Polls.AddTopicPoll(-1, question.Text, new SortedList<int, string>());
+
+            Response.Redirect(Request.RawUrl);
+            
         }
     }
 }

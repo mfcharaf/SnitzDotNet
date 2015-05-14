@@ -619,7 +619,7 @@ namespace Snitz.Providers
                 
                 totalRecords = GetMemberCount();
                 Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
-                List<MemberInfo> mlist = new List<MemberInfo>(dal.GetMembers(pageIndex, pageSize, null, null));
+                List<MemberInfo> mlist = new List<MemberInfo>(dal.GetMembers(pageIndex * pageSize, pageSize, null, null));
 
                 foreach (MemberInfo m in mlist)
                 {
@@ -702,7 +702,25 @@ namespace Snitz.Providers
             return users;
         }
 
+        public MembershipUserCollection FindUsersByInitial(string initial,
+            int pageIndex, int pageSize, out int totalRecords)
+        {
+            var users = new MembershipUserCollection();
+            totalRecords = 0;
 
+            try
+            {
+                int start = pageSize * pageIndex;
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                List<MemberInfo> mlist = new List<MemberInfo>(dal.GetByName(initial + "%"));
+
+                foreach (MemberInfo m in mlist)
+                    users.Add(GetUserFromMember(m));
+            }
+            catch { }
+
+            return users;
+        }
         /*************************************************************************
          * Class initialization
          *************************************************************************/
@@ -943,7 +961,7 @@ namespace Snitz.Providers
                         m.Status == 0,
                         m.MemberSince,
                         m.LastVisitDate == null ? DateTime.MinValue : m.LastVisitDate.Value,
-                        m.LastUpdateDate == null ? DateTime.MinValue : m.LastVisitDate.Value,  //m.LastUpdateDate.Value,
+                        m.LastVisitDate == null ? DateTime.MinValue : m.LastVisitDate.Value,  //m.LastUpdateDate.Value,
                         DateTime.MinValue,
                         DateTime.MinValue,
                         m.LastPostDate,
@@ -1005,6 +1023,27 @@ namespace Snitz.Providers
         {
             IMember dal = Factory<IMember>.Create("Member");
             return dal.OnlineUsers(UserIsOnlineTimeWindow);
+        }
+        public bool LockUser(string username)
+        {
+            // Return status defaults to false
+            bool ret;
+            try
+            {
+                Snitz.IDAL.IMember dal = Snitz.IDAL.Factory<IDAL.IMember>.Create("Member");
+                MemberInfo m = dal.GetByName(username).SingleOrDefault();
+                m.Status = 0;
+                dal.Update(m);
+                // A user was found and nothing was thrown
+                ret = true;
+            }
+            catch
+            {
+                // Couldn't find the user or there was an error
+                ret = false;
+            }
+
+            return ret;
         }
     }
 }

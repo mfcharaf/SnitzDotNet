@@ -70,7 +70,7 @@ namespace Snitz.SQLServerDAL
                         Name = rdr.SafeGetString(1),
                         Description = rdr.SafeGetString(2),
                         Version = new Version(rdr.SafeGetString(3)),
-                        Enabled = rdr.GetBoolean(4),
+                        Enabled = rdr.SafeGetInt16(4) == 1,
                         Roles = rdr.SafeGetString(5),
                         Settings = GetModSettings(modid)
                     };

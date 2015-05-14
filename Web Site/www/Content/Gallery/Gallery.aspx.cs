@@ -34,17 +34,19 @@ namespace SnitzUI
     {
         const string FolderPath = "/gallery/";
         private string _currentGallery = "";
+        public bool ShowEdit;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!Config.ShowGallery)
+            if(!Config.ShowGallery && !Config.UserGallery)
                 throw new NotSupportedException("Gallery module is not enabled");
-
+            ShowEdit = false;
             if (Request.Params["u"] != null)
             {
                 if (IsAuthenticated)
                 {
                     _currentGallery = Member.Username;
+                    ShowEdit = true;
                     BindImages();
                 }
 
@@ -80,6 +82,34 @@ namespace SnitzUI
         {
             _currentGallery = e.CommandArgument.ToString();
             BindImages();
+        }
+
+        protected void delImages_Click(object sender, EventArgs e)
+        {
+            foreach (RepeaterItem item in rptImage.Items)
+            {
+                CheckBox chk = (CheckBox)item.FindControl("selImg");
+                HyperLink link = (HyperLink)item.FindControl("hypImg");
+                if (chk != null)
+                {
+                    if (chk.Checked)
+                    {
+                        if (link != null)
+                        {
+                            try
+                            {
+                                File.Delete(Server.MapPath(link.NavigateUrl));
+                            }
+                            catch(Exception ex)
+                            {
+                                strMsg.Text += ex.Message + Environment.NewLine;
+                            }
+
+                        }
+                    }
+                }
+            }
+            ReloadPage();
         }
     }
 }

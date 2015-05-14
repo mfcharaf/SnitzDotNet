@@ -1,5 +1,9 @@
-﻿html{font-family:Tahoma,Arial,Helvetica,sans-serif;font-size:.9em}
-body{background-color:#FFC751;color:#C00;margin:0;padding:0;line-height:1.4em}
+﻿html{height:100%}
+body,form{margin:0;padding:0;height:100%;font-family:Tahoma,Arial,Helvetica,sans-serif;font-size:.9em;line-height:1.4em;color:#C00;background-color:#FFC751}
+#maincontainer{height:auto;min-height:100%}
+#mainheader{padding:0}
+#mainbody{padding:10px;padding-bottom:80px}
+#mainfooter{clear:both;position:relative;z-index:10;height:80px;margin-top:-80px}
 #aspnetForm{width:100%;margin:0}
 #LoginDIV{float:left;width:30%;margin-left:-30%;background-color:#f80}
 #LogoDIV{margin-left:0;float:left}
@@ -162,6 +166,10 @@ tr.rowsticky{border-bottom:1px solid #F60}
 .sigDIV{bottom:0;height:auto;margin-bottom:3px;width:100%;vertical-align:baseline}
 .modalPopup{background-color:#ffd;border-width:1px;border-style:solid;border-color:Gray;padding:5px;width:350px;height:auto}
 .avatar{border:1px solid #F60;width:80px;height:80px}
+.avatarsmall{border:1px solid #F60;width:36px;height:36px;z-index:-1}
+.icon-overlay{position:relative;left:20px;top:-15px;z-index:10}
+img.avatar,img.avatarsmall{opacity:.4}
+img.online{opacity:1}
 .usrlabel{width:100px;display:inline-block;line-height:1em}
 blockquote.quoteMessage{margin:1.5em 1em;padding:.5em 1em;background-color:#FFFF96}
 blockquote.quoteMessage span{display:block}
@@ -250,6 +258,7 @@ textarea.pmMsgArea{border:1px solid #000;width:98%}
 .poll-content{min-height:40px;border:1px solid #f60;border-top-left-radius:5px;border-top-right-radius:5px}
 .Poll_PollResults table{width:99%}
 .popup-button-panel{margin:5px}
+.selected{background-color:#f60}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
 #__asptrace{position:relative}
 .mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#fff;padding:0;max-height:90%;line-height:1em;font-size:.8em}
@@ -338,3 +347,17 @@ span.moderation{font-weight:bolder;color:Red}
 .topicSplit input,.topicSplit select{border:1px solid #f60}
 .topicSplit select{max-width:200px}
 .topicSplit label{text-align:right;padding-right:20px}
+.login{position:relative;margin:0 auto;padding:20px 20px 20px;width:340px;background:#fa0;border-radius:3px;-webkit-box-shadow:0 0 200px rgba(255,255,255,0.5),0 1px 2px rgba(0,0,0,0.3);box-shadow:0 0 200px rgba(255,102,0,255),0 1px 2px rgba(0,0,0,0.3)}
+.login:before{content:'';position:absolute;top:-8px;right:-8px;bottom:-8px;left:-8px;z-index:-1;background:rgba(0,0,0,0.08);border-radius:4px}
+.login h1{margin:-20px -20px 21px;line-height:40px;font-size:15px;font-weight:bold;color:gold;text-align:center;text-shadow:0 1px darkred;background:#F60;border-bottom:1px solid #cfcfcf;border-radius:3px 3px 0 0;background-image:-webkit-linear-gradient(top,#ffd,#eef2f5);background-image:-moz-linear-gradient(top,#ffd,#eef2f5);background-image:-o-linear-gradient(top,#ffd,#eef2f5);background-image:linear-gradient(to bottom,#ffd,#eef2f5);-webkit-box-shadow:0 1px whitesmoke;box-shadow:0 1px whitesmoke}
+.login p{margin:20px 0 0}
+.login p:first-child{margin-top:0}
+.login input[type=text],.login input[type=password]{width:278px}
+.login p.remember_me{float:left;line-height:31px}
+.login p.remember_me label{font-size:12px;color:#777;cursor:pointer}
+.login p.remember_me input{position:relative;bottom:1px;margin-right:4px;vertical-align:middle}
+.login-help{margin:20px 0;color:darkred;text-align:center;text-shadow:0 1px yellow}
+.login-help a{color:yellow;text-decoration:none}
+.login-help a:hover{text-decoration:underline}
+.login-error p{color:red}
+:-moz-placeholder{color:#c9c9c9!important;font-size:13px}

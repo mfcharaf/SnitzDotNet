@@ -71,14 +71,14 @@ namespace Snitz.SQLServerDAL.Helpers
                 member = new MemberInfo
                                         {
                                             Id = rdr.GetInt32(0),
-                                            Status = rdr.GetInt16(1),
-                                            Username = rdr.GetString(2),
+                                            Status = rdr.SafeGetInt16(1),
+                                            Username = rdr.SafeGetString(2),
                                             NTUsername = rdr.SafeGetString(3),
                                             Email = rdr.SafeGetString(4),
                                             Country = rdr.SafeGetString(5),
                                             HomePage = rdr.SafeGetString(6),
                                             Signature = rdr.SafeGetString(7),
-                                            MemberLevel = rdr.GetInt16(8),
+                                            MemberLevel = rdr.SafeGetInt16(8),
                                             AIM = rdr.SafeGetString(9),
                                             Yahoo = rdr.SafeGetString(10),
                                             ICQ = rdr.SafeGetString(11),
@@ -103,7 +103,7 @@ namespace Snitz.SQLServerDAL.Helpers
                                             Age = rdr.SafeGetString(30),
                                             Password = rdr.GetString(31),
                                             ValidationKey = rdr.SafeGetString(32),
-                                            IsValid = rdr.GetInt16(33) == 1,
+                                            IsValid = rdr.SafeGetInt16(33) == 1,
                                             LastUpdateDate = rdr.GetSnitzDate(34),
                                             MaritalStatus = rdr.SafeGetString(35),
                                             Firstname = rdr.SafeGetString(36),
@@ -124,12 +124,12 @@ namespace Snitz.SQLServerDAL.Helpers
             }
             catch(Exception ex)
             {
-                SqlDataReader rdrtest = rdr;
-                string test = ex.Message;
+                //SqlDataReader rdrtest = rdr;
+                //string test = ex.Message;
             }
 
             string title = member.Title;
-            member.Rank = new RankInfo(member.Username,ref title,member.PostCount);
+            //member.Rank = new RankInfo(member.Username,ref title,member.PostCount);
             member.Title = title;
             return member;
         }
@@ -226,7 +226,7 @@ namespace Snitz.SQLServerDAL.Helpers
                                             Count = rdr.SafeGetString(6),
                                             Read = rdr.GetInt32(7),
                                             //Mail = Convert.ToInt32(rdr.SafeGetString(8)),
-                                            OutBox = rdr.GetInt32(9),
+                                            OutBox = rdr.SafeGetInt16(9),
                                             ToMemberName = rdr.SafeGetString(10),
                                             FromMemberName = rdr.SafeGetString(11)
                                         };

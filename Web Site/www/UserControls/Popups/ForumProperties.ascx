@@ -50,8 +50,9 @@
         <asp:Panel ID="Panel3" runat="server" GroupingText="Moderators"
             Width="49%" Style="float: left;">
             <asp:HiddenField ID="hdnModerators" runat="server"/>
+            <asp:HiddenField ID="hdnRemoveMods" runat="server"/>
             <div class="ListViewContainer" id="modlist">
-            <asp:ListView ID="lvModerator" runat="server" EnableViewState="False" ItemPlaceholderID="itemPlaceHolder1">
+            <asp:ListView ID="lvModerator" OnItemDataBound="ModeratorBind" runat="server" EnableViewState="False" ItemPlaceholderID="itemPlaceHolder1">
                 <LayoutTemplate>
                     <table id="modtbl">
                         <asp:PlaceHolder runat="server" ID="itemPlaceHolder1"></asp:PlaceHolder>
@@ -67,6 +68,7 @@
                         <td>
                             <%# Eval("Name") %>
                         </td>
+                        <td style="display: none;"><%# Eval("MemberId") %></td>
                     </tr>
                 </ItemTemplate>
             </asp:ListView>
@@ -74,8 +76,8 @@
             <asp:DropDownList ID="ddlModUsers" runat="server">
             </asp:DropDownList>
             <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>');">Add</button>
-            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','true');">Remove</button>
-            <div>To remove/add an item, select it in the drop down list and press the required button</div>
+            <button type="button" onclick="UpdateModerator('<%= ddlModUsers.ClientID %>','<%= hdnModerators.ClientID %>','<%= hdnRemoveMods.ClientID %>');">Remove</button>
+            <div>To remove/add an item, select the user in the drop down list or current list and press the required button</div>
         </asp:Panel>
 
         <asp:Panel ID="Panel4" runat="server" GroupingText="Allowed Roles"
@@ -89,7 +91,7 @@
                     </table>
                 </LayoutTemplate>
                 <ItemTemplate>
-                    <tr>
+                    <tr onclick="if ($(this).find('th').length == 0) {$('#roletbl tr').each(function () {$(this).removeClass('selected');});$(this).addClass('selected');}">
                         <td>
                           <%# Container.DataItem %>  
                         </td>

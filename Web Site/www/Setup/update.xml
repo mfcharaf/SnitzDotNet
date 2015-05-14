@@ -1,111 +1,149 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Tables title="" applied="false">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tables title="" applied="true">
   <Create>
-    <Table name="aspnet_Roles" idfield="RoleId">
-      <Column name="ApplicationId" type="GUID" allownulls="false"/>
-      <Column name="RoleName" type="varchar" size="255" default="" allownulls="false"/>
-      <Column name="LoweredRoleName" type="varchar" size="255" default="" allownulls="false"/>
-      <Column name="Description" type="varchar" size="255" default="" allownulls="false"/>
-      <Index name="IDX_ROLES" columns="RoleName" direction="ASC" unique="true"/>
+    <Table name="snitz_Roles">
+      <Column name="RoleId" type="int" allownulls="false" />
+      <Column name="ApplicationId" type="uniqueidentifier" allownulls="false" />
+      <Column name="RoleName" type="varchar" size="255" default="" allownulls="false" />
+      <Column name="LoweredRoleName" type="varchar" size="255" default="" allownulls="false" />
+      <Column name="Description" type="varchar" size="255" default="" allownulls="false" />
+      <Index name="IDX_ROLES" columns="RoleName" direction="ASC" unique="true" />
     </Table>
-    <Table name="aspnet_UsersInRoles" >
-      <Column name="UserId" type="int" allownulls="false"/>
-      <Column name="RoleId" type="int" allownulls="false"/>
-      <Index name="PK_USER_ROLES" columns="RoleId,UserId" direction="ASC" unique="true"/>
+    <Table name="snitz_UsersInRoles">
+      <Column name="UserId" type="int" allownulls="false" />
+      <Column name="RoleId" type="int" allownulls="false" />
+      <Index name="PK_USER_ROLES" columns="RoleId,UserId" direction="ASC" unique="true" />
     </Table>
-    <Table name="FORUM_FAQ_CAT" idfield="FC_ID">
-      <Column name="FC_DESCRIPTION" type="varchar" size="255" allownulls="false"/>
-      <Column name="FC_LANG_ID" type="varchar" size="6" allownulls="true"/>
-      <Column name="FC_ORDER" type="int" allownulls="true"/>
-      <Column name="FC_ROLES" type="varchar" size="50" allownulls="tur"/>
-      <Index name="PK_FAQ_CATEGORY" columns="FC_ID" direction="ASC" unique="true"/>
+    <Table name="FORUM_FAQ_CAT" idfield="FC_ID" droprename="rename">
+      <Column name="FC_DESCRIPTION" type="varchar" size="255" allownulls="false" />
+      <Column name="FC_LANG_ID" type="varchar" size="6" allownulls="true" />
+      <Column name="FC_ORDER" type="int" allownulls="true" />
+      <Column name="FC_ROLES" type="varchar" size="50" allownulls="tur" />
+      <Index name="PK_FAQ_CATEGORY" columns="FC_ID" direction="ASC" unique="true" />
     </Table>
-    <Table name="FORUM_FAQ_INFO" idfield="FI_ID">
-      <Column name="FI_ORDER" type="int" allownulls="false"/>
-      <Column name="FI_LINK" type="varchar" size="50" default="" allownulls="true"/>
-      <Column name="FI_LINK_TITLE" type="varchar" size="255" default="" allownulls="true"/>
-      <Column name="FI_LINK_BODY" type="memo" allownulls="true"/>
-      <Column name="FI_CAT" type="int" allownulls="false"/>
-      <Column name="FI_LANG_ID" type="varchar" size="6" allownulls="true"/>
-      <Index name="PK_FAQ_INFO" columns="FI_CAT,FI_ID" direction="ASC" unique="true"/>
+    <Table name="FORUM_FAQ_INFO" idfield="FI_ID" droprename="rename">
+      <Column name="FI_ORDER" type="int" allownulls="false" />
+      <Column name="FI_LINK" type="varchar" size="50" default="" allownulls="true" />
+      <Column name="FI_LINK_TITLE" type="varchar" size="255" default="" allownulls="true" />
+      <Column name="FI_LINK_BODY" type="memo" allownulls="true" />
+      <Column name="FI_CAT" type="int" allownulls="false" />
+      <Column name="FI_LANG_ID" type="varchar" size="6" allownulls="true" />
+      <Index name="PK_FAQ_INFO" columns="FI_CAT,FI_ID" direction="ASC" unique="true" />
     </Table>
     <Table name="FORUM_PM" idfield="M_ID">
-      <Column name="M_SUBJECT" type="varchar" size="100" allownulls="false"/>
-      <Column name="M_FROM" type="int" allownulls="false"/>
-      <Column name="M_TO" type="int" allownulls="false"/>
-      <Column name="M_SENT" type="varchar" size="50" allownulls="true"/>
-      <Column name="M_MESSAGE" type="memo" allownulls="true"/>
-      <Column name="M_PMCOUNT" type="varchar" size="50" allownulls="true"/>
-      <Column name="M_READ" type="int" allownulls="false"/>
-      <Column name="M_MAIL" type="varchar" size="50" allownulls="true"/>
-      <Column name="M_OUTBOX" type="int" allownulls="false"/>
-      <Index name="PK_FORUM_PM" columns="M_ID" direction="ASC" unique="true"/>
-      <Index name="PK_FORUM_PM_SENT" columns="M_SENT" direction="ASC" unique="true"/>
+      <Column name="M_SUBJECT" type="nvarchar" size="100" allownulls="false" />
+      <Column name="M_FROM" type="int" allownulls="false" />
+      <Column name="M_TO" type="int" allownulls="false" />
+      <Column name="M_SENT" type="varchar" size="50" allownulls="true" />
+      <Column name="M_MESSAGE" type="memo" allownulls="true" />
+      <Column name="M_PMCOUNT" type="varchar" size="50" allownulls="true" />
+      <Column name="M_READ" type="int" allownulls="false" />
+      <Column name="M_MAIL" type="varchar" size="50" allownulls="true" />
+      <Column name="M_OUTBOX" type="smallint" allownulls="false" />
+      <Index name="PK_FORUM_PM" columns="M_ID" direction="ASC" unique="true" />
+      <Index name="PK_FORUM_PM_SENT" columns="M_SENT" direction="ASC" unique="true" />
     </Table>
-    <Table name="FORUM_POLLANSWERS" idfield="PollAnswerID">
-      <Column name="PollID" type="int" allownulls="false"/>
-      <Column name="DisplayText" type="memo" allownulls="false"/>
-      <Column name="SortOrder" type="int" allownulls="false"/>
+    <Table name="FORUM_POLLANSWERS" idfield="PollAnswerID" droprename="rename">
+      <Column name="PollID" type="int" allownulls="false" />
+      <Column name="DisplayText" type="memo" allownulls="false" />
+      <Column name="SortOrder" type="int" allownulls="false" />
     </Table>
-    <Table name="FORUM_POLLRESPONSE" >
-      <Column name="UserID" type="int" allownulls="false"/>
-      <Column name="PollAnswerID" type="int" allownulls="false"/>
+    <Table name="FORUM_POLLRESPONSE" droprename="rename">
+      <Column name="UserID" type="int" allownulls="false" />
+      <Column name="PollAnswerID" type="int" allownulls="false" />
     </Table>
-    <Table name="FORUM_POLLS" idfield="PollID">
-      <Column name="DisplayText" type="memo" allownulls="false"/>
-      <Column name="TopicId" type="int" allownulls="true"/>
-      <Column name="CloseAfterDays" type="int" allownulls="true"/>
-      <Column name="ShowResultsBeforeClose" type="int" allownulls="false"/>
+    <Table name="FORUM_POLLS" idfield="PollID" droprename="rename">
+      <Column name="DisplayText" type="memo" allownulls="false" />
+      <Column name="TopicId" type="int" allownulls="true" />
+      <Column name="CloseAfterDays" type="int" allownulls="true" />
+      <Column name="ShowResultsBeforeClose" type="smallint" allownulls="false" default="0" />
     </Table>
-    <Table name="FORUM_ROLES" idfield="Id">
-      <Column name="Forum_id" type="int" allownulls="false"/>
-      <Column name="Role_Id" type="int" allownulls="false"/>
-      <Index name="PK_FORUMROLES" columns="Forum_id,Role_id" direction="ASC" unique="true"/>
+    <Table name="FORUM_ROLES" idfield="Id" droprename="rename">
+      <Column name="Forum_id" type="int" allownulls="false" />
+      <Column name="Role_Id" type="int" allownulls="false" />
+      <Index name="PK_FORUMROLES" columns="Forum_id,Role_id" direction="ASC" unique="true" />
     </Table>
-    <Table name="FORUM_ProfileData" >
-      <Column name="UserId" type="int" allownulls="false"/>
-      <Column name="Skype" type="varchar" size="50" allownulls="true"/>
-      <Column name="HideAge" type="int" allownulls="true" default="1"/>
-      <Column name="LinkTarget" type="varchar" size="20" allownulls="true"/>
-      <Column name="FavLinks" type="memo" allownulls="true"/>
-      <Column name="Gravatar" type="int" size="" default="0" allownulls="false"/>
-      <Column name="BookMarks" type="memo" allownulls="true"/>
-      <Column name="PublicGallery" type="int" default="0" allownulls="false"/>
-      <Column name="PMEmail" type="int" allownulls="true" default="1"/>
-      <Column name="PMReceive" type="int" allownulls="true" default="1"/>
-      <Column name="PMLayout" type="varchar" size="50" allownulls="true"/>
-      <Index name="PK_Profile" columns="UserId" direction="ASC" unique="true"/>
+    <Table name="FORUM_ProfileData">
+      <Column name="UserId" type="int" allownulls="false" />
+      <Column name="Skype" type="varchar" size="50" allownulls="true" />
+      <Column name="HideAge" type="int" allownulls="true" default="1" />
+      <Column name="LinkTarget" type="varchar" size="20" allownulls="true" />
+      <Column name="FavLinks" type="memo" allownulls="true" />
+      <Column name="Gravatar" type="int" size="" default="0" allownulls="false" />
+      <Column name="BookMarks" type="memo" allownulls="true" />
+      <Column name="PublicGallery" type="int" default="0" allownulls="false" />
+      <Column name="PMEmail" type="int" allownulls="true" default="1" />
+      <Column name="PMReceive" type="int" allownulls="true" default="1" />
+      <Column name="PMLayout" type="varchar" size="50" allownulls="true" />
+      <Index name="PK_Profile" columns="UserId" direction="ASC" unique="true" />
     </Table>
-    <Table name="FORUM_EVENT" idfield="Id">
-      <Column name="Title" type="varchar" size="50" allownulls="false"/>
-      <Column name="Type" type="varchar" size="50" allownulls="false"/>
-      <Column name="Audience" type="varchar" size="255" allownulls="true"/>
-      <Column name="Author" type="int" allownulls="false"/>
-      <Column name="EventDate" type="varchar" size="50" allownulls="false"/>
-      <Column name="Description" type="memo" allownulls="true"/>
-      <Index name="PK_FORUM_Event" columns="Id" direction="ASC" unique="true"/>
+    <Table name="FORUM_EVENT" idfield="Id" droprename="rename">
+      <Column name="Title" type="varchar" size="50" allownulls="false" />
+      <Column name="Type" type="int" allownulls="false" />
+      <Column name="Audience" type="varchar" size="255" allownulls="true" />
+      <Column name="Author" type="int" allownulls="false" />
+      <Column name="EventDate" type="varchar" size="50" allownulls="false" />
+      <Column name="Description" type="memo" allownulls="true" />
+      <Column name="Recur" type="int" allownulls="false" default="0" />
+      <Column name="Enabled" type="smallint" allownulls="false" default="1" />
+      <Index name="PK_FORUM_Event" columns="Id" direction="ASC" unique="true" />
       <Index name="IDX_FORUM_Event" columns="EventDate" direction="DESC" />
     </Table>
-      <Table name="FORUM_FILELOG" idfield="ID">
-        <Column name="FILENAME" type="varchar" size="255" allownulls="false"/>
-        <Column name="COUNTER" type="int" default="0" allownulls="false"/>
-        <Index name="PK_FORUM_FILELOG" columns="FILENAME" direction="ASC" unique="true"/>
-      </Table>
-  </Create>  
+    <Table name="FORUM_FILELOG" idfield="ID">
+      <Column name="FILENAME" type="varchar" size="255" allownulls="false" />
+      <Column name="COUNTER" type="int" default="0" allownulls="false" />
+      <Index name="PK_FORUM_FILELOG" columns="FILENAME" direction="ASC" unique="true" />
+    </Table>
+    <Table name="FORUM_MODS_CONFIG" idfield="MOD_Id">
+      <Column name="MOD_NAME" type="varchar" size="50" allownulls="false" />
+      <Column name="MOD_Description" type="varchar" size="255" allownulls="true" />
+      <Column name="MOD_Version" type="varchar" size="15" allownulls="false" />
+      <Column name="MOD_Enabled" type="smallint" default="0" allownulls="false" />
+      <Column name="MOD_Roles" type="varchar" size="255" allownulls="true" />
+      <Index name="PK_FORUM_MODS" columns="MOD_NAME" direction="ASC" unique="true" />
+    </Table>
+    <Table name="FORUM_MODS_SETTING" idfield="MOD_SettingId">
+      <Column name="MOD_Id" type="int" allownulls="false" />
+      <Column name="MOD_Setting" type="varchar" size="50" allownulls="false" />
+      <Column name="MOD_Value" type="varchar" size="255" allownulls="true" />
+      <Index name="PK_FORUM_MODSETTING" columns="MOD_Id,MOD_Setting" direction="ASC" unique="true" />
+    </Table>
+    <Table name="FORUM_RANKING" idfield="RANK_ID">
+      <Column name="R_TITLE" type="varchar" size="100" allownulls="false" />
+      <Column name="R_IMAGE" type="varchar" size="50" allownulls="false" />
+      <Column name="R_POSTS" type="int" allownulls="true" />
+      <Column name="R_IMG_REPEAT" type="int" allownulls="false" default="1" />
+    </Table>
+  </Create>
   <Alter>
     <Table name="FORUM_FORUM">
-      <Column action="ADD" name="F_POLLS" type="int" default="0" allownulls="false"/>
+      <Column action="ADD" name="F_POLLS" type="int" default="0" allownulls="false" />
     </Table>
     <Table name="FORUM_MEMBERS">
-      <Column action="ADD" name="M_VOTED" type="int" default="0" allownulls="false"/>
-      <Column action="ADD" name="M_LASTUPDATED" type="varchar" size="50" default="" allownulls="true"/>
-      <Column action="ADD" name="M_AVATAR" type="varchar" size="255" default="" allownulls="true"/>
-      <Column action="ADD" name="M_THEME" type="varchar" size="50" default="" allownulls="true"/>
-      <Column action="ADD" name="M_TIMEOFFSET" type="float" default="0.0" allownulls="false"/>
-      <Column action="ADD" name="M_DAYLIGHTSAVING" type="int" default="0" allownulls="false"/>
-      <Column action="ADD" name="M_TIMEZONE" type="varchar" size="250" default="" allownulls="true"/>
-      <Column action="ADD" name="M_DAYLIGHTSAVING" type="smallint" default="0" allownulls="false"/>
-      <Column action="ADD" name="M_VALID" type="int" default="0" allownulls="false"/>
-    </Table>    
+      <Column action="ADD" name="M_ALLOWEMAIL" type="smallint" default="0" allownulls="false" />
+      <Column action="ADD" name="M_VOTED" type="smallint" default="0" allownulls="false" />
+      <Column action="ADD" name="M_LASTUPDATED" type="varchar" size="50" default="" allownulls="true" />
+      <Column action="ADD" name="M_AVATAR" type="varchar" size="255" default="" allownulls="true" />
+      <Column action="ADD" name="M_THEME" type="varchar" size="50" default="" allownulls="true" />
+      <Column action="ADD" name="M_TIMEOFFSET" type="float" default="0.0" allownulls="false" />
+      <Column action="ADD" name="M_TIMEZONE" type="varchar" size="250" default="" allownulls="true" />
+      <Column action="ADD" name="M_DAYLIGHTSAVING" type="smallint" default="0" allownulls="false" />
+      <Column action="ADD" name="M_VALID" type="smallint" default="0" allownulls="false" />
+    </Table>
+    <Table name="FORUM_TOPICS">
+      <Column action="ALTER" name="T_MESSAGE" type="memo" allownulls="false" />
+    </Table>
+    <Table name="FORUM_REPLY">
+      <Column action="ALTER" name="R_STATUS" type="smallint" allownulls="true" />
+      <Column action="ALTER" name="R_MESSAGE" type="memo" allownulls="false" />
+    </Table>
   </Alter>
+  <Update>
+    <Table name="FORUM_TOPICS" condition="">
+      <Column name="T_MESSAGE" value="T_MESSAGE" />
+    </Table>
+    <Table name="FORUM_REPLY" condition="">
+      <Column name="R_MESSAGE" value="R_MESSAGE" />
+    </Table>
+  </Update>
 </Tables>

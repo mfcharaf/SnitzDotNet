@@ -52,7 +52,10 @@ public class SnitzMembershipUser : MembershipUser
 
     public bool IsActive
     {
-        get { return LastActivityDate > DateTime.UtcNow.AddMinutes(-Membership.UserIsOnlineTimeWindow); }
+        get
+        {
+            return LastActivityDate > DateTime.UtcNow.AddMinutes(-Membership.UserIsOnlineTimeWindow);
+        }
     }
 
     public string Title { get; private set; }

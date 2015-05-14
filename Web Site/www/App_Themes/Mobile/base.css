@@ -1,0 +1,94 @@
+﻿html 
+{
+    height: 100%;
+}
+body,form
+{
+    margin:0px;
+    padding:0px;
+    height: 100%;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+    line-height: 1.1em;
+    color: #4B4B4B;
+    background-color: #ffffff;
+    background: url(images/bg-pattern.gif);
+}
+#maincontainer {
+   height: auto; min-height: 100%;
+}
+#mainheader {
+    padding: 0px;
+}
+#mainbody {
+   padding:10px;
+   padding-bottom:80px;   /* Height of the footer */
+}
+#mainfooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ height: 80px;
+ margin-top: -80px;
+}
+table,tr,td,th{border-collapse:collapse; }
+#aspnetForm    
+{
+    width:100%;margin:0px;
+}
+
+#LoginDIV{float:left;width:30%;margin-left: -30%;background-color: #ffffff;}
+#LogoDIV{width:25%;margin-left:0%;float:left;background-color: #ffffff;}
+#TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:  white;}
+
+#MenuDIV{display:block;background-color: #cccccc;padding-top:1px;margin:1px 0px 1px 0px;width:auto;border-top:1px solid #999999;border-bottom:1px solid silver;clear:both;}
+
+#mainDIV{margin:auto;width:98%;}
+#subheadDIV{}
+#breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color: silver;border: 1px solid #777;padding:0px;}
+
+.breadcrumb span {line-height:22px;vertical-align:top;}
+#HdrDIV{margin:1px;}
+
+#RightHdrDIV{margin-left:0px;float:right;width:49%;text-align:right;}
+#LeftHdrDIV{float:left;width:49%;}
+
+#contentDIV{width:auto;margin:1px;clear:both;}
+#MessageList{width: 100%;}
+#contentfooterDIV{margin:1px;width:auto;}
+
+#pagefooterDIV{width:100%;margin:auto;background-color: transparent;}
+
+
+
+#LoginBox{float:right;}
+#LoginBox .content {font-size:small;display:block; color:White; border:0px;}
+
+
+#topsection{background: #ffffff;}
+#topsection h1{margin: 0;padding-top: 15px;}
+
+#contentwrapper{width: 100%;float: left;
+	margin-right: -325px;
+}
+
+#contentcolumn{margin-right:325px;} /*Set right margin to RightColumnWidth*/
+#rightcolumn{float: right;width: 320px; }
+.clearmargin { margin-right: 0px;}
+.hide{ display: none;}
+.rightmargin { margin-right: 325px;}
+.show{ display: block;}
+#footer{clear: both;width: 100%;}
+
+#PostOptionsDIV{padding-right:5px;text-align:center;}
+#PagerPanel{margin-top:3px;}
+
+
+.innertube{
+margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+margin-top: 5px;
+}
+.rtl{ direction:rtl;}
+.nowrap{ white-space: nowrap;}
+.FooterTable{}
+.daydetail{border:1px solid #0FA1B8;border-top:0px;width:35%;float:left;}

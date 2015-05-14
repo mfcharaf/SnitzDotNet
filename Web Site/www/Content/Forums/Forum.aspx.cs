@@ -24,6 +24,7 @@ using System.Linq;
 using System.Security;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
@@ -32,13 +33,15 @@ using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
+using SnitzMembership;
 using Polls = Resources.Polls;
 
 
 namespace SnitzUI
 {
-    public partial class ForumPage : PageBase
+    public partial class ForumPage : PageBase, ISiteMapResolver
     {
+        private const int ICONCOL = 3;
         const string session = "FORUMID";
         private PopulateObject populate;
         protected int _archiveView;
@@ -95,6 +98,24 @@ namespace SnitzUI
             }
         }
         public delegate void PopulateObject(int myInt);
+        protected static string TopicPageLinks(object replyCount, object topicId)
+        {
+            string retVal = "";
+
+            if (!Config.ShowPaging)
+                return retVal;
+
+            if ((int)replyCount > Config.TopicPageSize)
+            {
+                int pageNum = (int)replyCount / Config.TopicPageSize;
+                int rem = (int)replyCount % Config.TopicPageSize;
+                if (rem > 0) pageNum += 1;
+                retVal = " ... ";
+                for (int x = Math.Max(2, SnitzCookie.LastTopicPage((int)topicId)+1); x < pageNum + 1; x++)
+                    retVal += "<a href='/Content/Forums/topic.aspx?TOPIC=" + topicId + "&whichpage=" + x + "'><span class='topicPageLnk' >" + x + "</span></a> ";
+            }
+            return retVal;
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -136,7 +157,10 @@ namespace SnitzUI
                 TopicODS.TypeName = "Snitz.BLL.Forums";
                 _archiveView = 0;
             }
-
+            if (Config.TopicAvatar)
+            {
+                FolderImg.Visible = false;
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -197,13 +221,10 @@ namespace SnitzUI
                 _currentForum.Roles = Forums.GetForumRoles(_currentForum.Id).ToList();
                 if (!IsAuthenticated && (_currentForum.Roles.Count > 0 && !_currentForum.Roles.Contains("All")))
                 {
-                    if (Session[session] == null || Session[session].ToString() != ForumId.ToString())
+                    //if (Session[session] == null || Session[session].ToString() != ForumId.ToString())
                         throw new SecurityException("You must be logged in to view this forum");
                 }
-                if (IsAdministrator || IsForumModerator)
-                    Session["IsAdminOrModerator"] = true;
-                else
-                    Session["IsAdminOrModerator"] = false;
+                Session["IsAdminOrModerator"] = IsAdministrator || IsForumModerator;
 
                 populate = PopulateData;
                 
@@ -404,56 +425,49 @@ namespace SnitzUI
 
         protected void ForumTableRowDataBound(object sender, GridViewRowEventArgs e)
         {
-
+            string currentUser = HttpContext.Current.User.Identity.Name;
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 var topic = (TopicInfo) e.Row.DataItem;
                 topic.Forum = Forums.GetForum(topic.ForumId);
                 topic.PollId = Topics.GetTopicPollId(topic.Id);
-                string currentUser = HttpContext.Current.User.Identity.Name;
 
-                Image img = GetTopicIcon(topic);
-                img.ApplyStyleSheetSkin(Page);
-                e.Row.Cells[0].Controls.Add(img);
+                if (Config.TopicAvatar)
+                e.Row.Cells[0].Controls.Add(GetTopicAuthorIcon(topic.AuthorId));
+                e.Row.Cells[0].Controls.Add(GetTopicIcon(topic));
 
-                var stickyIcon = e.Row.Cells[6].FindControl("Stick") as ImageButton;
-                var unstickyIcon = e.Row.Cells[6].FindControl("UnStick") as ImageButton;
-                var lockIcon = e.Row.Cells[6].FindControl("TopicLock") as ImageButton;
-                var unlockIcon = e.Row.Cells[6].FindControl("TopicUnLock") as ImageButton;
-                var delIcon = e.Row.Cells[6].FindControl("TopicDelete") as ImageButton;
-                var approve = e.Row.Cells[6].FindControl("TopicApprove") as ImageButton;
-                var subscribe = e.Row.Cells[6].FindControl("TopicSub") as ImageButton;
-                var unsubscribe = e.Row.Cells[6].FindControl("TopicUnSub") as ImageButton;
-                //ImageButton hold = e.Row.Cells[6].FindControl("TopicHold") as ImageButton;
-                var editIcon = e.Row.Cells[6].FindControl("hypEditTopic") as HyperLink;
-                var replyIcon = e.Row.Cells[6].FindControl("hypReplyTopic") as HyperLink;
-                var noArchiveIcon = e.Row.Cells[6].FindControl("hypNoArchiveTopic") as HyperLink;
-                var archiveIcon = e.Row.Cells[6].FindControl("hypArchiveTopic") as HyperLink;
-                var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
-                var lastpostdate = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
-                var lastreadpost = e.Row.Cells[5].FindControl("lastreadJump") as HyperLink;
+                var stickyIcon = e.Row.Cells[ICONCOL].FindControl("Stick") as ImageButton;
+                var unstickyIcon = e.Row.Cells[ICONCOL].FindControl("UnStick") as ImageButton;
+                var lockIcon = e.Row.Cells[ICONCOL].FindControl("TopicLock") as ImageButton;
+                var unlockIcon = e.Row.Cells[ICONCOL].FindControl("TopicUnLock") as ImageButton;
+                var delIcon = e.Row.Cells[ICONCOL].FindControl("TopicDelete") as ImageButton;
+                var approve = e.Row.Cells[ICONCOL].FindControl("TopicApprove") as ImageButton;
+                var subscribe = e.Row.Cells[ICONCOL].FindControl("TopicSub") as ImageButton;
+                var unsubscribe = e.Row.Cells[ICONCOL].FindControl("TopicUnSub") as ImageButton;
+                var editIcon = e.Row.Cells[ICONCOL].FindControl("hypEditTopic") as HyperLink;
+                var replyIcon = e.Row.Cells[ICONCOL].FindControl("hypReplyTopic") as HyperLink;
+                var noArchiveIcon = e.Row.Cells[ICONCOL].FindControl("hypNoArchiveTopic") as HyperLink;
+                var archiveIcon = e.Row.Cells[ICONCOL].FindControl("hypArchiveTopic") as HyperLink;
+                var popuplink = e.Row.Cells[3].FindControl("popuplink") as Literal;
+                var postdate = e.Row.Cells[3].FindControl("postdate") as Literal;
+                var lastpostdate = e.Row.Cells[3].FindControl("lpLnk") as HyperLink;
 
                 if(popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
                     popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
-                if (lastpostdate != null)
+                if (postdate != null)
                 {
-                    lastpostdate.Text = SnitzTime.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,Member);
-                    //Common.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated,
-                    //    (int)(Member == null ? Config.TimeAdjust : Member.TimeOffset));
-                }
-                if (lastreadpost != null)
-                {
-                    int lastpage = SnitzCookie.LastTopicPage(topic.Id);
-                    if (lastpage > 0)
-                    {
-                        lastreadpost.NavigateUrl = String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage={1}", topic.Id, lastpage+1);
-                        lastreadpost.Visible = true;
-                    }
+                    postdate.Text = SnitzTime.TimeAgoTag(((TopicInfo)e.Row.DataItem).Date, IsAuthenticated, Member);
 
                 }
+                if (lastpostdate != null)
+                {
+                    lastpostdate.Text = SnitzTime.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated, Member, webResources.lblLastPostJump);
+
+                }
+
                 if(subscribe != null)
                 {
                     subscribe.Visible = IsAuthenticated;
@@ -553,9 +567,17 @@ namespace SnitzUI
                 
                 if (currentUser == "")
                 {
-                    e.Row.Cells.RemoveAt(6);
-                    e.Row.Cells[5].ColumnSpan = 2;
+                    e.Row.Cells.RemoveAt(ICONCOL);
+                    e.Row.Cells[ICONCOL-1].ColumnSpan = 2;
                 }
+            }
+            else if (e.Row.RowType == DataControlRowType.Header)
+            {
+                if (currentUser == "")
+                {
+                    e.Row.Cells.RemoveAt(ICONCOL);
+                    e.Row.Cells[ICONCOL - 1].ColumnSpan = 2;
+                }                    
             }
             else if (e.Row.RowType == DataControlRowType.Pager)
             {
@@ -633,19 +655,46 @@ namespace SnitzUI
                 image.ToolTip = Polls.lblPoll;
                 image.SkinID = "PollFolder";
             }
-
+            if (Config.TopicAvatar)
+                image.CssClass = image.CssClass + " icon-overlay";
             image.GenerateEmptyAlternateText = true;
             image.ApplyStyleSheetSkin(Page);
             return image;
         }
+        private Control GetTopicAuthorIcon(int authorid)
+        {
+            var author = Members.GetAuthor(authorid);
+            ProfileCommon prof = ProfileCommon.GetUserProfile(author.Username);
+            if (prof.Gravatar)
+            {
+                Gravatar avatar = new Gravatar { Email = author.Email };
+                if (author.AvatarUrl != "" && author.AvatarUrl.StartsWith("http:"))
+                    avatar.DefaultImage = author.AvatarUrl;
+                avatar.CssClass = "avatarsmall";
+                return avatar;
 
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
+            }
+            else
+            {
+
+                SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(author.Username);
+                Literal avatar = new Literal { Text = author.AvatarImg };
+                if (mu != null && mu.IsActive && !(Config.AnonMembers.Contains(mu.UserName)))
+                    avatar.Text = avatar.Text.Replace("'avatar'", "'avatarsmall online'");
+                else
+                    avatar.Text = avatar.Text.Replace("'avatar'", "'avatarsmall'");
+                return avatar;
+            }
+
+        }
+
+        public SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
             {
                 SiteMapNode currentNode = SiteMap.CurrentNode.Clone(true);
                 SiteMapNode tempNode = currentNode;
-
+                
                 tempNode.Title = _currentForum.Subject.CleanForumCodeTags();
                 if (_currentForum.ModerationLevel != (int)Enumerators.Moderation.UnModerated)
                 {
@@ -728,7 +777,7 @@ namespace SnitzUI
 
         protected void FilterTopics(object sender, ImageClickEventArgs e)
         {
-            var searchfor = (TextBox) this.ForumTable.HeaderRow.Cells[6].FindControl("SearchFor");
+            var searchfor = (TextBox)this.ForumTable.HeaderRow.Cells[ICONCOL].FindControl("SearchFor");
 
             Session.Add("ForumSearch", searchfor.Text);
             Response.Redirect(Request.RawUrl, true);

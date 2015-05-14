@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Xml;
 using SnitzConfig;
 
@@ -298,5 +299,14 @@ namespace SnitzCommon
             doc.LoadXml(xml);
             return doc.DocumentElement;
         }
+
+        public static void IncludeStyles(this Page page, string style)
+        {
+            HtmlGenericControl child = new HtmlGenericControl("style");
+            child.Attributes.Add("type", "text/css");
+            child.InnerHtml = style;
+            page.Header.Controls.AddAt(page.Header.Controls.Count,child);
+        }
+
     }
 }

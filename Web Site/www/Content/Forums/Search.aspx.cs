@@ -33,7 +33,7 @@ using Image = System.Web.UI.WebControls.Image;
 
 namespace SnitzUI
 {
-    public partial class Search : PageBase
+    public partial class Search : PageBase, ISiteMapResolver
     {
         private GridPager _replyPager;
         private int RowCount
@@ -202,9 +202,6 @@ namespace SnitzUI
         }
         private void HideSearchForm()
         {
-            //extendedSearch.Visible = false;
-            //Options.Visible = false;
-            //pnlSearch.Visible = true;
             extendedSearch.Attributes.Add("style", "display:none;");
             Options.Attributes.Add("style", "display:none;");
             pnlSearch.Attributes.Add("style","display:none;");
@@ -212,14 +209,25 @@ namespace SnitzUI
             btnSearch.Visible = false;
             ViewState["Extended"] = false;
         }
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
+        public SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
             {
                 SiteMapNode currentNode = SiteMap.CurrentNode.Clone(true);
-                SiteMapNode tempNode = currentNode;
+                
+                currentNode.Title = webResources.lblSearch;
+                var test = searchFor.Text.Trim();
+                if (!String.IsNullOrEmpty(test))
+                {
+                    SiteMapNode tempNode = currentNode;
 
-                tempNode.Title = webResources.lblSearch;
+                    var smp = (SiteMapPath)Master.FindControl("SiteMap");
+                    //set breadcrumb for search results posts
+                    var url = String.Format("[url=\"/Search\"]{0}[/url]", String.Format(webResources.lblSearch));
+                    tempNode.Title = string.Format("{0}{1}{2}", url, smp.PathSeparator, "Results ..");
+
+                }
+                
                 return currentNode;
             }
             return null;
@@ -251,7 +259,7 @@ namespace SnitzUI
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 var topic = (TopicInfo)e.Row.DataItem;
-                var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
+                var popuplink = e.Row.Cells[4].FindControl("popuplink") as Literal;
 
                 if (popuplink != null)
                 {
@@ -262,14 +270,14 @@ namespace SnitzUI
 
                 e.Row.Cells[0].Controls.Add(GetRecentTopicIcon((Enumerators.PostStatus)topic.Status, replyCount));
 
-                if (HttpContext.Current.User.Identity.Name == "")
-                {
-                    if (e.Row.Cells.Count > 2)
-                    {
-                        e.Row.Cells.RemoveAt(6);
-                    }
+                //if (HttpContext.Current.User.Identity.Name == "")
+                //{
+                //    if (e.Row.Cells.Count > 2)
+                //    {
+                //        e.Row.Cells.RemoveAt(4);
+                //    }
 
-                }
+                //}
             }
             else if (e.Row.RowType == DataControlRowType.Pager)
             {

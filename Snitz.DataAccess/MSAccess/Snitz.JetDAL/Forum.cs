@@ -79,8 +79,8 @@ namespace Snitz.OLEDbDAL
         {
             List<string> roles = new List<string>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
-            string sqlStr = "SELECT aspnet_Roles.RoleName " +
-                                  "FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN aspnet_Roles ON FR.Role_Id = aspnet_Roles.RoleId WHERE FR.FORUM_ID = @ForumId";
+            string sqlStr = "SELECT snitz_Roles.RoleName " +
+                                  "FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN snitz_Roles ON FR.Role_Id = snitz_Roles.RoleId WHERE FR.FORUM_ID = @ForumId";
 
             OleDbParameter parm = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };
 
@@ -209,7 +209,7 @@ namespace Snitz.OLEDbDAL
 
         public string[] GetForumRoles(int forumid)
         {
-            string strSql = "SELECT AR.LoweredRoleName FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN aspnet_Roles AR ON FR.Role_Id = AR.RoleId WHERE FORUM_ID=@ForumId";
+            string strSql = "SELECT AR.LoweredRoleName FROM " + Config.ForumTablePrefix + "ROLES FR LEFT OUTER JOIN snitz_Roles AR ON FR.Role_Id = AR.RoleId WHERE FORUM_ID=@ForumId";
             List<string> forums = new List<string>();
 
             OleDbParameter parm = new OleDbParameter("@ForumId", OleDbType.Numeric) { Value = forumid };

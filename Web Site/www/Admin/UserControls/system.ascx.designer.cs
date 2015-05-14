@@ -102,6 +102,33 @@ public partial class Admin_system {
     protected global::System.Web.UI.WebControls.TextBox tbxForumUrl;
     
     /// <summary>
+    /// lblSetCookie control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblSetCookie;
+    
+    /// <summary>
+    /// rbForum control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RadioButton rbForum;
+    
+    /// <summary>
+    /// rbWebSite control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RadioButton rbWebSite;
+    
+    /// <summary>
     /// lblVersion control.
     /// </summary>
     /// <remarks>
@@ -136,6 +163,24 @@ public partial class Admin_system {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::SnitzCommon.Controls.ThemeDropDownList ddTheme;
+    
+    /// <summary>
+    /// Label7 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label7;
+    
+    /// <summary>
+    /// rblThemeChange control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblThemeChange;
     
     /// <summary>
     /// Label2 control.

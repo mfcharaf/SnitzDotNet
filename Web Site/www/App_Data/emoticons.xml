@@ -3,6 +3,8 @@
   <emoticon name="smile" code="[:)]" image="icon_smile.gif"></emoticon>
   <emoticon name="eightball" code="[8]" image="icon_smile_8ball.gif"/>
   <emoticon name="angry" code="[:(!]" image="icon_smile_angry.gif"/>
+  <emoticon name="angry2" code="[:(!!]" image="icon_smile_angry2.gif"/>
+  <emoticon name="grumpy" code="[:G]" image="icon_smile_test.gif"/>
   <emoticon name="approve" code="[^]" image="icon_smile_approve.gif"/>
   <emoticon name="bigsmile" code="[:D]" image="icon_smile_big.gif"/>
   <emoticon name="bigeyes" code="[88]" image="icon_smile_bigeyes.gif"/>

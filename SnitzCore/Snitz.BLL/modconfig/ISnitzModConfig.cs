@@ -30,5 +30,5 @@ public interface ISnitzModConfig
 {
     bool ShowOnMenu { get; }
     ModMenuItem Menu { get; }
-
+    bool NeedsSetup { get; }
 }

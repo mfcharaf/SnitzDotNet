@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using SnitzCommon;
 using SnitzConfig;
@@ -33,6 +34,7 @@ public partial class Admin_features : UserControl
         rblSearchAllForums.SelectedValue = Config.AllowSearchAllForums ? "1" : "0";
 
         rblEditedBy.SelectedValue = Config.ShowEditBy ? "1" : "0";
+        rblTopicAvatar.SelectedValue = Config.TopicAvatar ? "1" : "0";
         rblPrevNext.SelectedValue = Config.ShowTopicNav ? "1" : "0";
         rblSend.SelectedValue = Config.SendTopic ? "1" : "0";
         rblPrint.SelectedValue = Config.PrintTopic ? "1" : "0";
@@ -55,6 +57,8 @@ public partial class Admin_features : UserControl
         rblAnnouncement.SelectedValue = Config.Announcement ? "1" : "0";
         tbxAnnouncement.Text = Config.AuthMessage.StripCData();
         tbxAnonAnnouncement.Text = Config.AnonMessage.StripCData();
+
+        txtAnonMembers.Text = String.Join(",", Config.AnonMembers.ToArray());
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
@@ -92,6 +96,8 @@ public partial class Admin_features : UserControl
             toUpdate.Add("AllowSearchAllForums".GetPropertyDescription(), rblSearchAllForums.SelectedValue);
         if (Config.ShowEditBy != (rblEditedBy.SelectedValue == "1"))
             toUpdate.Add("ShowEditBy".GetPropertyDescription(), rblEditedBy.SelectedValue);
+        if (Config.TopicAvatar != (rblTopicAvatar.SelectedValue == "1"))
+            toUpdate.Add("TopicAvatar".GetPropertyDescription(), rblTopicAvatar.SelectedValue);
         if (Config.ShowTopicNav != (rblPrevNext.SelectedValue == "1"))
             toUpdate.Add("ShowTopicNav".GetPropertyDescription(), rblPrevNext.SelectedValue);
         if (Config.SendTopic != (rblSend.SelectedValue == "1"))
@@ -137,7 +143,22 @@ public partial class Admin_features : UserControl
             toUpdate.Add("Archive".GetPropertyDescription(),rblArchive.SelectedValue);
         if (Config.PrivateMessaging != (rblPrivateMessages.SelectedValue == "1"))
             toUpdate.Add("PrivateMessaging".GetPropertyDescription(), rblPrivateMessages.SelectedValue);
-
+        List<string> newAM = txtAnonMembers.Text.Split(',').ToList();
+        IEnumerable<string> difference = Config.AnonMembers.Except(newAM);
+        if (!difference.Any())
+        {
+            difference = newAM.Except(Config.AnonMembers);
+            if (difference.Any())
+            {
+                Config.AnonMembers.Clear();
+                toUpdate.Add("AnonMembers".GetPropertyDescription(), txtAnonMembers.Text);               
+            }
+        }
+        else
+        {
+            Config.AnonMembers.Clear();
+            toUpdate.Add("AnonMembers".GetPropertyDescription(), txtAnonMembers.Text); 
+        }
         Config.UpdateKeys(toUpdate);
 
     }

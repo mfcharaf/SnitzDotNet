@@ -49,6 +49,24 @@ namespace EventsCalendar.Admin.Mods {
         protected global::System.Web.UI.WebControls.Panel edtPanel;
         
         /// <summary>
+        /// lblHolidays control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHolidays;
+        
+        /// <summary>
+        /// rblHolidays control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SnitzCommon.Controls.AdminRadioButtonList rblHolidays;
+        
+        /// <summary>
         /// lblAllowed control.
         /// </summary>
         /// <remarks>

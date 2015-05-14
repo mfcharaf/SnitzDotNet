@@ -78,6 +78,17 @@ namespace SnitzUI
             Application.Add("DailyCountDay", DateTime.UtcNow.Day);
             // Add Routes.
             RegisterRoutes(RouteTable.Routes);
+
+            SiteMap.SiteMapResolve += new SiteMapResolveEventHandler(Provider_SiteMapResolve);
+        }
+
+        private SiteMapNode Provider_SiteMapResolve(object sender, SiteMapResolveEventArgs e)
+        {
+            if (e.Context.CurrentHandler is ISiteMapResolver)
+                return ((ISiteMapResolver)e.Context.CurrentHandler).SiteMapResolve(sender, e);
+            else
+                return null;
+
         }
 
         protected void Session_Start(object sender, EventArgs e)

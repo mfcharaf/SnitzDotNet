@@ -85,7 +85,7 @@ label {
             div.innerHTML = Message + div.innerHTML;
             if (PercentComplete == 100) {
                 document.getElementById('lnkreturn').style.visibility = "visible";
-                document.getElementById('AdminUserRequired').style.visibility = "hidden";
+                //document.getElementById('<%= AdminUserRequired.ClientID %>').style.visibility = "hidden";
                 document.getElementById('trigger').style.visibility = "hidden";
 
                 setTimeout('loadforum()', 5000);
@@ -124,7 +124,11 @@ label {
         <asp:Panel ID="AdminUserRequired" runat="server" GroupingText="Forum Admin User" CssClass="adminPanel">
             <asp:Label ID="Label1" runat="server" Text="Admin Username" AssociatedControlID="adminUser"></asp:Label><asp:TextBox ID="adminUser" runat="server"></asp:TextBox><br/>
             <asp:Label ID="Label2" runat="server" Text="Password" AssociatedControlID="adminPassword"></asp:Label>
-                <asp:TextBox ID="adminPassword" runat="server" TextMode="Password"></asp:TextBox><br/>
+                <asp:TextBox ID="adminPassword" runat="server" TextMode="Password" placeholder="New Password"></asp:TextBox><br/>
+            <asp:Label ID="Label4" runat="server" Text="" AssociatedControlID="checkPassword"></asp:Label>
+            <asp:TextBox ID="checkPassword" runat="server" TextMode="Password" placeholder="Re-type Password"></asp:TextBox>
+            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="checkPassword" ControlToValidate="adminPassword" Display="Dynamic" ErrorMessage="Passwords do not match" SetFocusOnError="True"></asp:CompareValidator>
+            <br/>
             <asp:Label ID="Label3" runat="server" Text="Email address" AssociatedControlID="adminEmail"></asp:Label><asp:TextBox ID="adminEmail" runat="server"></asp:TextBox><br/>
         </asp:Panel>  
             <div id="lnkreturn" style="font-family: Verdana,Arial,sans-serif;font-size: 14px;color:red;visibility:hidden;margin: auto;width:50%;text-align: center;">
@@ -133,7 +137,7 @@ label {
  
        <asp:UpdatePanel ID="UpdatePanel1" runat="server"  >
             <ContentTemplate>
-                <input type="submit" value="Upgrade Database" id="trigger" onclick="BeginProcess(); return false;" class="trigger" />
+                <input type="submit" value="Upgrade Database" id="trigger" onclick="this.disabled = true; BeginProcess(); return false;" class="trigger" />
                 <div id="strResult" style="height:300px;width:75%;margin:auto;overflow-y: scroll;border: 1px solid gray; background-color:whitesmoke" class="adminPanel"></div>
             </ContentTemplate>
         </asp:UpdatePanel>

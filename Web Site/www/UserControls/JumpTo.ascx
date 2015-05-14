@@ -17,5 +17,5 @@
 </script>
 <%@ Register Assembly="SnitzCommon" Namespace="GroupDropDownList" TagPrefix="cc1" %>
 <asp:Label ID="Label1" CssClass="jumpto" runat="server" Text="<%$ Resources:webResources, lblJumpTo %>" ></asp:Label> :
-<cc1:GroupDropDownList ID="GroupDropDownList1" runat="server" onchange="navFromList(this.value);" EnableViewState="false">
+<cc1:GroupDropDownList Width="75%" ID="GroupDropDownList1" runat="server" onchange="navFromList(this.value);" EnableViewState="false">
 </cc1:GroupDropDownList>

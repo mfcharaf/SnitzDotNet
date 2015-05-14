@@ -21,10 +21,12 @@
 
 
 using System;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
+using Snitz.Providers;
 using SnitzCommon;
 using SnitzConfig;
 
@@ -59,9 +61,19 @@ public partial class MembersPage : PageBase
         ucSearch.SearchClick += SearchMember;
         if(Session["CurrentProfile"] != null)
             Session.Remove("CurrentProfile");
+        if (!IsPostBack)
+        {
+            CurrentPage = 0;
+            if (Session["SearchFilter"] != null)
+                Session.Remove("SearchFilter"); 
+        }
+        BindMembers();
+    }
+    protected override void Page_PreRender(object sender, EventArgs e)
+    {
+        base.Page_PreRender(sender, e);
 
     }
-
     private void SearchMember(object sender, EventArgs e)
     {
         CurrentPage = 0;
@@ -72,30 +84,86 @@ public partial class MembersPage : PageBase
 
     protected void Page_Load()
     {
-        BindMembers();
+        if (Page.IsPostBack)
+        {
+            string postbackbtn = Request.Form["__EVENTTARGET"];
+            string argument = Request.Form["__EVENTARGUMENT"];
+            switch (postbackbtn)
+            {
+                case "LockMember":
+                    LockUser(argument);
+                    MGV.DataBind();
+                    break;
+                case "UnLockMember":
+                    UnLockUser(argument);
+                    MGV.DataBind();
+                    break;
+                case "DeleteMember":
+                    DeleteUser(argument);
+                    MGV.DataBind();
+                    break;
+            }
+            
+        }
 
+
+    }
+
+    private void DeleteUser(string user)
+    {
+        SnitzMembershipProvider smp = (SnitzMembershipProvider)Membership.Providers["SnitzMembershipProvider"];
+        if (!String.IsNullOrEmpty(user))
+            if (smp != null) smp.DeleteUser(user, false);
+    }
+
+    private void UnLockUser(string user)
+    {
+        SnitzMembershipProvider smp = (SnitzMembershipProvider)Membership.Providers["SnitzMembershipProvider"];
+        if (!String.IsNullOrEmpty(user))
+            if (smp != null) smp.UnlockUser(user);
+    }
+
+    private void LockUser(string user)
+    {
+        SnitzMembershipProvider smp = (SnitzMembershipProvider)Membership.Providers["SnitzMembershipProvider"];
+        if (!String.IsNullOrEmpty(user))
+            if (smp != null) smp.LockUser(user);
     }
 
     private void FindInitial(object sender, EventArgs e)
     {
         var letter = (LinkButton) sender;
         Session["SearchFilter"] = String.Format("Initial={0}", letter.CommandArgument);
+        RowCount = Members.GetMemberCount();
         CurrentPage = 0;
-        _memberPager.CurrentIndex = CurrentPage;
+        var p = (GridPager) pager.FindControl("memPager");
+        if (p != null)
+        {
+            p.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
+            p.CurrentIndex = CurrentPage;
+        }
+
         MGV.PageIndex = CurrentPage;
+        MGV.DataBind();
         upd.Update();
+
     }
 
     private void BindMembers()
     {
+        pager.Controls.Clear();
         RowCount = Members.GetMemberCount();
         _memberPager = (GridPager)LoadControl("~/UserControls/GridPager.ascx");
+        _memberPager.ID = "memPager";
         _memberPager.PagerStyle = Enumerators.PagerType.Linkbutton;
         _memberPager.UserControlLinkClick += PagerLinkClick;
         _memberPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
+        _memberPager.CurrentIndex = CurrentPage;
+        MGV.PageSize = Config.MemberPageSize;
         PopulateObject populate = PopulateData;
         _memberPager.UpdateIndex = populate;
-        pager.Controls.Add(_memberPager);
+        
+        pager.Controls.Add(_memberPager);        
     }
 
 
@@ -127,16 +195,52 @@ public partial class MembersPage : PageBase
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             var member = (MemberInfo)e.Row.DataItem;
-            var hyp = (HyperLink)e.Row.FindControl("hypUserLock");
-            if (hyp != null)
-                hyp.Text = string.Format(webResources.lblLockUser, member.Username);
-            hyp = (HyperLink)e.Row.FindControl("hypUserUnLock");
-            if (hyp != null)
-                hyp.Text = string.Format(webResources.lblUnlockUser, member.Username);
+            var rankTitle = (Label) e.Row.FindControl("RankTitle");
+            var rankStars = (Literal) e.Row.FindControl("RankStars");
+            var lckUser = (ImageButton)e.Row.FindControl("lockUser");
+            var unlckUser = (ImageButton)e.Row.FindControl("unlockUser");
+            var delUser = (ImageButton)e.Row.FindControl("delUser");
+            RankInfo rInf;
+            try
+            {
+                string title = "";
+                rInf = new RankInfo(member.Username, ref title, member.PostCount, SnitzCachedLists.GetRankings());
+                rankTitle.Text = title;
+                rankStars.Text = rInf.GetStars();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+
+
             if ((!IsAdministrator))
             {
                 e.Row.Cells.RemoveAt(8);
                 e.Row.Cells.RemoveAt(7);
+            }
+            if (lckUser != null)
+            {
+                lckUser.Visible = (IsAdministrator) && member.Status == 1;
+                lckUser.ToolTip = String.Format(webResources.lblLockUser, member.Username);
+                lckUser.OnClientClick =
+                    "confirmPostBack('Do you want to lock the User?','LockMember','" + member.Username + "');return false;";
+            }
+            if (unlckUser != null)
+            {
+                unlckUser.Visible = (IsAdministrator) && member.Status == 0;
+                unlckUser.ToolTip = String.Format(webResources.lblUnlockUser, member.Username);
+                unlckUser.OnClientClick =
+                    "confirmPostBack('Do you want to unlock the User?','UnLockMember','" + member.Username + "');return false;";
+            }
+
+            if (delUser != null)
+            {
+                delUser.Visible = (IsAdministrator);
+                delUser.ToolTip = String.Format(webResources.lblDeleteUser, member.Username);
+                delUser.OnClientClick =
+                    "confirmPostBack('Do you want to delete the User?','DeleteMember','" + member.Username + "');return false;";
             }
         }
         if(e.Row.RowType == DataControlRowType.Header)
@@ -179,8 +283,8 @@ public partial class MembersPage : PageBase
 
     private void PopulateData(int myint)
     {
-        RowCount = Members.GetMemberCount();
-        _memberPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
+        //RowCount = Members.GetMemberCount();
+        //_memberPager.PageCount = Common.CalculateNumberOfPages(RowCount, Config.MemberPageSize);
         CurrentPage = myint;
         MGV.PageIndex = CurrentPage;
         //MemberODS.Select();

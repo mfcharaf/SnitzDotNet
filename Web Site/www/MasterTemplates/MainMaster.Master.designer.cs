@@ -219,6 +219,60 @@ public partial class MainMaster {
     protected global::System.Web.UI.WebControls.ContentPlaceHolder RightCol;
     
     /// <summary>
+    /// CPPanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel CPPanel;
+    
+    /// <summary>
+    /// CPMPD control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel CPMPD;
+    
+    /// <summary>
+    /// CPclB control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.ImageButton CPclB;
+    
+    /// <summary>
+    /// recoverpass control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.UserControls.Popups.PasswordRetrieve recoverpass;
+    
+    /// <summary>
+    /// cpModal control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::AjaxControlToolkit.ModalPopupExtender cpModal;
+    
+    /// <summary>
+    /// CPHid control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button CPHid;
+    
+    /// <summary>
     /// lblFooterTitle control.
     /// </summary>
     /// <remarks>
@@ -298,58 +352,4 @@ public partial class MainMaster {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Image validCSS;
-    
-    /// <summary>
-    /// CPPanel control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel CPPanel;
-    
-    /// <summary>
-    /// CPMPD control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel CPMPD;
-    
-    /// <summary>
-    /// CPclB control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.ImageButton CPclB;
-    
-    /// <summary>
-    /// recoverpass control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::SnitzUI.UserControls.Popups.PasswordRetrieve recoverpass;
-    
-    /// <summary>
-    /// cpModal control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::AjaxControlToolkit.ModalPopupExtender cpModal;
-    
-    /// <summary>
-    /// CPHid control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Button CPHid;
 }

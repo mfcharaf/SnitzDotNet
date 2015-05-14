@@ -1,14 +1,33 @@
 ﻿html {
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 0.9em;
+    height: 100%
 }
 
-body {
-    background-color: #FFC751;
-    color: #CC0000;
+body,form {
     margin: 0px;
     padding: 0px;
+    height: 100%;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
     line-height: 1.4em;
+    color: #CC0000;
+    background-color: #FFC751;
+}
+#maincontainer {
+   height: auto; min-height: 100%;
+}
+#mainheader {
+    padding: 0px;
+}
+#mainbody {
+   padding:10px;
+   padding-bottom:80px;   /* Height of the footer */
+}
+#mainfooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ height: 80px;
+ margin-top: -80px;
 }
 
 #aspnetForm {

@@ -422,7 +422,7 @@ namespace Snitz.OLEDbDAL
             return (int)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql + whereclause, parms.ToArray());
         }
 
-        public IEnumerable<int> GetAllowedForumIds(MemberInfo member, List<int> roleList, bool isadmin)
+        public IEnumerable<int> GetAllowedForumIds(List<int> roleList, bool isadmin)
         {
             List<int> forums = new List<int>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();

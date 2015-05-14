@@ -1,0 +1,79 @@
+<%-- 
+###########################################################################################
+## Snitz Forums .net
+###########################################################################################
+## Copyright (C) 2006-07 Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser
+## All rights reserved.
+## http://forum.snitz.com
+###########################################################################################
+--%>
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="Popup" EnableTheming="true" Codebehind="Popup.master.cs" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="Html1"  runat="server" dir='<%$ Resources: webResources,TextDirection%>' xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head" runat="server">
+    <title>Untitled Page</title>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta name="Generator" content="SnitzDotNet Forums v 1.0" />
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../ie6styles.css" />
+    <![endif]-->    
+<style type="text/css">
+    .MainWindow
+    {
+        font: small Verdana;
+        width: auto; 
+        margin-left:5px;
+        margin-right:5px;
+        
+        border-width: 2px;
+        border-style: groove;
+        border-color: #ffffff;
+        
+        height:auto;
+        Text-Align:center;
+    }
+    .buttons
+    {
+        font: small Verdana;
+        width: auto; 
+        padding-top:5px;
+        padding-bottom:5px;
+        margin-left:20px;
+        margin-right:20px;
+        border:groove 2px;
+        height:auto;
+        Text-Align:center;
+        background-color:#fff8dc;
+
+    }
+    .popupTitle{
+        text-align:center;
+        font: small Verdana;
+        font-weight:bold;
+    }
+</style>
+<script language="javascript" type="text/javascript" src="~/Javascript/snitz.js"></script>
+</head>
+<body class="Popup">
+    <form id="form1" runat="server">
+    <p class="popupTitle"><asp:Label ID="Label1" runat="server" Text="Label" CssClass="popupTitle"></asp:Label></p>
+        <div id="maincontainer">
+            <div class="MainWindow">
+                <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+                </asp:contentplaceholder>
+            </div>
+        </div>
+    <div id="mainfooter">
+        <div class="pagefooter">
+
+            <asp:ContentPlaceHolder ID="CPF2" runat="server" EnableViewState="False">
+                <asp:Literal ID="Literal1" runat="server" EnableViewState="False"></asp:Literal>
+            </asp:ContentPlaceHolder>
+        </div>
+        <asp:ContentPlaceHolder ID="W3CVal" runat="server">
+
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

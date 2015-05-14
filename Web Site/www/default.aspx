@@ -52,38 +52,38 @@
         <ItemTemplate>
             <asp:Panel ID="Cat_Header" runat="server" CssClass="statsPanelHeader clearfix" style="cursor: pointer;" EnableViewState="False">
                 <asp:HiddenField ID="hdnCatId" runat="server" Value='<%#Eval("Id")%>' />
-            <asp:Panel runat="server" ID="Cat_HeaderPanel" style="width:60%;float:left;">
-             <asp:Image ID="catExpand" runat="server" GenerateEmptyAlternateText="true" EnableViewState="False" ImageAlign="Middle" />
+            <asp:Panel runat="server" ID="Cat_HeaderPanel" style="max-width:50%;float:left;vertical-align: middle">
+             <asp:Image ID="catExpand" runat="server" GenerateEmptyAlternateText="true" EnableViewState="False" AlternateText="Expand/Collapse" style="vertical-align: middle" />
              <span class="cattitle"><%# "&nbsp;" + Eval("Name")%></span>
             </asp:Panel>
              <div class="categorybuttons" style="float:right;">
                     <asp:ImageButton ID="NewForum" SkinID="Folder" runat="server" Visible='<%# IsAdministrator %>' Text='<%$ Resources:webResources, lblNewForum %>'
-                        ToolTip='<%$ Resources:webResources, lblNewForum %>' EnableViewState="False"></asp:ImageButton>
+                        AlternateText="<%$ Resources:webResources, lblNewForum %>" ToolTip='<%$ Resources:webResources, lblNewForum %>' EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="NewUrl" SkinID="ForumUrl" runat="server" Visible='<%# IsAdministrator %>' Text='<% $ Resources:webResources, lblNewUrl  %>'
-                        ToolTip='<%$ Resources:webResources, lblNewUrl  %>' EnableViewState="False"></asp:ImageButton>
+                        AlternateText="<%$ Resources:webResources, lblNewUrl  %>" ToolTip='<%$ Resources:webResources, lblNewUrl  %>' EnableViewState="False"></asp:ImageButton>
                     <asp:ImageButton ID="CatLock" SkinID="LockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                            runat="server" ToolTip="<%$ Resources:webResources, lbllockCat %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
+                          AlternateText="<%$ Resources:webResources, lbllockCat %>"  runat="server" ToolTip="<%$ Resources:webResources, lbllockCat %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                     <asp:ImageButton ID="CatUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                            runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
+                           AlternateText="<%$ Resources:webResources, lblUnlockForum %>" runat="server" ToolTip="<%$ Resources:webResources, lblUnlockForum %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
                     <asp:ImageButton ID="EditCat" SkinID="Properties" runat="server" Visible='<%# IsAdministrator %>'
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="<%$ Resources:webResources, lblEditCategory %>" EnableViewState="False"></asp:ImageButton>
-                    <asp:ImageButton ID="SetOrder" SkinID="SetOrder" runat="server" Visible='<%# IsAdministrator %>'
+                    <asp:ImageButton ID="SetOrder" SkinID="SetOrder" runat="server" Visible='<%# IsAdministrator %>' AlternateText="Set Category/Forum order"
                         Text="<%$ Resources:webResources, lblEditCategory %>" ToolTip="Set Category/Forum order" EnableViewState="False"></asp:ImageButton>
-                    <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' 
+                    <asp:ImageButton ID="CatDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' AlternateText="<%$ Resources:webResources, lblDelCategory %>"
                     runat="server" ToolTip="<%$ Resources:webResources, lblDelCategory %>" OnClientClick="" CausesValidation="False" EnableViewState="False" />
-                    <asp:ImageButton ID="CatSub" SkinID="Subscribe" 
+                    <asp:ImageButton ID="CatSub" SkinID="Subscribe" AlternateText="<%$ Resources:webResources, lblSubscribeCat %>"
                         runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeCat %>" OnClientClick=""
                         CausesValidation="False" EnableViewState="False" />
-                    <asp:ImageButton ID="CatUnSub" SkinID="UnSubscribe"
+                    <asp:ImageButton ID="CatUnSub" SkinID="UnSubscribe" AlternateText="<%$ Resources:webResources, lblUnsubscribeCat %>"
                         runat="server" ToolTip="<%$ Resources:webResources, lblUnsubscribeCat %>" OnClientClick=""
                         CausesValidation="False" EnableViewState="False" />
             </div>
             </asp:Panel>
-            <asp:Panel ID="Cat_Panel" runat="server" CssClass="statsPanel" EnableViewState="False"></asp:Panel>
+            <asp:Panel ID="CatPnl" runat="server" CssClass="statsPanel" EnableViewState="False"></asp:Panel>
             <br  style="line-height:0.5em;" />
-            <asp:CollapsiblePanelEx ID="Cat_Panel_CollapsiblePanelExtender" SuppressPostBack="true" SkinID="CatExpandSkin"
+            <asp:CollapsiblePanelEx ID="CatPnlCPE" SuppressPostBack="true" SkinID="CatExpandSkin"
                 CollapseControlID="catExpand" ExpandControlID="catExpand" Collapsed="true"
-                runat="server" Enabled="True"  TargetControlID="Cat_Panel"  EnableViewState="true" OnExpand="onExpand" >
+                runat="server" Enabled="True"  TargetControlID="CatPnl"  EnableViewState="true" OnExpand="onExpand" >
             </asp:CollapsiblePanelEx>
         </ItemTemplate>
         <FooterTemplate>

@@ -1,42 +1,30 @@
-<%--
-Default skin template. The following skins are provided as examples only.
-
-1. Named control skin. The SkinId should be uniquely defined because
-   duplicate SkinId's per control type are not allowed in the same theme.
-
-<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
-   <AlternatingRowStyle BackColor="Blue" />
-</asp:GridView>
-
-2. Default skin. The SkinId is not defined. Only one default 
-   control skin per control type is allowed in the same theme.
-
-<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
---%>
 
 <asp:ImageButton SkinID="ShowIP" runat="server" ImageUrl="Images/message/ip.png" cssclass="msgIcons" />
-<asp:ImageButton runat="server" SkinID="MarkRead" ImageUrl="images/admin/markread.png" cssclass="msgIcons"/>
+<asp:ImageButton SkinID="MarkRead" ImageUrl="images/admin/markread.png" runat="server" cssclass="msgIcons"/>
 <asp:ImageButton SkinID="Folder" CssClass="msgIcons" ImageUrl="Images/admin/folder2.png" runat="server" />
 <asp:ImageButton SkinID="Profile" Tooltip="View Profile" runat="server" ImageUrl="Images/message/user.png"/>
-<asp:ImageButton SkinID="DeleteMessage" runat="server" ImageUrl="Images/admin/trash.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="DeletePost" runat="server" ImageUrl="Images/message/trash.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="DeleteMessage" runat="server" ImageUrl="Images/admin/trash.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Document" CssClass="msgIcons" ImageUrl="Images/message/document.png" runat="server" />
 <asp:ImageButton SkinID="Edit" runat="server" ImageUrl="Images/message/edit.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="Save" runat="server" ImageUrl="Images/message/save.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Properties" runat="server" ImageUrl="Images/admin/properties.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="Subscribe" runat="server" ImageUrl="Images/admin/subscribe.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="UnSubscribe" runat="server" ImageUrl="Images/admin/unsubscribe.png" CssClass="msgIcons"/>
-<asp:ImageButton SkinID="SplitTopic" runat="server" ImageUrl="Images/message/splittopic.png" CssClass="msgIcons" Width="32"/>
+<asp:ImageButton SkinID="SplitTopic" runat="server" ImageUrl="Images/message/splittopic.png" CssClass="msgIcons"/>
 <asp:ImageButton SkinID="UnStickyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unstick.png"/>
 <asp:ImageButton SkinID="Search" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/search.png"/>
 <asp:ImageButton SkinID="StickyTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/stick.png"/>
 <asp:ImageButton SkinID="LockTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/lock.png"/>
 <asp:ImageButton SkinID="UnLockTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unlock.png"/>
-<asp:ImageButton SkinID="EmptyForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder.png"/>
-<asp:ImageButton SkinID="UnModerated" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/unmoderated.png"/>
+
+<asp:ImageButton SkinID="UnModerated" CssClass="msgIcons" runat="server" ImageUrl="Images/folder/unmoderated.png"/>
+<asp:ImageButton SkinID="UnModeratedPosts" CssClass="msgIcons" runat="server" ImageUrl="Images/folder/unmoderatedPosts.png"/>
 <asp:ImageButton SkinID="OnHold" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/onhold.png"/>
-<asp:ImageButton SkinID="approve" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/ok.png"/>
+<asp:ImageButton SkinID="approve" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/icon_folder_moderate.gif"/>
 <asp:ImageButton SkinID="Cancel" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/cancel.png"/>
-<asp:ImageButton SkinID="NewUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/message/weblink.png"/>
 <asp:ImageButton SkinID="ForumUrl" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/weblink.png"/>
-<asp:ImageButton SkinID="Save" runat="server" ImageUrl="Images/message/save.png" CssClass="msgIcons"/>
+<asp:ImageButton SkinID="NoArchiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/notarchive.png"/>
+<asp:ImageButton SkinID="archiveTopic" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/archive.png"/>
 <asp:ImageButton SkinID="SetOrder" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/order.png"/>
+<asp:ImageButton SkinID="EmptyForum" CssClass="msgIcons" runat="server" ImageUrl="Images/admin/folder.png"/>

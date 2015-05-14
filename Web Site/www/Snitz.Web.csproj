@@ -71,7 +71,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\RealWorld.Grids.dll</HintPath>
     </Reference>
-    <Reference Include="Snitz.BLL">
+    <Reference Include="Snitz.BLL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Dependency\Snitz.BLL.dll</HintPath>
     </Reference>
     <Reference Include="Snitz.Entities">
@@ -135,6 +136,13 @@
   <ItemGroup>
     <Content Include="Account\Activate.aspx" />
     <Content Include="Account\Bookmark.aspx" />
+    <Content Include="Account\imagegallery.ascx" />
+    <Content Include="Admin\css\Carp-Uk\admin.css" />
+    <Content Include="Admin\css\Carp-Uk\HeaderBar.jpg" />
+    <Content Include="Admin\css\Carp-Uk\Menu.css" />
+    <Content Include="Admin\css\Test\admin.css" />
+    <Content Include="Admin\css\Test\HeaderBar.jpg" />
+    <Content Include="Admin\css\Test\Menu.css" />
     <Content Include="Admin\css\Mushroom\admin.css" />
     <Content Include="Admin\css\Mushroom\Menu.css" />
     <Content Include="Admin\Mods\default.aspx" />
@@ -144,6 +152,7 @@
     <Content Include="Admin\Mods\HelpFiles\ShareIt.txt" />
     <Content Include="Admin\Mods\RSSFeed.ascx" />
     <Content Include="Admin\Mods\ShareIt.ascx" />
+    <Content Include="Admin\Mods\ThanksMod.ascx" />
     <Content Include="Admin\PropertyTest.aspx" />
     <Content Include="Admin\UserControls\ArchiveForums.ascx" />
     <Content Include="Admin\css\ClassicSnitz\admin.css" />
@@ -156,8 +165,10 @@
     <Content Include="Admin\UserControls\ManageCategories.ascx" />
     <Content Include="Admin\UserControls\ManageModerators.ascx" />
     <Content Include="Admin\UserControls\Registration.ascx" />
+    <Content Include="App_Code\thanksSetup.xml" />
     <Content Include="App_Data\BugTemplate.txt" />
     <Content Include="App_Data\ChangeEmail.html" />
+    <Content Include="App_Data\regcontrols.xml" />
     <Content Include="App_Data\RegisterApproval.html" />
     <Content Include="App_Themes\BlueGray\bluegreycss.css">
       <DependentUpon>bundle.chirp.config</DependentUpon>
@@ -173,6 +184,7 @@
     <Content Include="App_Themes\BlueGray\images\bookmark.png" />
     <Content Include="App_Themes\BlueGray\images\cat-bar.gif" />
     <Content Include="App_Themes\BlueGray\images\close.png" />
+    <Content Include="App_Themes\BlueGray\images\collapse.png" />
     <Content Include="App_Themes\BlueGray\images\editor\align_center.gif" />
     <Content Include="App_Themes\BlueGray\images\editor\align_left.gif" />
     <Content Include="App_Themes\BlueGray\images\editor\align_right.gif" />
@@ -205,9 +217,11 @@
     <Content Include="App_Themes\BlueGray\images\emoticons\edit.png" />
     <Content Include="App_Themes\BlueGray\images\emoticons\Lock.png" />
     <Content Include="App_Themes\BlueGray\images\emoticons\pencil.png" />
+    <Content Include="App_Themes\BlueGray\images\expand.png" />
     <Content Include="App_Themes\BlueGray\images\folders\flame.png" />
     <Content Include="App_Themes\BlueGray\images\folders\foldernewposts.png" />
     <Content Include="App_Themes\BlueGray\images\folders\foldernoposts.png" />
+    <Content Include="App_Themes\BlueGray\images\folders\folderpoll.png" />
     <Content Include="App_Themes\BlueGray\images\folders\folder_locked.png" />
     <Content Include="App_Themes\BlueGray\images\folders\poll.png" />
     <Content Include="App_Themes\BlueGray\images\folders\stick.png" />
@@ -222,6 +236,7 @@
     <Content Include="App_Themes\BlueGray\images\social\icon_yahoo.png" />
     <Content Include="App_Themes\BlueGray\images\top-bar.gif" />
     <Content Include="App_Themes\BlueGray\Blog.skin" />
+    <None Include="App_Themes\BlueGray\login.css" />
     <Content Include="App_Themes\BlueGray\pm\inbox.png" />
     <Content Include="App_Themes\BlueGray\pm\mail_box.png" />
     <Content Include="App_Themes\BlueGray\pm\minus.png" />
@@ -236,10 +251,25 @@
     <Content Include="App_Themes\BlueGray\pm\pmreplyquote.png" />
     <Content Include="App_Themes\BlueGray\pm\pmtrash.png" />
     <Content Include="App_Themes\BlueGray\pm\sent.png" />
+    <Content Include="App_Themes\Carp-Uk\carpukcss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
+    <Content Include="App_Themes\Carp-Uk\images\blank.png" />
+    <Content Include="App_Themes\Carp-Uk\images\fishback.jpg" />
+    <Content Include="App_Themes\Carp-Uk\images\HeaderBar.jpg" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmsend.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\admin\book.gif" />
+    <Content Include="App_Themes\ClassicSnitz\images\admin\icon_folder_moderate.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\admin\order.png" />
+    <Content Include="App_Themes\ClassicSnitz\images\admin\write.png" />
     <Content Include="App_Themes\ClassicSnitz\images\bar.JPG" />
+    <Content Include="App_Themes\ClassicSnitz\images\blank.png" />
     <Content Include="App_Themes\ClassicSnitz\images\collapse.jpg" />
     <Content Include="App_Themes\ClassicSnitz\images\expand.jpg" />
+    <Content Include="App_Themes\ClassicSnitz\images\folders\icon_poll.gif" />
+    <Content Include="App_Themes\ClassicSnitz\images\icon_bar.gif" />
+    <Content Include="App_Themes\ClassicSnitz\images\icon_spacer.gif" />
+    <None Include="App_Themes\ClassicSnitz\login.css" />
     <Content Include="App_Themes\ClassicSnitz\pm\inbox.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\mail_box.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\minus.png" />
@@ -254,8 +284,233 @@
     <Content Include="App_Themes\ClassicSnitz\pm\pmreplyquote.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\pmtrash.png" />
     <Content Include="App_Themes\ClassicSnitz\pm\sent.png" />
+    <None Include="App_Themes\Carp-Uk\base.css" />
+    <None Include="App_Themes\Carp-Uk\carpuk.css" />
+    <Content Include="App_Themes\Carp-Uk\images\activity.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\archive.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\book.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\document.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\folder2.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\folderX.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\icon_folder_moderate.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\Lock.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\markread.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\newwindow.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\order.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\properties.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\reply.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\search.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\stick.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\subscribe.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\Trash.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\unlock.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\unmoderated.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\unmoderatedposts.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\unstick.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\unsubscribe.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\Warning.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\weblink.png" />
+    <Content Include="App_Themes\Carp-Uk\images\admin\write.png" />
+    <Content Include="App_Themes\Carp-Uk\images\blog\bookmark.png" />
+    <Content Include="App_Themes\Carp-Uk\images\blog\email.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\blog\note.png" />
+    <Content Include="App_Themes\Carp-Uk\images\bookmark.png" />
+    <Content Include="App_Themes\Carp-Uk\images\buttons\button_left.png" />
+    <Content Include="App_Themes\Carp-Uk\images\buttons\button_right.png" />
+    <Content Include="App_Themes\Carp-Uk\images\close.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\close.png" />
+    <Content Include="App_Themes\Carp-Uk\images\collapse.jpg" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\align_center.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\align_left.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\align_right.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\bold.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\clean.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\code.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\colors.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\email.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\fonts.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\italic.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\link.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\list-item.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\picture.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\preview.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\strike.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\stroke.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\table-col.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\table-row.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\table.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\textdir.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\underline.png" />
+    <Content Include="App_Themes\Carp-Uk\images\editor\youtube.png" />
+    <Content Include="App_Themes\Carp-Uk\images\email.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\delete.png" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\edit.png" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_8ball.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_angry.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_angry2.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_approve.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_big.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_bigeyes.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_blackeye.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_blush.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_boggled.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_clown.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_cool.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_cyclops.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_dead.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_dead_green.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_dissapprove.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_evil.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_kisses.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_mean.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_question.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_sad.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_shock.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_shy.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_sleepy.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_test.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_tongue.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\Carp-Uk\images\emoticons\pencil.png" />
+    <Content Include="App_Themes\Carp-Uk\images\error.png" />
+    <Content Include="App_Themes\Carp-Uk\images\expand.jpg" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\foldernewposts.png" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\foldernoposts.png" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\folder_locked.png" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_archive.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_archived.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_closed.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_closed_topic.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_delete.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_delete_no_archive.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_hold.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_hot.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_locked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_moderate.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new_hot.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new_locked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new_sticky.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new_sticky_locked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_new_topic.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_no_archive.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_open.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_open_topic.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_pencil.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_sticky.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_sticky_locked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_unlocked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_folder_unmoderated.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\folders\icon_poll.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\hotold.png" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_bar.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_msnm.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_profile.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_profile_locked.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_smile.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_spacer.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_user_delete.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_user_edit.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_user_lock.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\icon_user_unlock.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\information.png" />
+    <Content Include="App_Themes\Carp-Uk\images\logo_snitz_forums_net.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\menu-expand.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\message\doc.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\document.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\edit.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\Email.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\home.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\IP.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\PM.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\quote.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\SplitTopic.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\Trash.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\Up.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\User.png" />
+    <Content Include="App_Themes\Carp-Uk\images\message\weblink.png" />
+    <Content Include="App_Themes\Carp-Uk\images\page_go.png" />
+    <Content Include="App_Themes\Carp-Uk\images\quotes.png" />
+    <Content Include="App_Themes\Carp-Uk\images\quote_lt.png" />
+    <Content Include="App_Themes\Carp-Uk\images\quote_rt.png" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_blue.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_bronze.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_cyan.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_gold.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_green.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_orange.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_purple.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_red.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\ranking\icon_star_silver.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\rss.png" />
+    <Content Include="App_Themes\Carp-Uk\images\smallquote_lt.png" />
+    <Content Include="App_Themes\Carp-Uk\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Carp-Uk\images\social\icon_aim.png" />
+    <Content Include="App_Themes\Carp-Uk\images\social\icon_icq.png" />
+    <Content Include="App_Themes\Carp-Uk\images\social\icon_skype.png" />
+    <Content Include="App_Themes\Carp-Uk\images\social\icon_yahoo.png" />
+    <Content Include="App_Themes\Carp-Uk\images\sort_ascending.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\sort_descending.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tab-active.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tab-activeL.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tab-activeR.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tab.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tabL.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tabline.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\Tab\tabR.gif" />
+    <Content Include="App_Themes\Carp-Uk\images\User-offline.png" />
+    <Content Include="App_Themes\Carp-Uk\images\User-online.png" />
+    <Content Include="App_Themes\Carp-Uk\images\valid-xhtml10.png" />
+    <Content Include="App_Themes\Carp-Uk\images\vcss.gif" />
+    <None Include="App_Themes\Carp-Uk\jquery.alerts.css" />
+    <None Include="App_Themes\Carp-Uk\login.css" />
+    <None Include="App_Themes\Carp-Uk\MainModalDialog.css" />
+    <Content Include="App_Themes\Carp-Uk\pm\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Carp-Uk\pm\icon_pm_new.gif" />
+    <Content Include="App_Themes\Carp-Uk\pm\icon_pm_old.gif" />
+    <Content Include="App_Themes\Carp-Uk\pm\inbox.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\mail_box.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\minus.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\plus.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmdelete.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmforward.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmmemberlist.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmnew.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmprivpref.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmreceive.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmreply.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmreplyquote.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\pmtrash.png" />
+    <Content Include="App_Themes\Carp-Uk\pm\sent.png" />
     <Content Include="App_Themes\Dark\images\admin\order.png" />
     <Content Include="App_Themes\Dark\images\bar.JPG" />
+    <Content Include="App_Themes\Carp-Uk\Admin.skin.xxx" />
+    <Content Include="App_Themes\Carp-Uk\Blog.skin" />
+    <Content Include="App_Themes\Carp-Uk\Breadcrumb.skin" />
+    <Content Include="App_Themes\Carp-Uk\bundle.chirp.config" />
+    <Content Include="App_Themes\Carp-Uk\Buttons.skin" />
+    <Content Include="App_Themes\Carp-Uk\Calendars.skin" />
+    <Content Include="App_Themes\Carp-Uk\CollapsePanel.skin" />
+    <Content Include="App_Themes\Carp-Uk\Events.skin" />
+    <Content Include="App_Themes\Carp-Uk\header.skin" />
+    <Content Include="App_Themes\Carp-Uk\Hyperlinks.skin" />
+    <Content Include="App_Themes\Carp-Uk\Login.skin" />
+    <Content Include="App_Themes\Carp-Uk\MainModalDialog.skin" />
+    <Content Include="App_Themes\Carp-Uk\PMSkin.skin" />
+    <Content Include="App_Themes\Carp-Uk\postOptions.skin" />
+    <Content Include="App_Themes\Carp-Uk\SnitzTheme.skin" />
+    <None Include="App_Themes\Dark\login.css" />
+    <Content Include="App_Themes\Dark\images\blank.png" />
     <Content Include="App_Themes\Dark\pm\inbox.png" />
     <Content Include="App_Themes\Dark\pm\mail_box.png" />
     <Content Include="App_Themes\Dark\pm\minus.png" />
@@ -270,9 +525,213 @@
     <Content Include="App_Themes\Dark\pm\pmreplyquote.png" />
     <Content Include="App_Themes\Dark\pm\pmtrash.png" />
     <Content Include="App_Themes\Dark\pm\sent.png" />
+    <Content Include="Admin\dbs\FileLog.dbs">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Themes\BlueGray\Breadcrumb.skin" />
+    <None Include="App_Themes\ClassicSnitz\Admin.skin.xxx" />
+    <Content Include="App_Themes\ClassicSnitz\Breadcrumb.skin" />
+    <None Include="App_Themes\Light\login.css" />
+    <Content Include="App_Themes\Mobile\Blog.skin" />
+    <Content Include="App_Themes\Mobile\Breadcrumb.skin" />
+    <None Include="App_Themes\Mobile\bundle.chirp.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="App_Themes\Mobile\Buttons.skin" />
+    <Content Include="App_Themes\Mobile\Calendars.skin" />
+    <Content Include="App_Themes\Mobile\CollapsePanel.skin" />
+    <Content Include="App_Themes\Mobile\Events.skin" />
+    <Content Include="App_Themes\Mobile\header.skin" />
+    <Content Include="App_Themes\Mobile\Hyperlinks.skin" />
+    <Content Include="App_Themes\Mobile\images\activity.gif" />
+    <Content Include="App_Themes\Mobile\images\admin\archive.png" />
+    <Content Include="App_Themes\Mobile\images\admin\book.png" />
+    <Content Include="App_Themes\Mobile\images\admin\calendar.png" />
+    <Content Include="App_Themes\Mobile\images\admin\cancel.png" />
+    <Content Include="App_Themes\Mobile\images\admin\day.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Discuss.png" />
+    <Content Include="App_Themes\Mobile\images\admin\document.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Flag.png" />
+    <Content Include="App_Themes\Mobile\images\admin\folder2.png" />
+    <Content Include="App_Themes\Mobile\images\admin\folderX.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Lock.png" />
+    <Content Include="App_Themes\Mobile\images\admin\mail.png" />
+    <Content Include="App_Themes\Mobile\images\admin\markread.png" />
+    <Content Include="App_Themes\Mobile\images\admin\newwindow.png" />
+    <Content Include="App_Themes\Mobile\images\admin\notarchive.png" />
+    <Content Include="App_Themes\Mobile\images\admin\ok.png" />
+    <Content Include="App_Themes\Mobile\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Mobile\images\admin\order.png" />
+    <Content Include="App_Themes\Mobile\images\admin\properties.png" />
+    <Content Include="App_Themes\Mobile\images\admin\reply.png" />
+    <Content Include="App_Themes\Mobile\images\admin\search.png" />
+    <Content Include="App_Themes\Mobile\images\admin\stick.png" />
+    <Content Include="App_Themes\Mobile\images\admin\subscribe.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Text Plus.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Topic.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Trash.png" />
+    <Content Include="App_Themes\Mobile\images\admin\unlock.png" />
+    <Content Include="App_Themes\Mobile\images\admin\unmoderated.png" />
+    <Content Include="App_Themes\Mobile\images\admin\unmoderatedposts.png" />
+    <Content Include="App_Themes\Mobile\images\admin\unstick.png" />
+    <Content Include="App_Themes\Mobile\images\admin\unsubscribe.png" />
+    <Content Include="App_Themes\Mobile\images\admin\Warning.png" />
+    <Content Include="App_Themes\Mobile\images\admin\weblink.png" />
+    <Content Include="App_Themes\Mobile\images\admin\write.png" />
+    <Content Include="App_Themes\Mobile\images\bar.JPG" />
+    <Content Include="App_Themes\Mobile\images\bg-pattern.gif" />
+    <Content Include="App_Themes\Mobile\images\blank.png" />
+    <Content Include="App_Themes\Mobile\images\blog\bookmark.png" />
+    <Content Include="App_Themes\Mobile\images\blog\email.gif" />
+    <Content Include="App_Themes\Mobile\images\blog\note.png" />
+    <Content Include="App_Themes\Mobile\images\bookmark.png" />
+    <Content Include="App_Themes\Mobile\images\buttons\button_left.png" />
+    <Content Include="App_Themes\Mobile\images\buttons\button_right.png" />
+    <Content Include="App_Themes\Mobile\images\cat-bar.gif" />
+    <Content Include="App_Themes\Mobile\images\close.png" />
+    <Content Include="App_Themes\Mobile\images\collapse.png" />
+    <Content Include="App_Themes\Mobile\images\editor\align_center.gif" />
+    <Content Include="App_Themes\Mobile\images\editor\align_left.gif" />
+    <Content Include="App_Themes\Mobile\images\editor\align_right.gif" />
+    <Content Include="App_Themes\Mobile\images\editor\bold.png" />
+    <Content Include="App_Themes\Mobile\images\editor\clean.png" />
+    <Content Include="App_Themes\Mobile\images\editor\code.png" />
+    <Content Include="App_Themes\Mobile\images\editor\colors.png" />
+    <Content Include="App_Themes\Mobile\images\editor\email.gif" />
+    <Content Include="App_Themes\Mobile\images\editor\fonts.png" />
+    <Content Include="App_Themes\Mobile\images\editor\italic.png" />
+    <Content Include="App_Themes\Mobile\images\editor\link.png" />
+    <Content Include="App_Themes\Mobile\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\Mobile\images\editor\list-item.png" />
+    <Content Include="App_Themes\Mobile\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\Mobile\images\editor\picture.png" />
+    <Content Include="App_Themes\Mobile\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\Mobile\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\Mobile\images\editor\preview.png" />
+    <Content Include="App_Themes\Mobile\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\Mobile\images\editor\strike.gif" />
+    <Content Include="App_Themes\Mobile\images\editor\stroke.png" />
+    <Content Include="App_Themes\Mobile\images\editor\table-col.png" />
+    <Content Include="App_Themes\Mobile\images\editor\table-row.png" />
+    <Content Include="App_Themes\Mobile\images\editor\table.png" />
+    <Content Include="App_Themes\Mobile\images\editor\textdir.png" />
+    <Content Include="App_Themes\Mobile\images\editor\underline.png" />
+    <Content Include="App_Themes\Mobile\images\editor\youtube.png" />
+    <Content Include="App_Themes\Mobile\images\emoticons\delete.png" />
+    <Content Include="App_Themes\Mobile\images\emoticons\edit.png" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_8ball.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_angry.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_angry2.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_approve.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_big.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_bigeyes.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_blackeye.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_blush.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_boggled.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_clown.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_cool.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_cyclops.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_dead.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_dead_green.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_dissapprove.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_evil.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_kisses.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_mean.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_question.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_sad.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_shock.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_shy.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_sleepy.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_test.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_tongue.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Mobile\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\Mobile\images\emoticons\pencil.png" />
+    <Content Include="App_Themes\Mobile\images\expand.png" />
+    <Content Include="App_Themes\Mobile\images\folders\flame.png" />
+    <Content Include="App_Themes\Mobile\images\folders\foldernewposts.png" />
+    <Content Include="App_Themes\Mobile\images\folders\foldernoposts.png" />
+    <Content Include="App_Themes\Mobile\images\folders\folder_locked.png" />
+    <Content Include="App_Themes\Mobile\images\folders\poll.png" />
+    <Content Include="App_Themes\Mobile\images\folders\stick.png" />
+    <Content Include="App_Themes\Mobile\images\folders\unmoderated.png" />
+    <Content Include="App_Themes\Mobile\images\gutter.gif" />
+    <Content Include="App_Themes\Mobile\images\logo_snitz_forums_net.gif" />
+    <Content Include="App_Themes\Mobile\images\message\doc.png" />
+    <Content Include="App_Themes\Mobile\images\message\document.png" />
+    <Content Include="App_Themes\Mobile\images\message\edit.png" />
+    <Content Include="App_Themes\Mobile\images\message\Email.png" />
+    <Content Include="App_Themes\Mobile\images\message\home.png" />
+    <Content Include="App_Themes\Mobile\images\message\IP.png" />
+    <Content Include="App_Themes\Mobile\images\message\PM.png" />
+    <Content Include="App_Themes\Mobile\images\message\quote.png" />
+    <Content Include="App_Themes\Mobile\images\message\SplitTopic.png" />
+    <Content Include="App_Themes\Mobile\images\message\Trash.png" />
+    <Content Include="App_Themes\Mobile\images\message\Up.png" />
+    <Content Include="App_Themes\Mobile\images\message\User.png" />
+    <Content Include="App_Themes\Mobile\images\message\weblink.png" />
+    <Content Include="App_Themes\Mobile\images\page_go.png" />
+    <Content Include="App_Themes\Mobile\images\quote_lt.png" />
+    <Content Include="App_Themes\Mobile\images\quote_rt.png" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_blue.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_bronze.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_cyan.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_gold.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_green.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_orange.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_purple.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_red.gif" />
+    <Content Include="App_Themes\Mobile\images\ranking\icon_star_silver.gif" />
+    <Content Include="App_Themes\Mobile\images\rss.png" />
+    <Content Include="App_Themes\Mobile\images\smallquote_lt.png" />
+    <Content Include="App_Themes\Mobile\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Mobile\images\social\icon_aim.png" />
+    <Content Include="App_Themes\Mobile\images\social\icon_icq.png" />
+    <Content Include="App_Themes\Mobile\images\social\icon_skype.png" />
+    <Content Include="App_Themes\Mobile\images\social\icon_yahoo.png" />
+    <Content Include="App_Themes\Mobile\images\Tab\tab-active.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tab-activeL.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tab-activeR.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tab.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tabL.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tabline.gif" />
+    <Content Include="App_Themes\Mobile\images\Tab\tabR.gif" />
+    <Content Include="App_Themes\Mobile\images\top-bar.gif" />
+    <None Include="App_Themes\Mobile\login.css" />
+    <Content Include="App_Themes\Mobile\Login.skin" />
+    <Content Include="App_Themes\Mobile\MainModalDialog.skin" />
+    <Content Include="App_Themes\Mobile\mobilecss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
+    <Content Include="App_Themes\Mobile\PMSkin.skin" />
+    <Content Include="App_Themes\Mobile\pm\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Mobile\pm\icon_pm_new.gif" />
+    <Content Include="App_Themes\Mobile\pm\icon_pm_old.gif" />
+    <Content Include="App_Themes\Mobile\pm\inbox.png" />
+    <Content Include="App_Themes\Mobile\pm\mail_box.png" />
+    <Content Include="App_Themes\Mobile\pm\minus.png" />
+    <Content Include="App_Themes\Mobile\pm\plus.png" />
+    <Content Include="App_Themes\Mobile\pm\pmdelete.png" />
+    <Content Include="App_Themes\Mobile\pm\pmforward.png" />
+    <Content Include="App_Themes\Mobile\pm\pmmemberlist.png" />
+    <Content Include="App_Themes\Mobile\pm\pmnew.png" />
+    <Content Include="App_Themes\Mobile\pm\pmprivpref.png" />
+    <Content Include="App_Themes\Mobile\pm\pmreceive.png" />
+    <Content Include="App_Themes\Mobile\pm\pmreply.png" />
+    <Content Include="App_Themes\Mobile\pm\pmreplyquote.png" />
+    <Content Include="App_Themes\Mobile\pm\pmtrash.png" />
+    <Content Include="App_Themes\Mobile\pm\sent.png" />
+    <Content Include="App_Themes\Mobile\postOptions.skin" />
+    <Content Include="App_Themes\Mobile\SnitzTheme.skin" />
+    <Content Include="App_Themes\Dark\Breadcrumb.skin" />
     <None Include="App_Themes\Mushroom\base.css" />
     <Content Include="App_Themes\Light\images\admin\order.png" />
     <Content Include="App_Themes\Light\images\bar.JPG" />
+    <None Include="App_Themes\Mobile\base.css" />
+    <None Include="App_Themes\Mobile\mobile.css" />
+    <None Include="App_Themes\Mobile\jquery.alerts.css" />
+    <None Include="App_Themes\Mobile\MainModalDialog.css" />
     <Content Include="App_Themes\Mushroom\images\activity.gif" />
     <Content Include="App_Themes\Mushroom\images\admin\archive.png" />
     <Content Include="App_Themes\Mushroom\images\admin\book.png" />
@@ -290,6 +749,7 @@
     <Content Include="App_Themes\Mushroom\images\admin\notarchive.png" />
     <Content Include="App_Themes\Mushroom\images\admin\Ok.png" />
     <Content Include="App_Themes\Mushroom\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Mushroom\images\admin\order.png" />
     <Content Include="App_Themes\Mushroom\images\admin\properties.png" />
     <Content Include="App_Themes\Mushroom\images\admin\reply.png" />
     <Content Include="App_Themes\Mushroom\images\admin\search.png" />
@@ -451,6 +911,7 @@
     <None Include="App_Themes\Mushroom\mushroom.css" />
     <None Include="App_Themes\Mushroom\MainModalDialog.css" />
     <None Include="App_Themes\Mushroom\Menu.css" />
+    <None Include="App_Themes\Mushroom\login.css" />
     <Content Include="App_Themes\Mushroom\mushroomcss.css">
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
@@ -604,7 +1065,6 @@
     <Content Include="App_Themes\ClassicSnitz\images\folders\icon_folder_sticky_locked.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\folders\icon_folder_unlocked.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\folders\icon_folder_unmoderated.gif" />
-    <Content Include="App_Themes\ClassicSnitz\images\folders\poll.png" />
     <Content Include="App_Themes\ClassicSnitz\images\hotOld.png" />
     <Content Include="App_Themes\ClassicSnitz\images\icon_msnm.gif" />
     <Content Include="App_Themes\ClassicSnitz\images\icon_pmgotmail.gif" />
@@ -1067,7 +1527,213 @@
     <Content Include="App_Themes\Light\pm\pmreply.png" />
     <Content Include="App_Themes\Light\pm\pmreplyquote.png" />
     <Content Include="App_Themes\Light\pm\sent.png" />
+    <Content Include="App_Themes\Test\base.css" />
+    <Content Include="App_Themes\Test\images\activity.gif" />
+    <Content Include="App_Themes\Test\images\admin\archive.png" />
+    <Content Include="App_Themes\Test\images\admin\book.png" />
+    <Content Include="App_Themes\Test\images\admin\bug.png" />
+    <Content Include="App_Themes\Test\images\admin\calendar.png" />
+    <Content Include="App_Themes\Test\images\admin\Cancel.png" />
+    <Content Include="App_Themes\Test\images\admin\Discuss.png" />
+    <Content Include="App_Themes\Test\images\admin\document.png" />
+    <Content Include="App_Themes\Test\images\admin\Flag.png" />
+    <Content Include="App_Themes\Test\images\admin\folder2.png" />
+    <Content Include="App_Themes\Test\images\admin\folderX.png" />
+    <Content Include="App_Themes\Test\images\admin\Lock.png" />
+    <Content Include="App_Themes\Test\images\admin\markread.png" />
+    <Content Include="App_Themes\Test\images\admin\newwindow.png" />
+    <Content Include="App_Themes\Test\images\admin\notarchive.png" />
+    <Content Include="App_Themes\Test\images\admin\Ok.png" />
+    <Content Include="App_Themes\Test\images\admin\OnHold.png" />
+    <Content Include="App_Themes\Test\images\admin\order.png" />
+    <Content Include="App_Themes\Test\images\admin\properties.png" />
+    <Content Include="App_Themes\Test\images\admin\reply.png" />
+    <Content Include="App_Themes\Test\images\admin\search.png" />
+    <Content Include="App_Themes\Test\images\admin\stick.png" />
+    <Content Include="App_Themes\Test\images\admin\subscribe.png" />
+    <Content Include="App_Themes\Test\images\admin\Topic.png" />
+    <Content Include="App_Themes\Test\images\admin\Trash.png" />
+    <Content Include="App_Themes\Test\images\admin\unlock.png" />
+    <Content Include="App_Themes\Test\images\admin\unmoderatedposts.png" />
+    <Content Include="App_Themes\Test\images\admin\unstick.png" />
+    <Content Include="App_Themes\Test\images\admin\unsubscribe.png" />
+    <Content Include="App_Themes\Test\images\admin\Warning.png" />
+    <Content Include="App_Themes\Test\images\admin\weblink.png" />
+    <Content Include="App_Themes\Test\images\admin\Write.png" />
+    <Content Include="App_Themes\Test\images\bar.JPG" />
+    <Content Include="App_Themes\Test\images\blank.png" />
+    <Content Include="App_Themes\Test\images\blog\bookmark.png" />
+    <Content Include="App_Themes\Test\images\blog\email.png" />
+    <Content Include="App_Themes\Test\images\blog\note.png" />
+    <Content Include="App_Themes\Test\images\breadcrumb-seperator.png" />
+    <Content Include="App_Themes\Test\images\buttons\button_left.png" />
+    <Content Include="App_Themes\Test\images\buttons\button_right.png" />
+    <Content Include="App_Themes\Test\images\close.gif" />
+    <Content Include="App_Themes\Test\images\close.png" />
+    <Content Include="App_Themes\Test\images\collapse.png" />
+    <Content Include="App_Themes\Test\images\editor\align_center.gif" />
+    <Content Include="App_Themes\Test\images\editor\align_left.gif" />
+    <Content Include="App_Themes\Test\images\editor\align_right.gif" />
+    <Content Include="App_Themes\Test\images\editor\bold.png" />
+    <Content Include="App_Themes\Test\images\editor\clean.png" />
+    <Content Include="App_Themes\Test\images\editor\code.png" />
+    <Content Include="App_Themes\Test\images\editor\colors.png" />
+    <Content Include="App_Themes\Test\images\editor\email.gif" />
+    <Content Include="App_Themes\Test\images\editor\fonts.png" />
+    <Content Include="App_Themes\Test\images\editor\italic.png" />
+    <Content Include="App_Themes\Test\images\editor\link.png" />
+    <Content Include="App_Themes\Test\images\editor\list-bullet.png" />
+    <Content Include="App_Themes\Test\images\editor\list-item.png" />
+    <Content Include="App_Themes\Test\images\editor\list-numeric.png" />
+    <Content Include="App_Themes\Test\images\editor\picture.png" />
+    <Content Include="App_Themes\Test\images\editor\pictureBrowse.png" />
+    <Content Include="App_Themes\Test\images\editor\pictureUp.png" />
+    <Content Include="App_Themes\Test\images\editor\preview.png" />
+    <Content Include="App_Themes\Test\images\editor\quotes.png" />
+    <Content Include="App_Themes\Test\images\editor\spellcheck.png" />
+    <Content Include="App_Themes\Test\images\editor\strike.gif" />
+    <Content Include="App_Themes\Test\images\editor\stroke.png" />
+    <Content Include="App_Themes\Test\images\editor\table-col.png" />
+    <Content Include="App_Themes\Test\images\editor\table-row.png" />
+    <Content Include="App_Themes\Test\images\editor\table.png" />
+    <Content Include="App_Themes\Test\images\editor\textdir.png" />
+    <Content Include="App_Themes\Test\images\editor\underline.png" />
+    <Content Include="App_Themes\Test\images\editor\youtube.png" />
+    <Content Include="App_Themes\Test\images\emoticons\delete.png" />
+    <Content Include="App_Themes\Test\images\emoticons\edit.png" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_8ball.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_angry.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_angry2.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_approve.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_big.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_bigeyes.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_blackeye.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_blush.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_boggled.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_clown.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_cool.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_cyclops.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_dead.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_dead_green.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_dissapprove.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_evil.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_kisses.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_mean.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_question.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_sad.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_shock.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_shy.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_sleepy.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_test.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_tongue.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\icon_smile_wink.gif" />
+    <Content Include="App_Themes\Test\images\emoticons\Lock.png" />
+    <Content Include="App_Themes\Test\images\emoticons\pencil.png" />
+    <Content Include="App_Themes\Test\images\error.png" />
+    <Content Include="App_Themes\Test\images\expand.png" />
+    <Content Include="App_Themes\Test\images\fishback.jpg" />
+    <Content Include="App_Themes\Test\images\flame.png" />
+    <Content Include="App_Themes\Test\images\folders\flame.png" />
+    <Content Include="App_Themes\Test\images\folders\foldernewposts.png" />
+    <Content Include="App_Themes\Test\images\folders\foldernoposts.png" />
+    <Content Include="App_Themes\Test\images\folders\folderpoll.png" />
+    <Content Include="App_Themes\Test\images\folders\folder_locked.png" />
+    <Content Include="App_Themes\Test\images\folders\poll.png" />
+    <Content Include="App_Themes\Test\images\folders\stick.png" />
+    <Content Include="App_Themes\Test\images\folders\unmoderated.png" />
+    <Content Include="App_Themes\Test\images\folders\unmoderatedPosts.png" />
+    <Content Include="App_Themes\Test\images\gutter.gif" />
+    <Content Include="App_Themes\Test\images\HeaderBar.jpg" />
+    <Content Include="App_Themes\Test\images\icon_lastpost.gif" />
+    <Content Include="App_Themes\Test\images\icon_msnm.gif" />
+    <Content Include="App_Themes\Test\images\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Test\images\icon_profile.gif" />
+    <Content Include="App_Themes\Test\images\icon_profile_locked.gif" />
+    <Content Include="App_Themes\Test\images\icon_smile.gif" />
+    <Content Include="App_Themes\Test\images\icon_user_delete.gif" />
+    <Content Include="App_Themes\Test\images\icon_user_edit.gif" />
+    <Content Include="App_Themes\Test\images\icon_user_lock.gif" />
+    <Content Include="App_Themes\Test\images\icon_user_unlock.gif" />
+    <Content Include="App_Themes\Test\images\information.png" />
+    <Content Include="App_Themes\Test\images\logo_snitz_forums_net.gif" />
+    <Content Include="App_Themes\Test\images\menu-expand.gif" />
+    <Content Include="App_Themes\Test\images\message\Burn.png" />
+    <Content Include="App_Themes\Test\images\message\doc.png" />
+    <Content Include="App_Themes\Test\images\message\Document.png" />
+    <Content Include="App_Themes\Test\images\message\edit.png" />
+    <Content Include="App_Themes\Test\images\message\Email.png" />
+    <Content Include="App_Themes\Test\images\message\Folder2.png" />
+    <Content Include="App_Themes\Test\images\message\Folder3.png" />
+    <Content Include="App_Themes\Test\images\message\Home.png" />
+    <Content Include="App_Themes\Test\images\message\IP.png" />
+    <Content Include="App_Themes\Test\images\message\PM.png" />
+    <Content Include="App_Themes\Test\images\message\quote.png" />
+    <Content Include="App_Themes\Test\images\message\save.png" />
+    <Content Include="App_Themes\Test\images\message\SplitTopic.png" />
+    <Content Include="App_Themes\Test\images\message\Trash.png" />
+    <Content Include="App_Themes\Test\images\message\Up.png" />
+    <Content Include="App_Themes\Test\images\message\User.png" />
+    <Content Include="App_Themes\Test\images\message\weblink.png" />
+    <Content Include="App_Themes\Test\images\page_go.png" />
+    <Content Include="App_Themes\Test\images\quote_lt.png" />
+    <Content Include="App_Themes\Test\images\quote_rt.png" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_blue.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_bronze.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_cyan.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_gold.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_green.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_orange.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_purple.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_red.gif" />
+    <Content Include="App_Themes\Test\images\ranking\icon_star_silver.gif" />
+    <Content Include="App_Themes\Test\images\rss.png" />
+    <Content Include="App_Themes\Test\images\smallquote_lt.png" />
+    <Content Include="App_Themes\Test\images\smallquote_rt.png" />
+    <Content Include="App_Themes\Test\images\social\icon_aim.png" />
+    <Content Include="App_Themes\Test\images\social\icon_icq.png" />
+    <Content Include="App_Themes\Test\images\social\icon_skype.png" />
+    <Content Include="App_Themes\Test\images\social\icon_yahoo.png" />
+    <Content Include="App_Themes\Test\images\sort_ascending.gif" />
+    <Content Include="App_Themes\Test\images\sort_descending.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tab-active.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tab-activeL.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tab-activeR.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tab.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tabL.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tabline.gif" />
+    <Content Include="App_Themes\Test\images\Tab\tabR.gif" />
+    <Content Include="App_Themes\Test\images\User-offline.png" />
+    <Content Include="App_Themes\Test\images\User-online.png" />
+    <Content Include="App_Themes\Test\images\valid-xhtml10.png" />
+    <Content Include="App_Themes\Test\images\vcss.gif" />
+    <Content Include="App_Themes\Test\jquery.alerts.css" />
+    <Content Include="App_Themes\Test\login.css" />
+    <Content Include="App_Themes\Test\MainModalDialog.css" />
+    <Content Include="App_Themes\Test\pm\icon_pmgotmail.gif" />
+    <Content Include="App_Themes\Test\pm\icon_pm_new.gif" />
+    <Content Include="App_Themes\Test\pm\icon_pm_old.gif" />
+    <Content Include="App_Themes\Test\pm\inbox.png" />
+    <Content Include="App_Themes\Test\pm\mail_box.png" />
+    <Content Include="App_Themes\Test\pm\minus.png" />
+    <Content Include="App_Themes\Test\pm\plus.png" />
+    <Content Include="App_Themes\Test\pm\pmdelete.png" />
+    <Content Include="App_Themes\Test\pm\pmforward.png" />
+    <Content Include="App_Themes\Test\pm\pmmemberlist.png" />
+    <Content Include="App_Themes\Test\pm\pmnew.png" />
+    <Content Include="App_Themes\Test\pm\pmprivpref.png" />
+    <Content Include="App_Themes\Test\pm\pmreceive.png" />
+    <Content Include="App_Themes\Test\pm\pmreply.png" />
+    <Content Include="App_Themes\Test\pm\pmreplyquote.png" />
+    <Content Include="App_Themes\Test\pm\pmtrash.png" />
+    <Content Include="App_Themes\Test\pm\sent.png" />
+    <Content Include="App_Themes\Test\test.css" />
+    <Content Include="App_Themes\Test\testcss.css">
+      <DependentUpon>bundle.chirp.config</DependentUpon>
+    </Content>
+    <Content Include="Avatars\missing.gif" />
     <Content Include="CommonFunc.asmx" />
+    <Content Include="Content\Contact.aspx" />
     <Content Include="Content\FAQ\faq.aspx" />
     <Content Include="Content\FAQ\Help.aspx" />
     <Content Include="Content\Forums\active.aspx" />
@@ -1082,7 +1748,9 @@
     <Content Include="App_Themes\BlueGray\images\quote_rt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_lt.png" />
     <Content Include="App_Themes\BlueGray\images\smallquote_rt.png" />
+    <Content Include="Content\pop_lock.aspx" />
     <Content Include="Content\PrivateMessages\PrivateMessageView.aspx" />
+    <Content Include="css\BlueGray\Events.css" />
     <Content Include="css\BlueGray\jquery-ui.css">
       <DependentUpon>jquery-ui.chirp.less</DependentUpon>
     </Content>
@@ -1091,12 +1759,28 @@
     </Content>
     <Content Include="css\BlueGray\jsShare.css" />
     <Content Include="css\ClassicSnitz\editor.css" />
+    <Content Include="css\ClassicSnitz\Events.css" />
     <Content Include="css\ClassicSnitz\eventsrtl.css" />
     <Content Include="css\ClassicSnitz\faq.css" />
     <Content Include="css\ClassicSnitz\faqrtl.css" />
     <Content Include="css\ClassicSnitz\HomePage.css" />
     <Content Include="css\ClassicSnitz\homepagertl.css" />
     <None Include="App_Themes\Light\bundle.chirp.config" />
+    <Content Include="App_Themes\Test\Admin.skin" />
+    <Content Include="App_Themes\Test\Blog.skin" />
+    <Content Include="App_Themes\Test\Breadcrumb.skin" />
+    <Content Include="App_Themes\Test\bundle.chirp.config" />
+    <Content Include="App_Themes\Test\Buttons.skin" />
+    <Content Include="App_Themes\Test\Calendars.skin" />
+    <Content Include="App_Themes\Test\CollapsePanel.skin" />
+    <Content Include="App_Themes\Test\Events.skin" />
+    <Content Include="App_Themes\Test\header.skin" />
+    <Content Include="App_Themes\Test\Hyperlinks.skin" />
+    <Content Include="App_Themes\Test\Login.skin" />
+    <Content Include="App_Themes\Test\MainModalDialog.skin" />
+    <Content Include="App_Themes\Test\PMSkin.skin" />
+    <Content Include="App_Themes\Test\postOptions.skin" />
+    <Content Include="App_Themes\Test\SnitzTheme.skin" />
     <None Include="css\ClassicSnitz\jquery-ui.chirp.less" />
     <Content Include="css\ClassicSnitz\jquery-ui.css">
       <DependentUpon>jquery-ui.chirp.less</DependentUpon>
@@ -1112,9 +1796,52 @@
     <Content Include="css\ClassicSnitz\search.css" />
     <Content Include="css\ClassicSnitz\searchrtl.css" />
     <Content Include="css\ClassicSnitz\shThemeDefault.css" />
+    <Content Include="css\Carp-Uk\editor.css" />
+    <Content Include="css\Carp-Uk\Events.css" />
+    <Content Include="css\Carp-Uk\eventsrtl.css" />
+    <Content Include="css\Carp-Uk\faq.css" />
+    <Content Include="css\Carp-Uk\faqrtl.css" />
+    <Content Include="css\Carp-Uk\HomePage.css" />
+    <Content Include="css\Carp-Uk\homepagertl.css" />
+    <None Include="css\Carp-Uk\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </None>
+    <Content Include="css\Carp-Uk\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\Carp-Uk\jsShare.css" />
+    <Content Include="css\Carp-Uk\ProfilePage.css" />
+    <Content Include="css\Carp-Uk\profilepagertl.css" />
+    <Content Include="css\Carp-Uk\RegWizard.css" />
+    <Content Include="css\Carp-Uk\rtl.css" />
+    <Content Include="css\Carp-Uk\search.css" />
+    <Content Include="css\Carp-Uk\searchrtl.css" />
+    <Content Include="css\Carp-Uk\shThemeDefault.css" />
+    <Content Include="css\Light\Events.css" />
+    <Content Include="css\Mobile\editor.css" />
+    <Content Include="css\Mobile\eventsrtl.css" />
+    <Content Include="css\Mobile\faq.css" />
+    <Content Include="css\Mobile\faqrtl.css" />
+    <Content Include="css\Mobile\HomePage.css" />
+    <Content Include="css\Mobile\homepagertl.css" />
+    <Content Include="css\Mobile\jquery-ui.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\Mobile\jquery-ui.min.css">
+      <DependentUpon>jquery-ui.chirp.less</DependentUpon>
+    </Content>
+    <Content Include="css\Mobile\jsShare.css" />
+    <Content Include="css\Mobile\ProfilePage.css" />
+    <Content Include="css\Mobile\profilepagertl.css" />
+    <Content Include="css\Mobile\RegWizard.css" />
+    <Content Include="css\Mobile\rtl.css" />
+    <Content Include="css\Mobile\search.css" />
+    <Content Include="css\Mobile\searchrtl.css" />
+    <Content Include="css\Mobile\shThemeDefault.css" />
     <Content Include="css\Dark\jsShare.css" />
     <Content Include="css\Light\jsShare.css" />
     <Content Include="css\Mushroom\editor.css" />
+    <Content Include="css\Mushroom\Events.css" />
     <Content Include="css\Mushroom\eventsrtl.css" />
     <Content Include="css\Mushroom\faq.css" />
     <Content Include="css\Mushroom\faqrtl.css" />
@@ -1155,6 +1882,8 @@
     <Content Include="App_Themes\Dark\images\editor\underline.png" />
     <Content Include="App_Themes\Dark\images\editor\youtube.png" />
     <Content Include="css\Mushroom\jquery-ui.chirp.less" />
+    <Content Include="css\Mobile\jquery-ui.chirp.less" />
+    <None Include="css\Carp-Uk\jquery-ui.chirp.less" />
     <None Include="css\Dark\jquery-ui.chirp.less" />
     <Content Include="css\Dark\editor.css" />
     <Content Include="css\Dark\jquery-ui.css">
@@ -1193,6 +1922,8 @@
     <Content Include="css\Light\shThemeDefault.css" />
     <Content Include="css\shCore.css" />
     <Content Include="css\BlueGray\shThemeDefault.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="images\attach.png" />
     <Content Include="images\buzz.png" />
     <Content Include="images\delicious.png" />
@@ -1222,6 +1953,11 @@
     <Content Include="images\twitter.png" />
     <Content Include="images\upload.png" />
     <Content Include="packages.config" />
+    <Content Include="MasterTemplates\Mobile.Master" />
+    <Content Include="MasterTemplates\Popup.master" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\bbcode.yui.js" />
     <Content Include="Scripts\bbcode.min.js">
       <DependentUpon>bbcode.yui.js</DependentUpon>
@@ -1247,7 +1983,10 @@
     <Content Include="Scripts\help.js">
       <DependentUpon>bundle.chirp.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\jquery-ui.yui.js" />
     <None Include="Scripts\net.yui.js" />
     <None Include="Scripts\main.yui.js" />
@@ -1338,6 +2077,12 @@
     <Content Include="Setup\setup.js" />
     <Content Include="Setup\test1.aspx" />
     <Content Include="Setup\update.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="snitz.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SnitzConnections.config">
       <SubType>Designer</SubType>
     </Content>
     <None Include="TestEmail.aspx" />
@@ -1447,8 +2192,6 @@
     <Content Include="App_Themes\BlueGray\images\admin\unsubscribe.png" />
     <Content Include="App_Themes\BlueGray\images\buttons\button_left.png" />
     <Content Include="App_Themes\BlueGray\images\buttons\button_right.png" />
-    <Content Include="App_Themes\BlueGray\images\collapse_blue.jpg" />
-    <Content Include="App_Themes\BlueGray\images\expand_blue.jpg" />
     <Content Include="App_Themes\BlueGray\images\logo_snitz_forums_net.gif" />
     <Content Include="App_Themes\BlueGray\images\message\PM.png" />
     <Content Include="App_Themes\BlueGray\images\message\SplitTopic.png" />
@@ -1663,16 +2406,12 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config">
+    <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
+    </None>
+    <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="SnitzConnections.config">
-      <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Activate.aspx.cs">
@@ -1688,6 +2427,10 @@
     </Compile>
     <Compile Include="Account\Bookmark.aspx.designer.cs">
       <DependentUpon>Bookmark.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\imagegallery.ascx.cs">
+      <DependentUpon>imagegallery.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\Mods\default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -1723,6 +2466,13 @@
     </Compile>
     <Compile Include="Admin\Mods\ShareIt.ascx.designer.cs">
       <DependentUpon>ShareIt.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Mods\ThanksMod.ascx.cs">
+      <DependentUpon>ThanksMod.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Mods\ThanksMod.ascx.designer.cs">
+      <DependentUpon>ThanksMod.ascx</DependentUpon>
     </Compile>
     <Compile Include="Admin\PropertyTest.aspx.cs">
       <DependentUpon>PropertyTest.aspx</DependentUpon>
@@ -1771,9 +2521,17 @@
       <DependentUpon>Registration.ascx</DependentUpon>
     </Compile>
     <Content Include="Handlers\DownLoadFile.ashx" />
+    <Content Include="App_Code\ThanksConfig.config.cs" />
     <Compile Include="CommonFunc.asmx.cs">
       <DependentUpon>CommonFunc.asmx</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Content\Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Content\FAQ\faq.aspx.cs">
       <DependentUpon>faq.aspx</DependentUpon>
@@ -1789,6 +2547,13 @@
     <Compile Include="Content\FAQ\Help.aspx.designer.cs">
       <DependentUpon>Help.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Content\pop_lock.aspx.cs">
+      <DependentUpon>pop_lock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\pop_lock.aspx.designer.cs">
+      <DependentUpon>pop_lock.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Content\PrivateMessages\PrivateMessageView.aspx.cs">
       <DependentUpon>PrivateMessageView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1800,6 +2565,20 @@
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Handlers\VisitorLog.cs" />
+    <Compile Include="MasterTemplates\Mobile.Master.cs">
+      <DependentUpon>Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterTemplates\Mobile.Master.designer.cs">
+      <DependentUpon>Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterTemplates\Popup.master.cs">
+      <DependentUpon>Popup.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterTemplates\Popup.master.designer.cs">
+      <DependentUpon>Popup.master</DependentUpon>
+    </Compile>
     <Compile Include="Setup\Process.aspx.cs">
       <DependentUpon>Process.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2547,12 +3326,6 @@
     <Compile Include="UserControls\Popups\UserProfile.ascx.designer.cs">
       <DependentUpon>UserProfile.ascx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="snitz.config">
-      <SubType>Designer</SubType>
-      <TransformOnBuild>true</TransformOnBuild>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\BlueGray\Buttons.skin" />

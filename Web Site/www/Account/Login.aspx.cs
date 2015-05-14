@@ -29,21 +29,34 @@ using SnitzConfig;
 public partial class Login : PageBase
 {
     private static string returnurl;
+    private string _username;
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
-            returnurl = Request.UrlReferrer.PathAndQuery;
- 
+        if (!IsPostBack)
+        {
+            returnurl = Request.UrlReferrer != null ? Request.UrlReferrer.PathAndQuery : "~/default.aspx";
+        }
+        else
+        {
+            TextBox uname = (TextBox) Login1.FindControl("UserName");
+            if (uname != null)
+            {
+                _username = uname.Text.Trim();
+            }
+        }
+        LinkButton loginbtn = Login1.FindControl("LoginButton") as LinkButton;
+        if (loginbtn != null)
+            this.Form.DefaultButton = loginbtn.UniqueID;
         Login1.InstructionText = Resources.extras.lblRegisterLink;
 
             if (Config.RequireRegistration && !Config.ProhibitNewMembers)
                 Login1.InstructionText = Resources.extras.lblRegisterLink;
             else if (Config.ProhibitNewMembers)
                 Login1.InstructionText = Resources.extras.lblProhibitReg;
-            Label instructions = (Label)Login1.FindControl("LoginReq");
+            Literal instructions = (Literal)Login1.FindControl("LoginReq");
             if (instructions != null)
                 instructions.Text = Login1.InstructionText;
-
     }
     protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
     {
@@ -54,13 +67,22 @@ public partial class Login : PageBase
         {
             Login1.RememberMeSet = remember.Checked;
         }
-        e.Authenticated = Membership.ValidateUser(uname.Text, pword.Text);
-
+        e.Authenticated = Membership.ValidateUser(_username, pword.Text);
+        
         SnitzCaptchaControl ct = (SnitzCaptchaControl)Login1.FindControl("CAPTCHA");
         if (ct != null)
             if (ct.Visible)
                 e.Authenticated = e.Authenticated && ct.IsValid;
+        //set the return url
         if(e.Authenticated && !String.IsNullOrEmpty(returnurl) && !returnurl.ToLower().Contains("login"))
             Login1.DestinationPageUrl = returnurl;
+
     }
+
+    protected void Login1_LoggedIn(object sender, EventArgs e)
+    {
+        //we are logged in so let's jump back where we cam from
+        FormsAuthentication.RedirectFromLoginPage(_username, Login1.RememberMeSet);
+    }
+
 }

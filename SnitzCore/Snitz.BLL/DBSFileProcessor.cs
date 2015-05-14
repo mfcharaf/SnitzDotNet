@@ -12,6 +12,7 @@ namespace Snitz.BLL
         private XDocument dbsDocument;
         private string _dbType = "";
         private string _filename = "";
+        private StringBuilder _errors;
 
         public DbsFileProcessor(string filename)
         {
@@ -20,15 +21,22 @@ namespace Snitz.BLL
             ISetup dal = Factory<ISetup>.Create("SnitzSetup");
             _dbType = dal.CheckVersion();
             XElement root = dbsDocument.Element("Tables");
-            Applied = Convert.ToBoolean(root.Attribute("applied").Value);
+            if (root != null) Applied = Convert.ToBoolean(root.Attribute("applied").Value);
         }
 
         public string Process()
         {
+            if (Applied)
+            {
+                throw new Exception("File already processed");
+                return null;
+            }
+
             XElement root = dbsDocument.Element("Tables");
 
             try
             {
+                _errors = new StringBuilder();
                 if (root != null)
                 {
                     XElement createtables = root.Element("Create");
@@ -72,10 +80,12 @@ namespace Snitz.BLL
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                _errors.AppendLine(ex.Message);
             }
             
-            
+            if(!String.IsNullOrEmpty(_errors.ToString()))
+                return _errors.ToString();
+
             return "Success";
         }
 
@@ -105,7 +115,16 @@ namespace Snitz.BLL
                         first = false;
                     }
                     sql.AppendLine(")");
-                    dal.ExecuteScript(sql.ToString());
+                    try
+                    {
+                        var ret = dal.ExecuteScript(sql.ToString());
+                        if (ret != null)
+                            _errors.AppendFormat("CreateIndices: {0}", ret).AppendLine();
+                    }
+                    catch(Exception ex)
+                    {
+                        _errors.AppendFormat("CreateIndices: {0}", ex.Message);
+                    }
                 }
             }
         }
@@ -119,7 +138,16 @@ namespace Snitz.BLL
                 var xTable = table.Attribute("name");
                 StringBuilder sql = new StringBuilder();
                 if (xTable != null) sql.AppendFormat("DROP TABLE {0}", xTable.Value);
-                dal.ExecuteScript(sql.ToString());
+                try
+                {
+                    var ret = dal.ExecuteScript(sql.ToString());
+                    if (ret != null)
+                        _errors.AppendFormat("DropTables: {0}", ret).AppendLine();
+                }
+                catch (Exception ex)
+                {
+                    _errors.AppendFormat("DropTables: {0}", ex.Message);
+                }
             }
         }
 
@@ -134,7 +162,16 @@ namespace Snitz.BLL
                 StringBuilder sql = new StringBuilder();
                 if (xTable != null)
                     if (xWhere != null) sql.AppendFormat("DELETE FROM {0} WHERE {1}", xTable.Value, xWhere.Value);
-                dal.ExecuteScript(sql.ToString());
+                try
+                {
+                    var ret = dal.ExecuteScript(sql.ToString());
+                    if (ret != null)
+                        _errors.AppendFormat("TableDeletes: {0}", ret).AppendLine();
+                }
+                catch (Exception ex)
+                {
+                    _errors.AppendFormat("TableDeletes: {0}", ex.Message);
+                }
             }
         }
 
@@ -168,7 +205,16 @@ namespace Snitz.BLL
                     first = false;
                 }
                 sql.AppendFormat("({0}) VALUES ({1})",cols.ToString(),vals.ToString());
-                dal.ExecuteScript(sql.ToString());
+                try
+                {
+                    var ret = dal.ExecuteScript(sql.ToString());
+                    if (ret != null)
+                        _errors.AppendFormat("TableInserts: {0}", ret).AppendLine();
+                }
+                catch (Exception ex)
+                {
+                    _errors.AppendFormat("TableInserts: {0}", ex.Message);
+                }
             }
         }
 
@@ -182,7 +228,7 @@ namespace Snitz.BLL
                 var xWhere = table.Attribute("condition");
                 var xTable = table.Attribute("name");
 
-                StringBuilder sql = new StringBuilder("UPDATE TABLE " + xTable + " SET ").AppendLine();
+                StringBuilder sql = new StringBuilder("UPDATE " + xTable.Value + " SET ").AppendLine();
                 bool first = true;
                 foreach (XElement column in table.Elements("Column"))
                 {
@@ -205,7 +251,16 @@ namespace Snitz.BLL
                 }
                 if (xWhere != null && !String.IsNullOrEmpty(xWhere.Value))
                     sql.AppendLine(xWhere.Value);
-                dal.ExecuteScript(sql.ToString());
+                try
+                {
+                    var ret = dal.ExecuteScript(sql.ToString());
+                    if (ret != null)
+                        _errors.AppendFormat("TableUpdates: {0}", ret).AppendLine();
+                }
+                catch (Exception ex)
+                {
+                    _errors.AppendFormat("TableUpdates: {0}", ex.Message);
+                }
             }
         }
 
@@ -233,19 +288,28 @@ namespace Snitz.BLL
 
                         if (xColumn != null)
                         {
-                            sql.AppendFormat("ALTER TABLE {0} {1} ",
-                                xTable.Value,
-                                action.Value);
+                            sql.AppendFormat("ALTER TABLE {0} {1} ",xTable.Value,action.Value);
                             if (_dbType == "access" || action.Value != "ADD")
                             {
                                 sql.Append(" COLUMN ");
                             }
-                            sql.AppendFormat("{0} {1} {2} {3}",
+
+                            sql.AppendFormat("{0} {1} {2} {3} {4}",
                                 xColumn.Value,
                                 ColumnType(column.Attribute("type").Value),
                                 ColumnSize(column.Attribute("size"), column.Attribute("type").Value),
-                                DefaultVal(column.Attribute("default"), column.Attribute("type").Value));
-                            dal.ExecuteScript(sql.ToString());
+                                DefaultVal(column.Attribute("default"), column.Attribute("type").Value),
+                                ColumnNull(column.Attribute("allownulls").Value));
+                            try
+                            {
+                                var ret = dal.ExecuteScript(sql.ToString());
+                                if (ret != null)
+                                    _errors.AppendFormat("<b>AlterTables:</b>{0}", ret).AppendLine();
+                            }
+                            catch (Exception ex)
+                            {
+                                _errors.AppendFormat("AlterTables: {0}", ex.Message);
+                            }
 
                         }
                     }
@@ -260,10 +324,30 @@ namespace Snitz.BLL
             foreach (var table in tables)
             {
                 var xTable = table.Attribute("name");
+                var dropfirst = table.Attribute("droprename");
+                string sqlDrop = "";
 
                 if (xTable != null)
                 {
-                    StringBuilder sql = new StringBuilder("CREATE TABLE " + xTable.Value + " (");
+                    if (dropfirst != null)
+                    {
+                        if (dropfirst.Value == "")
+                        {
+                            sqlDrop =
+                                "IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[" + xTable.Value + "]') AND type in (N'U')) " +
+                                "DROP TABLE [" + xTable.Value + "];";
+                            
+                        }else if (dropfirst.Value == "rename")
+                        {
+                            sqlDrop = "EXEC sp_rename '" + xTable.Value + "', '" + xTable.Value + "_BAK';";
+                        }
+
+                        //
+
+                    }                    
+                    StringBuilder sql = new StringBuilder(sqlDrop);
+                    sql.AppendLine("");
+                    sql.Append("CREATE TABLE " + xTable.Value + " (");
                     var idcolumn = table.Attribute("idfield");
                     if (idcolumn != null)
                     {
@@ -299,7 +383,16 @@ namespace Snitz.BLL
                             idcolumn.Value);
                     }
                     sql.AppendLine(")");
-                    dal.ExecuteScript(sql.ToString());
+                    try
+                    {
+                        var ret = dal.ExecuteScript(sql.ToString());
+                        if (ret != null)
+                            _errors.AppendFormat("<b>CreateTables:</b> {0}", ret).Append("</br>");
+                    }
+                    catch (Exception ex)
+                    {
+                        _errors.AppendFormat("CreateTables: {0}", ex.Message).Append("</br>"); 
+                    }
                     //create indexes
                     sql.Length = 0;
                     foreach (var index in table.Elements("Index"))
@@ -321,9 +414,15 @@ namespace Snitz.BLL
                         }
                         sql.AppendLine(")");
                     }
-                    dal.ExecuteScript(sql.ToString());
+                    try
+                    {
+                        dal.ExecuteScript(sql.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        _errors.AppendFormat("PrimaryKeys: {0}", ex.Message);
+                    }
                 }
-
             }
         }
 
@@ -368,16 +467,17 @@ namespace Snitz.BLL
                 switch (type)
                 {
                     case "smallint":
-                        return "DEFAULT " + value.Value;
                     case "int":
                         return "DEFAULT " + value.Value;
+                    case "float":
+                        return "DEFAULT '" + value.Value + "'";
                     case "nvarchar":
                     case "varchar":
                         return "DEFAULT '" + value.Value + "'";
                     case "date":
                         return "DEFAULT '" + value.Value + "'";
                     default :
-                        return "";
+                        return value.Value;
                 }
                 
             }
@@ -426,7 +526,7 @@ namespace Snitz.BLL
                             return value;
                         case "memo":
                         case "text" :
-                            return "ntext";
+                            return "nvarchar(MAX)";
                         case "date":
                             return "datetime";
                         case "guid" :

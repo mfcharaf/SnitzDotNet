@@ -13,15 +13,6 @@ namespace EventsCalendar {
     public partial class Events {
         
         /// <summary>
-        /// eventCSS control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl eventCSS;
-        
-        /// <summary>
         /// rtlCss control.
         /// </summary>
         /// <remarks>

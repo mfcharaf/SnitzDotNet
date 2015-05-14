@@ -37,6 +37,8 @@ namespace ModConfig
 
         public bool ShowOnMenu { get { return false; } }
 
+        public bool NeedsSetup { get { return false; } }
+
         public ModMenuItem Menu
         {
             get
@@ -88,5 +90,9 @@ namespace ModConfig
             return modinfo;
         }
 
+        protected override bool SetupMod(ModController controller)
+        {
+            throw new NotImplementedException();
+        }
     } 
 }

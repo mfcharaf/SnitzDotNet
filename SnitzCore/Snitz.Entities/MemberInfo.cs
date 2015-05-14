@@ -20,6 +20,8 @@
 */
 
 using System;
+using System.IO;
+using System.Web;
 using SnitzConfig;
 
 
@@ -42,7 +44,7 @@ namespace Snitz.Entities
 
     public class MemberInfo
     {
-        private RankInfo _rank;
+        //private RankInfo _rank;
         public int Id { get; set; }
         [Registration(true, "Member", "Text")]
         public string Username { get; set; }
@@ -151,6 +153,8 @@ namespace Snitz.Entities
         {
             get
             {
+                if (!String.IsNullOrEmpty(this.Avatar) && !File.Exists(HttpRuntime.AppDomainAppPath + "/Avatars/" + this.Avatar))
+                    this.Avatar = "missing.gif";
                 return String.IsNullOrEmpty(this.Avatar) ? "<img src='/Avatars/default.gif' alt='no avatar img' class='avatar' />" : String.Format("<img src='/Avatars/{0}' alt='avatar img' class='avatar' />", this.Avatar);
             }
             set { this.Avatar = value; }
@@ -159,29 +163,13 @@ namespace Snitz.Entities
         {
             get
             {
+                if (!String.IsNullOrEmpty(this.Avatar) && !File.Exists(HttpRuntime.AppDomainAppPath + "/Avatars/" + this.Avatar))
+                    this.Avatar = "missing.gif";
                 return String.IsNullOrEmpty(this.Avatar) ? String.Format("{0}Avatars/default.gif",Config.ForumUrl) : String.Format("{0}Avatars/{1}",Config.ForumUrl, this.Avatar);
             }
 
         }
         #endregion
-
-        public RankInfo Rank
-        {
-            get
-            {
-                string title = this.Title;
-                if(_rank == null)
-                    _rank = new RankInfo(this.Username, ref title, this.PostCount);
-                this.Title = title;
-                return _rank;
-            }
-            set
-            {
-                if(_rank == null || !_rank.Equals(value))
-                _rank = value;
-            }
-        }
-
 
         public int[] AllowedForums { get; set; }
 

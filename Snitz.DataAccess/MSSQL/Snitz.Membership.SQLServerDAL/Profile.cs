@@ -8,6 +8,7 @@ using System.Text;
 using System.Web.Profile;
 using Snitz.Entities;
 using Snitz.Membership.IDal;
+using Snitz.SQLServerDAL;
 using SnitzConfig;
 using ProfileInfo = System.Web.Profile.ProfileInfo;
 
@@ -139,6 +140,26 @@ namespace Snitz.Membership.SQLServerDAL
                     }
 
                     //UpdateLastActivityDate(conn, userId);
+                }
+                else
+                {
+                    object val = GetBookMarkModValues(username);
+                    ProfileColumnData colData = columnData.Find(c => c.ColumnName == "BookMarks");
+                    SettingsPropertyValue propValue = new SettingsPropertyValue(colData.PropertyValue);
+                    propValue.IsDirty = false;
+                    if (propValue.Property.SerializeAs == SettingsSerializeAs.Xml)
+                    {
+                        if (propValue.Name == "BookMarks")
+                        {
+                            svc.Remove("BookMarks");
+                            propValue.Deserialized = false;
+                            object test = "";
+                            if (!val.Equals(test))
+                                propValue.SerializedValue = val;
+
+                            svc.Add(propValue);
+                        }
+                    }
                 }
             }
             finally
@@ -725,6 +746,34 @@ namespace Snitz.Membership.SQLServerDAL
             }
 
             return DeleteProfiles(usernames);
+        }
+
+        public string GetBookMarkModValues(string username)
+        {
+
+            string returnvalue = "";
+
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("SELECT");
+            sql.AppendLine("ROW_NUMBER() OVER (ORDER BY Bookmark.B_MEMBERID)-1 AS ID,");
+            sql.AppendLine("SnitzLink.T_SUBJECT AS Name,'~/Content/Forums/topic.aspx?TOPIC=' + CAST(SnitzLink.TOPIC_ID AS varchar) AS Url");
+            sql.AppendLine("FROM FORUM_BOOKMARKS Bookmark INNER JOIN");
+            sql.AppendLine("FORUM_TOPICS SnitzLink ON Bookmark.B_TOPICID = SnitzLink.TOPIC_ID");
+            sql.AppendLine("WHERE Bookmark.B_MEMBERID = (SELECT MEMBER_ID FROM FORUM_MEMBERS WHERE M_NAME=@Username)");
+            sql.AppendLine("FOR XML PATH('SnitzLink')");
+
+            using (var rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, sql.ToString(), new SqlParameter("@Username", SqlDbType.VarChar) { Value = username }))
+            {
+                while (rdr.Read())
+                {
+                    returnvalue = rdr.SafeGetString(0, "");
+                }
+            }
+            if (returnvalue != "")
+            {
+                returnvalue = "<?xml version=\"1.0\" encoding=\"utf-16\"?><ArrayOfSnitzLink xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" + returnvalue + "</ArrayOfSnitzLink>";
+            }
+            return returnvalue.Replace("><",">" + Environment.NewLine + "<");
         }
     }
 }

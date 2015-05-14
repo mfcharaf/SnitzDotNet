@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\Snitz.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="Snitz.IDAL">
       <HintPath>..\..\..\Dependency\Snitz.IDAL.dll</HintPath>
     </Reference>

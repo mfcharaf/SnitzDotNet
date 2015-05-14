@@ -1,79 +1,90 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Plain.master.cs" Inherits="SnitzUI.MasterTemplates.Plain" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Import Namespace="SnitzConfig" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html id="Html1" runat="server" dir='<%$ Resources: webresources,TextDirection%>' xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
-<link rel="icon" href="/favicon.ico" />
-
-<title>Untitled Page</title>
+    <link rel="icon" href="/favicon.ico" />
+    <title>Untitled Page</title>
     <meta name="robots" content="index, follow" />
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="Generator" content="SnitzDotNet Forums v 1.0" />
-
-<script src="/scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
-<asp:ContentPlaceHolder id="CPHead" runat="server"></asp:ContentPlaceHolder>
-<asp:Literal ID="rtlCss" runat="server"></asp:Literal>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <asp:ContentPlaceHolder ID="CPMeta" runat="server"></asp:ContentPlaceHolder>
+<style type="text/css">
+    .nav
+    {
+        width:100%;
+        padding-left:15px;
+    }
+ 
+</style> 
+    <script type="text/javascript" src="/Scripts/jquery-1.9.1.min.js" ></script>
+    <script type="text/javascript" src="/scripts/singlemaster.js"></script>
+    <asp:Literal ID="rtlCss" runat="server"></asp:Literal>
+    <asp:ContentPlaceHolder id="CPHead" runat="server"></asp:ContentPlaceHolder>
 </head>
-<body>
-<form id="form1" runat="server" method="post">
-    <ajaxtoolkit:ToolkitScriptManager EnablePageMethods="true" ID="MainSM" runat="server" ScriptMode="Release" LoadScriptsBeforeUI="true">
-        <Scripts>
-            <asp:ScriptReference Path="~/Scripts/Main.min.js" />
-        </Scripts>
-        <Services>
-            <asp:ServiceReference InlineScript="False" Path="~/CommonFunc.asmx"/>
-        </Services>
-    </ajaxtoolkit:ToolkitScriptManager>  
-
-<a id="top" class="clearfix"></a>
-    <div id="topsection">
-        <div id="header" class="clearfix">
-            <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
-        </div>
-        <div class="innertube" style="display:none">
-            <div id="LogoDIV" >
-                <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server"></asp:HyperLink>
+<body><form id="form1" runat="server" method="post">
+    <div id="maincontainer">    
+        
+            <ajaxtoolkit:ToolkitScriptManager EnablePageMethods="false" ID="MainSM" runat="server" ScriptMode="Release" LoadScriptsBeforeUI="true">
+                <Scripts>
+                    <asp:ScriptReference Path="~/Scripts/Main.min.js" />
+                </Scripts>
+                <Services>
+                    <asp:ServiceReference InlineScript="False" Path="~/CommonFunc.asmx"/>
+                </Services>
+            </ajaxtoolkit:ToolkitScriptManager>  
+            <div id="mainheader">
+                <div id="topsection">
+                    <div id="header" class="clearfix">
+                        <asp:Label ID="lblForumTitle" CssClass="PageTitle" runat="server" Text="Snitz Test Forum" EnableViewState="False"></asp:Label>
+                    </div>
+                    <div class="innertube" style="display:none">
+                        <div id="LogoDIV" >
+                            <asp:HyperLink ID="homeLink" SkinID="Logo" runat="server"></asp:HyperLink>
+                        </div>
+                        <div id="TitleDIV">
+                            <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
+                                <snitz:AdRotate runat="server" ID="AdRotator" Visible="<%# Config.ShowHeaderAds %>"/>
+                            </asp:ContentPlaceHolder>
+                        </div>
+                    </div>
+                    <div id="MenuDIV" class="SnitzMenu" style="display:none">
+                        <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Restricted" />
+                    </div>
+                </div>
+                <a id="top" class="clearfix"></a>
+                <div id="subheadDIV" class="clearfix">
+                            <div class="innertube">
+                            <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
+                                <snitz:announcebox ID="announce" runat="server" />
+                            </asp:ContentPlaceHolder>
+                         </div>
+                    <div id="CPH1DIV" class="nowrap"><asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False"></asp:ContentPlaceHolder></div>
+                </div>
             </div>
-            <div id="TitleDIV">
-                <asp:ContentPlaceHolder ID="CPAd" runat="server" EnableViewState="False">
-                    <snitz:AdRotate runat="server" ID="AdRotator" Visible="<%# Config.ShowHeaderAds %>"/>
-                </asp:ContentPlaceHolder>
+            <div id="mainbody">
+                <div id="contentwrapper">
+                    <div id="contentcolumn" style="width:100%">
+                        <div class="innertube">
+                <div id="contentDIV" style="vertical-align:top;">
+                    <asp:ContentPlaceHolder id="CPM" runat="server"></asp:ContentPlaceHolder>
+                </div>
             </div>
-        </div>
-        <div id="MenuDIV" class="SnitzMenu">
-            <ucMenu:SnitzMenu ID="MainMenu" runat="server" MenuToLoad="Restricted" />
-        </div>
+            </div>
+            </div>
+                <div id="rightcolumn" style="display:none;">
+                    <div class="innertube">
+                        <asp:ContentPlaceHolder ID="RightCol" runat="server" >
+
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        
     </div>
-
-<div id="subheadDIV" class="clearfix">
-            <div class="innertube">
-            <asp:ContentPlaceHolder ID="CPSpace" runat="server" EnableViewState="False">
-                <snitz:announcebox ID="announce" runat="server" />
-            </asp:ContentPlaceHolder>
-         </div>
-    <div id="CPH1DIV" class="nowrap"><asp:ContentPlaceHolder ID="CPH1" runat="server" EnableViewState="False"></asp:ContentPlaceHolder></div>
-</div>
-    <div id="contentwrapper">
-        <div id="contentcolumn" style="width:100%">
-            <div class="innertube">
-    <div id="contentDIV" style="vertical-align:top;">
-        <asp:ContentPlaceHolder id="CPM" runat="server"></asp:ContentPlaceHolder>
-    </div>
-</div>
-</div>
-</div>
-    <div id="rightcolumn" style="display:none;">
-        <div class="innertube">
-            <asp:ContentPlaceHolder ID="RightCol" runat="server" >
-
-            </asp:ContentPlaceHolder>
-        </div>
-    </div>
-
-
-<br style="clear:both;line-height:0px;" />
-<%-- Page Content End --%>
+    <div id="mainfooter">
     <div id="pagefooterDIV" title="Page Footer">
                     <div id="snitzfooterDIV">
                 <div class="FooterTable">
@@ -90,17 +101,9 @@
         <asp:ContentPlaceHolder ID="CPF2" runat="server" EnableViewState="False">
             <asp:Literal ID="Literal1" runat="server"></asp:Literal>
         </asp:ContentPlaceHolder>
-        <p style="text-align:center;">
-            <a href="http://validator.w3.org/check?uri=referer"><asp:Image ID="validXHTML" SkinID="XHTML" runat="server"/></a>
-            <a href="http://jigsaw.w3.org/css-validator/check/referer"><asp:Image ID="validCSS" SkinID="CSS" runat="server"/></a>
-        </p>
     </div>	
-
-
-
-
-<%--End of Page --%>
-</form>
+    </div>
+    </form>
 </body>
 
 </html>

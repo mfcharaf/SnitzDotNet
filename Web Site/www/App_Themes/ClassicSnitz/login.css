@@ -1,0 +1,82 @@
+﻿.login {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 20px 20px;
+  width: 340px;
+  background: #8199DA;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 200px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 200px rgba(0, 0, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.login:before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+.login h1 {
+  margin: -20px -20px 21px;
+  line-height: 40px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px #555;
+  background: #6a5acd;
+  border-bottom: 1px solid #cfcfcf;
+  border-radius: 3px 3px 0 0;
+  background-image: -webkit-linear-gradient(top, #ffd, #eef2f5);
+  background-image: -moz-linear-gradient(top, #ffd, #eef2f5);
+  background-image: -o-linear-gradient(top, #ffd, #eef2f5);
+  background-image: linear-gradient(to bottom, #ffd, #eef2f5);
+  -webkit-box-shadow: 0 1px #555;
+  box-shadow: 0 1px #555;
+}
+.login p {
+  margin: 20px 0 0;
+}
+.login p:first-child {
+  margin-top: 0;
+}
+.login input[type=text], .login input[type=password] {
+  width: 278px;
+}
+.login p.remember_me {
+  float: left;
+  line-height: 31px;
+}
+.login p.remember_me label {
+  font-size: 12px;
+  color: #777;
+  cursor: pointer;
+}
+.login p.remember_me input {
+  position: relative;
+  bottom: 1px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.login-help {
+  margin: 20px 0;
+  color: #777;
+  text-align: center;
+  text-shadow: 0 1px #0000EE;
+}
+.login-help a {
+  color: #0000EE;
+  text-decoration: none;
+}
+.login-help a:hover {
+  text-decoration: underline;
+}
+.login-error p{ color: red;}
+:-moz-placeholder {
+  color: #c9c9c9 !important;
+  font-size: 13px;
+}    

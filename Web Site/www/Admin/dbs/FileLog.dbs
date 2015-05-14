@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tables title="FileLog create" applied="true">
+  <Create>
+    <Table name="FORUM_FILELOG" idfield="ID">
+      <Column name="FILENAME" type="varchar" size="255" allownulls="false"/>
+      <Column name="COUNTER" type="int" default="0" allownulls="false"/>
+      <Index name="PK_FORUM_FILELOG" columns="FILENAME" direction="ASC" unique="true"/>
+    </Table>
+</Create>
+</Tables>

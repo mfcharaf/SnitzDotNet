@@ -22,6 +22,7 @@
         var imgTagId = '<%= imageTag.ClientID %>';
         var errLabelId = '<%= errLabel.ClientID %>';
         var updPostId = '<%= updPost.ClientID %>';
+        var validFilesStr = '<%= AllowedFileTypes %>';
 
         function addToClientTable(name, text) {
             var table = $get(clientMsgId);
@@ -35,6 +36,7 @@
             cell.style.borderBottom = cell.style.borderRight = "solid 1px #aaaaff";
         }
         function uploadError(sender, args) {
+            alert('error');
             $get("errDiv").style.display = 'block';
             $get(errLabelId).innerHTML = "<span style='color:red;'>" + args.get_errorMessage() + "</span>";
             $get(clientMsgId).style.display = 'none';
@@ -42,8 +44,6 @@
 
             return false;
         }
-
-        var validFilesStr = '<%= AllowedFileTypes %>';
 
         function uploadStart(sender, args) {
             var validFilesArray = validFilesStr.split(',');
@@ -57,7 +57,7 @@
                     break;
                 }
             }
-
+            
             if (!isValidFile) {
                 //you cannot cancel the upload using set_cancel(true)
                 //cause an error
@@ -77,13 +77,13 @@
         function uploadComplete(sender, args) {
             var contentType = args.get_contentType();
             $get(updPostId).style.display = 'block';
-
             try {
 
-                if (parseInt(args.get_length()) > 2000000) {
+                if (parseInt(args.get_length()) > parseInt('<%= FileSizeLimit * (1024*1024) %>')) {
                     $get("errDiv").style.display = 'block';
-                    $get(errLabelId).innerHTML = "File should be less than 2Mb";
+                    $get(errLabelId).innerHTML = "File should be less than <%= FileSizeLimit  %> Mb";
                     $get(clientMsgId).style.display = 'none';
+                    $get(updPostId).innerHTML = '';
                     return false;
                 }
             } catch (e) { alert(e.Message); }
@@ -103,15 +103,17 @@
             &nbsp;<asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblQuickReplyHeader %>"></asp:Label>
         </asp:Panel>
         <div id="qrcontentwrapper" class="clearfix">  
+
+            <asp:Panel id="QRR" runat="server" CssClass="QRRight">
+                <asp:TextBox ID="qrMessage" ValidationGroup="qreply" runat="server" TextMode="MultiLine" CssClass="QRMsgArea" ></asp:TextBox>
+            </asp:Panel>   
             <asp:Panel id="QRL" runat="server" CssClass="QRLeft smallText">
                 <br />
                     <uc2:emoticons ID="emoticons1" runat="server" />
                 <br />
                 <asp:CheckBox ID="cbxSig" runat="server" Text="<%$ Resources:webResources, lblQRSig %>" Visible="<%# Config.AllowSignatures %>" />
-            </asp:Panel>
-            <asp:Panel id="QRR" runat="server" CssClass="QRRight">
-                <asp:TextBox ID="qrMessage" ValidationGroup="qreply" runat="server" TextMode="MultiLine" CssClass="QRMsgArea" ></asp:TextBox>
-            </asp:Panel>   
+            </asp:Panel>        
+
         </div>  
     </asp:Panel>
     <asp:Panel id="QRF" runat="server" CssClass="QRFooter clearfix" Width="100%" Direction="<%$ Resources:webResources, TextDirectionWord %>">

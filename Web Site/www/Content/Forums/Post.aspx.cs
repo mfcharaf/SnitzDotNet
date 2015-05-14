@@ -28,21 +28,19 @@ using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using AjaxControlToolkit;
 using ModConfig;
 using Snitz.BLL;
 using Snitz.BLL.modconfig;
 using Snitz.Entities;
-using SnitzUI.MasterTemplates;
 using SnitzCommon;
 using SnitzConfig;
 
 
 namespace SnitzUI
 {
-    public partial class PostPage : PageBase
+    public partial class PostPage : PageBase, ISiteMapResolver
     {
         private string _action;
         private string _type;
@@ -55,12 +53,12 @@ namespace SnitzUI
         public string AllowedFileTypes { get; set; }
         public bool AllowAttachments { get; set; }
         public bool AllowImageUploads { get; set; }
+        public int FileSizeLimit { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            var master = (SingleCol)Master;
-            if (master != null) master.rootScriptManager.EnablePageMethods = true;
+            this.PageScriptManager.Services.Add(new ServiceReference("~/CommonFunc.asmx"));
 
             editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
 
@@ -72,6 +70,7 @@ namespace SnitzUI
             AllowedFileTypes = "";
             AllowAttachments = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowAttachments"]));
             AllowImageUploads = Convert.ToBoolean(Convert.ToInt16(controller.ModConfiguration.Settings["AllowImageUpload"]));
+            FileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()); 
             if (AllowImageUploads)
                 AllowedFileTypes += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
             if (AllowAttachments)
@@ -595,7 +594,7 @@ namespace SnitzUI
             Cache["RefreshKey"] = obj;
         }
 
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
+        public SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e)
         {
             if (SiteMap.CurrentNode == null)
                 return null;
@@ -617,7 +616,7 @@ namespace SnitzUI
                 case "reply":
                 case "quote":
                     TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                    tempNode.Title = _thisTopic.Subject +  " (" + textInfo.ToTitleCase(_action) + ")";
+                    tempNode.Title = HttpUtility.HtmlDecode(_thisTopic.Subject) + " (" + textInfo.ToTitleCase(_action) + ")";
                     tempNode = tempNode.ParentNode;
                     tempNode.Title = string.Format("{0}", _thisTopic.Forum.Subject);
                     tempNode.Url = "~/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id;
@@ -629,7 +628,7 @@ namespace SnitzUI
                             tempNode.Title = Resources.webResources.lblEditReply;
                             break;
                         case "topics":
-                            tempNode.Title = Resources.webResources.lblEditTopic + " " + _thisTopic.Subject;
+                            tempNode.Title = Resources.webResources.lblEditTopic + " " + HttpUtility.HtmlDecode(_thisTopic.Subject);
                             break;
                     }
                     tempNode = tempNode.ParentNode;
@@ -637,7 +636,7 @@ namespace SnitzUI
                     tempNode.Url = "~/Content/Forums/topic.aspx?TOPIC=" + _thisTopic.Id;
                     break;
             }
-
+            //HttpUtility.HtmlDecode(_thisTopic.Subject)
             return currentNode; 
         }
 
@@ -676,7 +675,7 @@ namespace SnitzUI
                 types += controller.ModConfiguration.Settings["AllowedImageTypes"].ToString();
             }
             string[] allowedTypes = types.Split(',');
-            int fileSizeLimit = Convert.ToInt32(controller.ModConfiguration.Settings["FileSizeLimit"].ToString()) * 1024;
+            int fileSizeLimit = FileSizeLimit * (1024 * 1024);
             string uploadpath = controller.ModConfiguration.Settings["FileUploadLocation"].ToString();
             string filext = Path.GetExtension(AsyncFileUpload1.PostedFile.FileName).Replace(".", "");
             string contentType = AsyncFileUpload1.PostedFile.ContentType;

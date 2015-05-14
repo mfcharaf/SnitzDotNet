@@ -32,7 +32,7 @@ namespace SnitzUI.UserControls
         public string Height { get; set; }
 
         private const string Iframe =
-            "<iframe id=\"iframe1\" width=\"{0}\" height=\"{1}\"  frameborder=\"0\" style=\"background-color:#ffffff;\" scrolling=\"no\" src=\"/Content/AdRotator.aspx?f={2}\" name=\"iframe1\"></iframe>";
+            "<iframe id=\"iframe1\" onload='javascript:resizeIframe(this);'  frameborder=\"0\" style=\"background-color:#ffffff;\" scrolling=\"no\" src=\"/Content/AdRotator.aspx?f={0}\" name=\"iframe1\"></iframe>";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -40,7 +40,7 @@ namespace SnitzUI.UserControls
             {
                 GoogleAd.Visible = Config.ShowGoogleAds && Config.GoogleAdCode != "";
                 if (!Config.ShowGoogleAds)
-                    Literal1.Text = String.Format(Iframe, Width, Height, Filter);
+                    Literal1.Text = String.Format(Iframe, Filter);
             }
             else
             {

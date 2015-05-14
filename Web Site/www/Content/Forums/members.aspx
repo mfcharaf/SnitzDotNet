@@ -17,6 +17,7 @@
 <%@ Register Src="~/UserControls/MemberSearch.ascx" TagName="MemberSearch" TagPrefix="uc1" %>
 <%@ MasterType TypeName="BaseMasterPage" %>
 <asp:Content ID="head" runat="server" ContentPlaceHolderID="CPhead">
+    <script src="/scripts/common.js" type="text/javascript"></script>
 <style type="text/css">
 td a.Snitzbutton, td a.Snitzbutton span{
     background:none;
@@ -33,8 +34,12 @@ td a.Snitzbutton, td a.Snitzbutton span{
 <asp:Content runat="server" ContentPlaceHolderID="CPH1">
     <script type="text/javascript" language="javascript">
 <!-- 
+        function openConfirmDialog(url) {
+            var confirmWin = window.open(url, 'confirmation', 'width=300,height=200,resizable=yes');
+            confirmWin.moveTo(($(window).width() / 2) - 100, ($(window).height() / 2) - 75);
+        }
 
-    var prm = Sys.WebForms.PageRequestManager.getInstance();
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
     var postBackElement;
 
     function CancelAsyncPostBack() {
@@ -84,10 +89,10 @@ td a.Snitzbutton, td a.Snitzbutton span{
                 </script>
                 <asp:GridView ID="MGV" 
                   AutoGenerateColumns="False"
-                  PageSize="<%# SnitzConfig.Config.MemberPageSize %>"
+                  
                   AllowPaging="True" AllowSorting="true"
                   DataKeyNames="Id"
-                  CssClass="forumtable border" 
+                  CssClass="membertable" 
                   runat="server" CellPadding="3" EnableViewState="False" 
                   GridLines="None" OnRowCreated="MemberGridViewRowCreated" 
                   OnRowDataBound="MgvRowDataBound" DataSourceID="MemberODS" 
@@ -107,7 +112,7 @@ td a.Snitzbutton, td a.Snitzbutton span{
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblTitle %>" SortExpression="M_TITLE">
                     <HeaderStyle CssClass="rankCol" />
             		<ItemTemplate >
-                        <%# Eval("Rank.Title") %>
+            		    <asp:Label runat="server" ID="RankTitle"></asp:Label>
         		    </ItemTemplate>
         		</asp:TemplateField>
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPosts %>" sortexpression="M_POSTS" HeaderStyle-CssClass="countCol">
@@ -116,7 +121,7 @@ td a.Snitzbutton, td a.Snitzbutton span{
             		<ItemTemplate>
                         <%# Common.TranslateNumerals(Eval("PostCount"))%>
                 		<br />
-                        <%# Eval("Rank.Stars") %>
+                        <asp:Literal runat="server" ID="RankStars"></asp:Literal>
                 	</ItemTemplate>
         		</asp:TemplateField>
                 <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" sortexpression="M_LASTPOSTDATE">
@@ -143,10 +148,17 @@ td a.Snitzbutton, td a.Snitzbutton span{
                 </asp:TemplateField>
                 <asp:TemplateField ShowHeader="False" >
                     <ItemTemplate>
-                        <asp:HyperLink ID="hypUserLock" SkinID="UserLock" Text="<%$ Resources:webResources, lblLockUser %>" runat="server" EnableViewState="False" Visible='<%# ((Eval("Status").ToString() == "1") && IsAdministrator) %>' NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"pop_lock.aspx?lock=1&mode=M&ID={0}\")",Eval("Username")) %>' rel="NoFollow"></asp:HyperLink>
-                        <asp:HyperLink ID="hypUserUnlock" SkinID="UserUnlock" Text="<%$ Resources:webResources, lblUnLockUser %>" runat="server" EnableViewState="False" Visible='<%# ((Eval("Status").ToString() != "1") && IsAdministrator) %>' NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"pop_lock.aspx?lock=0&mode=M&ID={0}\")",Eval("Username")) %>' rel="NoFollow"></asp:HyperLink>
                         <asp:HyperLink ID="hypUserEdit" SkinID="UserEdit" Text="<%$ Resources:webResources, lblEditUser %>" runat="server" EnableViewState="False" NavigateUrl='<%# "~/Account/profile.aspx?edit=Y&user=" + Eval("Username") %>' Visible='<%# IsAdministrator %>' rel="NoFollow"></asp:HyperLink>
-                        <asp:HyperLink ID="hypUserDelete" SkinID="UserDelete" Text="<%$ Resources:webResources, lblDeleteUser %>" runat="server" EnableViewState="False" Visible='<%# IsAdministrator %>' NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"pop_delete.aspx?lock=1&mode=M&ID={0}\")",Eval("Username")) %>' rel="NoFollow"></asp:HyperLink>
+                        <asp:ImageButton ID="lockUser" SkinID="UserLock" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblLockUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
+                        <asp:ImageButton ID="unlockUser" SkinID="UserUnlock" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblUnLockUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
+                        <asp:ImageButton ID="delUser" SkinID="UserDelete" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblDeleteUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
+
                     </ItemTemplate>
                     <HeaderStyle CssClass="buttonCol"/>
                     <ItemStyle CssClass="memberLC" />

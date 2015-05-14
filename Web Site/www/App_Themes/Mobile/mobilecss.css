@@ -1,0 +1,318 @@
+﻿html{height:100%}
+body,form{margin:0;padding:0;height:100%;font-family:Tahoma,Arial,Helvetica,sans-serif;font-size:100%;line-height:1.1em;color:#4B4B4B;background-color:#fff;background:url(images/bg-pattern.gif)}
+#maincontainer{height:auto;min-height:100%}
+#mainheader{padding:0}
+#mainbody{padding:10px;padding-bottom:80px}
+#mainfooter{clear:both;position:relative;z-index:10;height:80px;margin-top:-80px}
+table,tr,td,th{border-collapse:collapse}
+#aspnetForm{width:100%;margin:0}
+#LoginDIV{float:left;width:30%;margin-left:-30%;background-color:#fff}
+#LogoDIV{width:25%;margin-left:0;float:left;background-color:#fff}
+#TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:white}
+#MenuDIV{display:block;background-color:#ccc;padding-top:1px;margin:1px 0 1px 0;width:auto;border-top:1px solid #999;border-bottom:1px solid silver;clear:both}
+#mainDIV{margin:auto;width:98%}
+#breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color:silver;border:1px solid #777;padding:0}
+.breadcrumb span{line-height:22px;vertical-align:top}
+#HdrDIV{margin:1px}
+#RightHdrDIV{margin-left:0;float:right;width:49%;text-align:right}
+#LeftHdrDIV{float:left;width:49%}
+#contentDIV{width:auto;margin:1px;clear:both}
+#MessageList{width:100%}
+#contentfooterDIV{margin:1px;width:auto}
+#pagefooterDIV{width:100%;margin:auto;background-color:transparent}
+#LoginBox{float:right}
+#LoginBox .content{font-size:small;display:block;color:White;border:0}
+#topsection{background:#fff}
+#topsection h1{margin:0;padding-top:15px}
+#contentwrapper{width:100%;float:left;margin-right:-325px}
+#contentcolumn{margin-right:325px}
+#rightcolumn{float:right;width:320px}
+.clearmargin{margin-right:0}
+.hide{display:none}
+.rightmargin{margin-right:325px}
+.show{display:block}
+#footer{clear:both;width:100%}
+#PostOptionsDIV{padding-right:5px;text-align:center}
+#PagerPanel{margin-top:3px}
+.innertube{margin:10px;margin-top:5px}
+.rtl{direction:rtl}
+.nowrap{white-space:nowrap}
+.daydetail{border:1px solid #0FA1B8;border-top:0;width:35%;float:left}
+img{border:0}
+fieldset{padding:5px;font-size:1.1em;border:1px solid #0FA1B8;margin:3px}
+legend{color:#0FA1B8}
+hr{height:0;border:dotted #c4d1da 0;border-top-width:1px}
+h1{font-weight:bold;font-size:1.2em;text-decoration:none;line-height:120%;color:#0FA1B8}
+h2{font-weight:bold;font-size:1em;text-decoration:none;line-height:1em;color:#0FA1B8}
+h3{font-weight:bold;font-size:.9em;padding-left:4px;text-decoration:none;line-height:1em;color:#0FA1B8}
+p{font-size:.9em;padding:0 4px 0 4px}
+input,textarea,select{font-size:110%;color:#000;border-color:#000;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px}
+input{text-indent:2px}
+.ddTopicSince{max-width:95%}
+a:link,a:active{color:#0FA1B8;text-decoration:none}
+a:visited{color:Gray;text-decoration:none}
+a:hover{text-decoration:underline;color:#069}
+.smallText a{color:#069}
+a.authorLink{color:#069}
+a.lastpostlink{color:#069}
+a.forumlink{text-decoration:none}
+a.forumlink:visited{color:#58DEF1}
+a.forumlink:hover{text-decoration:underline}
+a.active:visited{color:#FFF}
+.poweredText a,a.poweredText{color:Black;font-size:.6em}
+.tableheader a{color:#FFF;font-weight:bold;text-decoration:none}
+#contentfooterDIV .statsPanelHeader a{color:#FFF}
+#contentfooterDIV .statsPanelHeader a:hover{text-decoration:none;background:0}
+span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;border-radius:4px;background-color:white}
+.allReadButton{background:url(images/buttons/book.png) no-repeat;cursor:pointer;width:15px;height:15px;border:0}
+.AspNet-Login{margin:auto}
+img.captchaImage{border:1px solid #808080;margin:2px}
+.breadcrumb{height:auto;width:auto;background-color:transparent}
+.breadcrumb a{color:#0FA1B8;text-decoration:none}
+.PageTitle{font-weight:bold;color:White;float:left;margin-left:5px;font-size:1em;margin-top:8px;text-decoration:none;line-height:120%}
+.smallText{font-Size:.8em}
+.row td{background-color:#fff;border-bottom:1px solid #0FA1B8;border-right:1px solid #0FA1B8;vertical-align:top;overflow:hidden}
+.altrow td{background-color:#ECFFFF;border-bottom:1px solid #0FA1B8;border-right:1px solid #0FA1B8;vertical-align:top;overflow:hidden}
+.row td.CatHeaderRow{background-color:#CCC;border:0}
+.row td.ForumHeaderRow{background-color:#c8c8c8;color:silver;border:0}
+.row td.iconCol,.altrow td.iconCol{vertical-align:top}
+.row td.buttonCol,.altrow td.buttonCol{vertical-align:top}
+.row td.subjectCol,.altrow td.subjectCol{overflow:hidden}
+.emptyrow{text-align:center}
+.category{background-color:#0FA1B8;height:24px}
+td.category,.row td.categorylink{background-color:#0FA1B8;height:24px;padding-top:4px}
+.categorylink,th.categorylink,td.categorylink{color:#fff;font-weight:bold}
+.CategoryExpanded{background-image:url(/images/collapse.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
+.CategoryCollapsed{background-image:url(/images/expand.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
+.tableheader,th.tableheader,.tableheader th,td.tableheader{color:#333;font-weight:normal;background-color:#808080;font-size:smaller}
+th.iconCol{width:40px;text-align:left}
+th.forumCol{width:auto}
+th.subjCol{width:auto}
+th.authorCol{max-width:100px;width:60px}
+th.countCol{text-align:center;max-width:60px;width:45px}
+td.countCol{text-align:center;vertical-align:middle}
+td.authorCol{text-align:center}
+th.lastpostCol{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;min-width:100px}
+th.buttonCol{max-width:100px;width:58px}
+.cattitle{font-size:.8em;color:#FFF}
+.FooterTable{padding:5px 10px 0 10px;font-size:10px;color:#333;border-top:1px solid #CCC;border-bottom:1px solid #5C5C5C;background-color:silver}
+.FooterTable table{table-layout:auto}
+.poweredText{color:Black;font-size:.8em}
+#statsControl{width:100%;margin:auto}
+#contentfooterDIV .statsPanel{background-color:white;padding:5px;overflow:hidden}
+.categorybuttons{float:right;vertical-align:middle;margin-top:5px;margin-right:5px}
+.statsPanelHeader{width:100%;color:#FFF;height:30px;font-weight:bold;background-image:url(images/cat-bar.gif);vertical-align:text-bottom;overflow:hidden}
+.statsPanelHeader img{margin:0}
+.stickytable{background-color:#ECFFFF;border:1px solid #0FA1B8;width:100%;display:inline-table;table-layout:fixed}
+tr.rowsticky{border-bottom:1px solid #0FA1B8}
+.rowsticky td{background-color:#ECFFFF}
+.rowsticky td.iconCol{max-width:20px;width:20px;vertical-align:top}
+.rowsticky td.buttonCol{min-width:110px;width:110px;max-width:110px;vertical-align:top}
+.profilelnk img{vertical-align:text-bottom}
+.snitzpager{color:#555;margin:6px 0 6px 0}
+.snitzpager a.pagelink,.snitzpager a.pagelinkfirst,.snitzpager a.pagelinklast,.snitzpager .currentpagelink,.snitzpager .pagecount{text-decoration:none;background:#F5F5F5;border:1px solid #444;padding:1px 3px 1px 3px;margin-right:2px}
+.snitzpager .pagecount{margin-right:5px}
+.snitzpager a.pagelinkfirst,.snitzpager a.pagelinklast{background:#e0e0e0}
+.snitzpager .currentpagelink{background:#ddd}
+.snitzpager a.pagelink,.snitzpager a.pagelinkfirst,.snitzpager a.pagelinklast{text-decoration:none;color:#000090}
+.tooltip{border:1px solid #0FA1B8;background-color:White;padding:5px;font-size:small;max-height:350px;overflow:auto;width:650px}
+.AspNet-FormView{width:100%;margin:0;background-color:#FFF;border:1px solid #0FA1B8}
+.AspNet-FormView div.AspNet-FormView-Header{width:100%;margin:0;background-color:#0FA1B8}
+.AspNet-FormView-Data{padding-right:1px;padding:5px}
+.topicHeader{width:100%;background-image:url(/images/cat-bar.gif)}
+.topicPrev{float:left;width:20%;padding:3px;font-size:large}
+.topicNext{float:right;width:auto;padding:3px;font-size:large}
+.topicPrev a{font-size:small;text-decoration:none;color:White}
+.topicNext a{font-size:small;text-decoration:none;color:White}
+#replyHeader{width:100%;text-align:right;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px}
+.TopicSubject{width:100%;border:1px solid #777;background-color:#777;color:White;overflow:hidden}
+.topictitle{margin:8px;font-weight:bold;line-height:1.3em}
+.usertitle{font-weight:bold;color:#0FA1B8;line-height:1.2em}
+.ReplyDiv{width:100%;border:1px solid #0FA1B8;background-color:#efefef;color:Teal;overflow:hidden!important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left}
+.AltReplyDiv{width:100%;border:1px solid #0FA1B8;background-color:White;color:Navy;overflow:hidden!important;overflow:hidden}
+.leftColumn{float:left;min-height:160px;width:131px;padding:3px;height:auto!important;height:160px}
+.leftColumn .smallText{color:#999}
+.leftColumn .profilelnk{color:#009}
+.MessageDIV{position:relative;padding:1px;min-height:250px;height:auto!important;height:185px;border-left:1px solid #0FA1B8;margin-left:130px;margin-right:0;margin-bottom:0}
+.mImg{max-width:99%;width:auto!important;width:99%}
+.mContent{min-height:120px;height:auto!important;height:120px;width:99%!important;width:95%;padding:4px}
+.msgIcons{padding:1px;display:inline;vertical-align:top}
+.buttonbar{color:white;height:20px;border-bottom:1px solid #999;width:100%;background-color:#ccc;padding-top:2px}
+.pmbuttonbar{height:20px;border-bottom:1px solid #999;width:100%;padding-top:2px}
+.pmtitle{color:#000}
+.buttonbarImg span{height:auto;display:inline;vertical-align:bottom}
+.buttonbarImg{height:auto;display:inline;vertical-align:bottom;float:right}
+.buttonbarTxt{float:left;vertical-align:text-top}
+.buttonbarImg img{width:16px}
+.TopIcon{padding:1px;float:right}
+.TopIcon img{width:16px}
+.editedDIV{color:#903;font-size:.8em}
+.sigDIV{bottom:0;height:auto;margin-bottom:3px;width:100%;vertical-align:baseline;font-size:smaller}
+.sigDIV{font-size:x-small}
+.modalPopup{background-color:#ffd;border-width:1px;border-style:solid;border-color:Gray;padding:5px;width:350px;height:auto}
+.avatar{border:1px solid black;width:80px;height:80px}
+.avatarsmall{border:1px solid black;width:36px;height:36px;z-index:-1}
+.icon-overlay{position:relative;left:20px;top:-15px;z-index:10}
+img.avatar,img.avatarsmall{opacity:.4}
+img.online{opacity:1}
+.usrlabel{width:100px;display:inline-block;font-weight:bold;line-height:1em}
+blockquote.quoteMessage{font-size:smaller;margin:1.5em 1em;padding:.5em 1em;background-color:#f4f4f4}
+blockquote.quoteMessage span{display:block;font-style:normal}
+blockquote.quoteMessage em:before{content:url(images/smallquote_lt.png)}
+blockquote.quoteMessage span:last-child:after{content:url(images/smallquote_rt.png);display:block;float:right}
+.codebox{position:relative;display:block;margin:5px 20px 5px 20px;padding-top:0;padding-bottom:1px;border:1px solid #0FA1B8;line-height:1em;font:.8em Monospace;color:black;overflow:auto;width:90%!important;min-height:100px;min-width:200px;max-height:250px;height:auto!important;height:100px;background-color:#fff}
+.codebox a{color:#fff}
+.stickytable div{max-width:400px}
+.codehead{margin:0;margin-bottom:0;padding-left:8px;padding-bottom:0;border-bottom:1px solid #808080;font-size:1.1em;line-height:1.2em;font-weight:normal;color:white;background-color:#CCC;position:relative}
+.scrollcode,pre.scrollcode{position:relative;display:block;margin:0;color:black;overflow:auto;min-width:500px;width:auto!important;width:700px;height:100%;background-color:#fff;white-space:pre}
+.scrollcode ol{background:#E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;overflow:auto;margin:0;padding:.7em 0 .7em 2.8em;color:#fff}
+.scrollcode ol li{background:#fff;padding-left:4px;width:auto}
+.scrollcode ol code{color:#036}
+.regBox{width:640px;position:relative;margin:auto;border:1px solid #0FA1B8;background-color:White}
+.regBoxHeader{background-color:#0FA1B8;color:#fff;font-weight:bold;height:22px}
+.SearchLinks{margin-top:3px;text-align:center;padding:10px;font-size:1.1em}
+.SearchFilters{background-color:#0FA1B8;border:1px #efefef solid;margin-top:3px;width:98%;padding:10px}
+.SearchLinks a:link,.SearchLinks a:visited{color:#0FA1B8;text-decoration:none;background:#F5F5F5;padding:1px 3px 1px 3px;margin-right:2px}
+#postForm{height:400px;width:auto;margin:auto;padding:3px;height:auto!important;width:75%;border:1px solid #0FA1B8}
+#postForm label{display:inline-block;width:140px;float:left}
+#postForm input{border:solid 1px #aacfe4;width:70%;margin:0 0 2px 10px}
+#postForm select{border:solid 1px #aacfe4;min-width:60px;width:60px;width:auto!important;margin:0 0 10px 10px}
+#postForm input[type="image"]{clear:both;margin-left:0;width:88px;height:20px}
+#postForm input[type="checkbox"]{clear:both;width:12px;height:12px;border:0;float:left}
+#postForm span.cbx label{display:block;width:350px;float:left}
+#container:after{content:'';display:block;clear:both}
+#emoticons{width:100%;top:0;height:auto;margin:auto}
+#Editor{float:left}
+.QRBox{margin:0;background-color:White}
+.QRBox #contentwrapper{background-color:White}
+.QRHeader{background-color:#0FA1B8;color:#fff;font-weight:bold;height:22px}
+.QRLeft{background-color:White;float:left;padding-left:4px}
+.QRRight{margin-top:16px;vertical-align:top;float:left;width:99%}
+.QRFooter{clear:left;background-color:White;width:100%;text-align:center;padding:2px 0 2px 0}
+textarea.QRMsgArea{border:1px solid #0FA1B8;width:97%!important;width:90%}
+.profBtn img{padding:1px}
+input.profBtn{padding:1px}
+.NoBorder{border:0}
+#ContactFieldset label{display:inline-block;width:140px;float:left}
+#ContactFieldset input,#ContactFieldset textarea{border:solid 1px #aacfe4;width:70%;margin:0 0 10px 10px}
+span.moderation{font-weight:bolder;color:Red}
+.Poll_DisplayText{font-weight:normal}
+.Poll_TotalVotes{font-style:italic}
+.Poll_TakePoll,.Poll_PollResults{border:1px dashed #BEF2FA;padding:5px;margin-top:5px;margin-left:10px}
+.PollBox{background-color:white}
+.seperator{line-height:.4em}
+.sideBox{background-color:white;border:1px solid #0FA1B8;table-layout:fixed;width:100%;border-top-style:none;line-height:1em}
+.sideBox h3{padding-top:6px;padding-bottom:3px}
+.forumtable{background-color:white;border:1px solid #0FA1B8;table-layout:fixed;width:100%}
+.forumtable td{padding:3px;margin:0}
+table.smallCal{table-layout:auto}
+.smallCal table{table-layout:auto}
+.PMContainer{width:80%;padding:10px;margin:auto;background-color:white;border:1px solid #0FA1B8}
+.pm-inner{background-color:#666;padding:3px;border:1px solid #666;border-radius:3px}
+.pmbutton{height:28px;background-color:silver;margin-bottom:3px;vertical-align:middle;padding:2px}
+.popub-bkg{position:absolute;background:#666;filter:alpha(opacity=80);-moz-opacity:.8;opacity:.8;top:0;left:0;width:100%;height:100%;z-index:500;display:none;vertical-align:middle;text-align:center}
+.pmbutton input{vertical-align:middle;border:1px solid #666;margin:1px;border-radius:3px}
+.pmbutton input:hover{border:1px solid white}
+div.pm-new-message{padding:3px}
+.pm-new-message label{width:60px;display:inline-block}
+.pm-new-message input{margin:2px;margin-left:8px}
+div.mini{width:77%;display:inline-block;margin:auto}
+.pmMsgArea{width:77%;height:80px}
+textarea.pmMsgArea{border:1px solid #000;width:98%}
+.pm-new-message .markItUpEditor{min-height:50px!important}
+.pmoptions fieldset{font-size:smaller}
+.pm-footer{margin-top:2px;height:22px;background-color:silver;vertical-align:middle;padding:2px;border-bottom-left-radius:3px;border-bottom-right-radius:3px}
+.pm-message-header{background-color:silver;padding:3px}
+.hidden{display:none!important}
+.memberModalPopup{margin:0 auto;width:360px}
+.ovHidden{overflow:hidden}
+.shadow{-moz-box-shadow:3px 3px 4px #000;-webkit-box-shadow:3px 3px 4px #000;box-shadow:3px 3px 4px #000}
+a.Snitzbutton{background:transparent url(images/buttons/button_right.png) no-repeat scroll top right;display:block;float:left;height:30px;margin-right:6px;padding-right:20px;text-decoration:none;color:#000;font-size:12px;font-weight:bold}
+a.Snitzbutton span{background:transparent url(images/buttons/button_left.png) no-repeat;display:block;line-height:18px;padding:7px 0 5px 18px;white-space:nowrap}
+a.Snitzbutton:hover span{text-decoration:none;color:White}
+.table-bottom{text-align:left;margin:0 auto;padding:0;border:0}
+.table-bottom-left{float:left;width:50%}
+.table-bottom-right{margin:0;float:right;width:50%;text-align:right}
+.table-bottom-footer{clear:both}
+.snitzMenu div.AspNet-Menu-Horizontal:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.snitzMenu div.AspNet-Menu-Horizontal{z-index:10000;margin-left:auto;margin-right:auto;text-align:center;width:auto}
+.snitzMenu ul{background:#efefef}
+.snitzMenu ul.AspNet-Menu ul{width:8em;top:-1em;z-index:400}
+.snitzMenu ul.AspNet-Menu ul ul{width:8.5em;left:8.4em}
+.snitzMenu ul.AspNet-Menu li{white-space:nowrap;height:auto!important;line-height:1em}
+.snitzMenu ul.AspNet-Menu li a,.snitzMenu ul.AspNet-Menu li span{color:black;padding:4px 4px 4px 6px;border-bottom:0}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span{background-image:none}
+.snitzMenu ul.AspNet-Menu li:hover,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Hover{background:transparent}
+.snitzMenu ul.AspNet-Menu li a:hover,.snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover{color:White;background:transparent url(images/menu-expand.gif) right center no-repeat}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a:hover{background-image:none}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul{width:8.5em;left:0;top:100%}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul{top:-0.3em}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul{width:9.5em}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li{width:auto;min-width:4.5em;border-left:1px solid #efefef;border-right:1px solid gray;text-align:center}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul li{text-align:left;width:8.5em}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul li{width:9.5em}
+.snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu li ul li ul{margin:-1.4em 0 0 8.35em}
+.snitzMenu .AspNet-Menu-Horizontal li.AspNet-Menu-WithChildren ul{white-space:nowrap;border:solid 1px #999!important;-moz-box-shadow:3px 3px 4px #000;-webkit-box-shadow:3px 3px 4px #000;box-shadow:3px 3px 4px #000}
+.PostForm{background-color:White;margin:0 auto}
+.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span.AspNet-Menu-NonLink{display:none}
+.announceBox{text-align:center;width:80%;margin:auto;border:3px ridge #EFEFEF;background-color:#efefef}
+.hidden{display:none;visibility:hidden}
+.blogList{background-color:whitesmoke;border:1px solid #ddd;border-radius:5px;padding:4px;margin-top:14px;max-height:400px}
+.blog-date{width:60px;height:70px;background-color:white;float:left;text-align:center;border-radius:4px;border:1px solid silver;box-shadow:3px 3px 4px #000}
+.blog-day{color-rendering:black;height:50px;vertical-align:middle;font-size:x-large}
+.blog-day span{display:inline-block;vertical-align:middle;line-height:50px}
+.blog-month{width:100%;background-color:silver;color:white;height:20px;border-top-left-radius:4px;border-top-right-radius:4px}
+.blog-content{margin-left:80px}
+.blogheader{background-color:#eee;border:1px solid #bbb;width:99%;margin-bottom:3px;font-size:smaller;border-radius:5px}
+.blogmessage{background-color:whitesmoke;border:1px solid #bbb;min-height:100px;width:99%;border-top-left-radius:7px;border-bottom-right-radius:7px}
+.blogreply{background-color:#fafafa;border:1px solid #ddd;min-height:40px;width:70%;margin-left:160px;margin-bottom:3px}
+.blogreply span{font-size:x-small}
+.blog-buttons{display:table-cell;text-align:center;vertical-align:middle;color:#bbb}
+.blog-buttons img{vertical-align:middle}
+.blog-buttons input{vertical-align:middle}
+.blog-content h2{vertical-align:middle}
+.blog-content h2 span img{vertical-align:middle}
+.blog-comments{display:none}
+.poll-content{min-height:40px;border:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px}
+.Poll_PollResults table{width:99%}
+.popup-button-panel{margin:5px}
+.selected{background-color:#069}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+#__asptrace{position:relative}
+#popup_container{font-family:Arial,sans-serif;font-size:12px;min-width:300px;max-width:600px;background:#FFF;border:solid 5px #999;color:#000;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px}
+#popup_title{font-size:14px;font-weight:bold;text-align:center;line-height:1.75em;color:#666;background:#CCC url(images/title.gif) top repeat-x;border:solid 1px #FFF;border-bottom:solid 1px #999;cursor:default;padding:0;margin:0}
+#popup_content{background:16px 16px no-repeat url(images/info.gif);padding:1em 1.75em;margin:0}
+#popup_content.alert{background-image:url(images/info.gif)}
+#popup_content.confirm{background-image:url(images/important.gif)}
+#popup_content.prompt{background-image:url(images/help.gif)}
+#popup_message{padding-left:48px}
+#popup_panel{text-align:center;margin:1em 0 0 1em}
+#popup_prompt{margin:.5em 0}
+.mainModalPopup{border-width:0;min-width:440px;width:450px;width:auto!important;max-width:800px;background-color:#fff;padding:0;max-height:90%;line-height:1em;font-size:.8em}
+.mainModalPopup fieldset{font-size:inherit}
+.mainModalBorder{border-left:1px solid #ECE9D8;border-right:1px solid #716F64;border-top:1px solid #ECE9D8;border-bottom:1px solid #716F64}
+.mainModalInnerDiv{border-width:0;width:auto}
+.mainModalInnerBorder{border-left:1px solid #FFF;border-right:1px solid #ACA899;border-top:1px solid #FFF;border-bottom:1px solid #ACA899}
+.mainModalDraggablePanelDiv{white-space:nowrap;height:20px;width:90%;float:left;padding-top:3px}
+.mainModalDraggablePanelCloseDiv{float:right;height:20px;padding-top:3px}
+.mainModalDraggablePanel{width:100%}
+.mainModalTitle{color:#FFF;font-weight:bold}
+.mainModalContent{background-color:#FFF;margin:0}
+.modalBackground{background-color:#666;opacity:.8}
+.modalBackgroundDark{background-color:#000}
+#header,#upheader,#brwsheader{width:100%;background:#0FA1B8;min-height:26px;vertical-align:middle}
+#header a,#upheader a,#brwsheader a{color:White;font-weight:bold}
+.login{position:relative;margin:0 auto;padding:20px 20px 20px;width:340px;background:whitesmoke;border-radius:3px;-webkit-box-shadow:0 0 200px rgba(255,255,255,0.5),0 1px 2px rgba(0,0,0,0.3);box-shadow:0 0 200px rgba(85,85,85,0.5),0 1px 2px rgba(0,0,0,0.3)}
+.login:before{content:'';position:absolute;top:-8px;right:-8px;bottom:-8px;left:-8px;z-index:-1;background:rgba(0,0,0,0.08);border-radius:4px}
+.login h1{margin:-20px -20px 21px;line-height:40px;font-size:15px;font-weight:bold;color:white;text-align:center;text-shadow:0 1px #555;background:#0FA1B8;border-bottom:1px solid #cfcfcf;border-radius:3px 3px 0 0;background-image:-webkit-linear-gradient(top,#ffd,#eef2f5);background-image:-moz-linear-gradient(top,#ffd,#eef2f5);background-image:-o-linear-gradient(top,#ffd,#eef2f5);background-image:linear-gradient(to bottom,#ffd,#eef2f5);-webkit-box-shadow:0 1px whitesmoke;box-shadow:0 1px whitesmoke}
+.login p{margin:20px 0 0}
+.login p:first-child{margin-top:0}
+.login input[type=text],.login input[type=password]{width:278px}
+.login p.remember_me{float:left;line-height:31px}
+.login p.remember_me label{font-size:12px;color:#777;cursor:pointer}
+.login p.remember_me input{position:relative;bottom:1px;margin-right:4px;vertical-align:middle}
+.login-help{margin:20px 0;color:#2a85a1;text-align:center;text-shadow:0 1px #777}
+.login-help a{text-decoration:none}
+.login-help a:hover{text-decoration:underline}
+.login-error p{color:red}
+:-moz-placeholder{color:#c9c9c9!important;font-size:13px}

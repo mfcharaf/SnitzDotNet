@@ -1,11 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ReplyTemplate.ascx.cs" Inherits="SnitzUI.UserControls.Post_Templates.ReplyTemplate" %>
 <%@ Register TagPrefix="topic" TagName="MessageProfile" Src="~/UserControls/MessageProfile.ascx" %>
 <%@ Register TagPrefix="topic" TagName="MessageButtonBar" Src="~/UserControls/MessageButtonBar.ascx" %>
-<style>
-    #rightcolumn,.rightcolumn{ display: none;width: 0px;}
-    #contentwrapper{ margin-right: 0px;} 
-    .maincolumn{ width: 99%;}
-</style>
+
 <asp:Panel  ID="PostPanel" runat="server">
     <div class="leftColumn">
         <asp:HiddenField ID="hdnAuthor" runat="server" />

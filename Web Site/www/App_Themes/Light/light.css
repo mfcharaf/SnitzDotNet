@@ -1,4 +1,4 @@
-b{font-size: 105%;}
+icb{font-size: 105%;}
 img { border: 0px;}
 fieldset {
         margin-top:20px;
@@ -51,7 +51,7 @@ input,textarea, select {
     border-radius: 3px;
 }
 input { text-indent : 2px; }
-
+.ddTopicSince { max-width: 95%;}
 a:link, a:active
 {
     color: #777;text-decoration: none;
@@ -84,10 +84,9 @@ a.active:visited {color:#FFFFFF;}
  
 .tableheader a{	color: #FFFFFF; font-weight : bold;text-decoration:none;}
 #contentfooterDIV .statsPanelHeader a {color:#FFF;    }
-#contentfooterDIV .forumtable{ border: 0px none;
-}
+#contentfooterDIV .forumtable{ border: 0px none;}
 #contentfooterDIV .statsPanelHeader a:hover {text-decoration:none;background:none;}
-span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;}
+span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;border-radius: 4px;background-color: white;}
 
 .allReadButton { 
     background:url(images/buttons/book.png) no-repeat; 
@@ -131,7 +130,7 @@ img.captchaImage
 }
 .row td.CatHeaderRow{background-color:#CCCCCC;border:0px;}
 .row td.ForumHeaderRow {background-color: rgb(200,200,200); color:silver;border:0px;}
-.row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;}
+.row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;text-align: center;}
 .row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;}
 .row td.subjectCol, .altrow td.subjectCol {overflow:hidden;max-width:300px;width:300px;}
 
@@ -154,8 +153,9 @@ td.category, .row td.categorylink{background-color: silver; height: 24px;padding
     font-size: smaller;
 }
 th.iconCol{    
-    max-width: 26px;
-    width: 26px;}
+    width: 40px;
+    text-align: left;
+}
 th.forumCol{    
     width: auto;}
 th.subjCol{    
@@ -165,22 +165,27 @@ th.authorCol{
     width: 60px;
 }
 th.countCol{    
+    text-align: center;
     max-width: 60px;
     width: 45px;}
 td.countCol{
-    text-align: center;}
+    text-align: center;
+    vertical-align: middle;
+}
 td.authorCol{    
     text-align: center;
 }
 th.lastpostCol{  
     overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  
     max-width: 200px;
-    width: 140px;
+    min-width: 100px;
 }
 th.buttonCol{    
-    max-width: 50px;
-    width: 48px;}
-.cattitle		{ font-weight: bold; color : #FFFFFF; }
+    max-width: 100px;
+    width: 58px;
+
+}
+.cattitle		{ font-size: 0.8em; color : #FFFFFF; }
 .FooterTable 
 {
 	padding: 5px 10px 0px 10px;
@@ -331,8 +336,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 	 
 .mImg{max-width:99%; width:auto !important;width:99%;}
 .mContent{min-height:120px;height:auto !important;height:120px;width:99% !important;width:95%;padding:4px;}
-.msgIcons{padding: 1px;display:inline; vertical-align:top;width:16px;height:16px;}
-
+.msgIcons{padding: 1px;display:inline; vertical-align:top;}
 .buttonbar{color:white;height:20px;border-bottom:1px solid #999999;width:100%;background-color:#cccccc;padding-top:2px}
 .pmbuttonbar{height:20px;border-bottom:1px solid #999999;width:100%;padding-top: 2px;}
 .pmtitle{ color: #000000;}
@@ -367,6 +371,22 @@ tr.rowsticky{border-bottom:1px solid #777;}
     width:80px;
     height:80px;
 }
+.avatarsmall
+{
+    border: 1px solid black;
+    width:36px;
+    height:36px;
+    z-index: -1;
+}
+.icon-overlay
+{
+position:relative;
+left:20px;
+top:-15px;
+z-index:10;
+}
+    img.avatar,img.avatarsmall{opacity: 0.4;}
+    img.online{opacity: 1;}
 .usrlabel
 {
     width:100px;display: inline-block;font-weight: bold;line-height: 1em;
@@ -430,7 +450,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 	display: block;
 	margin: 0px;
 	color: black;
-	
+	overflow: auto;
 	min-width:500px;
     width:auto !important;
 	width: 700px;
@@ -441,6 +461,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
 .scrollcode ol
 {
     background: #E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;
+    overflow: auto;
     margin: 0;
     padding: 0.7em 0 0.7em 2.8em;
     color: #fff;
@@ -481,7 +502,7 @@ tr.rowsticky{border-bottom:1px solid #777;}
     margin-right: 2px;
 }
 
-#postForm {height:400px;width:auto;margin:auto;padding:3px;height:auto !important;width:75%;border: 1px solid #777;}
+#postForm {height:400px;width:auto;margin:auto;padding:3px;height:auto !important;border: 1px solid #777;}
 #postForm label{
  display:inline-block;
  width:140px;
@@ -527,7 +548,7 @@ display:block;
 clear:both;
 }
 
-#emoticons{width:125px;top:0px;height:auto;margin:auto;}
+#emoticons{height:auto;margin:auto;}
 #Editor{float:left;}
 
 .QRBox{margin:0px; background-color:White;}
@@ -683,7 +704,7 @@ a.Snitzbutton:hover span{
 
 .table-bottom{text-align: left;margin: 0px auto;padding: 0px;border:0;}
 .table-bottom-left{float:left;width:50%;}
-.table-bottom-right{margin:0;float:right;width:50%;text-align:right;}
+.table-bottom-right{margin:0;float:right;width:50%;}
 .table-bottom-footer{clear: both;}
 
 .snitzMenu div.AspNet-Menu-Horizontal:after{content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
@@ -822,5 +843,6 @@ a.Snitzbutton:hover span{
 .popup-button-panel {
     margin: 5px;
 }
+.selected{ background-color: darkslategray;}
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

@@ -9,9 +9,6 @@
 //------------------------------------------------------------------------------
 
 namespace Resources {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -601,6 +598,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Post Author: .
+        /// </summary>
+        internal static string lblAuthor {
+            get {
+                return ResourceManager.GetString("lblAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avatar.
         /// </summary>
         internal static string lblAvatar {
@@ -984,6 +990,15 @@ namespace Resources {
         internal static string lblFirstName {
             get {
                 return ResourceManager.GetString("lblFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to first message in Topic.
+        /// </summary>
+        internal static string lblFirstPostJump {
+            get {
+                return ResourceManager.GetString("lblFirstPostJump", resourceCulture);
             }
         }
         
@@ -1816,7 +1831,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remember me.
+        ///   Looks up a localized string similar to Remember my settings for this computer.
         /// </summary>
         internal static string lblRememberMe {
             get {
@@ -1830,6 +1845,15 @@ namespace Resources {
         internal static string lblReplies {
             get {
                 return ResourceManager.GetString("lblReplies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Views&lt;br/&gt;Replies.
+        /// </summary>
+        internal static string lblRepliesViews {
+            get {
+                return ResourceManager.GetString("lblRepliesViews", resourceCulture);
             }
         }
         
@@ -1879,7 +1903,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string lblSearch {
             get {
@@ -2392,7 +2416,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Read.
+        ///   Looks up a localized string similar to Views.
         /// </summary>
         internal static string lblViewCount {
             get {

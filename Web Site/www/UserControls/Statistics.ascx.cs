@@ -20,13 +20,14 @@
 */
 
 using System;
+using System.Linq;
 using System.Web;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
-
+using SnitzConfig;
 
 
 public partial class ucStatistics : System.Web.UI.UserControl
@@ -79,7 +80,9 @@ public partial class ucStatistics : System.Web.UI.UserControl
         lblTopicStats.Text = string.Format(webResources.lblStatsTopics, Common.TranslateNumerals(_topicCount), _stats.ActiveTopicCount);
         lblArchiveStats.Text = string.Format(webResources.lblStatsArchive, Common.TranslateNumerals(_archiveTopicCount + _archiveReplyCount), Common.TranslateNumerals(_archiveTopicCount));
         lblActiveSessions.Text = extras.GuestLabel + anonusers;
-        lblActiveUsers.Text = string.Format(webResources.lblStatsMembersOnline, String.Join(",", new SnitzMembershipProvider().GetOnlineUsers())) + "<br/>" + dSession;
+        string[] onlineusers = new SnitzMembershipProvider().GetOnlineUsers();
+        var remains = onlineusers.Except(Config.AnonMembers);
+        lblActiveUsers.Text = string.Format(webResources.lblStatsMembersOnline, String.Join(",", remains.ToArray())) + "<br/>" + dSession;
     }
 
     private string GetLastPost()

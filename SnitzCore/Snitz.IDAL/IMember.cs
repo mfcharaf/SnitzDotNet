@@ -27,7 +27,7 @@ namespace Snitz.IDAL
     public interface IMember : IBaseObject<MemberInfo>
     {
         int GetMemberCount(object o);
-        IEnumerable<int> GetAllowedForumIds(MemberInfo member, List<int> roleList, bool isadmin);
+        IEnumerable<int> GetAllowedForumIds(List<int> roleList, bool isadmin);
         IEnumerable<KeyValuePair<int, string>> GetAllowedForumList(MemberInfo member, List<int> roleList, bool isadmin);
         IEnumerable<TopicInfo> GetRecentTopics(int memberid, MemberInfo member);
         IEnumerable<MemberInfo> GetMembers(int startRecord, int maxRecords, string sortExpression, object filter);

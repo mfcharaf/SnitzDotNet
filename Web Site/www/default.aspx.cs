@@ -21,21 +21,14 @@
       
    
 using System;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
-using Snitz.Providers;
 using SnitzConfig;
-using SnitzUI.UserControls;
 
 
 public partial class Homepage : PageBase

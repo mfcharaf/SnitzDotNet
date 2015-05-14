@@ -34,7 +34,7 @@ namespace ModConfig
     /// 
     public class UploadConfig : ModConfigBase, ISnitzModConfig
     {
-
+        public bool NeedsSetup { get { return false; } }
         public bool ShowOnMenu { get { return false; } }
         public ModMenuItem Menu { get { return null; } }
 
@@ -68,24 +68,15 @@ namespace ModConfig
             Dictionary<string,string> settings = new Dictionary<string, string>
                                                  {
                                                      {"AllowFileUpload", "1"},
+                                                     {"AllowImageUpload", "1"},
+                                                     {"AllowAttachments", "1"},
                                                      {"ShowFileAttach", "1"},
-                                                     {
-                                                         "FileUploadLocation", "/sharedFiles"
-                                                     },
-                                                     {
-                                                         "AllowedAttachmentTypes",
-                                                         "zip,pdf,txt,doc"
-                                                     },
-                                                     {
-                                                         "AllowedImageTypes",
-                                                         "jpg,jpeg,gif,png"
-                                                     },
-                                                     {
-                                                         "TotalUploadLimitFileSize",
-                                                         "1073741824"
-                                                     },
-                                                     {"TotalUploadLimitFileNumber", "250"},
-                                                     {"FileSizeLimit", "2097152"}
+                                                     {"FileUploadLocation", "/sharedFiles"},
+                                                     {"AllowedAttachmentTypes","zip,pdf,txt,doc"},
+                                                     {"AllowedImageTypes","jpg,jpeg,gif,png"},
+                                                     {"TotalUploadLimitFileSize","100"},
+                                                     {"TotalUploadLimitFileNumber", "50"},
+                                                     {"FileSizeLimit", "10"}
                                                  };
 
             ModInfo modinfo = new ModInfo
@@ -104,6 +95,10 @@ namespace ModConfig
 
         }
 
+        protected override bool SetupMod(ModController controller)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

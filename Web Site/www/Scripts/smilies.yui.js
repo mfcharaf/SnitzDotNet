@@ -74,7 +74,9 @@ function emoticonToImage(mstr, m1, m2, offset, string) {
 function fillEmoticons() {
     emoticons.push(new emoticon("smile",":)","icon_smile.gif"));
     emoticons.push(new emoticon("eightball","8","icon_smile_8ball.gif"));
-    emoticons.push(new emoticon("angry",":(!","icon_smile_angry.gif"));
+    emoticons.push(new emoticon("angry", ":(!", "icon_smile_angry.gif"));
+    emoticons.push(new emoticon("angry2", ":(!!", "icon_smile_angry2.gif"));
+    emoticons.push(new emoticon("grumpy", ":G", "icon_smile_test.gif"));
     emoticons.push(new emoticon("approve","^","icon_smile_approve.gif"));
     emoticons.push(new emoticon("bigsmile",":D","icon_smile_big.gif"));
     emoticons.push(new emoticon("bigeyes","88","icon_smile_bigeyes.gif"));

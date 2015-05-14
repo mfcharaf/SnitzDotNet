@@ -74,8 +74,25 @@ namespace Snitz.OLEDbDAL
 
         public void Delete(ForumModeratorInfo forumModerator)
         {
-            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MOD_ID=@Id";
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, new OleDbParameter("@Id", OleDbType.Numeric) { Value = forumModerator.Id });
+            string sqlStr = "";
+            if (forumModerator.Id > 0)
+            {
+                sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MOD_ID=@Id";
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, new OleDbParameter("@Id", SqlDbType.Int) { Value = forumModerator.Id });
+            }
+            else if (forumModerator.MemberId > 0 && forumModerator.ForumId > 0)
+            {
+                sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MEMBER_ID=@Id AND FORUM_ID=@ForumId";
+                List<OleDbParameter> parms = new List<OleDbParameter>
+                {
+                    new OleDbParameter("@Id", SqlDbType.Int) {Value = forumModerator.MemberId},
+                    new OleDbParameter("@ForumId", SqlDbType.Int) {Value = forumModerator.ForumId}
+                };
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parms.ToArray());
+                
+            } 
+
+
         }
 
         public void Dispose()

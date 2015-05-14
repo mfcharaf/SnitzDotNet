@@ -12,11 +12,15 @@
     font-size: 0.8em;
 }
 .mainModalPopup fieldset{ font-size: inherit;}
-.mainModalBorder {
-    border-left: 1px solid #191970;
-    border-right: 1px solid #000028;
-    border-top: 1px solid #191970;
-    border-bottom: 1px solid #000028;
+.mainModalPopup fieldset input[type="text"]{margin-bottom: 2px;}
+.mainModalPopup fieldset label{line-height: 120%;padding-right: 3px;}
+.mainModalPopup fieldset textarea{ width: 99%;margin-bottom: 2px;}
+.mainModalBorder
+{
+	border-left: 1px solid #ECE9D8; 
+	border-right: 1px solid #716F64; 
+	border-top: 1px solid #ECE9D8;
+	border-bottom: 1px solid #716F64;
 }
 .mainModalInnerDiv
 {
@@ -70,5 +74,5 @@
     background-color: #000000;
 
 }
-#header,#upheader,#brwsheader{width:100%;background:#191970;height:26px; vertical-align:middle;}
+#header,#upheader,#brwsheader{width:100%;background:#191970;min-height:26px; vertical-align:middle;}
 #header a,#upheader a,#brwsheader a{color:White;font-weight:bolder;}

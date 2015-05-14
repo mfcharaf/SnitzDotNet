@@ -1,17 +1,36 @@
 ﻿html 
 {
-	font-family: Verdana, Arial, Courier;
-	font-size: 0.8em;	
+    height:100%
 }
-body {
-    background-color: #111;
-    background: url(images/bg-pattern.gif);
-    color: silver;
+body,form {
     margin: auto;
     padding: 0px;
-    line-height: 1.3em;
     max-width: 1024px;
     width: auto;
+    height: 100%;
+	font-family: Verdana, Arial, Courier;
+	font-size: 0.8em;	
+    line-height: 1.3em;
+    color: silver;
+    background-color: #111;
+    background: url(images/bg-pattern.gif);
+}
+#maincontainer {
+   height: auto; min-height: 100%;
+}
+#mainheader {
+    padding: 0px;
+}
+#mainbody {
+   padding:10px;
+   padding-bottom:80px;   /* Height of the footer */
+}
+#mainfooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ height: 80px;
+ margin-top: -80px;
 }
 table,tr,td,th{border-collapse:collapse; }
 #aspnetForm    

@@ -181,7 +181,7 @@ namespace SnitzCommon
                     //Iterate the unique keys.
                     foreach (string key in nameValueCollection.AllKeys)
                     {
-                    dicVal.Add(key, cookie[key]);
+                        dicVal.Add(key, cookie[key]);
                     }
                 }
             }
@@ -192,8 +192,21 @@ namespace SnitzCommon
          {
              if (GetHttpRequest().Cookies[cookieName] == null)
              {
-                 HttpCookie cookie = new  HttpCookie(cookieName);
-  
+                 HttpCookie cookie = new HttpCookie(cookieName);
+
+                 //This adds multiple cookies to the same key.
+                 foreach (KeyValuePair<string, string> val in dic)
+                 {
+                     cookie[val.Key] = val.Value;
+                 }
+
+                 cookie.Path = Config.CookiePath;
+                 cookie.Expires = DateTime.UtcNow.AddDays(30);
+                 GetHttpResponse().Cookies.Add(cookie);
+             }
+             else
+             {
+                 HttpCookie cookie = GetHttpRequest().Cookies[cookieName];
                  //This adds multiple cookies to the same key.
                  foreach (KeyValuePair<string, string> val in dic)
                  {

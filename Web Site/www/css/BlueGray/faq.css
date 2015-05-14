@@ -31,8 +31,9 @@
         div#main
         {
             margin: 0px 0px 0px 300px;
-            padding: 10px;
-            border-left: 1px solid #0FA1B8;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-left: 1px solid #777;
             border-collapse: collapse;
         }
         
@@ -51,7 +52,7 @@
         #footer
         {
             clear: both;
-            padding: 5px 10px;
+            padding: 5px 0px;
         }
         #footer p
         {
@@ -65,7 +66,7 @@
         .category{padding: 3px;}
         .codebox{ max-height: 2000px;}
         
-        div.faqtable{ border: 1px solid #ff6600;border-radius: 5px;}
+        div.faqtable{ border: 1px solid #0FA1B8;border-radius: 5px;background-color: #FFF}
          .faqtable label{ display: inline-block;width: 120px;}
-        h1 {text-shadow: 1px 1px #ff3300;}
+        /*h1 {text-shadow: 1px 1px #ff3300;}*/
 

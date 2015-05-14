@@ -17,41 +17,41 @@ Default skin template. The following skins are provided as examples only.
 <asp:Image SkinID="CSS" runat="server" ImageUrl="images/vcss.gif" AlternateText="Valid CSS!" ToolTip="Valid CSS!" Width=88 Height=31 />
 <asp:Image SkinID="LoadingImage" runat="server" ImageUrl="images/activity.gif"/>
 <asp:Image SkinID="percentImage" runat="server" ImageUrl="images/bar.jpg"/>
-<asp:Image SkinID="WebLink" ImageUrl="Images/message/weblink.png" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="Folder" ImageUrl="Images/folders/icon_folder.gif" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderHot" ImageUrl="Images/folders/icon_folder_hot.gif" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderLocked" ImageUrl="Images/folders/icon_folder_closed.gif" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderNew" ImageUrl="Images/folders/icon_folder_new.gif" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderNewLocked" ImageUrl="folders/folders/icon_folder_cosed.gif" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="FolderSticky" ImageUrl="Images/folders/icon_folder_sticky.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="FolderHotSticky" ImageUrl="Images/folders/icon_folder_sticky.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="FolderNewHotSticky" ImageUrl="Images/folders/icon_folder_new_sticky.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderNewSticky" ImageUrl="Images/folders/icon_folder_new_sticky.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderNewStickyLocked" ImageUrl="Images/folders/icon_folder_new_sticky_locked.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderStickyLocked" ImageUrl="Images/folders/icon_folder_sticky_locked.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
-<asp:Image SkinID="FolderArchive" ImageUrl="Images/folders/icon_folder_archive.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="FolderArchived" ImageUrl="Images/folders/icon_folder_archived.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderClosed" ImageUrl="Images/folders/icon_folder_closed.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="FolderClosedTopic" ImageUrl="Images/folders/icon_folder_closed_topic.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderDelete" ImageUrl="Images/folders/icon_folder_delete.gif" runat="server" Width=16 Height=16 />
-<asp:Image SkinID="FolderHold" ImageUrl="Images/folders/icon_folder_hold.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderModerate" ImageUrl="Images/folders/icon_folder_moderate.gif" runat="server" Width=15 Height=15 />
+<asp:Image SkinID="WebLink" ImageUrl="Images/message/weblink.png" runat="server"  />
+<asp:Image SkinID="Folder" ImageUrl="Images/folders/icon_folder.gif" runat="server"  />
+<asp:Image SkinID="FolderHot" ImageUrl="Images/folders/icon_folder_hot.gif" runat="server"  />
+<asp:Image SkinID="FolderLocked" ImageUrl="Images/folders/icon_folder_closed.gif" runat="server"  />
+<asp:Image SkinID="FolderNew" ImageUrl="Images/folders/icon_folder_new.gif" runat="server"  />
+<asp:Image SkinID="FolderNewLocked" ImageUrl="Images/folders/icon_folder_closed.gif" runat="server"  />
+<asp:Image SkinID="FolderSticky" ImageUrl="Images/folders/icon_folder_sticky.gif" runat="server"  />
+<asp:Image SkinID="FolderHotSticky" ImageUrl="Images/folders/icon_folder_sticky.gif" runat="server"  />
+<asp:Image SkinID="FolderNewHotSticky" ImageUrl="Images/folders/icon_folder_new_sticky.gif" runat="server"  />
+<asp:Image SkinID="FolderNewSticky" ImageUrl="Images/folders/icon_folder_new_sticky.gif" runat="server"  />
+<asp:Image SkinID="FolderNewStickyLocked" ImageUrl="Images/folders/icon_folder_new_sticky_locked.gif" runat="server"  />
+<asp:Image SkinID="FolderStickyLocked" ImageUrl="Images/folders/icon_folder_sticky_locked.gif" runat="server"  GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="FolderArchive" ImageUrl="Images/folders/icon_folder_archive.gif" runat="server"  />
+<asp:Image SkinID="FolderArchived" ImageUrl="Images/folders/icon_folder_archived.gif" runat="server"  />
+<asp:Image SkinID="FolderClosed" ImageUrl="Images/folders/icon_folder_closed.gif" runat="server"  />
+<asp:Image SkinID="FolderClosedTopic" ImageUrl="Images/folders/icon_folder_closed_topic.gif" runat="server"  />
+<asp:Image SkinID="FolderDelete" ImageUrl="Images/folders/icon_folder_delete.gif" runat="server"  />
+<asp:Image SkinID="FolderHold" ImageUrl="Images/folders/icon_folder_hold.gif" runat="server"  />
+<asp:Image SkinID="FolderModerate" ImageUrl="Images/folders/icon_folder_moderate.gif" runat="server"  />
 
-<asp:Image SkinID="FolderNewHot" ImageUrl="Images/folders/icon_folder_new_hot.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderNewHot" ImageUrl="Images/folders/icon_folder_new_hot.gif" runat="server" />
 <asp:Image SkinID="FolderNewTopic" ImageUrl="Images/folders/icon_folder_new_topic.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderOpen" ImageUrl="Images/folders/icon_folder_open.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderOpen" ImageUrl="Images/folders/icon_folder_open.gif" runat="server"  />
 <asp:Image SkinID="FolderOpenTopic" ImageUrl="Images/folders/icon_folder_open_topic.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="FolderPencil" ImageUrl="Images/folders/icon_folder_pencil.gif" runat="server" Width=16 Height=16 />
+<asp:Image SkinID="FolderPencil" ImageUrl="Images/folders/icon_folder_pencil.gif" runat="server"  />
 <asp:Image SkinID="FolderUnlocked" ImageUrl="Images/folders/icon_folder_unlocked.gif" runat="server" Width=15 Height=15 />
 <asp:Image SkinID="FolderUnmoderated" ImageUrl="Images/folders/icon_folder_unmoderated.gif" runat="server" Width=15 Height=15 />
-<asp:Image SkinID="UnModerated" CssClass="msgIcons" runat="server" ImageUrl="Images/folders/icon_folder_unmoderated.gif" GenerateEmptyAlternateText="true"/>
-<asp:Image SkinID="UnModeratedPosts" CssClass="msgIcons" runat="server" ImageUrl="Images/folders/warning.png" GenerateEmptyAlternateText="true"/>
-<asp:Image SkinID="OnHold" CssClass="msgIcons" runat="server" ImageUrl="Images/folders/onhold.png" GenerateEmptyAlternateText="true"/>
-<asp:Image SkinID="approve" CssClass="msgIcons" runat="server" ImageUrl="Images/folders/icon_folder_unmoderated.gif" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="UnModerated" runat="server" ImageUrl="Images/folders/icon_folder_unmoderated.gif" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="UnModeratedPosts" runat="server" ImageUrl="Images/folders/warning.png" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="OnHold" runat="server" ImageUrl="Images/folders/icon_folder_hold.gif" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="approve" runat="server" ImageUrl="Images/folders/icon_folder_unmoderated.gif" GenerateEmptyAlternateText="true"/>
 
 <asp:Image SkinID="PosticonSmall" ImageUrl="Images/message/doc.png" runat="server" Width="12" Height="12" />
-<asp:Image SkinID="Posticon" ImageUrl="Images/message/document.png" runat="server" Width="16" Height="16" />
-<asp:Image SkinID="Lastpost" ImageUrl="Images/page_go.png" runat="server" Width="14" Height="14" />
+<asp:Image SkinID="Posticon" ImageUrl="Images/message/document.png" runat="server"  />
+<asp:Image SkinID="Lastpost" ImageUrl="Images/page_go.png" runat="server"  />
 <asp:Image SkinID="Bar" ImageUrl="Images/icon_bar.gif" runat="server" Width=15 Height=15 />
 
 <asp:Image SkinID="Profile" ImageUrl="Images/icon_profile.gif" runat="server" Width=16 Height=16 />
@@ -62,4 +62,4 @@ Default skin template. The following skins are provided as examples only.
 <asp:Image SkinID="SortDesc" ImageUrl="Images/sort_descending.gif" runat="server" Width="16" Height="16" GenerateEmptyAlternateText="true"/>
 <asp:Image SkinID="Error" ImageUrl="Images/error.png" runat="server" GenerateEmptyAlternateText="true"/>
 <asp:Image SkinID="Poll" ImageUrl="Images/folders/poll.png" runat="server" GenerateEmptyAlternateText="true"/>
-<asp:Image SkinID="PollFolder" ImageUrl="Images/folders/folderpoll.png" runat="server" GenerateEmptyAlternateText="true"/>
+<asp:Image SkinID="PollFolder" ImageUrl="Images/folders/icon_poll.gif" runat="server" GenerateEmptyAlternateText="true"/>

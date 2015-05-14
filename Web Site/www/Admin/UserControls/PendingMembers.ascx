@@ -1,6 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_PendingMembers" Codebehind="PendingMembers.ascx.cs" %>
 <%@ Import Namespace="SnitzConfig" %>
-<%@ Import Namespace="SnitzCommon" %>
 <table border="0" cellpadding="4" cellspacing="1" width="100%" class="forumtable white" style="margin:auto;">
     <tr>
         <td colspan="2" >

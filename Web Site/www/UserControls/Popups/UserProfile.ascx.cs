@@ -27,6 +27,7 @@ using AjaxControlToolkit;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
+using SnitzConfig;
 using SnitzMembership;
 
 
@@ -72,6 +73,15 @@ namespace SnitzUI.UserControls
             {
                 if (author != null)
                 {
+                    Label litRank = (Label)item.FindControl("MemberTitleLabel");
+                    if (litRank != null)
+                    {
+                        string title = "";
+                        RankInfo rInf = new RankInfo(author.Username, ref title, author.PostCount, SnitzCachedLists.GetRankings());
+                        if (Config.ShowRankTitle)
+                            litRank.Text = title;
+
+                    }
                     ProfileCommon prof = ProfileCommon.GetUserProfile(author.Username);
                     if (prof.Gravatar)
                     {

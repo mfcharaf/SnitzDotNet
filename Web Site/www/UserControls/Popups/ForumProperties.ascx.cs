@@ -131,5 +131,20 @@ namespace SnitzUI.UserControls.Popups
             ddlModUsers.DataTextField = "Name";
             ddlModUsers.DataBind();
         }
+
+        protected void ModeratorBind(object sender, ListViewItemEventArgs e)
+        {
+            ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                ForumModeratorInfo fm = (ForumModeratorInfo)dataItem.DataItem;
+                if (!String.IsNullOrEmpty(hdnModerators.Value))
+                    hdnModerators.Value += ",";
+                hdnModerators.Value += fm.MemberId;
+
+            }
+
+        }
     }
 }

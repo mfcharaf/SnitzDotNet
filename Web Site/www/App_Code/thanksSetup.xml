@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tables title="Thanks Mod Setup" applied="false">
+  <Create>
+    <Table name="FORUM_LIKES" idfield="LIKE_ID" >
+      <Column name="TOPIC_ID" type="int" allownulls="true"/>
+      <Column name="REPLY_ID" type="int" allownulls="true"/>
+      <Column name="MEMBER_ID" type="int" allownulls="false"/>
+    </Table>    
+  </Create>
+  <Alter>
+    <Table name="FORUM_MEMBERS">
+      <Column action="ADD" name="M_LIKES" type="int" default="0" allownulls="false"/>
+    </Table>
+    <Table name="FORUM_TOPICS">
+      <Column action="ADD" name="T_LIKES" type="int" default="0" allownulls="false"/>
+    </Table>
+    <Table name="FORUM_REPLY">
+      <Column action="ADD" name="R_LIKES" type="int" default="0" allownulls="false"/>
+    </Table>
+  </Alter>
+  <Index>
+    <Table name="FORUM_LIKES">
+      <Index name="FORUM_LIKES_TIDX" columns="TOPIC_ID,MEMBER_ID" direction="ASC"/>
+      <Index name="FORUM_LIKES_RIDX" columns="REPLY_ID,MEMBER_ID" direction="ASC"/>
+    </Table>
+  </Index>
+</Tables>

@@ -85,7 +85,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active Topics.
+        ///   Looks up a localized string similar to Recent Posts.
         /// </summary>
         internal static string ActivePageTitle {
             get {
@@ -157,7 +157,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forum FAQ.
+        ///   Looks up a localized string similar to FAQ.
         /// </summary>
         internal static string FAQPageTitle {
             get {
@@ -364,7 +364,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Searching for ... .
+        ///   Looks up a localized string similar to Find Posts.
         /// </summary>
         internal static string SearchPageDescription {
             get {
@@ -373,7 +373,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forum Search.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string SearchPageTitle {
             get {
@@ -387,6 +387,15 @@ namespace Resources {
         internal static string TopicPageTitle {
             get {
                 return ResourceManager.GetString("TopicPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posts.
+        /// </summary>
+        internal static string Topics {
+            get {
+                return ResourceManager.GetString("Topics", resourceCulture);
             }
         }
     }

@@ -24,7 +24,7 @@ using System;
 namespace Snitz.Entities
 {
     [Serializable]
-    public class EventInfo
+    public class EventInfo : IEvent
     {
         public int Id { get; set; }
 
@@ -38,8 +38,41 @@ namespace Snitz.Entities
 
         public DateTime Date { get; set; }
 
+        public bool Enabled { get; set; }
+
+        public RecurringFrequencies RecurringFrequency { get; set; }
+
         public string Description { get; set; }
 
         public AuthorInfo Author { get; set; }
+
+        public bool ThisDayForwardOnly { get; set; }
+
+        public CustomRecurringFrequenciesHandler CustomRecurringFunction { get; set; }
+
+        /// <summary>
+        /// EventInfo Constructor
+        /// </summary>
+        public EventInfo()
+        {
+            Enabled = true;
+            ThisDayForwardOnly = true;
+            RecurringFrequency = RecurringFrequencies.None;
+        }
+
+        public IEvent Clone()
+        {
+            return new EventInfo
+            {
+                CustomRecurringFunction = CustomRecurringFunction,
+                Date = Date,
+                Enabled = Enabled,
+                Title = Title,
+                Type = Type,
+                RecurringFrequency = RecurringFrequency,
+                ThisDayForwardOnly = ThisDayForwardOnly
+            };
+        }
+
     }
 }

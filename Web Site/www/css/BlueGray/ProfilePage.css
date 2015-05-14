@@ -1,29 +1,31 @@
-﻿body{}
-#pProfile{width:100%;height:auto;}
-#pMain{padding-right: 5px;  z-index: 101; float: left; width: 49%;position: relative; height: auto}
-fieldset{font-size:0.85em;}
-fieldset li {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+﻿#pProfile{width:100%;height:auto;}
+
+fieldset{position: relative;font-size:90%;float: left;width: 350px !important;}
+fieldset ul {
+        list-style-type: none;
+        list-style-position:inside;
+        margin:0;
+        padding:0;
 }
- 
+::-webkit-input-placeholder{ color: #999999;}
+::-moz-placeholder{ color: #999999;}
+ :-ms-input-placeholder{ color: #999999;padding: 1px;}
  /* default layout */
  div.ajax__tab_xp2{margin:auto;}
-.ajax__tab_default .ajax__tab_header {white-space:normal !important}
+.ajax__tab_default .ajax__tab_header { white-space: normal !important;height: 21px;}
 .ajax__tab_default .ajax__tab_outer {display:-moz-inline-box;display:inline-block}
 .ajax__tab_default .ajax__tab_inner {display:-moz-inline-box;display:inline-block}
-.ajax__tab_default .ajax__tab_tab {overflow:hidden;text-align:center;display:-moz-inline-box;display:inline-block}
+.ajax__tab_default .ajax__tab_tab {overflow:hidden;text-align:center;display:-moz-inline-box;display: inline-block;}
 
 /* xp theme */
-.ajax__tab_xp2 .ajax__tab_header {font-size:11px;background:url('/App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
+.ajax__tab_xp2 .ajax__tab_header {font-size:90%;background:url('/App_Themes/BlueGray/images/tab/tabline.gif') repeat-x 50% bottom;
 }
 .ajax__tab_xp2 .ajax__tab_outer {padding-right:4px;padding-top:0px;background:url('/App_Themes/BlueGray/images/tab/tabr.gif') no-repeat right 50%;
 height:21px;
 }
 .ajax__tab_xp2 .ajax__tab_inner {padding-left:3px;background:url('/App_Themes/BlueGray/images/tab/tabl.gif') no-repeat;
 }
-.ajax__tab_xp2 .ajax__tab_tab {padding:4px;padding-top:0px;margin:0px;background:url('/App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
+.ajax__tab_xp2 .ajax__tab_tab {margin:0px;background:url('/App_Themes/BlueGray/images/tab/tab.gif') repeat-x;
 }
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_outer {cursor:pointer;}
 .ajax__tab_xp2 .ajax__tab_hover .ajax__tab_inner {cursor:pointer;}
@@ -41,41 +43,27 @@ height:21px;
 .ajax__scroll_horiz {overflow:scroll;}
 .ajax__scroll_both {overflow:scroll}
 .ajax__scroll_auto {overflow:auto}
-
-/* plain theme */
-.ajax__tab_plain .ajax__tab_outer {text-align: center; vertical-align: middle; border:2px solid #999999;}
-.ajax__tab_plain .ajax__tab_inner {text-align: center; vertical-align: middle; }
-.ajax__tab_plain .ajax__tab_body {text-align: center; vertical-align: middle;}
-.ajax__tab_plain .ajax__tab_header {text-align: center; vertical-align: middle;}
-.ajax__tab_plain .ajax__tab_active .ajax__tab_outer {background:#FFFFE1;}
-
+a.ajax__tab_tab{ line-height: 21px;}
+.ajax__tab_panel div.mini{ width: 98%;}
+.fullwidth fieldset {width: 100% !important; }
 .profileform{
  margin:0 auto;
- width:80%;
+ width:85%;
  padding-top:8px;
  }
 
 /* ----------- stylized ----------- */
-
- #profileDIV * { 
-  vertical-align: middle; 
-} 
-
-
  #profileDIV h1 {
  font-weight:bold;
  margin-bottom:8px;
  }
  #profileDIV p{
  color:#666666;
- margin-bottom:20px;
  border-bottom:solid 1px #b7ddf2;
- padding-bottom:10px;
  }
  #profileDIV label{
  display:inline-block;
- text-align:right;
- width:140px;
+ width:130px;
  }
 
  #profileDIV .small{
@@ -83,20 +71,23 @@ height:21px;
  display:block;
  font-weight:normal;
  text-align:right;
- width:140px;
+ width:130px;
  }
  #profileDIV input{
  
  border:solid 1px #aacfe4;
- width:150px;
+ width:200px;
  margin:0px 0 10px 10px;
  }
+#profileDIV input.number {
+    width: 40px;
+}
  #profileDIV select{
  border:solid 1px #aacfe4;
  min-width:60px;
  width:60px;
  width:auto !important;
- margin:0px 0 10px 10px;
+ margin:0px 0 10px 0px;
      max-width: 250px;
  }
  #profileDIV input[type="image"]
@@ -109,9 +100,7 @@ height:21px;
  }
   #profileDIV input[type="checkbox"]
  {
- clear:both;
- width:12px;
- height:12px;
+ height:13px; width:13px; padding:0; margin-top:6px; margin-bottom:6px;
  border:0px;
  }
   #profileDIV label.sig {
@@ -120,21 +109,21 @@ height:21px;
  width:260px;
  float:left;
  }
- #profileDIV span.sig label{width:250px;}
- #profileDIV span.email label{width:auto;}
- #profileDIV span.gravatar label{width:auto;}
+
+ #profileDIV span.sig label{ width: auto;}
+ #profileDIV span.email label{padding-left: 3px;width:auto;}
+ #profileDIV span.email input[type="checkbox"]{height:13px; width:13px; padding:0; margin-top:6px; margin-bottom:6px;}
+
  #profileDIV label.links{width:180px;}
  #profileDIV label.doblabel{width:100px;}
- 
- #profileDIV input.textToLabel 
+  #profileDIV input.textToLabel 
 {
     background-color:transparent;
     border-top-style:none;
     border-left-style:none;
     border-right-style:none;
-    width:200px;
+    width:130px;
 }
-
         .markItUp .upload a
         {
             display: none;

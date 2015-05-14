@@ -24,7 +24,7 @@ public class Url
     /// Constructor
     /// </summary>
     /// <param name="pageUrl">URL of the page. This URL must begin with the protocol (such as http) and end with a trailing slash, if your web server requires it. This value must be less than 2048 characters.</param>
-    /// <param name="lastModified">he date of last modification of the file. This date should be in W3C Datetime format. This format allows you to omit the time portion, if desired, and use YYYY-MM-DD.</param>
+    /// <param name="lastModified">The date of last modification of the file. This date should be in W3C Datetime format. This format allows you to omit the time portion, if desired, and use YYYY-MM-DD.</param>
     /// <param name="changeFrequency">How frequently the page is likely to change. This value provides general information to search engines and may not correlate exactly to how often they crawl the page. Valid values are:
     /// * always
     /// * hourly

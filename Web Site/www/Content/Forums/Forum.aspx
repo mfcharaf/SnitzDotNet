@@ -140,7 +140,7 @@
             </asp:Panel>
 
             <asp:Panel ID="StickyPanel" runat="server">
-                <asp:GridView ID="StickyGrid" runat="server" AutoGenerateColumns="False" Width="100%"
+                <asp:GridView ID="StickyGrid" runat="server" AutoGenerateColumns="False" Width="100%" BorderWidth="1" 
                     DataKeyNames="Id" CellPadding="3" CssClass="stickytable" GridLines="None" EnableViewState="False"
                     OnRowDataBound="ForumTableRowDataBound">
                     <PagerSettings Visible="False" />
@@ -153,59 +153,48 @@
                             <ItemTemplate>
                             </ItemTemplate>
                             <ItemStyle CssClass="iconCol" />
-                            <HeaderStyle Width="20px"></HeaderStyle>
+                            <HeaderStyle CssClass="iconCol"></HeaderStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="<%$ Resources:webResources, lblTopic %>" SortExpression="Subject">
                             <ItemTemplate>
-                                    <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="False"
-                                        GenerateEmptyAlternateText="true" />
                                     <a class="bbcode" href="/Content/Forums/topic.aspx?TOPIC=<%# Eval("Id") %>&ARCHIVE=<%# _archiveView %>" title="<%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>">
-                                    <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></a>
+                                    <%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %></a><br/>
+                                    <asp:Literal runat="server" ID="auth" Text="<%$ Resources:webResources, lblAuthor %>"></asp:Literal><a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
+                                <span class="smallText">
+                                    <br/>Latest reply:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
+                                    CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
+                                    ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink>
+                                </span>
+
                             </ItemTemplate>
                             <ItemStyle VerticalAlign="Top" Width="50%" />
-                            <HeaderStyle Width="50%" HorizontalAlign="Left"></HeaderStyle>
+                            <HeaderStyle CssClass="subjCol" HorizontalAlign="Left"></HeaderStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Username">
+
+                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblRepliesViews %>" SortExpression="ViewCount" Visible="true">
                             <ItemTemplate>
-                                <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
+                            <asp:Label runat="server" ID="lblViews" ToolTip="<%$ Resources:webResources, lblViewCount %>" Text='<%# Common.TranslateNumerals(Eval("Views"))%>'></asp:Label>
+                            <br/>
+                            <asp:Label runat="server" ID="lblReplies" ToolTip="<%$ Resources:webResources, lblReplies %>" Text='<%# Common.TranslateNumerals(Eval("ReplyCount"))%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Left" Width="80px" VerticalAlign="Top" />
-                            <HeaderStyle Width="80px" HorizontalAlign="Left"></HeaderStyle>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount" Visible="false">
-                            <ItemTemplate>
-                                <%# Common.TranslateNumerals(Eval("ReplyCount"))%>
-                            </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
-                            <HeaderStyle Width="60px"></HeaderStyle>
-                        </asp:TemplateField>
-<%--                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
-                        <HeaderStyle Width="60px" />
-                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                        <ItemTemplate>
-                            <%# Eval("ReplyCount") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>--%>
-                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount" Visible="true">
-                            <ItemTemplate>
-                                <%# Common.TranslateNumerals(Eval("Views"))%>
-                            </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Center" Width="60px" VerticalAlign="Top" />
-                            <HeaderStyle Width="60px"></HeaderStyle>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
-                            <ItemTemplate>
-                                <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
-                                    CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
-                                    ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
-                                <%--<br />
-                                <asp:Literal runat="server" ID="lastpostdate"></asp:Literal>--%>    
-                            </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Left" Width="122px" VerticalAlign="Top" CssClass="nowrap" />
-                            <HeaderStyle Width="120px" HorizontalAlign="Left"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+                            <HeaderStyle CssClass="countCol" HorizontalAlign="Center"></HeaderStyle>
                         </asp:TemplateField>
                         <asp:TemplateField InsertVisible="False">
                             <ItemTemplate>
+                                <asp:HyperLink rel="nofollow" ID="hypReplyTopic" SkinID="ReplyTopic" runat="server" Text="<%$ Resources:webResources, lblReply %>"
+                                    ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
+                                <asp:HyperLink rel="nofollow" ID="hypEditTopic" SkinID="EditTopic" runat="server" Visible="False"
+                                    Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
+                                <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>" OnClientClick=""
+                                    CausesValidation="False" EnableViewState="False" />
+                                <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>' CommandName="sub"
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick=""
+                                    CausesValidation="False" EnableViewState="False" />
+                                <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
+                                    runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
+                                    CausesValidation="False" EnableViewState="False" />
                                 <asp:ImageButton ID="Stick" SkinID="StickyTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lblStick %>" OnClientClick=""
                                     CausesValidation="False" EnableViewState="False" />
@@ -218,28 +207,14 @@
                                 <asp:ImageButton ID="TopicUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                     runat="server" ToolTip="<%$ Resources:webResources, lblUnlock %>" OnClientClick=""
                                     CausesValidation="False" EnableViewState="False" />
-                                <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                    runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>" OnClientClick=""
-                                    CausesValidation="False" EnableViewState="False" />
-                                <asp:HyperLink ID="hypEditTopic" SkinID="EditTopic" runat="server" Visible="False"
-                                    Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
-                                <asp:HyperLink ID="hypReplyTopic" SkinID="ReplyTopic" runat="server" Text="<%$ Resources:webResources, lblReply %>"
-                                    ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
-                                <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>' CommandName="sub"
-                                    runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick=""
-                                    CausesValidation="False" EnableViewState="False" />
-                                <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
-                                    runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
-                                    CausesValidation="False" EnableViewState="False" />
-
-                                <asp:HyperLink ID="hypNoArchiveTopic" SkinID="NoArchiveTopic" runat="server" Text="<%$ Resources:webResources, lblNoArchive %>"
+                                <asp:HyperLink rel="nofollow" ID="hypNoArchiveTopic" SkinID="NoArchiveTopic" runat="server" Text="<%$ Resources:webResources, lblNoArchive %>"
                                     ToolTip="<%$ Resources:webResources, lblNoArchive %>" Visible="false"></asp:HyperLink>
-                                <asp:HyperLink ID="hypArchiveTopic" SkinID="ArchiveTopic" runat="server" Text="<%$ Resources:webResources, lblArchive %>"
+                                <asp:HyperLink rel="nofollow" ID="hypArchiveTopic" SkinID="ArchiveTopic" runat="server" Text="<%$ Resources:webResources, lblArchive %>"
                                     ToolTip="<%$ Resources:webResources, lblArchive %>" Visible="false"></asp:HyperLink>
                                 <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" />
                             </ItemTemplate>
-                            <ItemStyle CssClass="buttonCol" Width="40px" HorizontalAlign="Right" />
-                            <HeaderStyle Width="40px"></HeaderStyle>
+                            <ItemStyle  CssClass="buttonCol" HorizontalAlign="Right" />
+                            <HeaderStyle CssClass="buttonCol"></HeaderStyle>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
@@ -312,55 +287,49 @@
                         <ItemStyle CssClass="postCol"></ItemStyle>
                         <ItemTemplate>
                             <span style="width: 100%; overflow: hidden;">
-                                <asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="true"
-                                    GenerateEmptyAlternateText="true" />
-                                &nbsp;<asp:HyperLink CssClass="bbcode" ID="tLink" runat="server" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&ARCHIVE={1}", Eval("Id"),_archiveView) %>'
-                                    ToolTip='<%# Eval("Subject")%>' Text='<%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>' /></span>
-                            <br />
-                            <span class="smallText"><%# Eval("PageCount")%> page<asp:Label runat="server" ID="plural" Visible='<%# Convert.ToInt32(Eval("PageCount")) > 1 %>' Text="s"></asp:Label></span>
+                                <%--<asp:Image ID="imgPosticonSmall" SkinID="PosticonSmall" runat="server" Visible="true" GenerateEmptyAlternateText="true" />&nbsp;--%>
+                                <asp:HyperLink CssClass="minibbcode" ID="tLink" runat="server" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&ARCHIVE={1}", Eval("Id"),_archiveView) %>'
+                                    ToolTip='<%# Eval("Subject")%>' Text='<%# HttpUtility.HtmlDecode(Eval("Subject").ToString()) %>' /></span>&nbsp;
+                            <span class="smallText"><%# TopicPageLinks(Eval("ReplyCount"),Eval("Id")) %></span>
+                            <br/><span class="smallText"><asp:Literal runat="server" ID="auth" Text="<%$ Resources:webResources, lblAuthor %>"></asp:Literal><a class="authorLink" href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>&nbsp;<asp:Literal ID="postdate" runat="server" Text='<%# Eval("Date") %>'></asp:Literal>
+                            <br/>Latest reply:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>,
+                                &nbsp;<asp:HyperLink ID="lpLnk" runat="server"
+                                    CssClass="authorLink" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
+                                    ToolTip="<%$ Resources:webResources, lblLastPostJump %>" ></asp:HyperLink></span>
                         </ItemTemplate>
                         <HeaderTemplate>
                             <asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblTopic %>"></asp:Label>
                             <div style="float:right;"><asp:TextBox ID="searchFor" runat="server" Width="175px"></asp:TextBox>
                             <asp:ImageButton ID="open_btn2" ToolTip="Search in Forum" AlternateText="Search in Forum" runat="server" SkinID="Search" OnClick="FilterTopics" />
                             </div>
-
                         </HeaderTemplate>
                         <HeaderStyle CssClass="subjCol"></HeaderStyle>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblPostAuthor %>" SortExpression="Author.Name">
-                        <HeaderStyle CssClass="authorCol" />
-                        <ItemStyle CssClass="authorCol"></ItemStyle>
-                        <ItemTemplate>
-                            <a href='<%# Eval("AuthorProfileLink") %>' title='<%# Eval("AuthorName") %>'><%# Eval("AuthorName")%></a>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblReplies %>" SortExpression="ReplyCount">
+                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblRepliesViews %>">
                         <HeaderStyle CssClass="countCol" />
                         <ItemStyle CssClass="countCol"></ItemStyle>
                         <ItemTemplate>
-                            <%# Eval("ReplyCount") %>
+                            <asp:Label runat="server" ID="lblViews" ToolTip="<%$ Resources:webResources, lblViewCount %>" Text='<%# Common.TranslateNumerals(Eval("Views"))%>'></asp:Label>
+                            <br/>
+                            <asp:Label runat="server" ID="lblReplies" ToolTip="<%$ Resources:webResources, lblReplies %>" Text='<%# Common.TranslateNumerals(Eval("ReplyCount"))%>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblViewCount %>" SortExpression="ViewCount">
-                        <HeaderStyle CssClass="countCol" />
-                        <ItemStyle CssClass="countCol"></ItemStyle>
-                        <ItemTemplate>
-                            <%# Eval("Views") %>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="<%$ Resources:webResources, lblLastPost %>" SortExpression="LastPostDate">
-                        <HeaderStyle  CssClass="lastpostCol" />
-                        <ItemStyle CssClass="lastpostCol nowrap"></ItemStyle>
-                        <ItemTemplate>
-                            <span class="smallText">by:&nbsp;<asp:Literal ID="popuplink" runat="server" Text='<%# Eval("LastPostAuthorPopup") %>'></asp:Literal>
-                                <br /><asp:Literal runat="server" ID="lastpostdate"></asp:Literal>&nbsp;<asp:HyperLink ID="lpLnk" runat="server"
-                                    CssClass="profilelnk" SkinID="JumpTo" NavigateUrl='<%# String.Format("/Content/Forums/topic.aspx?TOPIC={0}&whichpage=-1#{1}", Eval("Id"),Eval("LastReplyId")) %>'
-                                    ToolTip="<%$ Resources:webResources, lblLastPostJump %>" Text="<%$ Resources:webResources, lblLastPostJump %>"></asp:HyperLink></span>
-                        </ItemTemplate>
-                    </asp:TemplateField>
+
                     <asp:TemplateField InsertVisible="False">
                         <ItemTemplate>
+                            <asp:HyperLink rel="nofollow" ID="hypReplyTopic" EnableViewState="false" SkinID="ReplyTopic" runat="server"
+                                Text="<%$ Resources:webResources, lblReply %>" ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
+                            <asp:HyperLink rel="nofollow" ID="hypEditTopic" EnableViewState="false" SkinID="EditTopic" runat="server"
+                                Visible="False" Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
+                            <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
+                                runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False" />
+                            <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>'
+                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False" />
+                            <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False" />
                             <asp:ImageButton ID="Stick" SkinID="StickyTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                 runat="server" ToolTip="<%$ Resources:webResources, lblStick %>" OnClientClick=""
                                 CausesValidation="False" EnableViewState="False" />
@@ -373,27 +342,11 @@
                             <asp:ImageButton ID="TopicUnLock" SkinID="UnLockTopic" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
                                 runat="server" ToolTip="<%$ Resources:webResources, lblUnlock %>" OnClientClick=""
                                 CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="TopicDelete" SkinID="DeleteMessage" Visible='<%# IsAdministrator %>' CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lblDelPost %>" OnClientClick=""
-                                CausesValidation="False" EnableViewState="False" />
-                            <br/><asp:HyperLink ID="hypEditTopic" EnableViewState="false" SkinID="EditTopic" runat="server"
-                                Visible="False" Text="<%$ Resources:webResources, lblEditPost %>" ToolTip="<%$ Resources:webResources, lblEditPost %>"></asp:HyperLink>
-                            <asp:HyperLink ID="hypReplyTopic" EnableViewState="false" SkinID="ReplyTopic" runat="server"
-                                Text="<%$ Resources:webResources, lblReply %>" ToolTip="<%$ Resources:webResources, lblReply %>"></asp:HyperLink>
-                            <asp:ImageButton ID="TopicSub" SkinID="Subscribe" CommandArgument='<%# Eval("Id")%>'
-                                runat="server" ToolTip="<%$ Resources:webResources, lblSubscribeTopic %>" OnClientClick=""
-                                CausesValidation="False" EnableViewState="False" />
-                            <asp:ImageButton ID="TopicUnSub" SkinID="UnSubscribe" CommandArgument='<%# Eval("Id")%>' CommandName="unsub"
-                                runat="server" ToolTip="<%$ Resources:webResources, lblUnSubscribeTopic %>" OnClientClick=""
-                                CausesValidation="False" EnableViewState="False" />
-
-                            <asp:HyperLink ID="hypNoArchiveTopic" EnableViewState="false" SkinID="NoArchiveTopic"
+                            <asp:HyperLink rel="nofollow" ID="hypNoArchiveTopic" EnableViewState="false" SkinID="NoArchiveTopic"
                                 runat="server" Text="<%$ Resources:webResources, lblNoArchive %>" ToolTip="<%$ Resources:webResources, lblNoArchive %>"></asp:HyperLink>
-                            <asp:HyperLink ID="hypArchiveTopic" EnableViewState="false" SkinID="ArchiveTopic"
+                            <asp:HyperLink rel="nofollow" ID="hypArchiveTopic" EnableViewState="false" SkinID="ArchiveTopic"
                                 runat="server" Text="<%$ Resources:webResources, lblArchive %>" ToolTip="<%$ Resources:webResources, lblArchive %>"></asp:HyperLink>
                             <asp:ImageButton ID="TopicApprove" SkinID="approve" runat="server" ToolTip="Approve Topic" />
-                            <asp:HyperLink ID="lastreadjump" runat="server" Visible="false"
-                                    CssClass="profilelnk" SkinID="JumpToLastRead" ToolTip="Last read message" Text="Last read"></asp:HyperLink>
                         </ItemTemplate>
                         <ItemStyle CssClass="buttonCol" />
                         <HeaderStyle CssClass="buttonCol" />
@@ -451,21 +404,15 @@
             <snitz:JumpTo ID="JumpTo1" runat="server" />
         </div>
     </div>
-    <div class="table-bottom-footer">
-        <asp:Image ID="imgNewPosts" EnableViewState="false" SkinID="FolderNew" runat="server"
-            GenerateEmptyAlternateText="true" />
-        <asp:Label ID="lblNewPosts" runat="server" Text="<%$ Resources:webResources, lblNewPosts %>"></asp:Label>.
-                <br />
-        <asp:Image ID="imgOldPosts" EnableViewState="false" SkinID="Folder" runat="server"
-            GenerateEmptyAlternateText="true" />
-        <asp:Label ID="lblOldPosts" runat="server" Text="<%$ Resources:webResources, lblOldPosts %>"></asp:Label>.
-                (<asp:Image ID="imgHotTopic" EnableViewState="false" SkinID="FolderHot" runat="server"
-                    GenerateEmptyAlternateText="true" />
+    <asp:Panel runat="server" ID="FolderImg" CssClass="table-bottom-footer">
+        <asp:Image ID="imgNewPosts" EnableViewState="false" SkinID="FolderNew" runat="server" GenerateEmptyAlternateText="true" />
+        <asp:Label ID="lblNewPosts" runat="server" Text="<%$ Resources:webResources, lblNewPosts %>"></asp:Label>.<br />
+        <asp:Image ID="imgOldPosts" EnableViewState="false" SkinID="Folder" runat="server" GenerateEmptyAlternateText="true" />
+        <asp:Label ID="lblOldPosts" runat="server" Text="<%$ Resources:webResources, lblOldPosts %>"></asp:Label>.(<asp:Image ID="imgHotTopic" EnableViewState="false" SkinID="FolderHot" runat="server" GenerateEmptyAlternateText="true" />
         <asp:Label ID="lblHotTopic" runat="server" Text="<%$ Resources:webResources, lblHotTopics %>"></asp:Label>)<br />
-        <asp:Image ID="imgfolderNewLocked" EnableViewState="false" SkinID="FolderLocked"
-            runat="server" GenerateEmptyAlternateText="true" />
+        <asp:Image ID="imgfolderNewLocked" EnableViewState="false" SkinID="FolderLocked" runat="server" GenerateEmptyAlternateText="true" />
         <asp:Label ID="lblLockedTopic" runat="server" Text="<%$ Resources:webResources, lblLockedTopic %>"></asp:Label>.       
-    </div>
+    </asp:Panel>
 </asp:Content>
 <asp:Content runat="server" ID="cpf" ContentPlaceHolderID="CPF2">
     <div id="sampleformdiv" title="Search Forum" style="display: none;">

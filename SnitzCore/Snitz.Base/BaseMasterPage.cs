@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Security.Authentication;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -42,11 +43,17 @@ public abstract class BaseMasterPage : MasterPage
     {
 
         base.OnInit(e);
-        var footer = new SnitzPageFooter();
-
-        var cph = (ContentPlaceHolder)this.FindControl("CPF2");
-        cph.Controls.Add(footer);
         
+        var cph = (ContentPlaceHolder)this.FindControl("CPF2");
+        if (cph != null)
+        {
+            var footer = new SnitzPageFooter();
+            cph.Controls.Add(footer);
+        }
+        else
+        {
+            throw new InvalidCredentialException("Copyright Violation error");
+        }
         var meta = new HtmlMeta();
         meta.Attributes.Add("name", "copyright");
         meta.Attributes.Add("content", "The base forum code is Copyright (C) 2012 Huw Reddick, Michael Anderson, Pierre Gorissen and Richard Kinser, Non-Forum Related code is Copyright (C) " + Config.ForumTitle);

@@ -12,13 +12,13 @@
 public partial class Admin_Membership {
     
     /// <summary>
-    /// MemberSearch1 control.
+    /// ucSearch control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::User_Controls_MemberSearch MemberSearch1;
+    protected global::User_Controls_MemberSearch ucSearch;
     
     /// <summary>
     /// UsersOnlineLabel control.

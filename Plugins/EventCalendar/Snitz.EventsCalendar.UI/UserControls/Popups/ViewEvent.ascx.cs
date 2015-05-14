@@ -52,7 +52,7 @@ namespace EventsCalendar.UserControls.Popups
 
             // fetch todays events from db
             EventInfo calEvent = ForumEvents.GetEvent(Convert.ToInt32(eventid));
-
+            
             switch (calEvent.Type)
             {
                 case 1:

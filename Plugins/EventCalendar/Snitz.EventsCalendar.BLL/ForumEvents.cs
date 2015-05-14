@@ -28,20 +28,20 @@ using Snitz.IDAL;
 
 namespace Snitz.BLL
 {
-    public static class ForumEvents
+    public static partial class ForumEvents
     {
 
-        public static List<EventInfo> GetEvents(DateTime start, DateTime end)
+        public static List<IEvent> GetEvents(DateTime start, DateTime end)
         {
             IForumEvent dal = Factory<IForumEvent>.Create("ForumEvent", "EventsDAL");
-            return new List<EventInfo>(dal.GetEvents(start.ToString("yyyyMMddHHmmss"), end.ToString("yyyyMMddHHmmss")));
+            return new List<IEvent>(dal.GetEvents(start.ToString("yyyyMMddHHmmss"), end.ToString("yyyyMMddHHmmss")));
 
         }
 
-        public static List<EventInfo> GetEventsForToday(string today)
+        public static List<IEvent> GetEventsForToday(string today)
         {
             IForumEvent dal = Factory<IForumEvent>.Create("ForumEvent", "EventsDAL");
-            return new List<EventInfo>(dal.GetEvents(today, null));
+            return new List<IEvent>(dal.GetEvents(today, null));
         }
 
         public static void AddEvent(string title, string description, int type, DateTime eventDate, int userid)
@@ -80,5 +80,67 @@ namespace Snitz.BLL
             IForumEvent dal = Factory<IForumEvent>.Create("ForumEvent", "EventsDAL");
             dal.Update(forumevent);
         }
+
+        private static bool DayForward(IEvent evnt, DateTime day)
+        {
+            if (evnt.ThisDayForwardOnly)
+            {
+                int c = DateTime.Compare(day, evnt.Date);
+
+                if (c >= 0)
+                    return true;
+
+                return false;
+            }
+
+            return true;
+        }
+        public static bool NeedsRendering(IEvent evnt, DateTime day)
+        {
+            if (!evnt.Enabled)//&& !_showDisabledEvents)
+                return false;
+
+            DayOfWeek dw = evnt.Date.DayOfWeek;
+
+            if (evnt.RecurringFrequency == RecurringFrequencies.Daily)
+            {
+                return DayForward(evnt, day);
+            }
+            if (evnt.RecurringFrequency == RecurringFrequencies.Weekly && day.DayOfWeek == dw)
+            {
+                return DayForward(evnt, day);
+            }
+            if (evnt.RecurringFrequency == RecurringFrequencies.EveryWeekend && (day.DayOfWeek == DayOfWeek.Saturday ||
+                day.DayOfWeek == DayOfWeek.Sunday))
+                return DayForward(evnt, day);
+            if (evnt.RecurringFrequency == RecurringFrequencies.EveryMonWedFri && (day.DayOfWeek == DayOfWeek.Monday ||
+                day.DayOfWeek == DayOfWeek.Wednesday || day.DayOfWeek == DayOfWeek.Friday))
+            {
+                return DayForward(evnt, day);
+            }
+            if (evnt.RecurringFrequency == RecurringFrequencies.EveryTueThurs && (day.DayOfWeek == DayOfWeek.Thursday ||
+                day.DayOfWeek == DayOfWeek.Tuesday))
+                return DayForward(evnt, day);
+            if (evnt.RecurringFrequency == RecurringFrequencies.EveryWeekday && (day.DayOfWeek != DayOfWeek.Sunday &&
+                day.DayOfWeek != DayOfWeek.Saturday))
+                return DayForward(evnt, day);
+            if (evnt.RecurringFrequency == RecurringFrequencies.Yearly && evnt.Date.Month == day.Month &&
+                evnt.Date.Day == day.Day)
+                return DayForward(evnt, day);
+            if (evnt.RecurringFrequency == RecurringFrequencies.Monthly && evnt.Date.Day == day.Day)
+                return DayForward(evnt, day);
+            if (evnt.RecurringFrequency == RecurringFrequencies.Custom && evnt.CustomRecurringFunction != null)
+            {
+                if (evnt.CustomRecurringFunction(evnt, day))
+                    return DayForward(evnt, day);
+                return false;
+            }
+
+            if (evnt.RecurringFrequency == RecurringFrequencies.None && evnt.Date.Year == day.Year &&
+                evnt.Date.Month == day.Month && evnt.Date.Day == day.Day)
+                return DayForward(evnt, day);
+            return false;
+        }
+
     }
 }

@@ -1,15 +1,34 @@
 ﻿html 
 {
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 0.9em;	
+    height: 100%;
 }
-body
+body,form
 {
-    background-color: #999;
-    color: #000;
     margin:0px;
     padding:0px;
-    line-height: 1.5em;
+    height: 100%;
+	font-family: Verdana, Arial, Helvetica;
+    font-size: 95%;
+    line-height: 1.2em;
+    color: #191970;
+    background-color: #ffffff;
+}
+#maincontainer {
+   height: auto; min-height: 100%;
+}
+#mainheader {
+    padding: 0px;
+}
+#mainbody {
+   padding:10px;
+   padding-bottom:80px;   /* Height of the footer */
+}
+#mainfooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ height: 80px;
+ margin-top: -80px;
 }
 table,tr,td,th{border-collapse:collapse; }
 #aspnetForm    
@@ -21,7 +40,7 @@ table,tr,td,th{border-collapse:collapse; }
 #LogoDIV{width:25%;margin-left:0%;float:left;background-color: #ffffff;}
 #TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:  white;}
 
-#MenuDIV{display:block;background-color: silver;padding-top:1px;margin:1px 0px 1px 0px;width:auto;height:24px; 
+#MenuDIV{display:block;background-color: silver;padding-top:1px;margin:1px 0px 1px 0px;width:auto;
          border-top:1px solid #fff;
          border-bottom:1px solid #777;
          clear:both;border-radius: 5px;}

@@ -1,16 +1,35 @@
 ﻿html 
 {
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 0.9em;	
+    height: 100%;
 }
-body
+body,form
 {
-    background-color: #d2d2d2;
-    background: url(images/bg-pattern.gif);
-    color: #4B4B4B;
     margin:0px;
     padding:0px;
-    line-height: 1.5em;
+    height: 100%;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+    line-height: 1.1em;
+    color: #4B4B4B;
+    background-color: #d2d2d2;
+    background: url(images/bg-pattern.gif);
+}
+#maincontainer {
+   height: auto; min-height: 100%;
+}
+#mainheader {
+    padding: 0px;
+}
+#mainbody {
+   padding:10px;
+   padding-bottom:80px;   /* Height of the footer */
+}
+#mainfooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ height: 80px;
+ margin-top: -80px;
 }
 table,tr,td,th{border-collapse:collapse; }
 #aspnetForm    
@@ -19,14 +38,15 @@ table,tr,td,th{border-collapse:collapse; }
 }
 
 #LoginDIV{float:left;width:30%;margin-left: -30%;background-color: #ffffff;}
-#LogoDIV{width:25%;margin-left:0%;float:left;background-color: #ffffff;}
+#LogoDIV{width:25%;margin-left:0%;background-color: #ffffff;}
 #TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:  white;}
 
-#MenuDIV{display:block;background-color: #cccccc;padding-top:1px;margin:1px 0px 1px 0px;width:auto;height:24px; background-image:url(/images/nav-bg.gif);border-top:1px solid #999999;border-bottom:1px solid silver;clear:both;}
+#MenuDIV{display:block;background-color: #cccccc;padding-top:1px;margin:1px 0px 1px 0px;width:auto;border-top:1px solid #999999;border-bottom:1px solid silver;clear:both;}
 
 #mainDIV{margin:auto;width:98%;}
 #subheadDIV{}
 #breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color: silver;border: 1px solid #777;border-radius: 5px;padding:0px;}
+
 .breadcrumb span {line-height:22px;vertical-align:top;}
 #HdrDIV{margin:1px;}
 

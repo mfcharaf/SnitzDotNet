@@ -53,6 +53,8 @@ namespace ModConfig
             }
         }
 
+        public bool NeedsSetup { get { return false; } }
+
         #endregion
 
         public BlogMenuConfig() : base("BlogMenu")
@@ -82,6 +84,11 @@ namespace ModConfig
             controller.InstallMod();
             return modinfo;
 
+        }
+
+        protected override bool SetupMod(ModController controller)
+        {
+            throw new NotImplementedException();
         }
 
         private bool IsViewable()

@@ -11,7 +11,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="SnitzMenu" EnableTheming="True" Codebehind="SnitzMenu.ascx.cs" EnableViewState="False" %>
     <asp:Menu ID="Menu1" runat="server" EnableViewState="False" CssClass="clearfix"
     OnMenuItemDataBound="MenuItemDataBound"  CssSelectorClass="snitzMenu clearfix"
-    Orientation="Horizontal" StaticSubMenuIndent="10">
+    Orientation="Vertical">
     
     </asp:Menu>
 

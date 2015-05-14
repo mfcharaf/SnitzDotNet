@@ -69,7 +69,7 @@
                     <asp:ImageButton ID="ButtonForward" runat="server" SkinID="PMForwardAlt"
                         AlternateText="Forward" ToolTip="<%$ Resources:PrivateMessage, PmFwd %>" OnClick="ButtonForward_Click" BorderWidth="1"/>
                     <asp:ImageButton ID="ButtonDelMsg" runat="server" SkinID="PMTrash"
-                        AlternateText="Delete" ToolTip="<%$ Resources:PrivateMessage, PmDelete %>" OnClick="ButtonDelMsg_Click" BorderWidth="1"/> 
+AlternateText="Delete" ToolTip="<%$ Resources:PrivateMessage, PmDelete %>" OnClick="ButtonDelMsg_Click" BorderWidth="1"/> 
                     </div>
                 </div>
                 <div style="width:25%;float:left;background-color: white;height: 260px;overflow-y: scroll;">
@@ -97,7 +97,10 @@
                         <asp:Label ID="lblRecipient" runat="server" Text="<%$ Resources:webResources, lblTo %>" AssociatedControlID="newTo"></asp:Label><asp:TextBox ID="newTo" runat="server" Width="40%"></asp:TextBox><asp:Label ID="lblMultiple" runat="server" Text="<%$ Resources:PrivateMessage, PmRecipientNote %>" ></asp:Label><br/>
                         <asp:Label ID="lblSubject" runat="server" Text="<%$ Resources:webResources, lblSubject %>" AssociatedControlID="newSubject"></asp:Label><asp:TextBox ID="newSubject" runat="server" Width="60%"></asp:TextBox><br/>
                         <asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblMessage %>" AssociatedControlID="newMessage" style="vertical-align: top;"></asp:Label>
-                        <asp:TextBox ID="newMessage" CssClass="pmMsgArea" runat="server" TextMode="MultiLine" Rows="4"></asp:TextBox>
+                        <asp:TextBox ID="newMessage" CssClass="pmMsgArea" runat="server" TextMode="MultiLine" Rows="4"></asp:TextBox><br/>
+                        <asp:ImageButton ID="pmSend" runat="server" SkinID="PMSendAlt"
+                        OnClick="btnReceive_Click" ToolTip="<%$ Resources:PrivateMessage, PmSendReceive %>" AlternateText="Send/Receive" BorderWidth="1"/>
+
                     </asp:Panel>
                     <asp:Panel ID="PmOptions" runat="server" CssClass="pmoptions clearfix" Visible="False">
                         <asp:Panel ID="Panel1" runat="server" GroupingText="<%$ Resources:PrivateMessage, PmOptGroup1 %>">
@@ -156,7 +159,7 @@
                 <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="UpdatePanel2">
                     <ProgressTemplate>
                         <div style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: #666; filter: alpha(opacity=80); -moz-opacity: .8; opacity: .8;">
-                            <img src="/images/ajax-loader.gif" style="position: relative; top: 45%; left: 45%;" />
+                            <img src="/images/ajax-loader.gif" style="position: relative; top: 0%; left: 0%;" />
                         </div>
                     </ProgressTemplate>
                 </asp:UpdateProgress>

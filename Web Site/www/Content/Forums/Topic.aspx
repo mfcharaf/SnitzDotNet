@@ -11,7 +11,8 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master" EnableViewState="false"
     AutoEventWireup="true" Culture="auto" UICulture="auto" CodeBehind="Topic.aspx.cs" MaintainScrollPositionOnPostback="true"
     Inherits="SnitzUI.TopicPage" %>
-<%@ MasterType virtualpath="~/MasterTemplates/MainMaster.Master" %>
+<%@ Import Namespace="SnitzConfig" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxtoolkit" %>
 <%@ Reference Control="~/UserControls/GridPager.ascx" %>
 <%@ Reference Control="~/UserControls/Post Templates/ReplyTemplate.ascx" %>
@@ -30,6 +31,13 @@
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
     <link rel="stylesheet" type="text/css" runat="server" id="jsshareCSS"/>
     <link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        var forumTitle = '<%= Config.ForumTitle %>';
+        var forumUrl = '<%= Config.ForumUrl %>';
+        var forumName = '<%= Config.ForumTitle %>';
+        var forumDesc = '<%= Config.ForumDescription %>';
+        var urltarget = '<%= Profile.LinkTarget %>';
+    </script>
     <asp:Literal runat="server" ID="shareItScripts"></asp:Literal>
     <script src="/scripts/topic.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -87,13 +95,13 @@
 
         //Initial bind
         $(document).ready(function () {
-            BindControlEvents();
             //Re-bind for callbacks
             var prm = Sys.WebForms.PageRequestManager.getInstance();
 
             prm.add_endRequest(function () {
                 BindControlEvents();
             });
+            BindControlEvents();
         });
 
         function pollloaded() { 
@@ -103,8 +111,7 @@
     </script>
     <script src="/scripts/message_funcs.min.js" type="text/javascript"></script>
 <style type="text/css">
-    img.avatar{width: 80px;height: 80px;opacity: 0.4;}
-    img.online{width: 80px;height: 80px;opacity: 1;}
+
     .markItUpEditor{min-height: 140px !important;}
     #emoticons img{border:0px;margin:2px;}
     .AspNet-FormView-Data{ padding: 0px;}
@@ -118,33 +125,33 @@
         <div id="buttons-expanded"></div>
     </div>
     <div id="MessageList" >
-        <div class="TopicDiv">
-        <asp:FormView ID="TopicView" runat="server" Width="100%" CellPadding="0" EnableViewState="False"
-            OnItemCommand="TopicViewItemCommand" OnDataBound="TopicBound" >
-            <HeaderTemplate>
-                <div class="topicHeader clearfix">
-                    <div class="topicPrev">
-                        &laquo;
-                        <asp:HyperLink ID="prevTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=prev", Eval("Id")) %>'
-                            Text="Prev Topic" EnableViewState="False"></asp:HyperLink>
+        <asp:Panel runat="server" ID="pnlTopic" CssClass="TopicDiv">
+            <asp:FormView ID="TopicView" runat="server" Width="100%" CellPadding="0" EnableViewState="False"
+                OnItemCommand="TopicViewItemCommand" OnDataBound="TopicBound" >
+                <HeaderTemplate>
+                    <div class="topicHeader clearfix">
+                        <div class="topicPrev">
+                            &laquo;
+                            <asp:HyperLink ID="prevTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=prev", Eval("Id")) %>'
+                                Text="Prev Topic" EnableViewState="False"></asp:HyperLink>
+                        </div>
+                        <div class="topicNext">
+                            <asp:HyperLink ID="nextTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=next", Eval("Id")) %>'
+                                Text="Next Topic" EnableViewState="False"></asp:HyperLink>
+                            &raquo;</div>
                     </div>
-                    <div class="topicNext">
-                        <asp:HyperLink ID="nextTopic" runat="server" NavigateUrl='<%# String.Format("~/Content/Forums/topic.aspx?TOPIC={0}&dir=next", Eval("Id")) %>'
-                            Text="Next Topic" EnableViewState="False"></asp:HyperLink>
-                        &raquo;</div>
-                </div>
-            </HeaderTemplate>
-            <HeaderStyle />
-            <FooterTemplate>
-            </FooterTemplate>
-            <ItemTemplate>
-                <input type="hidden" id="TopicSubject" value='<%# Eval("Subject") %>' />
-                <topic:TopicTemplate runat="server" ID="topicTemplate" Visible="false" CssClass="topic-content" />
-                <topic:PollTemplate runat="server" ID="pollTemplate" Visible="false" />
-                <topic:BlogTemplate runat="server" ID="blogTemplate" Visible="false" />
-            </ItemTemplate>
-        </asp:FormView>
-        </div>
+                </HeaderTemplate>
+                <HeaderStyle />
+                <FooterTemplate>
+                </FooterTemplate>
+                <ItemTemplate>
+                    <input type="hidden" id="TopicSubject" value='<%# Eval("Subject") %>' />
+                    <topic:TopicTemplate runat="server" ID="topicTemplate" Visible="false" CssClass="topic-content" />
+                    <topic:PollTemplate runat="server" ID="pollTemplate" Visible="false" />
+                    <topic:BlogTemplate runat="server" ID="blogTemplate" Visible="false" />
+                </ItemTemplate>
+            </asp:FormView>
+        </asp:Panel>
         <div id="replyHeader">
             <asp:DropDownList ID="replyFilter" runat="server" OnSelectedIndexChanged="ReplyFilterSelectedIndexChanged"
                 AutoPostBack="True">
@@ -162,12 +169,12 @@
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>             
-            <asp:UpdatePanel ID="upd" runat="server" ChildrenAsTriggers="true">
+            <asp:UpdatePanel ID="upd" runat="server" ChildrenAsTriggers="true" >
                 <ContentTemplate>
                     <asp:Repeater ID="TopicReplies" runat="server" Visible="true" EnableViewState="false" OnItemCreated="BindReply">
                         <ItemTemplate>
                             <asp:PlaceHolder runat="server" ID="PostHolder"></asp:PlaceHolder>
-                            
+                            <br/>
                         </ItemTemplate>
                         <AlternatingItemTemplate>
                             <asp:PlaceHolder runat="server" ID="PostHolder"></asp:PlaceHolder>

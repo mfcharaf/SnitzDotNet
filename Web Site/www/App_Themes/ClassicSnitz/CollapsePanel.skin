@@ -35,7 +35,7 @@ Default skin template. The following skins are provided as examples only.
     SkinID="CatExpandSkin"
     ExpandControlID="Cat_HeaderPanel"
     CollapseControlID="Cat_HeaderPanel"
-    TargetControlID="Cat_Panel"
+    TargetControlID="CatPnl"
     ExpandDirection="Vertical"
     ExpandedImage="images/collapse.jpg"
     ExpandedText="Collapse"

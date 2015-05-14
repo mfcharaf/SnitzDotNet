@@ -1,6 +1,11 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="adrotation.ascx.cs" Inherits="SnitzUI.UserControls.adrotation" %>
 <%@ Import Namespace="SnitzConfig" %>
-
+<script language="javascript" type="text/javascript">
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';
+    }
+</script>
 <asp:Literal ID="Literal1" runat="server"></asp:Literal>
 <asp:Panel runat="server" ID="GoogleAd"> 
 <script type="text/javascript"><!--

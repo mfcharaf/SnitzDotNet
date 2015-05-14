@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.UI;
 using SnitzCommon;
 using SnitzConfig;
@@ -17,6 +18,7 @@ public partial class Admin_system : UserControl
         tbxCopyright.Text = Config.Copyright;
         tbxHomeUrl.Text = Config.HomeUrl;
         tbxForumUrl.Text = Config.ForumUrl;
+        rbForum.Checked = Config.CookiePath != "/";
         ddTheme.SelectedValue = Config.DefaultTheme;
         tbxVersion.Text = SnitzBase.Version.Current;
         chkRightColum.Checked = Config.ShowRightColumn;
@@ -27,13 +29,20 @@ public partial class Admin_system : UserControl
         rblNoNewMembers.SelectedValue = Config.ProhibitNewMembers ? "1" : "0";
         rblRequireReg.SelectedValue = Config.RequireRegistration ? "1" : "0";
         rblUserFilter.SelectedValue = Config.FilterUsernames ? "1" : "0";
-
+        rblThemeChange.SelectedValue = Config.AllowThemeChange ? "1" : "0";
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         var toUpdate = new Dictionary<string, string>();
-
+        if (rbForum.Checked)
+        {
+            Config.CookiePath = HttpContext.Current.Request.ApplicationPath;
+        }
+        else
+        {
+            Config.CookiePath = "/";
+        }
         if (Config.ShowRightColumn != chkRightColum.Checked)
             toUpdate.Add("ShowRightColumn".GetPropertyDescription(), chkRightColum.Checked ? "1" : "0");
         if (Config.ShowGoogleAds != chkGoogleAds.Checked)

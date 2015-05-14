@@ -41,7 +41,7 @@ using SnitzMembership;
 
 namespace SnitzUI
 {
-    public partial class ProfilePage : PageBase
+    public partial class ProfilePage : PageBase, ISiteMapResolver
     {
         private bool _editmode;
         protected bool IsMyProfile;
@@ -293,6 +293,8 @@ namespace SnitzUI
             _profile.Skype = tbxSkype.Text;
             _profile.PublicGallery = cbxPublic.Checked && Config.ShowGallery;
             _profile.LinkTarget = ddlTarget.SelectedValue;
+            _profile.PMEmail = _profile.PMEmail;
+            _profile.PMReceive = _profile.PMReceive;
             _profile.Save();
 
             string folderPath = "/gallery/";
@@ -331,7 +333,7 @@ namespace SnitzUI
             _user.City = tbxCity.Text;
             _user.Country = tbxCountry.Text;
             _user.Occupation = tbxOccupation.Text;
-            _user.Title = tbxForumTitle.Text;
+            _user.Title = tbxForumTitle.Text.Trim();
             if (ddlTimeZone.SelectedIndex >= 0)
             {
                 TimeZoneInfo tzone = TimeZoneInfo.FindSystemTimeZoneById(ddlTimeZone.SelectedValue);
@@ -346,16 +348,21 @@ namespace SnitzUI
             _user.AIM = tbxAIM.Text;
             _user.Skype = tbxSkype.Text;
             _user.ICQ = tbxICQ.Text;
-            
-            _user.FavouriteQuote = ((TextBox)phQuote.FindControl("tbxQuote")).Text;
-            _user.Signature = ((TextBox)phSig.FindControl("tbxSig")).Text;
-            _user.Biography = ((TextBox)phBiog.FindControl("tbxBiog")).Text;
+
+            TextBox favQ = phQuote.FindControl("tbxQuote") as TextBox;
+            if (favQ != null) _user.FavouriteQuote = favQ.Text;
+            TextBox sig = phSig.FindControl("tbxSig") as TextBox;
+            if (sig != null) _user.Signature = sig.Text;
+            TextBox bio = phBiog.FindControl("tbxSig") as TextBox;
+            if (bio != null) _user.Biography = bio.Text;
             _user.UseSignature = cbxUseSig.Checked;
             _user.ViewSignatures = cbxViewSig.Checked;
-
-            _user.LatestNews = ((TextBox)phNews.FindControl("tbxNews")).Text;
-            _user.Hobbies = ((TextBox)phHobby.FindControl("tbxHobby")).Text;
-            _user.HomePage = ((TextBox)phHomePage.FindControl("tbxHomePage")).Text;
+            TextBox news = phNews.FindControl("tbxNews") as TextBox;
+            if (news != null) _user.LatestNews = news.Text;
+            TextBox hobby = phHobby.FindControl("tbxHobby") as TextBox;
+            if (hobby != null) _user.Hobbies = hobby.Text;
+            TextBox home = phHomePage.FindControl("tbxHomePage") as TextBox;
+            if (home != null) _user.HomePage = home.Text;
             _user.Theme = ddTheme.Text;
             if (IsMyProfile)
                 Config.UserTheme = _user.Theme;
@@ -377,13 +384,17 @@ namespace SnitzUI
             tbxAge.Text = Common.TranslateNumerals(Common.GetAgeFromDOB(_user.DateOfBirth));
             if (_profile.HideAge && !IsMyProfile)
                 tbxAge.Text = @"Mind your own business";
-            ddlMarStatus.SelectedValue = _user.MaritalStatus;
-            ddlGender.SelectedValue = _user.Gender;
+            if (!String.IsNullOrEmpty(_user.MaritalStatus.Trim()))
+                ddlMarStatus.SelectedValue = _user.MaritalStatus;
+            if (!String.IsNullOrEmpty(_user.Gender.Trim()))
+                ddlGender.SelectedValue = _user.Gender;
             tbxState.Text = _user.State;
             tbxCity.Text = _user.City;
             tbxCountry.Text = _user.Country;
             tbxOccupation.Text = _user.Occupation;
-            tbxForumTitle.Text = _user.Rank.Title;
+            string title = "";
+            var rInf = new RankInfo(_user.Username, ref title, _user.PostCount, SnitzCachedLists.GetRankings());
+            tbxForumTitle.Text = title;
             if(_user.DateOfBirth.Trim() != "")
             {
                 var dateTime = _user.DateOfBirth.ToDateTime();
@@ -463,11 +474,14 @@ namespace SnitzUI
             tbxName.ReadOnly = !_editmode;
             tbxRealName.ReadOnly = !_editmode;
             tbxAge.ReadOnly = true;
+            tbxAge.CssClass = "textToLabel " + tbxAge.CssClass;
             tbxState.ReadOnly = !_editmode;
             tbxCity.ReadOnly = !_editmode;
             tbxCountry.ReadOnly = !_editmode;
             tbxOccupation.ReadOnly = !_editmode;
             tbxForumTitle.ReadOnly = !IsAdministrator;
+            if(tbxForumTitle.ReadOnly)
+                tbxForumTitle.CssClass = "textToLabel";
             tbxSkype.ReadOnly = !_editmode;
             tbxYAHOO.ReadOnly = !_editmode;
             tbxAIM.ReadOnly = !_editmode;
@@ -578,7 +592,7 @@ namespace SnitzUI
 
         }
         
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
+        public SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e)
         {
             if (SiteMap.CurrentNode != null)
             {

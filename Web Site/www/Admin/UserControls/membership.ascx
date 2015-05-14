@@ -1,7 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Admin_Membership" Codebehind="Membership.ascx.cs" %>
 <%@ Register Src="~/UserControls/MemberSearch.ascx" TagName="MemberSearch" TagPrefix="uc1" %>
-<uc1:MemberSearch ID="MemberSearch1" runat="server" />
-<br />
+<uc1:MemberSearch ID="ucSearch" runat="server" />
 <br />
   Number of Users Online: <asp:Label id="UsersOnlineLabel" runat="Server" /><br />
 
@@ -22,7 +21,7 @@
 
 <asp:GridView CssClass="forumtable white" CellPadding="3" ID="UserGrid" 
     runat="server" AutoGenerateColumns="False" 
-    Width="100%" DataKeyNames="UserName"
+    Width="100%" DataKeyNames="UserName" OnRowDataBound="BindGrid"
     EnableModelValidation="True">
     <Columns>
         <asp:TemplateField>
@@ -33,45 +32,55 @@
                 </asp:HyperLink>
             </ItemTemplate>
             <ItemStyle CssClass="membericon" />
-            <HeaderStyle Width="30px" />
+            <HeaderStyle Width="20px" />
         </asp:TemplateField>
         <asp:BoundField DataField="UserName" HeaderText="Username" ReadOnly="True" SortExpression="UserName" />
-        <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title"  >
-            <ItemStyle HorizontalAlign="Center" />
-        </asp:BoundField>
+        <asp:TemplateField HeaderText="Title" SortExpression="Title">
+            <ItemTemplate>
+                <asp:Label runat="server" ID="RankTitle"></asp:Label><br/>
+                <asp:Literal runat="server" ID="RankStars"></asp:Literal>
+            </ItemTemplate>
+        </asp:TemplateField>
         <asp:TemplateField HeaderText="Posts" SortExpression="Posts">
             <ItemTemplate>
                 <%# Eval("posts") %>
             </ItemTemplate>
             <ItemStyle HorizontalAlign="Center" />
+            <HeaderStyle Width="50px"></HeaderStyle>
         </asp:TemplateField>
         <asp:BoundField DataField="LastPostDate" HeaderText="Last Post" 
             SortExpression="LastPostDate" HtmlEncode="False" 
-            DataFormatString="{0:dd MMM yyyy&lt;br/&gt;HH:mm:ss}">
+            DataFormatString="{0:dd MMM yyyy}">
             <ItemStyle HorizontalAlign="Center" />
+            <HeaderStyle Width="60px"></HeaderStyle>
         </asp:BoundField>
         <asp:BoundField DataField="LastLoginDate" HeaderText="Last Login" 
             SortExpression="LastLoginDate" HtmlEncode="False" 
             DataFormatString="{0:dd MMM yyyy&lt;br/&gt;HH:mm:ss}" >
             <ItemStyle HorizontalAlign="Center" />
         </asp:BoundField>
-        <asp:BoundField DataField="LastActivityDate" HtmlEncode="False" 
-            DataFormatString="{0:dd MMM yyyy&lt;br/&gt;HH:mm:ss}" HeaderText="Last Visit" />
         <asp:BoundField DataField="CreationDate" HeaderText="Joined" ReadOnly="True" SortExpression="CreationDate" HtmlEncode="False" DataFormatString="{0:dd MMM yyyy}" >
-            <ItemStyle CssClass="nowrap" HorizontalAlign="Center" />
+            <ItemStyle HorizontalAlign="Center" />
+            <HeaderStyle Width="60px"></HeaderStyle>
         </asp:BoundField>
         <asp:BoundField DataField="Country" HeaderText="Country" SortExpression="Country" >
             <ItemStyle HorizontalAlign="Center" />
         </asp:BoundField>
         <asp:TemplateField>
             <ItemTemplate>
-                <asp:HyperLink ID="hypUserLock" NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"../pop_lock.aspx?lock=1&mode=M&ID={0}\")",Eval("UserName")) %>' SkinID="UserUnLock" Text='<%# String.Format(Resources.webResources.lblLockUser,Eval("UserName")) %>' runat="server" EnableViewState="False" Visible='<%# (!(bool)Eval("IsLockedOut") && Roles.IsUserInRole("Administrator")) %>' rel="NoFollow"></asp:HyperLink>
-                <asp:HyperLink ID="hypUserUnlock" NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"../pop_lock.aspx?lock=0&mode=M&ID={0}\")",Eval("UserName")) %>' SkinID="Userlock" Text='<%# String.Format(Resources.webResources.lblUnlockUser,Eval("UserName")) %>' runat="server" EnableViewState="False" Visible='<%# ((bool)Eval("IsLockedOut") && Roles.IsUserInRole("Administrator")) %>' rel="NoFollow"></asp:HyperLink>
-                <asp:HyperLink ID="hypUserEdit" SkinID="UserEdit" Text="<%$ Resources:webResources, lblEditUser %>" runat="server" EnableViewState="False" NavigateUrl='<%# "~/Account/profile.aspx?edit=Y&user=" + Eval("UserName") %>' Visible='<%# Roles.IsUserInRole("Administrator") %>' rel="NoFollow"></asp:HyperLink>
-                <asp:HyperLink ID="hypUserDelete" NavigateUrl='<%# String.Format("javascript:openConfirmDialog(\"../pop_delete.aspx?lock=1&mode=M&ID={0}\")",Eval("UserName")) %>' SkinID="UserDelete" Text="<%$ Resources:webResources, lblDeleteUser %>" runat="server" EnableViewState="False" Visible='<%# Roles.IsUserInRole("Administrator") %>' rel="NoFollow"></asp:HyperLink>
+                        <asp:HyperLink ID="hypUserEdit" SkinID="UserEdit" Text="<%$ Resources:webResources, lblEditUser %>" runat="server" EnableViewState="False" NavigateUrl='<%# "~/Account/profile.aspx?edit=Y&user=" + Eval("Username") %>' rel="NoFollow"></asp:HyperLink>
+                        <asp:ImageButton ID="lockUser" SkinID="UserLock" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblLockUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
+                        <asp:ImageButton ID="unlockUser" SkinID="UserUnlock" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblUnLockUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
+                        <asp:ImageButton ID="delUser" SkinID="UserDelete" CommandArgument='<%# Eval("Username")%>' CommandName="lock"
+                                runat="server" ToolTip="<%$ Resources:webResources, lblDeleteUser %>" OnClientClick=""
+                                CausesValidation="False" EnableViewState="False"/>
             </ItemTemplate>
 
-            <HeaderStyle Width="80px" />
+            <HeaderStyle Width="20px" />
         </asp:TemplateField>
     </Columns>
     <HeaderStyle CssClass="tableheader" />

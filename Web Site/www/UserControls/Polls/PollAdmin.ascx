@@ -5,7 +5,7 @@
     <fieldset>
     <legend>Add Poll</legend>
         <asp:DetailsView ID="DetailsView1" runat="server" AutoGenerateRows="False" DataKeyNames="Id"
-            DefaultMode="Insert" 
+            DefaultMode="Insert" OnItemInserting="InsertItem"
             EnableModelValidation="True">
             <Fields>
                 <asp:BoundField DataField="Id" HeaderText="Id" InsertVisible="False" ReadOnly="True"

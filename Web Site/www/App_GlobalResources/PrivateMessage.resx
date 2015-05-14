@@ -211,7 +211,7 @@
     <value>Reply</value>
   </data>
   <data name="PmSendReceive" xml:space="preserve">
-    <value>Check for new messages</value>
+    <value>Send/Receive messages</value>
   </data>
   <data name="PmSettings" xml:space="preserve">
     <value>Settings</value>

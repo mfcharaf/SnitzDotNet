@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
@@ -7,6 +6,7 @@ using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
+using SnitzConfig;
 using SnitzMembership;
 
 namespace SnitzUI.UserControls.Post_Templates
@@ -44,7 +44,7 @@ namespace SnitzUI.UserControls.Post_Templates
 
                 SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(author.Username);
                 Literal avatar = new Literal { Text = author.AvatarImg };
-                if (mu != null && mu.IsActive)
+                if (mu != null && mu.IsActive && !(Config.AnonMembers.Contains(mu.UserName)))
                     avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
                 phAvatar.Controls.Add(avatar);
             }

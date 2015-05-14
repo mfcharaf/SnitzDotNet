@@ -130,7 +130,7 @@ namespace Snitz.OLEDbDAL.Helpers
             }
 
             string title = member.Title;
-            member.Rank = new RankInfo(member.Username, ref title, member.PostCount);
+            //member.Rank = new RankInfo(member.Username, ref title, member.PostCount);
             member.Title = title;
             return member;
         }
@@ -227,7 +227,7 @@ namespace Snitz.OLEDbDAL.Helpers
                 Count = rdr.SafeGetString(6),
                 Read = rdr.GetInt32(7),
                 //Mail = Convert.ToInt32(rdr.SafeGetString(8)),
-                OutBox = rdr.GetInt32(9),
+                OutBox = rdr.SafeGetInt16(9),
                 ToMemberName = rdr.SafeGetString(10),
                 FromMemberName = rdr.SafeGetString(11)
             };

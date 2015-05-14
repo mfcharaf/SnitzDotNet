@@ -265,6 +265,15 @@ namespace SnitzUI.UserControls.Popups {
         protected global::System.Web.UI.WebControls.HiddenField hdnModerators;
         
         /// <summary>
+        /// hdnRemoveMods control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnRemoveMods;
+        
+        /// <summary>
         /// lvModerator control.
         /// </summary>
         /// <remarks>

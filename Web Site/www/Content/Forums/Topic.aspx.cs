@@ -28,7 +28,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ModConfig;
 using Resources;
 using Snitz.BLL;
 using Snitz.BLL.modconfig;
@@ -40,12 +39,13 @@ using SnitzUI.UserControls.Post_Templates;
 
 namespace SnitzUI
 {
-    public partial class TopicPage : PageBase, IRoutablePage
+    public partial class TopicPage : PageBase, IRoutablePage, ISiteMapResolver
     {
         private TopicInfo _topic;
         private ForumInfo _forum;
-        protected int _archiveView;
+        protected int ArchiveView;
         protected internal GridPager ReplyPager;
+        public RoutingHelper Routing { get; set; }
         private int RowCount
         {
             get
@@ -105,13 +105,13 @@ namespace SnitzUI
             };
             TopicReplies.DataSource = page;
             TopicReplies.DataBind();
+            
         }
      
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            var master = (MainMaster)Master;
-            master.rootScriptManager.Services.Add(new ServiceReference("~/CommonFunc.asmx"));
+            this.PageScriptManager.Services.Add(new ServiceReference("~/CommonFunc.asmx"));
             if (Session["CurrentProfile"] != null)
                 Session.Remove("CurrentProfile");
             editorCSS.Attributes.Add("href", "/css/" + Page.Theme + "/editor.css");
@@ -124,12 +124,12 @@ namespace SnitzUI
             {
                 if (Request.QueryString["ARCHIVE"] == "1")
                 {
-                    _archiveView = 1;
+                    ArchiveView = 1;
                 }
             }
             else
             {
-                _archiveView = 0;
+                ArchiveView = 0;
             }
             try
             {
@@ -272,10 +272,23 @@ namespace SnitzUI
                 }
 
                 Topics.UpdateViewCount(_topic.Id);
+                int pagejump = 0;
 
-                if ((Request.Params["whichpage"] != null))
+                if (Request.QueryString["LastVisit"] != null)
                 {
-                    if (Request.Params["whichpage"] == "-1")
+                    pagejump = SnitzCookie.LastTopicPage(topic.Id);
+
+                }
+                if (pagejump == 0)
+                {
+                    if ((Request.Params["whichpage"] != null))
+                    {
+                        pagejump = Int32.Parse(Request.Params["whichpage"]);
+                    }
+                }
+                if (pagejump != 0)
+                {
+                    if (pagejump == -1)
                     {
                         //jump to last page
                         int pagenum = topic.ReplyCount/Config.TopicPageSize;
@@ -287,22 +300,19 @@ namespace SnitzUI
                     }
                     else
                     {
-                        int pagenum = Int32.Parse(Request.Params["whichpage"]) - 1;
+                        int pagenum = pagejump - 1;
                         CurrentPage = pagenum;
                         ReplyPager.CurrentIndex = pagenum;
                     }
-                    SnitzCookie.TrackIt(_topic.Id, CurrentPage);
                 }
                 else
                 {
-                    SnitzCookie.TrackIt(_topic.Id, CurrentPage);
                     ReplyPager.CurrentIndex = CurrentPage;
-                    
                 }
+                SnitzCookie.TrackIt(_topic.Id, CurrentPage);
             }
 
-            if (CurrentPage != 0)
-                TopicView.Visible = false;
+            //TopicView.Visible = ReplyPager.CurrentIndex == 0;
 
             if (Request.Params["reply"] != null)
             {
@@ -311,6 +321,17 @@ namespace SnitzUI
                     JumpToReply(reply);
             }
 
+        }
+
+        protected override void Page_PreRender(object sender, EventArgs e)
+        {
+            pnlTopic.Visible = ReplyPager.CurrentIndex == 0;
+            //if (ReplyPager.CurrentIndex != 0)
+            //{
+            //    pnlTopic.Attributes.Add("style","display:none;");
+            //}
+
+            base.Page_PreRender(sender, e);
         }
 
         private void WriteShareItScriptTags()
@@ -378,6 +399,8 @@ namespace SnitzUI
             }
             SnitzCookie.TrackIt(_topic.Id, CurrentPage);
             ReplyPager.CurrentIndex = CurrentPage;
+            
+
         }
 
         protected void ReplyFilterSelectedIndexChanged(object sender, EventArgs e)
@@ -402,68 +425,11 @@ namespace SnitzUI
                     break;
             }
         }
-        
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
-        {
-            
-            SiteMapNode currentNode = null;
-            if (SiteMap.CurrentNode == null)
-            {
-                var routable = e.Context.CurrentHandler as IRoutablePage;
 
-                if (routable != null)
-                {
-                    var rc = routable.Routing.RequestContext;
-                    var route = rc.RouteData.Route;
-                    var segments = route.GetVirtualPath(rc, null).VirtualPath.Split('/');
-                    var path = "~/" + string.Join("/", segments.Take(segments.Length - rc.RouteData.Values.Count).ToArray());
-                    //SiteMapNode testNode = SiteMap.Provider.FindSiteMapNodeFromKey(path);
-                    path = path.Replace("MyWebLog", "Topic").Replace("WebLog", "Topic");
-                    var findSiteMapNodeFromKey = SiteMap.Provider.FindSiteMapNodeFromKey(path);
-                    if (findSiteMapNodeFromKey != null)
-                        currentNode = findSiteMapNodeFromKey.Clone(true);
-                }
-            }
-            if (SiteMap.CurrentNode != null)
-            {
-                currentNode = SiteMap.CurrentNode.Clone(true);
-            }
-            
-            SiteMapNode tempNode = currentNode;
-
-            string strStatus = "";
-            if (_topic.Status == 0)
-                strStatus = " (locked) ";
-            if (_topic.IsArchived)
-            {
-                strStatus = " (Archived)";
-                _topic.Status = 0;
-            }
-            tempNode.Title = HttpUtility.HtmlDecode(_topic.Subject) + strStatus;
-            if (_forum.Type == (int) Enumerators.ForumType.BlogPosts)
-            {
-                var url = String.Format("<a href='/WebLog/{0}' title='{1}'>{2}</a>", _topic.AuthorName, String.Format(webResources.lblBlogTitle, _topic.AuthorName), String.Format(webResources.lblBlogTitle, _topic.AuthorName));
-                tempNode.Title = url + " : " + HttpUtility.HtmlDecode(_topic.Subject);
-            }
-            if (_topic.PollId > 0)
-            {
-                tempNode.Title = String.Format("POLL - {0}", tempNode.Title);
-            }
-            
-            tempNode = tempNode.ParentNode;
-            tempNode.Title = HttpUtility.HtmlDecode(_topic.Forum.Subject);
-            tempNode.Url = tempNode.Url + "?FORUM=" + _topic.ForumId;
-            if (_topic.IsArchived)
-                tempNode.Url += "&ARCHIVE=1";
-
-            return currentNode;
-
-        }
-        
-        private void ReplyDeleteClicked(object sender, EventArgs e)
-        {
-            Response.Redirect(Request.RawUrl);
-        }
+        //private void ReplyDeleteClicked(object sender, EventArgs e)
+        //{
+        //    Response.Redirect(Request.RawUrl);
+        //}
 
         private void TopicDeleted(object sender, EventArgs e)
         {
@@ -486,7 +452,7 @@ namespace SnitzUI
             var topic = (TopicTemplate)frm.FindControl("topicTemplate");
             var blog = (BlogTemplate)frm.FindControl("blogTemplate");
             if (currentTopic.Forum.Type == (int) Enumerators.ForumType.BlogPosts)
-            {
+            {   //Blog Post
                 topic.Visible = false;
                 poll.Visible = false;
                 blog.Visible = true;
@@ -494,7 +460,7 @@ namespace SnitzUI
                 blog.Post = currentTopic;
             }
             else if (currentTopic.PollId != null && currentTopic.PollId.Value > 0)
-            {
+            {   //Poll
                 topic.Visible = false;
                 blog.Visible = false;
                 poll.Visible = true;
@@ -509,6 +475,7 @@ namespace SnitzUI
             }
             else
             {
+                Page.IncludeStyles("#rightcolumn,.rightcolumn{ display: none;width: 0px;} #contentwrapper{ margin-right: 0px;} .maincolumn{ width: 99%;}");
                 poll.Visible = false;
                 blog.Visible = false;
                 topic.Visible = true;
@@ -523,7 +490,6 @@ namespace SnitzUI
 
         }
 
-        public RoutingHelper Routing { get; set; }
 
         protected void BindReply(object sender, RepeaterItemEventArgs e)
         {
@@ -534,6 +500,7 @@ namespace SnitzUI
                 var postctrl = e.Item.FindControl("PostHolder");
                 if (_topic != null)
                 {
+                    
                     if (_topic.Forum.Type == (int) Enumerators.ForumType.BlogPosts)
                     {
                         var btemplate =
@@ -565,6 +532,64 @@ namespace SnitzUI
                 }
 
             }
+        }
+
+        public SiteMapNode SiteMapResolve(object sender, SiteMapResolveEventArgs e)
+        {
+
+            SiteMapNode currentNode = null;
+
+            if (SiteMap.CurrentNode == null)
+            {
+                var routable = e.Context.CurrentHandler as IRoutablePage;
+
+                if (routable != null)
+                {
+                    var rc = routable.Routing.RequestContext;
+                    var route = rc.RouteData.Route;
+                    var segments = route.GetVirtualPath(rc, null).VirtualPath.Split('/');
+                    var path = "~/" + string.Join("/", segments.Take(segments.Length - rc.RouteData.Values.Count).ToArray());
+                    path = path.Replace("MyWebLog", "Topic").Replace("WebLog", "Topic");
+                    var findSiteMapNodeFromKey = SiteMap.Provider.FindSiteMapNodeFromKey(path);
+                    if (findSiteMapNodeFromKey != null)
+                        currentNode = findSiteMapNodeFromKey.Clone(true);
+                }
+            }
+            else
+            {
+                currentNode = SiteMap.CurrentNode.Clone(true);
+            }
+
+            SiteMapNode tempNode = currentNode;
+
+            string strStatus = "";
+            if (_topic.Status == 0)
+                strStatus = " (locked) ";
+            if (_topic.IsArchived)
+            {
+                strStatus = " (Archived)";
+                _topic.Status = 0;
+            }
+            tempNode.Title = HttpUtility.HtmlDecode(_topic.Subject) + strStatus;
+            var smp = (SiteMapPath)Master.FindControl("SiteMap");
+            //set breadcrumb for Blog posts
+            if (_forum.Type == (int)Enumerators.ForumType.BlogPosts)
+            {
+                var url = String.Format("[url=\"/WebLog/{0}\"]{1}[/url]", _topic.AuthorName, String.Format(webResources.lblBlogTitle, _topic.AuthorName));
+                tempNode.Title = string.Format("{0}{1}{2}", url,smp.PathSeparator,HttpUtility.HtmlDecode(_topic.Subject));
+            }
+            if (_topic.PollId > 0)
+            {
+                tempNode.Title = String.Format("POLL - {0}", tempNode.Title);
+            }
+
+            tempNode = tempNode.ParentNode;
+            tempNode.Title = HttpUtility.HtmlDecode(_topic.Forum.Subject);
+            tempNode.Url = tempNode.Url + "?FORUM=" + _topic.ForumId;
+            if (_topic.IsArchived)
+                tempNode.Url += "&ARCHIVE=1";
+
+            return currentNode;
         }
     }
 }

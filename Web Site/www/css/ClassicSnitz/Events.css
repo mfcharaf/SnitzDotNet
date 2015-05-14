@@ -7,20 +7,20 @@
     .eventForm input[type="checkbox"] {width:20px;}
     .eventForm span.cbx label{width:200px;}
     .alignTopLeft{text-align: left; vertical-align: top;}
-    .cal-head{ background-color: #ff3300;}
+    .cal-head{ background-color: #191970;}
 
     
-    .calender-current-month{ background-color: #FF3300;color: darkred;}
-    .calendar-month-header {background-color:#ff3300;margin:0;padding:0;      }
+    .calender-current-month{ background-color: #191970;color: white;}
+    .calendar-month-header {background-color:#191970;margin:0;padding:0;      }
 
-
+a.calLink{ color: white;}
 /* 
     Set the Style for parent CSS Class 
     of Calendar control 
     Parent [CssClass] = myCalendar 
 */  
 .smallCal {  
-    background-color: #FFff99;  
+    background-color: whitesmoke;  
     /*width: 210px;*/  
 }
     .smallCal th {
@@ -42,10 +42,10 @@
 */  
 .smallCal .smallCalTitle {  
     font-weight: bold;
-    background-color: #ff6600;
+    background-color: #6a5acd;
 }  
 .smallCal .smallCalTitle a{  
-    color: darkred;
+    color: white;
 }  
 /* 
     Styles declaration for date cells 

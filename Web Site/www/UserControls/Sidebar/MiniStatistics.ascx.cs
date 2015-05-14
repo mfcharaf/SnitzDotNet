@@ -20,12 +20,13 @@
 */
 
 using System;
+using System.Linq;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using Snitz.Providers;
-
+using SnitzConfig;
 
 
 public partial class MiniStatistics : System.Web.UI.UserControl
@@ -64,7 +65,9 @@ public partial class MiniStatistics : System.Web.UI.UserControl
         lblMemberStats.Text = string.Format(webResources.lblMiniStatsMembers, Common.TranslateNumerals(_memberCount), Common.TranslateNumerals(_totalPostCount), GetLastPost(), GetLastPostAuthor());
         lblTopicStats.Text = string.Format(webResources.lblMiniStatsTopics, Common.TranslateNumerals(_stats.ActiveTopicCount));
         lblActiveSessions.Text = extras.GuestLabel + Common.TranslateNumerals(anonusers);
-        lblActiveUsers.Text = string.Format(webResources.lblStatsMembersOnline, String.Join(",", new SnitzMembershipProvider().GetOnlineUsers())) + "<br/>" + dSession;
+        string[] onlineusers = new SnitzMembershipProvider().GetOnlineUsers();
+        var remains = onlineusers.Except(Config.AnonMembers);
+        lblActiveUsers.Text = string.Format(webResources.lblStatsMembersOnline, String.Join(",", remains.ToArray())) + "<br/>" + dSession;
     }
 
     private string GetLastPost()

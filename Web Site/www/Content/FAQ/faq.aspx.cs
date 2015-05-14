@@ -14,7 +14,7 @@ using SnitzCommon;
 
 namespace SnitzUI.Content.FAQ
 {
-    public partial class Faq : PageBase, IRoutablePage
+    public partial class Faq : PageBase, IRoutablePage, ISiteMapResolver
     {
         private List<FaqCategoryInfo> _faqcats;
 
@@ -73,7 +73,7 @@ namespace SnitzUI.Content.FAQ
 
             }
         }
-        protected override SiteMapNode OnSiteMapResolve(SiteMapResolveEventArgs e)
+        public SiteMapNode SiteMapResolve(object sender,SiteMapResolveEventArgs e)
         {
             string category = "";
             string question = "";

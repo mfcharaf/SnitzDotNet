@@ -22,14 +22,16 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AjaxControlToolkit;
 using Resources;
 using Snitz.BLL;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
-
+using SnitzMembership;
 using Image = System.Web.UI.WebControls.Image;
 using Polls = Resources.Polls;
 
@@ -80,6 +82,10 @@ public partial class ActiveTopicPage : PageBase
             
             TopicUpdatePanel.Triggers.Add(new AsyncPostBackTrigger {ControlID = ddlPageRefresh.UniqueID});
             TopicUpdatePanel.Triggers.Add(new AsyncPostBackTrigger { ControlID = ddlTopicsSince.UniqueID });
+            if (Config.TopicAvatar)
+            {
+                FolderImg.Visible = false;
+            }
         }
         
         protected override void Render(HtmlTextWriter writer)
@@ -162,7 +168,7 @@ public partial class ActiveTopicPage : PageBase
                 e.Row.Cells[0].Controls.Add(markRead);
                 if (_currentUser == "")
                 {
-                    e.Row.Cells.RemoveAt(6);
+                    e.Row.Cells.RemoveAt(5);
                 }
 
             }
@@ -175,28 +181,32 @@ public partial class ActiveTopicPage : PageBase
             else if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 var topic = (TopicInfo)e.Row.DataItem;
-                var lockIcon = e.Row.Cells[6].FindControl("TopicLock") as ImageButton;
-                var unlockIcon = e.Row.Cells[6].FindControl("TopicUnLock") as ImageButton;
-                var delIcon = e.Row.Cells[6].FindControl("TopicDelete") as ImageButton;
-                var subscribe = e.Row.Cells[6].FindControl("TopicSub") as ImageButton;
-                var unsubscribe = e.Row.Cells[6].FindControl("TopicUnSub") as ImageButton;
-                var approve = e.Row.Cells[6].FindControl("TopicApprove") as ImageButton;
-                var editIcon = e.Row.Cells[6].FindControl("hypEditTopic") as HyperLink;
-                var replyIcon = e.Row.Cells[6].FindControl("hypReplyTopic") as HyperLink;
-                var newIcon = e.Row.Cells[6].FindControl("hypNewTopic") as HyperLink;
-                var popuplink = e.Row.Cells[5].FindControl("popuplink") as Literal;
-                var lastpost = e.Row.Cells[5].FindControl("lastpostdate") as Literal;
-                
+                var lockIcon = e.Row.Cells[3].FindControl("TopicLock") as ImageButton;
+                var unlockIcon = e.Row.Cells[3].FindControl("TopicUnLock") as ImageButton;
+                var delIcon = e.Row.Cells[3].FindControl("TopicDelete") as ImageButton;
+                var subscribe = e.Row.Cells[3].FindControl("TopicSub") as ImageButton;
+                var unsubscribe = e.Row.Cells[3].FindControl("TopicUnSub") as ImageButton;
+                var approve = e.Row.Cells[3].FindControl("TopicApprove") as ImageButton;
+                var editIcon = e.Row.Cells[3].FindControl("hypEditTopic") as HyperLink;
+                var replyIcon = e.Row.Cells[3].FindControl("hypReplyTopic") as HyperLink;
+                var newIcon = e.Row.Cells[3].FindControl("hypNewTopic") as HyperLink;
+                var popuplink = e.Row.Cells[1].FindControl("popuplink") as Literal;
+                var lastpost = e.Row.Cells[1].FindControl("lpLnk") as HyperLink;
+                var postdate = e.Row.Cells[1].FindControl("postdate") as Literal;
+
                 if (popuplink != null)
                 {
                     string title = String.Format(webResources.lblViewProfile, "$1");
                     popuplink.Text = topic.LastPostAuthorId != null ? Regex.Replace(topic.LastPostAuthorPopup, @"\[!(.*)!]", title) : "";
                 }
+                if (postdate != null)
+                {
+                    postdate.Text = SnitzTime.TimeAgoTag(((TopicInfo)e.Row.DataItem).Date, IsAuthenticated, Member);
+
+                }
                 if (lastpost != null)
                 {
-                    lastpost.Text = SnitzTime.TimeAgoTag(((TopicInfo) e.Row.DataItem).LastPostDate, IsAuthenticated,Member);
-                    //Common.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated,
-                    //                        (Member == null ? Config.TimeAdjust : Member.TimeOffset));
+                    lastpost.Text = SnitzTime.TimeAgoTag(((TopicInfo)e.Row.DataItem).LastPostDate, IsAuthenticated, Member, webResources.lblLastPostJump);
                 }
                 int replyCount = topic.ReplyCount;
                 int topicId = topic.Id;
@@ -251,6 +261,8 @@ public partial class ActiveTopicPage : PageBase
                     unsubscribe.OnClientClick =
                         "confirmTopicSubscribe('Do you want to remove notifications from topic?'," + topicId + ",true);return false;";
                 }
+                if(Config.TopicAvatar)
+                    e.Row.Cells[0].Controls.Add(GetTopicAuthorIcon(topic.AuthorId));
 
                 e.Row.Cells[0].Controls.Add(GetRecentTopicIcon(topic, replyCount));
 
@@ -290,350 +302,384 @@ public partial class ActiveTopicPage : PageBase
                 {
                     if (e.Row.Cells.Count > 2)
                     {
-                        e.Row.Cells.RemoveAt(6);
+                        e.Row.Cells.RemoveAt(5);
                         //e.Row.Cells[5].ColumnSpan +=1;
                     }
 
                 }
             }
         }
-        
-        protected void DdlTopicsSinceSelectedIndexChanged(object sender, EventArgs e)
+
+
+    protected void DdlTopicsSinceSelectedIndexChanged(object sender, EventArgs e)
         {
             SnitzCookie.SetTopicSince(ddlTopicsSince.SelectedIndex.ToString());
         }
 
-        protected void DdlPageRefreshSelectedIndexChanged(object sender, EventArgs e)
+    protected void DdlPageRefreshSelectedIndexChanged(object sender, EventArgs e)
+    {
+        //store the variable in a cookie.
+        SnitzCookie.SetActiveRefresh(ddlPageRefresh.SelectedIndex.ToString());
+
+        if (ddlPageRefresh.SelectedIndex == 0)
         {
-            //store the variable in a cookie.
-            SnitzCookie.SetActiveRefresh(ddlPageRefresh.SelectedIndex.ToString());
-
-            if (ddlPageRefresh.SelectedIndex == 0)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "clearrefresh", "cancelRefresh();", true);
-
-            }
-            else if (ddlPageRefresh.SelectedValue != null)
-            {
-                int reloadTime = 60000 * Convert.ToInt32(ddlPageRefresh.SelectedValue);
-                if (reloadTime > 0)
-                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "refresh", "setRefresh('" + reloadTime + "');", true);
-            }
-        }
-
-        private void BindActiveTopics()
-        {
-
-            DateTime newdate;
-            if ((_currentUser != ""))
-            {
-                if (Member != null)
-                {
-                    newdate = LastVisitDateTime;
-                    ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ", true, IsAuthenticated, Member), @"(<.*?>)", ""));
-                }
-            }
-            else
-            {
-                if (!Page.IsPostBack)
-                {
-                    ddlTopicsSince.Items[12].Selected = true;
-                    ddlTopicsSince.SelectedIndex = 12;
-                }
-            }
-            int ddlIndex = ddlTopicsSince.SelectedIndex;
-            switch (ddlIndex)
-            {
-                case 0:
-                    Session["_SinceDate"] = LastVisitDateTime.ToForumDateStr();
-                    break;
-                case 1: //15 minutes
-                    newdate = DateTime.UtcNow.AddMinutes(-15);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 2: //30 minutes
-                    newdate = DateTime.UtcNow.AddMinutes(-30);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 3: //45 minutes
-                    newdate = DateTime.UtcNow.AddMinutes(-45);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 4: // 1 hour
-                    newdate = DateTime.UtcNow.AddHours(-1);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 5: // 2 hours
-                    newdate = DateTime.UtcNow.AddHours(-2);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 6: // 6 hours
-                    newdate = DateTime.UtcNow.AddHours(-6);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 7: // 12 hours
-                    newdate = DateTime.UtcNow.AddHours(-12);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 8: //yesterday
-                    newdate = DateTime.UtcNow.AddDays(-1);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 9: // 2 days
-                    newdate = DateTime.UtcNow.AddDays(-2);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 10: // 1 week
-                    newdate = DateTime.UtcNow.AddDays(-7);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 11: // 2 weeks
-                    newdate = DateTime.UtcNow.AddDays(-14);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 12: // 1 month
-                    newdate = DateTime.UtcNow.AddMonths(-1);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 13: // 2 months
-                    newdate = DateTime.UtcNow.AddMonths(-2);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                case 14: // 2 months
-                    newdate = DateTime.UtcNow.AddYears(-2);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-                default: // 1 month
-                    newdate = DateTime.UtcNow.AddMonths(-1);
-                    Session["_SinceDate"] = newdate.ToForumDateStr();
-                    break;
-            }
+            ScriptManager.RegisterStartupScript(this, GetType(), "clearrefresh", "cancelRefresh();", true);
 
         }
-
-        private void CatForumGrouping()
+        else if (ddlPageRefresh.SelectedValue != null)
         {
-            const int catColumnIndex = 1;
-            const int forumColumnIndex = 2;
+            int reloadTime = 60000 * Convert.ToInt32(ddlPageRefresh.SelectedValue);
+            if (reloadTime > 0)
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), "refresh", "setRefresh('" + reloadTime + "');", true);
+        }
+    }
 
-            // Reference the Table the GridView has been rendered into        
-            var gridTable = (Table)ActiveTable.Controls[0];
-            // Enumerate each TableRow, adding a sorting UI header if        
-            // the sorted value has changed        
-            string lastCat = string.Empty;
-            string lastForum = string.Empty;
-            foreach (GridViewRow gvr in ActiveTable.Rows)
+    private void BindActiveTopics()
+    {
+
+        DateTime newdate;
+        if ((_currentUser != ""))
+        {
+            if (Member != null)
             {
-                string currentCat = gvr.Cells[catColumnIndex].Text;
-                string currentForum = gvr.Cells[forumColumnIndex].Text;
+                newdate = LastVisitDateTime;
+                ddlTopicsSince.Items[0].Text += string.Format(@" {0}", Regex.Replace(newdate.ToForumDateDisplay(" ", true, IsAuthenticated, Member), @"(<.*?>)", ""));
+            }
+        }
+        else
+        {
+            if (!Page.IsPostBack)
+            {
+                ddlTopicsSince.Items[12].Selected = true;
+                ddlTopicsSince.SelectedIndex = 12;
+            }
+        }
+        int ddlIndex = ddlTopicsSince.SelectedIndex;
+        switch (ddlIndex)
+        {
+            case 0:
+                Session["_SinceDate"] = LastVisitDateTime.ToForumDateStr();
+                break;
+            case 1: //15 minutes
+                newdate = DateTime.UtcNow.AddMinutes(-15);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 2: //30 minutes
+                newdate = DateTime.UtcNow.AddMinutes(-30);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 3: //45 minutes
+                newdate = DateTime.UtcNow.AddMinutes(-45);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 4: // 1 hour
+                newdate = DateTime.UtcNow.AddHours(-1);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 5: // 2 hours
+                newdate = DateTime.UtcNow.AddHours(-2);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 6: // 6 hours
+                newdate = DateTime.UtcNow.AddHours(-6);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 7: // 12 hours
+                newdate = DateTime.UtcNow.AddHours(-12);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 8: //yesterday
+                newdate = DateTime.UtcNow.AddDays(-1);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 9: // 2 days
+                newdate = DateTime.UtcNow.AddDays(-2);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 10: // 1 week
+                newdate = DateTime.UtcNow.AddDays(-7);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 11: // 2 weeks
+                newdate = DateTime.UtcNow.AddDays(-14);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 12: // 1 month
+                newdate = DateTime.UtcNow.AddMonths(-1);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 13: // 2 months
+                newdate = DateTime.UtcNow.AddMonths(-2);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 14: // 6 months
+                newdate = DateTime.UtcNow.AddMonths(-6);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            case 15: // 1 year
+                newdate = DateTime.UtcNow.AddYears(-1);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+            default: // 1 month
+                newdate = DateTime.UtcNow.AddMonths(-1);
+                Session["_SinceDate"] = newdate.ToForumDateStr();
+                break;
+        }
+    }
+
+    private void CatForumGrouping()
+    {
+        const int catColumnIndex = 1;
+        const int forumColumnIndex = 2;
+
+        // Reference the Table the GridView has been rendered into        
+        var gridTable = (Table)ActiveTable.Controls[0];
+        // Enumerate each TableRow, adding a sorting UI header if        
+        // the sorted value has changed        
+        string lastCat = string.Empty;
+        string lastForum = string.Empty;
+        foreach (GridViewRow gvr in ActiveTable.Rows)
+        {
+            string currentCat = gvr.Cells[catColumnIndex].Text;
+            string currentForum = gvr.Cells[forumColumnIndex].Text;
                 
-                if (lastCat.CompareTo(currentCat) != 0)
-                {
-                    CategoryInfo category = Categories.GetCategory(Convert.ToInt32(currentCat));
-                    string catLink = String.Format("<a href=\"/default.aspx?CAT={0}\" title=\"{1}\">{1}</a>", category.Id,
-                                                   category.Name);
+            if (lastCat.CompareTo(currentCat) != 0)
+            {
+                CategoryInfo category = Categories.GetCategory(Convert.ToInt32(currentCat));
+                string catLink = String.Format("<a href=\"/default.aspx?CAT={0}\" title=\"{1}\">{1}</a>", category.Id,
+                                                category.Name);
                     
-                    // there's been a change in value in the category column                
-                    int rowIndex = gridTable.Rows.GetRowIndex(gvr);
-                    // Add a new category header row                
-                    var sortRow = new GridViewRow(rowIndex, rowIndex, DataControlRowType.DataRow, DataControlRowState.Normal);
-                    var sortCell = new TableCell
-                                             {
-                                                 Text = catLink,
-                                                 CssClass = "tableheader"
-                                             };
-                    if (IsAuthenticated)
-                        sortCell.ColumnSpan = ActiveTable.Columns.Count;
-                    else
-                        sortCell.ColumnSpan = ActiveTable.Columns.Count - 1;
-                    sortRow.Cells.Add(sortCell);
-                    gridTable.Controls.AddAt(rowIndex, sortRow);
-                    // Update lastValue                
-                    lastCat = currentCat;
-                }
-                if (lastForum.CompareTo(currentForum) != 0)
-                {
-                    ForumInfo forum = Forums.GetForum(Convert.ToInt32(currentForum));
-                    string forumLink = String.Format("<a class=\"bbcode\" href=\"/Content/Forums/forum.aspx?FORUM={0}\" title=\"{1}\">{2}</a>", forum.Id,
-                                                    forum.Subject, forum.Subject);
-                    // there's been a change in value in the forum column                
-                    int rowIndex = gridTable.Rows.GetRowIndex(gvr);
-                    // Add a new forum header row                
-                    var sortRow = new GridViewRow(rowIndex, rowIndex, DataControlRowType.DataRow, DataControlRowState.Normal);
-                    var spacer = new TableCell { Text = "", CssClass = " ForumHeaderRow iconCol" };
-                    var sortCell = new TableCell
-                                             {
-                                                 
-                                                 Text = forumLink,
-                                                 CssClass = "ForumHeaderRow"
-                                             };
-                    if (IsAuthenticated)
-                        sortCell.ColumnSpan = ActiveTable.Columns.Count - 1;
-                    else
-                        sortCell.ColumnSpan = ActiveTable.Columns.Count - 2;
-                    sortRow.Cells.Add(spacer);
-                    sortRow.Cells.Add(sortCell);
-                    gridTable.Controls.AddAt(rowIndex, sortRow);
-                    // Update lastValue                
-                    lastForum = currentForum;
-                }
-
-                gvr.Cells.RemoveAt(2);
-                gvr.Cells.RemoveAt(1);
-                gvr.Cells[0].ColumnSpan = 3;
-                if(_currentUser == "")
-                {
-                    gvr.Cells.RemoveAt(5);
-                    gvr.Cells[4].ColumnSpan = 2;
-                }
-            }
-            if (ActiveTable.BottomPagerRow != null)
-            {
-                GridViewRow pagerRow = ActiveTable.BottomPagerRow;
-                pagerRow.Cells[0].CssClass = "pagerCol";
-                //pagerRow.Cells[0].Attributes.Add("colspan",(ActiveTable.Columns.Count-1).ToString());
-                pagerRow.Cells[0].Attributes.Add("colspan",
-                                                 IsAuthenticated
-                                                     ? ActiveTable.Columns.Count.ToString()
-                                                     : (ActiveTable.Columns.Count - 1).ToString());
-            }
-        }
-
-        private Image GetRecentTopicIcon(TopicInfo topic, int tReplies)
-        {
-            var image = new Image { ID = "postIcon", EnableViewState = false };
-            string _new = "";
-            string hot = "";
-            string locked = "";
-            string sticky = "";
-
-
-            if (topic.ReplyCount >= Config.HotTopicNum)
-                hot = "Hot";
-            switch ((Enumerators.PostStatus)topic.Status)
-            {
-                case Enumerators.PostStatus.Open:
-                    locked = "";
-                    image.ToolTip = webResources.lblOldPosts;
-                    break;
-                case Enumerators.PostStatus.UnModerated:
-                    image.AlternateText = webResources.Unmoderatedpost;
-                    image.ToolTip = webResources.Unmoderatedpost;
-                    break;
-                case Enumerators.PostStatus.OnHold:
-                    image.AlternateText = webResources.OnHold;
-                    image.ToolTip = webResources.OnHold;
-                    break;
-                default:
-                    locked = "Locked";
-                    hot = "";
-                    image.AlternateText = webResources.lblLockedTopic;
-                    image.ToolTip = webResources.lblTopicLocked;
-                    break;
-            }
-
-            if (topic.IsSticky)
-            {
-                sticky = "Sticky";
-                image.AlternateText = webResources.lblStickyTopic;
-                image.ToolTip = locked == "" ? webResources.lblStickyTopic : webResources.lblStickyTopic + ", " + webResources.lblTopicLocked;
-            }
-            if (topic.LastPostDate > LastVisitDateTime)
-            {
-                image.AlternateText = webResources.lblNewPosts;
-                image.ToolTip = webResources.lblNewPosts;
-                _new = "New";
-            }
-            image.SkinID = "Folder" + _new + hot + sticky + locked;
-
-            if (topic.Status == (int)Enumerators.PostStatus.UnModerated)
-            {
-                image.ToolTip = webResources.Unmoderatedpost;
-                image.SkinID = "UnModerated";
-            }
-            if (topic.Status == (int)Enumerators.PostStatus.OnHold)
-            {
-                image.ToolTip = webResources.TopicOnHold;
-                image.SkinID = "OnHold";
-            }
-            if (topic.UnModeratedReplies > 0)
-            {
-                image.ToolTip = webResources.UnmoderatedPosts;
-                image.SkinID = "UnmoderatedPosts";
-            }
-            if (topic.PollId > 0)
-            {
-                image.ToolTip = Polls.lblPoll;
-                image.SkinID = "Poll";
-            }
-
-            image.GenerateEmptyAlternateText = true;
-            image.ApplyStyleSheetSkin(Page);
-            return image;
-        }
-
-        protected static string TopicPageLinks(object replyCount, object topicId)
-        {
-            string retVal = "";
-
-            if (!Config.ShowPaging)
-                return retVal;
-
-            if ((int)replyCount > Config.TopicPageSize)
-            {
-                int pageNum = (int)replyCount / Config.TopicPageSize;
-                int rem = (int)replyCount % Config.TopicPageSize;
-                if (rem > 0) pageNum += 1;
-
-                for (int x = 1; x < pageNum + 1; x++)
-                    retVal += "<a href='/Content/Forums/topic.aspx?TOPIC=" + topicId + "&whichpage=" + x + "'><span class='topicPageLnk' >" + x + "</span></a> ";
-            }
-            return retVal;
-        }
-
-        private void MarkReadClick(object sender, ImageClickEventArgs e)
-        {
-            if (IsAuthenticated)
-            {
-                if (Session["_LastVisit"] == null)
-                {
-                    HttpContext.Current.Session.Add("_LastVisit", hdnLastOpened.Value);
-                }
+                // there's been a change in value in the category column                
+                int rowIndex = gridTable.Rows.GetRowIndex(gvr);
+                // Add a new category header row                
+                var sortRow = new GridViewRow(rowIndex, rowIndex, DataControlRowType.DataRow, DataControlRowState.Normal);
+                var sortCell = new TableCell
+                                            {
+                                                Text = catLink,
+                                                CssClass = "tableheader"
+                                            };
+                if (IsAuthenticated)
+                    sortCell.ColumnSpan = ActiveTable.Columns.Count;
                 else
-                {
-                    Session["_LastVisit"] = hdnLastOpened.Value;
-                    Session["_LastVisit"] = hdnLastOpened.Value;
-                }
-                var since = SnitzCookie.GetLastVisitDate();
-                if (since != null)
-                {
-                    SnitzCookie.SetLastVisitCookie("0");
-                }
+                    sortCell.ColumnSpan = ActiveTable.Columns.Count - 1;
+                sortRow.Cells.Add(sortCell);
+                gridTable.Controls.AddAt(rowIndex, sortRow);
+                // Update lastValue                
+                lastCat = currentCat;
+            }
+            if (lastForum.CompareTo(currentForum) != 0)
+            {
+                ForumInfo forum = Forums.GetForum(Convert.ToInt32(currentForum));
+                string forumLink = String.Format("<a class=\"bbcode\" href=\"/Content/Forums/forum.aspx?FORUM={0}\" title=\"{1}\">{2}</a>", forum.Id,
+                                                forum.Subject, forum.Subject);
+                // there's been a change in value in the forum column                
+                int rowIndex = gridTable.Rows.GetRowIndex(gvr);
+                // Add a new forum header row                
+                var sortRow = new GridViewRow(rowIndex, rowIndex, DataControlRowType.DataRow, DataControlRowState.Normal);
+                var spacer = new TableCell { Text = "", CssClass = " ForumHeaderRow iconCol" };
+                var sortCell = new TableCell
+                                            {
+                                                 
+                                                Text = forumLink,
+                                                CssClass = "ForumHeaderRow"
+                                            };
+                if (IsAuthenticated)
+                    sortCell.ColumnSpan = ActiveTable.Columns.Count;
+                else
+                    sortCell.ColumnSpan = ActiveTable.Columns.Count - 1;
 
-                Response.Redirect(Request.RawUrl);
+                //sortRow.Cells.Add(spacer);
+                sortRow.Cells.Add(sortCell);
+                gridTable.Controls.AddAt(rowIndex, sortRow);
+                // Update lastValue                
+                lastForum = currentForum;
+            }
+
+            gvr.Cells.RemoveAt(2);
+            gvr.Cells.RemoveAt(1);
+            gvr.Cells[1].ColumnSpan = 3;
+            if(_currentUser == "")
+            {
+                //gvr.Cells.RemoveAt(5);
+                //gvr.Cells[2].ColumnSpan = 2;
+            }
+        }
+        if (ActiveTable.BottomPagerRow != null)
+        {
+            GridViewRow pagerRow = ActiveTable.BottomPagerRow;
+            pagerRow.Cells[0].CssClass = "pagerCol";
+            //pagerRow.Cells[0].Attributes.Add("colspan",(ActiveTable.Columns.Count-1).ToString());
+            pagerRow.Cells[0].Attributes.Add("colspan",
+                                                IsAuthenticated
+                                                    ? ActiveTable.Columns.Count.ToString()
+                                                    : (ActiveTable.Columns.Count - 1).ToString());
+        }
+    }
+
+    private Control GetTopicAuthorIcon(int authorid)
+    {
+        var author = Members.GetAuthor(authorid);
+        ProfileCommon prof = ProfileCommon.GetUserProfile(author.Username);
+        if (prof.Gravatar)
+        {
+            Gravatar avatar = new Gravatar { Email = author.Email };
+            if (author.AvatarUrl != "" && author.AvatarUrl.StartsWith("http:"))
+                avatar.DefaultImage = author.AvatarUrl;
+            avatar.CssClass = "avatarsmall";
+            return avatar;
+
+        }
+        else
+        {
+
+            SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(author.Username);
+            Literal avatar = new Literal { Text = author.AvatarImg };
+
+            if (mu != null && mu.IsActive && !(Config.AnonMembers.Contains(mu.UserName)))
+                avatar.Text = avatar.Text.Replace("'avatar'", "'avatarsmall online'");
+            else
+                avatar.Text = avatar.Text.Replace("'avatar'", "'avatarsmall'");
+            return avatar;
+        }
+
+    }
+
+    private Image GetRecentTopicIcon(TopicInfo topic, int tReplies)
+    {
+        var image = new Image { ID = "postIcon", EnableViewState = false };
+        string _new = "";
+        string hot = "";
+        string locked = "";
+        string sticky = "";
+
+
+        if (topic.ReplyCount >= Config.HotTopicNum)
+            hot = "Hot";
+        switch ((Enumerators.PostStatus)topic.Status)
+        {
+            case Enumerators.PostStatus.Open:
+                locked = "";
+                image.ToolTip = webResources.lblOldPosts;
+                break;
+            case Enumerators.PostStatus.UnModerated:
+                image.AlternateText = webResources.Unmoderatedpost;
+                image.ToolTip = webResources.Unmoderatedpost;
+                break;
+            case Enumerators.PostStatus.OnHold:
+                image.AlternateText = webResources.OnHold;
+                image.ToolTip = webResources.OnHold;
+                break;
+            default:
+                locked = "Locked";
+                hot = "";
+                image.AlternateText = webResources.lblLockedTopic;
+                image.ToolTip = webResources.lblTopicLocked;
+                break;
+        }
+
+        if (topic.IsSticky)
+        {
+            sticky = "Sticky";
+            image.AlternateText = webResources.lblStickyTopic;
+            image.ToolTip = locked == "" ? webResources.lblStickyTopic : webResources.lblStickyTopic + ", " + webResources.lblTopicLocked;
+        }
+        if (topic.LastPostDate > LastVisitDateTime)
+        {
+            image.AlternateText = webResources.lblNewPosts;
+            image.ToolTip = webResources.lblNewPosts;
+            _new = "New";
+        }
+        image.SkinID = "Folder" + _new + hot + sticky + locked;
+
+        if (topic.Status == (int)Enumerators.PostStatus.UnModerated)
+        {
+            image.ToolTip = webResources.Unmoderatedpost;
+            image.SkinID = "UnModerated";
+        }
+        if (topic.Status == (int)Enumerators.PostStatus.OnHold)
+        {
+            image.ToolTip = webResources.TopicOnHold;
+            image.SkinID = "OnHold";
+        }
+        if (topic.UnModeratedReplies > 0)
+        {
+            image.ToolTip = webResources.UnmoderatedPosts;
+            image.SkinID = "UnmoderatedPosts";
+        }
+        if (topic.PollId > 0)
+        {
+            image.ToolTip = Polls.lblPoll;
+            image.SkinID = "Poll";
+        }
+        image.GenerateEmptyAlternateText = true;
+        image.ApplyStyleSheetSkin(Page);
+        if(Config.TopicAvatar)
+            image.CssClass = image.CssClass + " icon-overlay";
+        return image;
+    }
+
+    protected static string TopicPageLinks(object replyCount, object topicId)
+    {
+        string retVal = "";
+
+        if (!Config.ShowPaging)
+            return retVal;
+
+        if ((int)replyCount > Config.TopicPageSize)
+        {
+            int pageNum = (int)replyCount / Config.TopicPageSize;
+            int rem = (int)replyCount % Config.TopicPageSize;
+            if (rem > 0) pageNum += 1;
+            retVal = " ... ";
+            for (int x = Math.Max(2, SnitzCookie.LastTopicPage((int)topicId) + 1); x < pageNum + 1; x++)
+                retVal += "<a href='/Content/Forums/topic.aspx?TOPIC=" + topicId + "&whichpage=" + x + "'><span class='topicPageLnk' >" + x + "</span></a> ";
+        }
+        return retVal;
+    }
+
+    private void MarkReadClick(object sender, ImageClickEventArgs e)
+    {
+        if (IsAuthenticated)
+        {
+            if (Session["_LastVisit"] == null)
+            {
+                HttpContext.Current.Session.Add("_LastVisit", hdnLastOpened.Value);
             }
             else
             {
-                Session["_LastVisit"] = DateTime.UtcNow.ToForumDateStr();
+                Session["_LastVisit"] = hdnLastOpened.Value;
+                Session["_LastVisit"] = hdnLastOpened.Value;
             }
-        }
+            var since = SnitzCookie.GetLastVisitDate();
+            if (since != null)
+            {
+                SnitzCookie.SetLastVisitCookie("0");
+            }
 
-        protected void DeleteTopic(int topicid)
-        {
-            Topics.Delete(topicid);
             Response.Redirect(Request.RawUrl);
         }
-
-        protected void LockTopic(int topicid)
+        else
         {
-            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Closed);
-            Response.Redirect(Request.RawUrl);
+            Session["_LastVisit"] = DateTime.UtcNow.ToForumDateStr();
         }
+    }
 
-        protected void UnLockTopic(int topicid)
-        {
-            Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Open);
-            Response.Redirect(Request.RawUrl);
-        }
+    protected void DeleteTopic(int topicid)
+    {
+        Topics.Delete(topicid);
+        Response.Redirect(Request.RawUrl);
+    }
+
+    protected void LockTopic(int topicid)
+    {
+        Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Closed);
+        Response.Redirect(Request.RawUrl);
+    }
+
+    protected void UnLockTopic(int topicid)
+    {
+        Topics.SetTopicStatus(topicid, (int)Enumerators.PostStatus.Open);
+        Response.Redirect(Request.RawUrl);
+    }
 
     }

@@ -33,7 +33,7 @@ namespace EventsCalendar.Admin.Mods
             _modcontroler = new ModController("Events");
             rblEnabled.SelectedValue = _modcontroler.ModInfo.Enabled ? "1" : "0";
             modContainer.GroupingText = String.Format(" {0} Configuration ", _modcontroler.ModInfo.Name);
-
+            
             LoadSettings();
             //LoadHelpFile();
         }
@@ -55,6 +55,7 @@ namespace EventsCalendar.Admin.Mods
                 AllowedRoles.DataBind();
                 txtRoles.Text = String.Join(Environment.NewLine, _allowedRoles.Split(','));
             }
+            rblHolidays.SelectedValue = _modcontroler.ModInfo.Settings["EventShowHolidays"] == null ? "1" : _modcontroler.ModInfo.Settings["EventShowHolidays"].ToString();
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -62,6 +63,7 @@ namespace EventsCalendar.Admin.Mods
             if (_modcontroler != null)
             {
                 _modcontroler.ModInfo.Enabled = rblEnabled.SelectedValue == "1";
+                _modcontroler.ModInfo.Settings["EventShowHolidays"] = rblHolidays.SelectedValue;
                 _modcontroler.ModInfo.Settings["EventAdminRoles"] = String.Join(",", _dsRoles.ToArray());
                 _modcontroler.Save();
             }

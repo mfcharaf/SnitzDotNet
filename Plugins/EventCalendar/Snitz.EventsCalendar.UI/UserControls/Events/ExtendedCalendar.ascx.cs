@@ -20,7 +20,10 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -32,11 +35,19 @@ namespace EventsCalendar.UserControls
     public partial class ExtendedCalendar : UserControl
     {
         private DateTime _todaysDate;
+        private bool _showholidays;
+
         public DateTime TodaysDate {
             protected get { return _todaysDate; }
             set { _todaysDate = value; }
         }
-        private Collection<CalDate> _calEvents; 
+        public bool ShowHolidays
+        {
+            protected get { return _showholidays; }
+            set { _showholidays = value; }
+        }
+        private List<IEvent> _events;
+        //private Collection<CalDate> _calEvents; 
         public event EventHandler DaySelected;
 
         private void OnDaySelected(object sender, EventArgs e)
@@ -72,11 +83,15 @@ namespace EventsCalendar.UserControls
 
         protected void DayRender(object sender, DayRenderEventArgs e)
         {
+            var dt = new DateTime(e.Day.Date.Year, e.Day.Date.Month, e.Day.Date.Day, 23, 59, 0);
+            List<IEvent> evnts = _events.Where(evnt => ForumEvents.NeedsRendering(evnt, dt)).ToList().OrderBy(d => d.Date).ToList();
+            
             string headerstyle = "";
             bool dayTextHasChanged = false;
             DateTime dayHold = DateTime.MinValue;
+            string tooltip = "";
 
-            foreach (CalDate item in _calEvents)
+            foreach (var item in evnts)
             {
                 if (dayHold != item.Date)
                 {
@@ -87,41 +102,39 @@ namespace EventsCalendar.UserControls
                     dayHold = item.Date;
                 }
 
-                if (e.Day.Date.DayOfYear == item.Date.DayOfYear)
+                switch (item.Type)
                 {
-
-                    switch (item.Type)
-                    {
-                        case 1:
-                            headerstyle = " cal-head-event";
-                            break;
-                        case 2:
-                            headerstyle = " cal-head-birthday";
-                            break;
-                        case 3:
-                            headerstyle = " cal-head-anniversary";
-                            break;
-                        case 4:
-                            headerstyle = " cal-head-holiday";
-                            break;
-                        case 5:
-                            headerstyle = " cal-head-special";
-                            break;
-                        default:
-                            headerstyle = " cal-head";
-                            break;
-                    }
-
-
-                    dayTextHasChanged = true;
-                    ////Set the flag
+                    case 1:
+                        headerstyle = " cal-head-event";
+                        break;
+                    case 2:
+                        headerstyle = " cal-head-birthday";
+                        break;
+                    case 3:
+                        headerstyle = " cal-head-anniversary";
+                        break;
+                    case 4:
+                        headerstyle = " cal-head-holiday";
+                        break;
+                    case 5:
+                        headerstyle = " cal-head-special";
+                        break;
+                    default:
+                        headerstyle = " cal-head";
+                        break;
                 }
+
+                tooltip += item.Title;
+
+                dayTextHasChanged = true;
+                ////Set the flag
 
             }
 
-            if (dayTextHasChanged)
+            if (dayTextHasChanged && !e.Cell.CssClass.Contains("calendar-prevmonth-day"))
             {
                 e.Cell.CssClass += headerstyle;
+                e.Cell.ToolTip = tooltip;
                 //e.Cell.BackColor = BackColour;
             }
             if (e.Day.Date.DayOfYear == DateTime.UtcNow.DayOfYear)
@@ -192,13 +205,9 @@ namespace EventsCalendar.UserControls
 
         private void GetEvents(DateTime start, DateTime end)
         {
-            _calEvents = new Collection<CalDate>();
-            foreach (EventInfo calEvent in ForumEvents.GetEvents(start, end))
-            {
-                CalDate cal = new CalDate { Date = calEvent.Date, Title = calEvent.Title, Type = calEvent.Type };
-                _calEvents.Add(cal);
-            }
-
+            _events = ForumEvents.GetEvents(start, end);
+            if(_showholidays)
+                _events.AddRange(ForumEvents.PresetHolidays());
         }
 
         protected void ShowDay(object sender, EventArgs e)

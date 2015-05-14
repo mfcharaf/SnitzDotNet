@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Snitz.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Dependency\Snitz.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="Snitz.IDAL">
       <HintPath>..\..\..\Dependency\Snitz.IDAL.dll</HintPath>
     </Reference>
@@ -63,7 +67,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "$(SolutionDir)..\..\Web Site\www\bin\"
+    <PostBuildEvent>xcopy /s /y "$(ProjectDir)$(OutDir)Snitz.EventsCalendar.SQLServerDAL.dll" "..\..\Web Site\www\bin\"
 
 </PostBuildEvent>
   </PropertyGroup>

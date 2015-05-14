@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/MasterTemplates/MainMaster.Master" AutoEventWireup="true" CodeBehind="faq.aspx.cs" Inherits="SnitzUI.Content.FAQ.Faq" %>
-<%@ Reference Control = "~/UserControls/SideColumn.ascx" %>
+
 
 <asp:Content ID="head" ContentPlaceHolderID="CPhead" runat="server">
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS"/>
@@ -23,6 +23,9 @@
             });
 
             $(".bbcode").each(function () {
+                $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
+            });
+            $(".minibbcode").each(function () {
                 $(this).html(parseBBCode(parseEmoticon($(this).text(), '<%= Page.Theme %>')));
             });
             SyntaxHighlighter.autoloader(
@@ -51,7 +54,7 @@
                 <div id="sidebar">
                     <asp:Repeater ID="FaqNav" runat="server" OnItemDataBound="BindQuestions">
                         <HeaderTemplate>
-                            <div class="clearfix">
+                            <div class="clearfix category">
                                 <asp:ImageButton ID="manageCats" runat="server" SkinID="Folder" OnClick="ManageCategories" ToolTip="Manage Categories" EnableViewState="False" />
                                 <asp:ImageButton ID="addTopic" runat="server" SkinID="Document" OnClick="NewTopic" ToolTip="Add new help Topic" EnableViewState="False" />
                         

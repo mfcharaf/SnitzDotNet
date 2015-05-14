@@ -15,7 +15,8 @@
 
 <%@ Import Namespace="Snitz.BLL" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-<%@ Register TagPrefix="a" Namespace="SnitzCommon.Controls" Assembly="SnitzCommon" %>
+<%@ Register TagPrefix="snitzcontrols" Namespace="SnitzCommon.Controls" Assembly="SnitzCommon" %>
+<%@ Import Namespace="SnitzConfig" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
     <link rel="stylesheet" type="text/css" runat="server" id="editorCSS" />
     <link rel="stylesheet" type="text/css" href="/css/jquery.lightbox-0.5.css" media="screen" />
@@ -108,165 +109,156 @@
                 <asp:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1"
                     CssClass="ajax__tab_xp2" AutoPostBack="false"
                     OnActiveTabChanged="TabContainer1ActiveTabChanged">
-                    <asp:TabPanel runat="server" HeaderText="<%$ Resources:webResources, lblProfile %>"
-                        ID="TabProfile">
+                    <asp:TabPanel runat="server" HeaderText="<%$ Resources:webResources, lblProfile %>" ID="TabProfile">
                         <ContentTemplate>
-                            <div id="pMain">
-                                <asp:Panel runat="server" ID="pnlAvatar" GroupingText="<%$ Resources:webResources, lblAvatar %>">
-                                    <asp:PlaceHolder ID="phAvatar" runat="server"></asp:PlaceHolder>
-                                    <br />
-                                    <asp:LinkButton ID="btnAvatar" Text="<%$ Resources:webResources, btnUploadAvatar %>" runat="server" OnClientClick="ShowUpload();return false;"
-                                        AlternateText="<%$ Resources:webResources, btnUploadAvatar %>" /><br />
-                                    <asp:CheckBox ID="cbxGravatar" runat="server" Text="Use Gravatar image" CssClass="gravatar" />
-                                </asp:Panel>
-                                <asp:Panel ID="account" runat="server" GroupingText="<%$ Resources:webResources, lblProfile %>">
-                                    <ol>
-                                    <li><asp:Label ID="lblName" runat="server" Text="<%$ Resources:webResources, lblUserName %>"
-                                        AssociatedControlID="tbxName" EnableViewState="False"></asp:Label><asp:TextBox ID="tbxName"
-                                            runat="server" EnableViewState="False" Enabled="<%# IsAdministrator %>"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblRealName" runat="server" AssociatedControlID="tbxRealName" Text="<%$ Resources:webResources, lblName %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxRealName" runat="server"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblAge" runat="server" AssociatedControlID="tbxAge" Text="<%$ Resources:webResources, lblAge %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxAge" runat="server"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblMarStatus" AssociatedControlID="ddlMarStatus" runat="server" Text="<%$ Resources:webResources, lblMarStatus %>"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlMarStatus" runat="server">
-                                            <asp:ListItem Value="" meta:resourcekey="ddlMarStatus">[Select]</asp:ListItem>
-                                            <asp:ListItem Value="Married" meta:resourcekey="ddlMarried">Married</asp:ListItem>
-                                            <asp:ListItem Value="Single" meta:resourcekey="ddlSingle">Single</asp:ListItem>
-                                            <asp:ListItem Value="Divorced" meta:resourcekey="ddlDivorced">Divorced</asp:ListItem>
-                                            <asp:ListItem Value="Withheld" meta:resourcekey="ddlWithheld">Withheld</asp:ListItem>
-                                        </asp:DropDownList></li>
-                                    <li><asp:Label ID="lblGender" AssociatedControlID="ddlGender" runat="server" Text="<%$ Resources:webResources, lblGender %>"
-                                        EnableViewState="False"></asp:Label>
-                                        <a:GenderDropDownList runat="server" ID="ddlGender" SkinID="sknGenderList"/>
-                                    </li>
-                                    <li><asp:Label ID="lblState" AssociatedControlID="tbxState" runat="server" Text="<%$ Resources:webResources, lblState %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxState" runat="server" EnableViewState="False"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblCity" AssociatedControlID="tbxCity" runat="server" Text="<%$ Resources:webResources, lblCity %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxCity" runat="server" EnableViewState="False"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblCountry" AssociatedControlID="tbxCountry" runat="server" Text="<%$ Resources:webResources, lblCountry %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxCountry" runat="server" EnableViewState="False"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblOccupation" AssociatedControlID="tbxOccupation" runat="server"
-                                        Text="<%$ Resources:webResources, lblOccupation %>" EnableViewState="False"></asp:Label><asp:TextBox
-                                            ID="tbxOccupation" runat="server" EnableViewState="False"></asp:TextBox></li>
-                                    <li><asp:Label ID="lblTitle" AssociatedControlID="tbxForumTitle" runat="server" Text="Forum Title"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxForumTitle" runat="server"
-                                            EnableViewState="False"></asp:TextBox></li>
-                                    <li><asp:CheckBox ID="cbxReceiveEmail" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblReceiveEmail %>" /></li>
-                                        <li><asp:CheckBox ID="cbxHideEmail" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblHideEmail %>" /></li>
-                                        
-                                        <li><asp:TextBox ID="newemail" runat="server">Enter a new Email ..</asp:TextBox>&#160;<asp:LinkButton
-                                            ID="btnChangeEmail" runat="server" Text="<%$ Resources:webResources, lblChangeEmail %>"
-                                            OnClick="ChangeEmailClick" /></li>
-                                        <li><asp:Label runat="server" ID="Lemail" Text="Your new email will become current when you have finished the email validation process"
-                                            Visible="False" EnableViewState="False"></asp:Label></li>
-                                        </ol>
-                                </asp:Panel>
-                            </div>
-                            <asp:Panel runat="server" ID="pnlPassword" GroupingText="Password" Style="float: right; width: 49%; height: auto; min-height: 100px;">
+                            <asp:Panel runat="server" ID="pnlAvatar" GroupingText="<%$ Resources:webResources, lblAvatar %>">
+                                <asp:PlaceHolder ID="phAvatar" runat="server"></asp:PlaceHolder>
+                                <br />
+                                <asp:LinkButton ID="btnAvatar" Text="<%$ Resources:webResources, btnUploadAvatar %>" runat="server" OnClientClick="ShowUpload();return false;"
+                                    AlternateText="<%$ Resources:webResources, btnUploadAvatar %>" /><br class="clearfix" /><br />
+                                <asp:CheckBox ID="cbxGravatar" runat="server" Text="Use Gravatar image" CssClass="email"/>    
+                            </asp:Panel>
+                            <asp:Panel runat="server" ID="pnlPassword" GroupingText="Password" Style="height: auto; min-height: 100px;">
                                 <asp:Label ID="lblOldPass" runat="server" Text="Old Password" AssociatedControlID="tbxPassword"></asp:Label><asp:TextBox
-                                    ID="tbxPassword" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox><asp:RequiredFieldValidator
-                                        ID="RequiredFieldValidator1" runat="server" ErrorMessage="You must supply your  existing password"
-                                        ControlToValidate="tbxPassword" SetFocusOnError="True" ValidationGroup="passChange">*</asp:RequiredFieldValidator><br /><br />
+                                    ID="tbxPassword" runat="server" ValidationGroup="passChange" TextMode="Password" placeholder="Current password"></asp:TextBox><asp:RequiredFieldValidator
+                                    ID="RequiredFieldValidator1" runat="server" ErrorMessage="You must supply your  existing password"
+                                    ControlToValidate="tbxPassword" SetFocusOnError="True" ValidationGroup="passChange">*</asp:RequiredFieldValidator><br /><br />
                                 <asp:Label ID="lblNewPass" runat="server" Text="New Password" AssociatedControlID="tbxNewPass"></asp:Label><asp:TextBox
-                                    ID="tbxNewPass" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox>
+                                    ID="tbxNewPass" runat="server" ValidationGroup="passChange" TextMode="Password" placeholder="New password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbxNewPass" ErrorMessage="New Password is required"
                                         ValidationGroup="passChange">*</asp:RequiredFieldValidator><br />
                                 <asp:Label ID="lblConfirm" runat="server" Text="Confirm Password" AssociatedControlID="tbxConfirmPass"></asp:Label><asp:TextBox
-                                    ID="tbxConfirmPass" runat="server" ValidationGroup="passChange" TextMode="Password"></asp:TextBox><asp:CompareValidator
+                                    ID="tbxConfirmPass" runat="server" ValidationGroup="passChange" TextMode="Password" placeholder="Confirm password"></asp:TextBox><asp:CompareValidator
                                         ID="CompareValidator1" runat="server" ControlToCompare="tbxNewPass" ControlToValidate="tbxConfirmPass"
                                         ErrorMessage="Passwords do not match" ValidationGroup="passChange">*</asp:CompareValidator><br />
-                                <asp:CheckBox runat="server" ID="showPass" Text="Show Passwords" CausesValidation="False" OnCheckedChanged="ShowPasswordChars" AutoPostBack="True"/><br/>
+                                <asp:CheckBox runat="server" ID="showPass" Text="Show Passwords" CausesValidation="False" OnCheckedChanged="ShowPasswordChars" AutoPostBack="True" CssClass="email"/><br/>
                                 <asp:LinkButton ID="btnChangePass" runat="server" ValidationGroup="passChange" Text="Change Password"
                                     OnClick="BtnChangePassClick" /><br />
                                 
                                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="passChange" />
                             </asp:Panel>
-                            <asp:Panel runat="server" ID="pnlDOB" GroupingText="Date of Birth" Style="float: right; width: 49%; height: auto; min-height: 130px;">
+                            <asp:Panel ID="account" runat="server" GroupingText="<%$ Resources:webResources, lblProfile %>">
+                                <ul>
+                                <li><asp:Label ID="lblName" runat="server" Text="<%$ Resources:webResources, lblUserName %>"
+                                    AssociatedControlID="tbxName" EnableViewState="False"></asp:Label><asp:TextBox ID="tbxName"
+                                        runat="server" EnableViewState="False" Enabled="<%# IsAdministrator %>"></asp:TextBox></li>
+                                <li><asp:Label ID="lblRealName" runat="server" AssociatedControlID="tbxRealName" Text="<%$ Resources:webResources, lblName %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxRealName" runat="server"></asp:TextBox></li>
+                                <li><asp:Label ID="lblAge" runat="server" AssociatedControlID="tbxAge" Text="<%$ Resources:webResources, lblAge %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxAge" runat="server" CssClass="number"></asp:TextBox></li>
+                                <li><asp:Label ID="lblMarStatus" AssociatedControlID="ddlMarStatus" runat="server" Text="<%$ Resources:webResources, lblMarStatus %>"
+                                    EnableViewState="False"></asp:Label><asp:DropDownList ID="ddlMarStatus" runat="server">
+                                        <asp:ListItem Value="" meta:resourcekey="ddlMarStatus">[Select]</asp:ListItem>
+                                        <asp:ListItem Value="Married" meta:resourcekey="ddlMarried">Married</asp:ListItem>
+                                        <asp:ListItem Value="Single" meta:resourcekey="ddlSingle">Single</asp:ListItem>
+                                        <asp:ListItem Value="Divorced" meta:resourcekey="ddlDivorced">Divorced</asp:ListItem>
+                                        <asp:ListItem Value="Withheld" meta:resourcekey="ddlWithheld">Withheld</asp:ListItem>
+                                    </asp:DropDownList></li>
+                                <li><asp:Label ID="lblGender" AssociatedControlID="ddlGender" runat="server" Text="<%$ Resources:webResources, lblGender %>"
+                                    EnableViewState="False"></asp:Label>
+                                    <snitzcontrols:GenderDropDownList runat="server" ID="ddlGender" SkinID="sknGenderList"/>
+                                </li>
+                                <li><asp:Label ID="lblState" AssociatedControlID="tbxState" runat="server" Text="<%$ Resources:webResources, lblState %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxState" runat="server" EnableViewState="False"></asp:TextBox></li>
+                                <li><asp:Label ID="lblCity" AssociatedControlID="tbxCity" runat="server" Text="<%$ Resources:webResources, lblCity %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxCity" runat="server" EnableViewState="False"></asp:TextBox></li>
+                                <li><asp:Label ID="lblCountry" AssociatedControlID="tbxCountry" runat="server" Text="<%$ Resources:webResources, lblCountry %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxCountry" runat="server" EnableViewState="False"></asp:TextBox></li>
+                                <li><asp:Label ID="lblOccupation" AssociatedControlID="tbxOccupation" runat="server"
+                                    Text="<%$ Resources:webResources, lblOccupation %>" EnableViewState="False"></asp:Label><asp:TextBox
+                                        ID="tbxOccupation" runat="server" EnableViewState="False"></asp:TextBox></li>
+                                <li><asp:Label ID="lblTitle" AssociatedControlID="tbxForumTitle" runat="server" Text="Forum Title"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxForumTitle" runat="server"
+                                        EnableViewState="False"></asp:TextBox></li>
+                                <li><asp:CheckBox ID="cbxReceiveEmail" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblReceiveEmail %>" /></li>
+                                    <li><asp:CheckBox ID="cbxHideEmail" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblHideEmail %>" /></li>
+                                    <li><hr/></li>    
+                                    <li><asp:TextBox ID="newemail" runat="server" placeholder="Enter a new email address"></asp:TextBox>&#160;<asp:LinkButton
+                                        ID="btnChangeEmail" runat="server" Text="<%$ Resources:webResources, lblChangeEmail %>"
+                                        OnClick="ChangeEmailClick" /></li>
+                                    <li><asp:Label runat="server" ID="Lemail" Text="Your new email will become current when you have finished the email validation process"
+                                        Visible="False" EnableViewState="False"></asp:Label></li>
+                                    </ul>
+                            </asp:Panel>
+                            <asp:Panel runat="server" ID="pnlDOB" GroupingText="Date of Birth" style="height: auto; min-height: 130px;">
                                 <asp:Label runat="server" ID="lblDOb" AssociatedControlID="DobPicker" Text="<%$ Resources:webResources, lblDOB %>"></asp:Label>
-                                <a:DobPicker runat="server" ID="DobPicker"></a:DobPicker>
-                                <br />
+                                <snitzcontrols:DobPicker runat="server" ID="DobPicker"></snitzcontrols:DobPicker>
                                 <p>
                                     <asp:Literal ID="L2" runat="server" Text="
-                &lt;br /&gt;Only the administrator will have access to your Date of Birth, normal users will only see your age unless the hide age option is selected.&lt;br /&gt; "
+                                    Only the administrator will have access to your Date of Birth, normal users will only see your age unless the hide age option is selected.&lt;br /&gt; "
                                         EnableViewState="False"></asp:Literal>
                                 </p>
                                 <asp:CheckBox ID="cbxHideAge" CssClass="email" runat="server" Text="<%$ Resources:webResources, lblHideAge %>" />
+                            </asp:Panel>            
+                            <asp:Panel ID="pnlSiteInf" runat="server" GroupingText="<%$ Resources:webResources, lblSiteInfo %>">
+                                <asp:Label ID="lblTimeOffset" AssociatedControlID="ddlTimeZone" runat="server" Text="<%$ Resources:webResources, lblTimeOffset %>" EnableViewState="False"></asp:Label>
+                                <snitzcontrols:TimeZoneListBox runat="server" ID="ddlTimeZone"/>
+                                <br />
+                                <asp:CheckBox ID="cbxDaylightSaving" CssClass="email" runat="server" Text="Use daylight saving" /><br/>
+                                <asp:Label ID="lblTheme" AssociatedControlID="ddTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
+                                    EnableViewState="False" Visible="<%# Config.AllowThemeChange %>"></asp:Label>
+                                <snitzcontrols:ThemeDropDownList ID="ddTheme" runat="server" AutoPostBack="True" Visible="<%# Config.AllowThemeChange %>"></snitzcontrols:ThemeDropDownList>
+                                <br />
+                                <asp:Label ID="lblLanguage" runat="server" Text="Default Language:" AssociatedControlID="ddlLang"
+                                    EnableViewState="False"></asp:Label><asp:DropDownList runat="server" ID="ddlLang">
+                                        <asp:ListItem Value="en" />
+                                        <asp:ListItem Value="fr" />
+                                        <asp:ListItem Value="de" />
+                                        <asp:ListItem Value="it" />
+                                        <asp:ListItem Value="en-ie" />
+                                        <asp:ListItem Value="ja" />
+                                        <asp:ListItem Value="fa" />
+                                    </asp:DropDownList>
+                                <br />
+                                <asp:Label ID="lblLinkTarget" runat="server" AssociatedControlID="ddlTarget" Text="Open Links in"
+                                    EnableViewState="False"></asp:Label><asp:DropDownList runat="server" ID="ddlTarget">
+                                        <asp:ListItem Value="_blank" Text="New window" />
+                                        <asp:ListItem Value="_self" Text="Same window" />
+                                    </asp:DropDownList>
+                                <br />
                             </asp:Panel>
-                            <div style="z-index: 101; float: right; width: 49%; margin-right: 0px;">
-                                <asp:Panel ID="pnlSiteInf" runat="server" GroupingText="<%$ Resources:webResources, lblSiteInfo %>">
-                                    <asp:Label ID="lblTimeOffset" AssociatedControlID="ddlTimeZone" runat="server" Text="<%$ Resources:webResources, lblTimeOffset %>" EnableViewState="False"></asp:Label>
-                                    <a:TimeZoneListBox runat="server" ID="ddlTimeZone"/>
-                                    <br />
-                                    <asp:Label ID="Label1" AssociatedControlID="cbxDaylightSaving" runat="server" Text="Use daylight saving" EnableViewState="False"></asp:Label>
-                                    <asp:CheckBox ID="cbxDaylightSaving" CssClass="email" runat="server" Text="" /><br/>
-                                    <asp:Label ID="lblTheme" AssociatedControlID="ddTheme" runat="server" Text="<%$ Resources:webResources, lblThemes %>"
-                                        EnableViewState="False"></asp:Label>
-                                    <a:ThemeDropDownList ID="ddTheme" runat="server" AutoPostBack="True"></a:ThemeDropDownList>
-                                    <br />
-                                    <asp:Label ID="lblLanguage" runat="server" Text="Default Language:" AssociatedControlID="ddlLang"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList runat="server" ID="ddlLang">
-                                            <asp:ListItem Value="en" />
-                                            <asp:ListItem Value="fr" />
-                                            <asp:ListItem Value="de" />
-                                            <asp:ListItem Value="it" />
-                                            <asp:ListItem Value="en-ie" />
-                                            <asp:ListItem Value="ja" />
-                                            <asp:ListItem Value="fa" />
-                                        </asp:DropDownList>
-                                    <br />
-                                    <asp:Label ID="lblLinkTarget" runat="server" AssociatedControlID="ddlTarget" Text="Open Links in"
-                                        EnableViewState="False"></asp:Label><asp:DropDownList runat="server" ID="ddlTarget">
-                                            <asp:ListItem Value="_blank" Text="New window" />
-                                            <asp:ListItem Value="_self" Text="Same window" />
-                                        </asp:DropDownList>
-                                    <br />
-                                </asp:Panel>
-                                <asp:Panel ID="contactInfo" runat="server" GroupingText="<%$ Resources:webResources, lblContactInfo %>">
-                                    <asp:Label ID="lblAIM" AssociatedControlID="tbxAIM" runat="server" Text="<%$ Resources:webResources, lblAIM %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxAIM" runat="server" EnableViewState="False"></asp:TextBox><br />
-                                    <asp:Label ID="lblSkype" AssociatedControlID="tbxSkype" runat="server" Text="<%$ Resources:webResources, lblSKYPE %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxSkype" runat="server" EnableViewState="False"></asp:TextBox><br />
-                                    <asp:Label ID="lblICQ" AssociatedControlID="tbxICQ" runat="server" Text="<%$ Resources:webResources, lblICQ %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxICQ" runat="server" EnableViewState="False"></asp:TextBox><br />
-                                    <asp:Label ID="lblYAHOO" AssociatedControlID="tbxYAHOO" runat="server" Text="<%$ Resources:webResources, lblYAHOO %>"
-                                        EnableViewState="False"></asp:Label><asp:TextBox ID="tbxYAHOO" runat="server" EnableViewState="False"></asp:TextBox><br />
-                                </asp:Panel>
-                            </div>
-
+                            <asp:Panel ID="contactInfo" runat="server" GroupingText="<%$ Resources:webResources, lblContactInfo %>">
+                                <asp:Label ID="lblAIM" AssociatedControlID="tbxAIM" runat="server" Text="<%$ Resources:webResources, lblAIM %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxAIM" runat="server" EnableViewState="False"></asp:TextBox><br />
+                                <asp:Label ID="lblSkype" AssociatedControlID="tbxSkype" runat="server" Text="<%$ Resources:webResources, lblSKYPE %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxSkype" runat="server" EnableViewState="False"></asp:TextBox><br />
+                                <asp:Label ID="lblICQ" AssociatedControlID="tbxICQ" runat="server" Text="<%$ Resources:webResources, lblICQ %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxICQ" runat="server" EnableViewState="False"></asp:TextBox><br />
+                                <asp:Label ID="lblYAHOO" AssociatedControlID="tbxYAHOO" runat="server" Text="<%$ Resources:webResources, lblYAHOO %>"
+                                    EnableViewState="False"></asp:Label><asp:TextBox ID="tbxYAHOO" runat="server" EnableViewState="False"></asp:TextBox><br />
+                            </asp:Panel>
                         </ContentTemplate>
                     </asp:TabPanel>
                     <asp:TabPanel ID="TabSig" runat="server" HeaderText="Signature/Bio">
                         <ContentTemplate>
-                            <asp:Panel runat="server" ID="pnlSig" GroupingText="<%$ Resources:webResources, lblSig %>"
-                                Style="width: 100%; height: auto; margin-bottom: 5px;">
+                            <asp:Panel CssClass="fullwidth" runat="server" ID="pnlSig" GroupingText="<%$ Resources:webResources, lblSig %>"
+                                Style="height: auto; margin-bottom: 5px;">
                                 <asp:CheckBox ID="cbxViewSig" runat="server" Text="<%$ Resources:webResources, cbxViewSiginPost %>"
-                                    TextAlign="Left" CssClass="sig" />
+                                    CssClass="sig" />
                                 <br />
-                                <asp:CheckBox ID="cbxUseSig" CssClass="sig" runat="server" Text="<%$ Resources:webResources, cbxUseSigbyDefault %>"
-                                    TextAlign="Left" />
+                                <asp:CheckBox ID="cbxUseSig" CssClass="sig" runat="server" Text="<%$ Resources:webResources, cbxUseSigbyDefault %>" />
                                 <br />
                                 <br />
                                 <asp:PlaceHolder ID="phSig" runat="server" EnableViewState="False"></asp:PlaceHolder>
                             </asp:Panel>
-                            <asp:Panel runat="server" ID="pnlQuote" GroupingText="<%$ Resources:webResources, lblQuote %>"
-                                Style="width: 100%; height: auto; margin-bottom: 5px;">
+                            <asp:Panel CssClass="fullwidth" runat="server" ID="pnlQuote" GroupingText="<%$ Resources:webResources, lblQuote %>"
+                                Style="height: auto; margin-bottom: 5px;">
                                 <asp:PlaceHolder ID="phQuote" runat="server" EnableViewState="False"></asp:PlaceHolder>
                             </asp:Panel>
-                            <asp:Panel runat="server" ID="pnlBio" GroupingText="<%$ Resources:webResources, lblBiog %>"
-                                Style="width: 100%; height: auto; margin-bottom: 5px;">
+                            <asp:Panel CssClass="fullwidth" runat="server" ID="pnlBio" GroupingText="<%$ Resources:webResources, lblBiog %>"
+                                Style="height: auto; margin-bottom: 5px;">
                                 <asp:PlaceHolder ID="phBiog" runat="server" EnableViewState="False"></asp:PlaceHolder>
                             </asp:Panel>
                         </ContentTemplate>
                     </asp:TabPanel>
                     <asp:TabPanel ID="TabHobby" runat="server" HeaderText="News/Hobbies">
                         <ContentTemplate>
-                            <asp:Panel runat="server" ID="pnlNews" GroupingText="<%$ Resources:webResources, lblLatestNews %>"
-                                Style="width: 100%; height: auto; margin-bottom: 5px;">
+                            <asp:Panel CssClass="fullwidth" runat="server" ID="pnlNews" GroupingText="<%$ Resources:webResources, lblLatestNews %>"
+                                Style="height: auto; margin-bottom: 5px;">
                                 <asp:PlaceHolder ID="phNews" runat="server" EnableViewState="False"></asp:PlaceHolder>
                             </asp:Panel>
-                            <asp:Panel runat="server" ID="pnlHobby" GroupingText="<%$ Resources:webResources, lblHobbies %>"
-                                Style="width: 100%; height: auto; margin-bottom: 5px;">
+                            <asp:Panel CssClass="fullwidth" runat="server" ID="pnlHobby" GroupingText="<%$ Resources:webResources, lblHobbies %>"
+                                Style="height: auto; margin-bottom: 5px;">
                                 <asp:PlaceHolder ID="phHobby" runat="server" EnableViewState="False"></asp:PlaceHolder>
                             </asp:Panel>
                         </ContentTemplate>
@@ -302,11 +294,11 @@
                     <asp:TabPanel ID="TabOther" runat="server" HeaderText="Other ..">
                         <ContentTemplate>
                             <asp:Panel runat="server" ID="pnlRoles" GroupingText="<%$ Resources:webResources, lblRoleTitle %>"
-                                Style="width: 49%; float: right; height: auto; margin-bottom: 5px;">
+                                style="height: auto; margin-bottom: 5px;">
                                 <asp:Literal ID="LitRoles" runat="server" EnableViewState="False"></asp:Literal>
                             </asp:Panel>
                             <asp:Panel ID="pnlStats" runat="server" GroupingText="<%$ Resources:webResources, lblForumInfo %>"
-                                Style="width: 49%; float: left; height: auto; min-height: 75px">
+                                Style="height: auto; min-height: 75px">
                                 <asp:Label ID="lblUserId" runat="server" Text="<%$ Resources:webResources, lblMemberID %>"
                                     EnableViewState="False"></asp:Label><br />
                                 <asp:Label ID="lblSince" runat="server" Text="<%$ Resources:webResources, lblMemberSince %>"
@@ -317,7 +309,7 @@
                                     EnableViewState="False"></asp:Label><br />
                             </asp:Panel>
                             <asp:Panel ID="pnlTopics" runat="server" GroupingText="<%$ Resources:webResources, lblRecentTopics %>"
-                                Style="width: 100%; height: auto; float: left;">
+                                style="width: 100%; height: auto; float: left;">
                                 <asp:GridView ID="rptRecentTopics" runat="server" OnRowDataBound="RecentTopicsDataBound"
                                     AutoGenerateColumns="False" BorderStyle="None" EmptyDataText="No recent topics"
                                     EnableViewState="False" CellPadding="2" GridLines="None" ShowHeader="False" EnableModelValidation="True">

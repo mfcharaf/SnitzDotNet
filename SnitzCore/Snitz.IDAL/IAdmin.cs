@@ -20,6 +20,9 @@
 */
 
 
+using System.Collections.Generic;
+using Snitz.Entities;
+
 namespace Snitz.IDAL
 {
     /// <summary>
@@ -30,6 +33,6 @@ namespace Snitz.IDAL
         int GetDbSize();
         bool UpdateForumCounts();
         int GetMemberCount();
-
+        Dictionary<int, Ranking> GetRankings();
     }
 }

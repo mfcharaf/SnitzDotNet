@@ -23,6 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using ModConfig;
 using Snitz.BLL;
@@ -39,14 +41,41 @@ namespace EventsCalendar
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            eventCSS.Attributes.Add("href", "/css/" + Page.Theme + "/events.css");
-        }
-        protected void Page_Load(object sender, EventArgs e)
-        {
             if (!ConfigHelper.IsModEnabled("EventsConfig"))
             {
                 throw new NotSupportedException("Events Calendar not enabled");
             }
+
+            EventCalendar1.ShowHolidays = ConfigHelper.GetBoolValue("EventsConfig", "EventShowHolidays");
+        }
+
+        protected override void Page_PreRender(object sender, EventArgs e)
+        {
+            base.Page_PreRender(sender, e);
+            bool linkIncluded = false;
+            foreach (Control c in Page.Header.Controls)
+            {
+                if (c.ID == "eventCSS")
+                {
+                    linkIncluded = true;
+                }
+            }
+            if (!linkIncluded)
+            {
+
+                HtmlGenericControl csslink = new HtmlGenericControl("link");
+                csslink.ID = "eventCSS";
+                csslink.Attributes.Add("href", "/css/" + Page.Theme + "/events.css");
+                csslink.Attributes.Add("type", "text/css");
+                csslink.Attributes.Add("rel", "stylesheet");
+                Page.Header.Controls.Add(csslink);
+            }
+
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
             if(!IsPostBack)
             {
                 if (Request.QueryString["month"] != null)

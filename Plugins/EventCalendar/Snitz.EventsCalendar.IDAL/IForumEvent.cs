@@ -26,8 +26,10 @@ using Snitz.IDAL;
 
 namespace Snitz.EventsCalendar.IDAL
 {
+
     public interface IForumEvent : IBaseObject<EventInfo>
     {
-        IEnumerable<EventInfo> GetEvents(string startdate, string enddate);
+        IEnumerable<IEvent> GetEvents(string startdate, string enddate);
+        //IEnumerable<EventInfo> GetRecurringEvents(string startdate, string enddate);
     }
 }

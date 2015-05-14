@@ -24,9 +24,11 @@ function UpdateRoleList(ddlid, hdnid, remove) {
 
     var tbl = $('#roletbl');
     if (remove) {
-        $("#roletbl td:contains('" + newrole.toLowerCase() + "')").parent().remove();
+        newrole = $("#roletbl tr.selected td").text().trim();
+        $("#roletbl tr.selected").remove();
         var regx = new RegExp("\\b" + newrole + "(,|$)", "igm");
         rolelist = rolelist.replace(regx, "");
+        alert(rolelist);
     } else {
         var regx2 = new RegExp("\\b" + newrole + "(,|$)", "igm");
 
@@ -52,12 +54,17 @@ function UpdateRoleList(ddlid, hdnid, remove) {
 }
 
 function UpdateModerator(ddlid, hdnid, remove) {
+    
     var modlist = $get(hdnid).value;
     var newmodid = $("#" + ddlid + " option:selected").val();
     var newmod = $("#" + ddlid + " option:selected").text();
-
+    
     if (remove) {
-        $("#modtbl td:contains('" + newmod.toLowerCase() + "')").parent().remove();
+        var remlist = $get(remove).value;
+        newmodid = $("#modtbl tr.selected td:nth-child(2)").text().trim();
+        $("#modtbl tr.selected").remove();
+        remlist = remlist + newmodid + ",";
+        $get(remove).value = remlist;
         var regx = new RegExp("\\b" + newmodid + "(,|$)", "igm");
         modlist = modlist.replace(regx, "");
     } else {
@@ -143,12 +150,12 @@ function pageUnload() {
 }
 
 function setCookie(cookieValue) {
-    var sVar = "cookiename";
-    var theCookie = sVar + '=' + cookieValue + '; expires=Fri, 1 Jul 2019 11:11:11 UTC;' + 'path=/';
+    var sVar = "expandforum";
+    var theCookie = sVar + '=' + cookieValue + '; expires=Fri, 1 Jan ' + (new Date().getFullYear()+1) + ' 00:00:01 UTC;' + 'path=/';
     document.cookie = theCookie;
 }
 function getCookie() {
-    var sVar = "cookiename";
+    var sVar = "expandforum";
     var cookies = document.cookie.split('; ');
     for (var i = 1; i <= cookies.length; i++) {
         if (cookies[i - 1].split('=')[0] == sVar) {

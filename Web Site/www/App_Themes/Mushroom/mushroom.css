@@ -532,7 +532,22 @@ tr.rowsticky {
     width: 80px;
     height: 80px;
 }
-
+.avatarsmall
+{
+    border: 1px solid #FF6600;
+    width:36px;
+    height:36px;
+    z-index: -1;
+}
+.icon-overlay
+{
+position:relative;
+left:20px;
+top:-15px;
+z-index:10;
+}
+    img.avatar,img.avatarsmall{opacity: 0.4;}
+    img.online{opacity: 1;}
 .usrlabel {
     width: 100px;
     display: inline-block;
@@ -1095,6 +1110,7 @@ textarea.pmMsgArea {
 .popup-button-panel {
     margin: 5px;
 }
+.selected{ background-color: #ff6600;}
 .clearfix:after {
     content: ".";
     display: block;

@@ -74,8 +74,23 @@ namespace Snitz.SQLServerDAL
 
         public void Delete(ForumModeratorInfo forumModerator)
         {
-            string sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MOD_ID=@Id";
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, new SqlParameter("@Id",SqlDbType.Int){Value = forumModerator.Id});
+            string sqlStr = "";
+            if (forumModerator.Id > 0)
+            {
+                sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MOD_ID=@Id";
+                    SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, new SqlParameter("@Id",SqlDbType.Int){Value = forumModerator.Id});
+            }
+            else if (forumModerator.MemberId > 0 && forumModerator.ForumId > 0)
+            {
+                sqlStr = "DELETE FROM " + Config.ForumTablePrefix + "MODERATOR WHERE MEMBER_ID=@Id AND FORUM_ID=@ForumId";
+                List<SqlParameter> parms = new List<SqlParameter>
+                {
+                    new SqlParameter("@Id", SqlDbType.Int) {Value = forumModerator.MemberId},
+                    new SqlParameter("@ForumId", SqlDbType.Int) {Value = forumModerator.ForumId}
+                };
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, sqlStr, parms.ToArray());
+                
+            }
         }
 
         public void Dispose()

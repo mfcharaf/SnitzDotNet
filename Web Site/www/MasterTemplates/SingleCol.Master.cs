@@ -29,25 +29,6 @@ namespace SnitzUI.MasterTemplates
 {
     public partial class SingleCol : BaseMasterPage
     {
-        #region Overrides of BaseMasterPage
-
-        public override string PageTimer
-        {
-            get
-            {
-                return TimerLabel.Text;
-            }
-            set
-            {
-                TimerLabel.Text = value;
-            }
-        }
-
-        public override string ForumUrl { get; set; }
-
-        public override string ForumTitle { get; set; }
-        #endregion
-
         public ScriptManager rootScriptManager { get { return MainSM; } }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -71,11 +52,6 @@ namespace SnitzUI.MasterTemplates
                 //lets add the rtl css file
                 rtlCss.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/rtl.css' />";
             }
-            //if (HttpContext.Current.User.Identity.Name == "")
-            //{
-            //    MainMenu.MenuToLoad = Config.ProhibitNewMembers ? SnitzMenu.SiteMapMenus.Restricted : SnitzMenu.SiteMapMenus.Public;
-            //}
-            //else MainMenu.MenuToLoad = Roles.IsUserInRole(HttpContext.Current.User.Identity.Name, "Administrator") ? SnitzMenu.SiteMapMenus.Admin : SnitzMenu.SiteMapMenus.Secure;
 
             homeLink.ToolTip = Config.ForumTitle;
             homeLink.NavigateUrl = Config.ForumUrl;
@@ -84,6 +60,26 @@ namespace SnitzUI.MasterTemplates
             imgGoUp.NavigateUrl = Request.RawUrl + @"#top";
             TimerLabel.Visible = Config.ShowTimer;
         }
+
+        #region Overrides of BaseMasterPage
+
+        public override string PageTimer
+        {
+            get
+            {
+                return TimerLabel.Text;
+            }
+            set
+            {
+                TimerLabel.Text = value;
+            }
+        }
+
+        public override string ForumUrl { get; set; }
+
+        public override string ForumTitle { get; set; }
+        #endregion
+
 
     }
 }

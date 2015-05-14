@@ -60,11 +60,6 @@ public partial class MainMaster : BaseMasterPage
             //lets add the rtl css file
             rtlCss.Text = @"<link rel='stylesheet' type='text/css' runat='server' href='/css/" + Page.Theme + @"/rtl.css' />";
         }
-        //if (HttpContext.Current.User.Identity.Name == "")
-        //{
-        //    MainMenu.MenuToLoad = Config.ProhibitNewMembers ? SnitzMenu.SiteMapMenus.Restricted : SnitzMenu.SiteMapMenus.Public;
-        //}
-        //else MainMenu.MenuToLoad = Roles.IsUserInRole(HttpContext.Current.User.Identity.Name, "Administrator") ? SnitzMenu.SiteMapMenus.Admin : SnitzMenu.SiteMapMenus.Secure;
 
         homeLink.ToolTip = Config.ForumTitle;
         homeLink.NavigateUrl = Config.ForumUrl;

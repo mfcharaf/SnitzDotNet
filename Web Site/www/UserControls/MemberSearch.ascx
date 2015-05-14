@@ -13,12 +13,12 @@
 <asp:Panel ID="searchPnl" runat="server" DefaultButton="btnSearch">
 <div class="SearchFilters">
         <div class="content clearfix">
-            &nbsp;&nbsp;<strong><asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblSearch %>"></asp:Label>:</strong>&nbsp;
+            <strong><asp:Label ID="Label1" runat="server" Text="<%$ Resources:webResources, lblSearch %>"></asp:Label>:</strong>&nbsp;
             <asp:CheckBox ID="cbxUserName" runat="server" Text="<%$ Resources:webResources, lblUsername %>" Checked="True" EnableViewState="False" />&nbsp;
             <asp:CheckBox ID="cbxFirstName" runat="server" Text="<%$ Resources:webResources, lblFirstName %>" EnableViewState="False" />&nbsp;
             <asp:CheckBox ID="cbxLastName" runat="server" Text="<%$ Resources:webResources, lblLastName %>" EnableViewState="False" />&nbsp;
             <asp:CheckBox ID="cbxCountry" runat="server" Text="<%$ Resources:webResources, lblCountry %>" EnableViewState="False" />&nbsp;
-            <asp:CheckBox ID="cbxEmail" runat="server" Text="<%$ Resources:webResources, lblEmail %>" Visible="False" EnableViewState="False" />&nbsp;&nbsp; 
+            <asp:CheckBox ID="cbxEmail" runat="server" Text="<%$ Resources:webResources, lblEmail %>" Visible="False" EnableViewState="False" /><br/> 
             <strong><asp:Label ID="Label2" runat="server" Text="<%$ Resources:webResources, lblFor %>" EnableViewState="False"></asp:Label>:</strong>&nbsp;<asp:TextBox ID="tbxSearchFor" runat="server" meta:resourcekey="tbxSearchForResource1"></asp:TextBox>
             &nbsp;<asp:LinkButton ID="btnSearch" Text="<%$ Resources:webResources, btnSearch %>" runat="server" AlternateText="<%$ Resources:webResources, btnSearch %>" EnableViewState="False" OnClick="btnSearch_Click" style="float:right;"/>
             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbxSearchFor"

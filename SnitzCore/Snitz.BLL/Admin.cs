@@ -112,5 +112,11 @@ namespace Snitz.BLL
             _pendingmemberCount = dal.GetPendingMemberCount();
             return pending;
         }
+
+        public static Dictionary<int, Ranking> GetRankings()
+        {
+            IAdmin dal = Factory<IAdmin>.Create("AdminFunctions");
+            return dal.GetRankings();
+        }
     }
 }

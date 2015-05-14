@@ -58,6 +58,15 @@ namespace SnitzUI {
         protected global::SnitzUI.UserControls.PagePostButtons pbTop;
         
         /// <summary>
+        /// pnlTopic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlTopic;
+        
+        /// <summary>
         /// TopicView control.
         /// </summary>
         /// <remarks>
@@ -209,17 +218,5 @@ namespace SnitzUI {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::SnitzUI.UserControls.MiniWebLog MinWeblog;
-        
-        /// <summary>
-        /// Master property.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated property.
-        /// </remarks>
-        public new MainMaster Master {
-            get {
-                return ((MainMaster)(base.Master));
-            }
-        }
     }
 }

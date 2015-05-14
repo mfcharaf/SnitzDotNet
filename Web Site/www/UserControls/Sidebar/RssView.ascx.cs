@@ -21,6 +21,7 @@
 
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace SnitzUI.UserControls
 {
@@ -51,14 +52,23 @@ namespace SnitzUI.UserControls
                     return;
                 }
                 DataBind();
-                MyRSSBlog.DataSource = Doc.SelectNodes("/rss/channel/item[position()<=4]");
-                MyRSSBlog.DataBind();
+                var data = Doc.SelectNodes("/rss/channel/item[position()<=4]");
+                RSSViewer.DataSource = data;
+                RSSViewer.DataBind();
             }
             catch (Exception)
             {
                 //swallow any errors
             }
 
+        }
+
+        protected void CheckData(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                var data = e.Item.DataItem;
+            }
         }
     }
 }

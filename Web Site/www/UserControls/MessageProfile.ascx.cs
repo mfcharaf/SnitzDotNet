@@ -67,22 +67,21 @@ public partial class MessageProfile : UserControl
 
     private void SetProperties()
     {
-        PageBase page = (PageBase)Page;
-
         if (Config.ShowRankStars || Config.ShowRankTitle)
         {
             Literal litRank = (Literal)FindControl("Rank");
             if (litRank != null)
             {
+                string title = "";
+                RankInfo rInf = new RankInfo(_author.Username,ref title,_author.PostCount,SnitzCachedLists.GetRankings());
                 if (Config.ShowRankTitle)
-                    litRank.Text = _author.Rank.Title + @"<br/>";
+                    litRank.Text = title + @"<br/>";
                 if (Config.ShowRankStars)
                 {
-                    litRank.Text += _author.Rank.Stars + @"<br/>";
+                    litRank.Text += rInf.Stars;
                 }
             }
         }
-
 
         ProfileCommon prof = ProfileCommon.GetUserProfile(_author.Username);
         if(prof.Gravatar)
@@ -95,14 +94,17 @@ public partial class MessageProfile : UserControl
 
         }else
         {
-            
             SnitzMembershipUser mu = (SnitzMembershipUser)Membership.GetUser(_author.Username);
             Literal avatar = new Literal { Text = _author.AvatarImg };
-            if (mu != null && mu.IsActive)
+            if (mu != null && mu.IsActive && !(Config.AnonMembers.Contains(mu.UserName)))
                 avatar.Text = avatar.Text.Replace("'avatar'", "'avatar online'");
             phAvatar.Controls.Add(avatar);
         }
-        country.Text = _author.Country;
+        country.Text = _author.Country.Trim();
+        if (!String.IsNullOrEmpty(country.Text))
+        {
+            country.Text += "<br/>";
+        }
         posts.Text = String.Format("{0} {1}", Common.TranslateNumerals(_author.PostCount), webResources.lblPosts);
 
         hProf.Visible = _loggedonuser;

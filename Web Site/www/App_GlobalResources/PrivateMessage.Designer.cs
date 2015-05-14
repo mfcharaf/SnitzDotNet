@@ -9,9 +9,6 @@
 //------------------------------------------------------------------------------
 
 namespace Resources {
-    using System;
-    
-    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -304,7 +301,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check for new messages.
+        ///   Looks up a localized string similar to Send/Receive messages.
         /// </summary>
         internal static string PmSendReceive {
             get {

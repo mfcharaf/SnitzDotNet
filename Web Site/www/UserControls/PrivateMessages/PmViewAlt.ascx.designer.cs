@@ -211,6 +211,15 @@ namespace SnitzUI.UserControls.PrivateMessages {
         protected global::System.Web.UI.WebControls.TextBox newMessage;
         
         /// <summary>
+        /// pmSend control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton pmSend;
+        
+        /// <summary>
         /// PmOptions control.
         /// </summary>
         /// <remarks>

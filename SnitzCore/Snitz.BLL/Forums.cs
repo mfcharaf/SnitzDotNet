@@ -153,13 +153,14 @@ namespace Snitz.BLL
             Admin.UpdateForumCounts();
         }
 
-        public static void AddForumModerators(int forumid, string[] moderators)
+        public static void AddForumModerators(int forumid, string[] moderators, string[] remove)
         {
             //todo: needs testing
             IForumModerator dal = Factory<IForumModerator>.Create("ForumModerator");
 
             //get rid of any duplicates
             string[] mods = moderators.Distinct().ToArray();
+            string[] removemods = remove.Distinct().ToArray();
 
             foreach (string moderator in mods)
             {
@@ -172,6 +173,19 @@ namespace Snitz.BLL
                                                  MemberId = modid
                                              };
                     dal.Add(mod);
+                }
+            }
+            foreach (string removemod in removemods)
+            {
+                int modid = Convert.ToInt32(removemod);
+                if (dal.IsUserForumModerator(modid, forumid))
+                {
+                    ForumModeratorInfo mod = new ForumModeratorInfo
+                    {
+                        ForumId = forumid,
+                        MemberId = modid
+                    };
+                    dal.Delete(mod);
                 }
             }
         }
@@ -241,10 +255,17 @@ namespace Snitz.BLL
             roleList.AddRange(SnitzCachedLists.UserRoles().Select(role => role.Key));
 
             IMember dal = Factory<IMember>.Create("Member");
-            return new List<int>(dal.GetAllowedForumIds(member, roleList,isadmin));
+            return new List<int>(dal.GetAllowedForumIds(roleList,isadmin));
 
         }
+        public static List<int> ViewableForums()
+        {
+            List<int> roleList = new List<int> { 0,1 };
 
+            IMember dal = Factory<IMember>.Create("Member");
+            return new List<int>(dal.GetAllowedForumIds(roleList, false));
+
+        }
         public static List<KeyValuePair<int,string>> AllowedForumsList(MemberInfo member)
         {
             List<int> roleList = new List<int> { 0 };

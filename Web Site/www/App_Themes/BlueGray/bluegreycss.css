@@ -1,11 +1,15 @@
-﻿html{font-family:Tahoma,Arial,Helvetica,sans-serif;font-size:.9em}
-body{background-color:#d2d2d2;background:url(images/bg-pattern.gif);color:#4B4B4B;margin:0;padding:0;line-height:1.5em}
+﻿html{height:100%}
+body,form{margin:0;padding:0;height:100%;font-family:Tahoma,Arial,Helvetica,sans-serif;font-size:100%;line-height:1.1em;color:#4B4B4B;background-color:#d2d2d2;background:url(images/bg-pattern.gif)}
+#maincontainer{height:auto;min-height:100%}
+#mainheader{padding:0}
+#mainbody{padding:10px;padding-bottom:80px}
+#mainfooter{clear:both;position:relative;z-index:10;height:80px;margin-top:-80px}
 table,tr,td,th{border-collapse:collapse}
 #aspnetForm{width:100%;margin:0}
 #LoginDIV{float:left;width:30%;margin-left:-30%;background-color:#fff}
-#LogoDIV{width:25%;margin-left:0;float:left;background-color:#fff}
+#LogoDIV{width:25%;margin-left:0;background-color:#fff}
 #TitleDIV{margin:auto;margin-top:15px;float:right;vertical-align:middle;text-align:center;background-color:white}
-#MenuDIV{display:block;background-color:#ccc;padding-top:1px;margin:1px 0 1px 0;width:auto;height:24px;background-image:url(/images/nav-bg.gif);border-top:1px solid #999;border-bottom:1px solid silver;clear:both}
+#MenuDIV{display:block;background-color:#ccc;padding-top:1px;margin:1px 0 1px 0;width:auto;border-top:1px solid #999;border-bottom:1px solid silver;clear:both}
 #mainDIV{margin:auto;width:98%}
 #breadcrumbDIV{line-height:22px;height:22px;margin:1px;background-color:silver;border:1px solid #777;border-radius:5px;padding:0}
 .breadcrumb span{line-height:22px;vertical-align:top}
@@ -35,6 +39,7 @@ table,tr,td,th{border-collapse:collapse}
 .nowrap{white-space:nowrap}
 .daydetail{border:1px solid #0FA1B8;border-top:0;width:35%;float:left}
 b{font-size:105%}
+img{border:0}
 fieldset{padding:5px;font-size:1.1em;border:1px solid #0FA1B8;margin:3px}
 legend{color:#0FA1B8}
 hr{height:0;border:dotted #c4d1da 0;border-top-width:1px}
@@ -44,9 +49,13 @@ h3{font-weight:bold;font-size:.9em;padding-left:4px;text-decoration:none;line-he
 p{font-size:.9em;padding:0 4px 0 4px}
 input,textarea,select{color:#000;border-color:#000;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px}
 input{text-indent:2px}
+.ddTopicSince{max-width:250px}
 a:link,a:active{color:#0FA1B8;text-decoration:none}
 a:visited{color:Gray;text-decoration:none}
 a:hover{text-decoration:underline;color:#069}
+.smallText a{color:#069}
+a.authorLink{color:#069}
+a.lastpostlink{color:#069}
 a.forumlink{text-decoration:none}
 a.forumlink:visited{color:#58DEF1}
 a.forumlink:hover{text-decoration:underline}
@@ -55,37 +64,39 @@ a.active:visited{color:#FFF}
 .tableheader a{color:#FFF;font-weight:bold;text-decoration:none}
 #contentfooterDIV .statsPanelHeader a{color:#FFF}
 #contentfooterDIV .statsPanelHeader a:hover{text-decoration:none;background:0}
-span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px}
+span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;border-radius:4px;background-color:white}
 .allReadButton{background:url(images/buttons/book.png) no-repeat;cursor:pointer;width:15px;height:15px;border:0}
 .AspNet-Login{margin:auto}
 img.captchaImage{border:1px solid #808080;margin:2px}
 .breadcrumb{height:auto;width:auto;background-color:transparent}
 .breadcrumb a{color:#0FA1B8;text-decoration:none}
+span.PageTitle{height:100%;vertical-align:middle}
 .PageTitle{font-weight:bold;color:White;float:left;margin-left:5px;font-size:1em;margin-top:8px;text-decoration:none;line-height:120%}
 .smallText{font-Size:.8em}
 .row td{background-color:#fff;border-bottom:1px solid #0FA1B8;border-right:1px solid #0FA1B8;vertical-align:top;overflow:hidden}
 .altrow td{background-color:#ECFFFF;border-bottom:1px solid #0FA1B8;border-right:1px solid #0FA1B8;vertical-align:top;overflow:hidden}
 .row td.CatHeaderRow{background-color:#CCC;border:0}
 .row td.ForumHeaderRow{background-color:#c8c8c8;color:silver;border:0}
-.row td.iconCol,.altrow td.iconCol{max-width:20px;width:20px;vertical-align:top}
-.row td.buttonCol,.altrow td.buttonCol{min-width:110px;width:110px;max-width:110px;vertical-align:top}
-.row td.subjectCol,.altrow td.subjectCol{overflow:hidden;max-width:300px;width:300px}
+.row td.iconCol,.altrow td.iconCol{vertical-align:top}
+.row td.buttonCol,.altrow td.buttonCol{vertical-align:top}
+.row td.subjectCol,.altrow td.subjectCol{overflow:hidden}
 .emptyrow{text-align:center}
-.category{background-color:#0FA1B8;height:24px;background-image:url(images/cat-bar.gif)}
-tr.category{background-image:url(images/cat-bar.gif)}
+.category{background-color:#0FA1B8;min-height:24px;background-image:url(images/cat-bar.gif);background-size:auto 100%}
 td.category,.row td.categorylink{background-color:#0FA1B8;height:24px;padding-top:4px;background-image:url(images/cat-bar.gif)}
-.categorylink,th.categorylink,td.categorylink{color:#fff;font-size:1.2em;font-weight:bold}
-.CategoryExpanded{background-image:url(/images/collapse_blue.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
-.CategoryCollapsed{background-image:url(/images/expand_blue.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
+.categorylink,th.categorylink,td.categorylink{color:#fff;font-weight:bold}
+.CategoryExpanded{background-image:url(/images/collapse.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
+.CategoryCollapsed{background-image:url(/images/expand.png);background-position:center;background-repeat:no-repeat;background-color:transparent}
 .tableheader,th.tableheader,.tableheader th,td.tableheader{color:#333;font-weight:normal;background-color:#808080;font-size:smaller}
-th.iconCol{max-width:26px;width:26px}
+th.iconCol{width:40px;text-align:left}
 th.forumCol{width:auto}
 th.subjCol{width:auto}
 th.authorCol{max-width:100px;width:60px}
-th.countCol{max-width:60px;width:45px}
+th.countCol{text-align:center;max-width:60px;width:45px}
+td.countCol{text-align:center;vertical-align:middle}
+td.authorCol{text-align:center}
 th.lastpostCol{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;width:140px}
-th.buttonCol{max-width:50px;width:48px}
-.cattitle{font-weight:bold;color:#FFF}
+th.buttonCol{max-width:76px;width:62px}
+.cattitle{font-size:.8em;color:#FFF}
 .FooterTable{padding:5px 10px 0 10px;font-size:10px;color:#333;border-top:1px solid #CCC;border-bottom:1px solid #5C5C5C;background-color:silver}
 .FooterTable table{table-layout:auto}
 .poweredText{color:Black;font-size:.6em}
@@ -116,8 +127,7 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8}
 .topicPrev a{font-size:small;text-decoration:none;color:White}
 .topicNext a{font-size:small;text-decoration:none;color:White}
 #replyHeader{width:100%;text-align:right;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px}
-.TopicDiv{width:100%;border:1px solid #0FA1B8;background-color:White;color:Navy;overflow:hidden}
-.TopicSubject{width:100%;border:1px solid #0FA1B8;background-color:#0FA1B8;color:White;overflow:hidden}
+.TopicSubject{width:100%;border:1px solid #777;background-color:#777;color:White;overflow:hidden}
 .topictitle{margin:8px;font-weight:bold;line-height:1.3em}
 .usertitle{font-weight:bold;color:#0FA1B8;line-height:1.2em}
 .ReplyDiv{width:100%;border:1px solid #0FA1B8;background-color:#efefef;color:Teal;overflow:hidden!important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left}
@@ -130,6 +140,8 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8}
 .mContent{min-height:120px;height:auto!important;height:120px;width:99%!important;width:95%;padding:4px}
 .msgIcons{padding:1px;display:inline;vertical-align:top;width:16px;height:16px}
 .buttonbar{color:white;height:20px;border-bottom:1px solid #999;width:100%;background-color:#ccc;padding-top:2px}
+.pmbuttonbar{height:20px;border-bottom:1px solid #999;width:100%;padding-top:2px}
+.pmtitle{color:#000}
 .buttonbarImg span{height:auto;display:inline;vertical-align:bottom}
 .buttonbarImg{height:auto;display:inline;vertical-align:bottom;float:right}
 .buttonbarTxt{float:left;vertical-align:text-top}
@@ -137,19 +149,25 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8}
 .TopIcon{padding:1px;float:right}
 .TopIcon img{width:16px}
 .editedDIV{color:#903;font-size:.8em}
-.sigDIV{position:absolute;bottom:0;height:auto;margin-bottom:3px;width:100%;vertical-align:baseline;font-size:smaller}
+.sigDIV{bottom:0;height:auto;margin-bottom:3px;width:100%;vertical-align:baseline;font-size:smaller}
 .sigDIV{font-size:x-small}
 .modalPopup{background-color:#ffd;border-width:1px;border-style:solid;border-color:Gray;padding:5px;width:350px;height:auto}
 .avatar{border:1px solid black;width:80px;height:80px}
-.usrlabel{width:160px}
-blockquote.quoteMessage{font-size:smaller;font-style:italic;padding:8px;background-color:#f4f4f4;border-top:1px solid #efefef;border-bottom:1px solid silver;margin:5px;background-image:url(images/smallquote_lt.png);background-position:top left;background-repeat:no-repeat;text-indent:23px}
-blockquote.quoteMessage span{display:block;background-image:url(images/smallquote_rt.png);background-repeat:no-repeat;background-position:bottom right}
-.codebox{position:relative;display:block;margin:5px 20px 5px 20px;padding-top:0;padding-bottom:1px;border:1px solid #0FA1B8;line-height:1em;font:.8em Monospace;color:black;overflow:hidden;width:80%!important;min-height:100px;min-width:200px;max-height:250px;height:auto!important;height:100px;background-color:#fff}
+.avatarsmall{border:1px solid black;width:36px;height:36px;z-index:-1}
+img.avatar,img.avatarsmall{opacity:.4}
+img.online{opacity:1}
+.icon-overlay{position:relative;left:20px;top:-15px;z-index:10}
+.usrlabel{width:100px;display:inline-block;font-weight:bold;line-height:1em}
+blockquote.quoteMessage{font-size:smaller;margin:1.5em 1em;padding:.5em 1em;background-color:#f4f4f4}
+blockquote.quoteMessage span{display:block;font-style:normal}
+blockquote.quoteMessage em:before{content:url(images/smallquote_lt.png)}
+blockquote.quoteMessage span:last-child:after{content:url(images/smallquote_rt.png);display:block;float:right}
+.codebox{position:relative;display:block;margin:5px 20px 5px 20px;padding-top:0;padding-bottom:1px;border:1px solid #0FA1B8;line-height:1em;font:.8em Monospace;color:black;overflow:auto;width:90%!important;min-height:100px;min-width:200px;max-height:250px;height:auto!important;height:100px;background-color:#fff}
 .codebox a{color:#fff}
 .stickytable div{max-width:400px}
 .codehead{margin:0;margin-bottom:0;padding-left:8px;padding-bottom:0;border-bottom:1px solid #808080;font-size:1.1em;line-height:1.2em;font-weight:normal;color:white;background-color:#CCC;position:relative}
-.scrollcode,pre.scrollcode{position:relative;display:block;margin:0;color:black;overflow:auto;min-width:500px;width:auto!important;width:700px;height:100%;background-color:#fff;white-space:pre}
-.scrollcode ol{background:#E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;overflow:auto;margin:0;padding:.7em 0 .7em 2.8em;color:#fff}
+.scrollcode,pre.scrollcode{position:relative;display:block;margin:0;color:black;min-width:500px;width:auto!important;width:700px;height:100%;background-color:#fff;white-space:pre}
+.scrollcode ol{background:#E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;margin:0;padding:.7em 0 .7em 2.8em;color:#fff}
 .scrollcode ol li{background:#fff;padding-left:4px;width:auto}
 .scrollcode ol code{color:#036}
 .regBox{width:640px;position:relative;margin:auto;border:1px solid #0FA1B8;background-color:White}
@@ -183,7 +201,7 @@ span.moderation{font-weight:bolder;color:Red}
 .Poll_DisplayText{font-weight:normal}
 .Poll_TotalVotes{font-style:italic}
 .Poll_TakePoll,.Poll_PollResults{border:1px dashed #BEF2FA;padding:5px;margin-top:5px;margin-left:10px}
-.PollBox{background-color:white;border:1px solid #0FA1B8}
+.PollBox{background-color:white}
 .seperator{line-height:.4em}
 .sideBox{background-color:white;border:1px solid #0FA1B8;table-layout:fixed;width:100%;border-top-style:none;line-height:1em}
 .sideBox h3{padding-top:6px;padding-bottom:3px}
@@ -206,6 +224,8 @@ textarea.pmMsgArea{border:1px solid #000;width:98%}
 .pmoptions fieldset{font-size:smaller}
 .pm-footer{margin-top:2px;height:22px;background-color:silver;vertical-align:middle;padding:2px;border-bottom-left-radius:3px;border-bottom-right-radius:3px}
 .pm-message-header{background-color:silver;padding:3px}
+.hidden{display:none!important}
+.memberModalPopup{margin:0 auto;width:360px}
 .ovHidden{overflow:hidden}
 .shadow{-moz-box-shadow:3px 3px 4px #000;-webkit-box-shadow:3px 3px 4px #000;box-shadow:3px 3px 4px #000}
 a.Snitzbutton{background:transparent url(images/buttons/button_right.png) no-repeat scroll top right;display:block;float:left;height:30px;margin-right:6px;padding-right:20px;text-decoration:none;color:#000;font-size:12px;font-weight:bold}
@@ -224,7 +244,7 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 .snitzMenu ul.AspNet-Menu li a,.snitzMenu ul.AspNet-Menu li span{color:black;padding:4px 4px 4px 6px;border-bottom:0}
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf span{background-image:none}
 .snitzMenu ul.AspNet-Menu li:hover,.snitzMenu ul.AspNet-Menu li.AspNet-Menu-Hover{background:transparent}
-.snitzMenu ul.AspNet-Menu li a:hover,.snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover{color:White;background:transparent url(images/menu-expand.gif) right center no-repeat}
+.snitzMenu ul.AspNet-Menu li a:hover,.snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover{color:dimgray;background:transparent url(images/menu-expand.gif) right center no-repeat}
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a:hover{background-image:none}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul{width:10.5em;left:0;top:100%}
 .snitzMenu .AspNet-Menu-Horizontal ul.AspNet-Menu ul ul{top:-0.3em}
@@ -257,6 +277,7 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 .poll-content{min-height:40px;border:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px}
 .Poll_PollResults table{width:99%}
 .popup-button-panel{margin:5px}
+.selected{background-color:#069}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
 #__asptrace{position:relative}
 #popup_container{font-family:Arial,sans-serif;font-size:12px;min-width:300px;max-width:600px;background:#FFF;border:solid 5px #999;color:#000;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px}
@@ -280,5 +301,19 @@ a.Snitzbutton:hover span{text-decoration:none;color:White}
 .mainModalContent{background-color:#FFF;margin:0}
 .modalBackground{background-color:#666;opacity:.8}
 .modalBackgroundDark{background-color:#000}
-#header,#upheader,#brwsheader{width:100%;background:#0FA1B8;height:26px;vertical-align:middle;background-image:url(/images/top-bar.gif)}
+#header,#upheader,#brwsheader{width:100%;background:#0FA1B8;vertical-align:middle;background-image:url(/images/top-bar.gif)}
 #header a,#upheader a,#brwsheader a{color:White;font-weight:bolder}
+.login{position:relative;margin:0 auto;padding:20px 20px 20px;width:340px;background:white;border-radius:3px;-webkit-box-shadow:0 0 200px rgba(255,255,255,0.5),0 1px 2px rgba(0,0,0,0.3);box-shadow:0 0 200px rgba(255,255,255,0.5),0 1px 2px rgba(0,0,0,0.3)}
+.login:before{content:'';position:absolute;top:-8px;right:-8px;bottom:-8px;left:-8px;z-index:-1;background:rgba(0,0,0,0.08);border-radius:4px}
+.login h1{margin:-20px -20px 21px;line-height:40px;font-size:15px;font-weight:bold;color:white;text-align:center;text-shadow:0 1px #555;background:#0FA1B8;border-bottom:1px solid #cfcfcf;border-radius:3px 3px 0 0;background-image:-webkit-linear-gradient(top,#ffd,#eef2f5);background-image:-moz-linear-gradient(top,#ffd,#eef2f5);background-image:-o-linear-gradient(top,#ffd,#eef2f5);background-image:linear-gradient(to bottom,#ffd,#eef2f5);-webkit-box-shadow:0 1px whitesmoke;box-shadow:0 1px whitesmoke}
+.login p{margin:20px 0 0}
+.login p:first-child{margin-top:0}
+.login input[type=text],.login input[type=password]{width:278px}
+.login p.remember_me{float:left;line-height:31px}
+.login p.remember_me label{font-size:12px;color:#777;cursor:pointer}
+.login p.remember_me input{position:relative;bottom:1px;margin-right:4px;vertical-align:middle}
+.login-help{margin:20px 0;color:white;text-align:center;text-shadow:0 1px #2a85a1}
+.login-help a{color:#cce7fa;text-decoration:none}
+.login-help a:hover{text-decoration:underline}
+.login-error p{color:red}
+:-moz-placeholder{color:#c9c9c9!important;font-size:13px}

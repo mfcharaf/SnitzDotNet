@@ -28,7 +28,11 @@ namespace Snitz.SQLServerDAL
             ",M_MARSTATUS,M_FIRSTNAME,M_LASTNAME,M_OCCUPATION,M_SEX,M_HOBBIES,M_LNEWS,M_QUOTE,M_BIO,M_LINK1,M_LINK2,M_CITY,M_STATE,M_DAYLIGHTSAVING,M_TIMEZONE ";
 
         private string FROM = " FROM " + Config.MemberTablePrefix + "MEMBERS M ";
-        private const string WHERE_NAME = " WHERE M.M_NAME = @Username ";
+
+        private const string WHERE_USERNAME = " WHERE M.M_NAME = @Username ";
+        private const string WHERE_FIRSTNAME = " WHERE M.M_FIRSTNAME = @Lastname ";
+        private const string WHERE_LASTNAME = " WHERE M.M_LASTNAME = @Lastname ";
+        private const string WHERE_EMAIL = " WHERE M.M_EMAIL = @Email ";
         private const string WHERE_ID = " WHERE M.MEMBER_ID = @Id ";
 
         public MemberInfo GetById(int id)
@@ -51,7 +55,7 @@ namespace Snitz.SQLServerDAL
             List<MemberInfo> members = new List<MemberInfo>();
             SqlParameter parm = new SqlParameter("@Username", SqlDbType.VarChar) { Value = name };
 
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, MEMBER_SELECT + FROM + WHERE_NAME, parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, MEMBER_SELECT + FROM + WHERE_USERNAME, parm))
             {
                 while (rdr.Read())
                 {
@@ -491,13 +495,13 @@ namespace Snitz.SQLServerDAL
             return (int)SqlHelper.ExecuteScalar(SqlHelper.ConnString, CommandType.Text, strSql + whereclause, parms.ToArray());
         }
 
-        public IEnumerable<int> GetAllowedForumIds(MemberInfo member, List<int> roleList, bool isadmin)
+        public IEnumerable<int> GetAllowedForumIds(List<int> roleList, bool isadmin)
         {
             List<int> forums = new List<int>();
             //return (from role in this.ForumRoles where role.Forum_id == forumid select role.Role_Id).ToList();
             string SqlStr = "SELECT FORUM_ID FROM " + Config.ForumTablePrefix + "FORUM";
 
-            //Execute a query to read the products
+            //Execute a query to read the forums
             using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, SqlStr, null))
             {
                 while (rdr.Read())
@@ -661,8 +665,8 @@ namespace Snitz.SQLServerDAL
 
             SELECT_OVER = SELECT_OVER.Replace("[WHERE]", whereclause);
             List<MemberInfo> members = new List<MemberInfo>(); 
-            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord * maxRecords }; 
-            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = startRecord * maxRecords + maxRecords };
+            SqlParameter start = new SqlParameter("@Start", SqlDbType.Int) { Value = startRecord + 1 }; 
+            SqlParameter recs = new SqlParameter("@MaxRows", SqlDbType.Int) { Value = startRecord  + maxRecords };
             parms.Add(start);
             parms.Add(recs);
 
@@ -681,7 +685,7 @@ namespace Snitz.SQLServerDAL
             MemberInfo member = null;
             SqlParameter parm = new SqlParameter("@Email", SqlDbType.VarChar) { Value = email };
 
-            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, MEMBER_SELECT + FROM + " WHERE M.M_EMAIL = @Email ", parm))
+            using (SqlDataReader rdr = SqlHelper.ExecuteReader(SqlHelper.ConnString, CommandType.Text, MEMBER_SELECT + FROM + WHERE_EMAIL, parm))
             {
                 while (rdr.Read())
                 {

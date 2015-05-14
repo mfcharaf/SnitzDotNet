@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Resources;
 using Snitz.Entities;
 using SnitzCommon;
 using SnitzConfig;
@@ -17,25 +18,31 @@ namespace Snitz.BLL
         ///// <param name="authenticated">Is the user logged in</param>
         ///// <param name="timediff">Users time zone difference</param>
         ///// <returns></returns>
-        //public static string TimeAgoTag(DateTime? date, bool authenticated, double timediff)
-        //{
-
-        //    if (date == DateTime.MinValue || date == null)
-        //        return "";
-        //    string timeago = string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>", date.Value.ToISO8601Date(authenticated, timediff), date.Value.ToForumDateDisplay(" ", true, authenticated, timediff));
-        //    return timeago;
-        //}
         public static string TimeAgoTag(DateTime? date, bool authenticated, MemberInfo member)
         {
             if (date == DateTime.MinValue || date == null)
                 return "";
 
-            return string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>", 
-                date.Value.ToISO8601Date(authenticated, member), 
+            return string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>",
+                date.Value.ToISO8601Date(authenticated, member),
                 date.Value.ToForumDateDisplay(" ", true, authenticated, member));
+        }
+        ///// <summary>
+        ///// Converts a DateTime into a freindly TimeAgo tag
+        ///// </summary>
+        ///// <param name="date">Date to display</param>
+        ///// <param name="authenticated">Is the user logged in</param>
+        ///// <param name="timediff">Users time zone difference</param>
+        ///// <returns></returns>
+        public static string TimeAgoTag(DateTime? date, bool authenticated, MemberInfo member, string tooltip)
+        {
+            if (date == DateTime.MinValue || date == null)
+                return "";
+
+            return string.Format("<abbr class='timeago' title='{0}' dir='inherit'>{1}</abbr>",
+                date.Value.ToISO8601Date(authenticated, member), tooltip);
 
         }
-
         /// <summary>
         /// Formats a DateTime value into the correct forum date + Time display format
         /// </summary>

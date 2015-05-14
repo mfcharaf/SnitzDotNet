@@ -345,6 +345,24 @@ public partial class Admin_features {
     protected global::System.Web.UI.WebControls.Panel Panel5;
     
     /// <summary>
+    /// Label3 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label3;
+    
+    /// <summary>
+    /// rblTopicAvatar control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::SnitzUI.Admin.AdminRadioButton rblTopicAvatar;
+    
+    /// <summary>
     /// lblEditedBy control.
     /// </summary>
     /// <remarks>
@@ -604,6 +622,24 @@ public partial class Admin_features {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Panel Panel7;
+    
+    /// <summary>
+    /// lblAnon control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblAnon;
+    
+    /// <summary>
+    /// txtAnonMembers control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtAnonMembers;
     
     /// <summary>
     /// lblTimer control.

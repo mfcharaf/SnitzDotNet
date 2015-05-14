@@ -129,22 +129,22 @@
 
 /* BBcode CSS */
 .markItUp .markItUpButton1 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/fonts.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/fonts.png);
 }
 .markItUp .markItUpButton2 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/bold.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/bold.png);
 }
 .markItUp .markItUpButton3 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/italic.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/italic.png);
 }
 .markItUp .markItUpButton4 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/underline.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/underline.png);
 }
 .markItUp .markItUpButton5 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/strike.gif);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/strike.gif);
 }
 .markItUp .markItUpButton6 a {
-	background-image:url(/App_themes/BlueGray/images/editor/colors.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/colors.png);
 }
 	.markItUp .colors ul {
 		width:108px;
@@ -205,77 +205,77 @@
 		background:pink;
 	}
 .markItUp .markItUpButton7 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/align_left.gif);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/align_left.gif);
 }
 .markItUp .markItUpButton8 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/align_center.gif);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/align_center.gif);
 }
 .markItUp .markItUpButton9 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/align_right.gif);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/align_right.gif);
 }
 .markItUp .markItUpButton11 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/list-bullet.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/list-bullet.png);
 }
 .markItUp .markItUpButton12 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/list-numeric.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/list-numeric.png);
 }
 .markItUp .markItUpButton13 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/list-item.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/list-item.png);
 }
 
 .markItUp .markItUpButton14 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/picture.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/picture.png);
 }
 .markItUp .upload a
 {
-    background-image:url(/App_themes/BlueGray/images/editor/pictureUp.png);
+    background-image:url(/App_themes/ClassicSnitz/images/editor/pictureUp.png);
 }
 .markItUp .browse a
 {
-    background-image:url(/App_themes/BlueGray/images/editor/pictureBrowse.png);
+    background-image:url(/App_themes/ClassicSnitz/images/editor/pictureBrowse.png);
 }
 .markItUp .urllink a	{
-	background-image:url(/App_themes/BlueGray/images/editor/link.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/link.png);
 }
 .markItUp .emaillink a	{
-	background-image:url(/App_themes/BlueGray/images/editor/email.gif);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/email.gif);
 }
 
 
 .markItUp .markItUpButton20 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/quotes.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/quotes.png);
 }
 .markItUp .markItUpButton21 a	{
-	background-image:url(/App_themes/BlueGray/images/editor/code.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/code.png);
 }
 .markItUp .markItUpButton22 a {
-	background-image:url(/App_themes/BlueGray/images/editor/table.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/table.png);
 }
 
 .markItUp .markItUpButton22-1 a {
-	background-image:url(/App_themes/BlueGray/images/editor/table-row.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/table-row.png);
 }
 .markItUp .markItUpButton22-2 a {
-	background-image:url(/App_themes/BlueGray/images/editor/table-col.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/table-col.png);
 }	
 .markItUp .youtube a
 {
-    background-image:url(/App_themes/BlueGray/images/editor/youtube.png);
+    background-image:url(/App_themes/ClassicSnitz/images/editor/youtube.png);
 }
 .markItUp .textdir a
 {
-    background-image:url(/App_themes/BlueGray/images/editor/textdir.png);
+    background-image:url(/App_themes/ClassicSnitz/images/editor/textdir.png);
 }
 .markItUp .clean a {
-	background-image:url(/App_themes/BlueGray/images/editor/clean.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/clean.png);
 }
 .markItUp .preview a {
-	background-image:url(/App_themes/BlueGray/images/editor/preview.png);
+	background-image:url(/App_themes/ClassicSnitz/images/editor/preview.png);
 }
 
 .markItUp .spellcheck a         
 {
-    background-image:url(/App_themes/BlueGray/images/editor/spellcheck.png);
+    background-image:url(/App_themes/ClassicSnitz/images/editor/spellcheck.png);
     }
     
 /* spellcheck */
@@ -286,7 +286,7 @@
 	z-index: 9999;
 	overflow: auto;
 	padding: 0px 9px 9px 0px;
-	background: transparent url(/App_themes/BlueGray/images/editor/spellchecker_shadow.png) no-repeat scroll right bottom;
+	background: transparent url(/App_themes/ClassicSnitz/images/editor/spellchecker_shadow.png) no-repeat scroll right bottom;
 	font: normal 13px arial;
 }
 #spellcheck-suggestbox em {
@@ -335,13 +335,12 @@
 #spellcheck-word-highlight {
 	color: #d70303;
 	text-decoration: none;
-	background: url(/App_themes/BlueGray/images/editor/spellchecker_bg.gif) repeat-x 100% 100%;
+	background: url(/App_themes/ClassicSnitz/images/editor/spellchecker_bg.gif) repeat-x 100% 100%;
 	cursor: pointer;
 }
 #spellcheck-badwords {
 	margin-bottom: 2em;
 	margin-top: -0.5em;
-	font-size: 12px;
 	border: 1px solid #bbb;
 	padding: 4px 6px;
 }

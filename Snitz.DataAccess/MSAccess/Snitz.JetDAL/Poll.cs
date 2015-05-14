@@ -214,7 +214,8 @@ namespace Snitz.OLEDbDAL
             {
                 choices.AppendFormat("INSERT INTO {0}POLLANSWERS (PollID,DisplayText,SortOrder) VALUES (@PollId,'{1}',{2})",Config.ForumTablePrefix, choice.DisplayText, choice.Order);
             }
-            SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, choices.ToString(), new OleDbParameter("@PollId", OleDbType.Numeric) { Value = pollid });
+            if (poll.Choices.Count > 0)
+                SqlHelper.ExecuteNonQuery(SqlHelper.ConnString, CommandType.Text, choices.ToString(), new OleDbParameter("@PollId", OleDbType.Numeric) { Value = pollid });
 
             return pollid;
         }

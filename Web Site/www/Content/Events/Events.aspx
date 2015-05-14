@@ -3,7 +3,6 @@
 <%@ Register Src="~/UserControls/Events/EventCalendar.ascx" TagName="EventCalendar" TagPrefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="CPHead" runat="server">
-<link rel="stylesheet" type="text/css" runat="server" id="eventCSS" href="" />
 <script type="text/javascript">
 
     function replaceDates() {
@@ -77,13 +76,14 @@
             <asp:DropDownList ID="ddlRecurr" runat="server" Enabled="false">
                 <asp:ListItem Value="0">[Not Recurring]</asp:ListItem>
                 <asp:ListItem Value="1">Every day</asp:ListItem>
-                <asp:ListItem Value="2">Every other day</asp:ListItem>
-                <asp:ListItem Value="3">Mon - Fri</asp:ListItem>
-                <asp:ListItem Value="4">Sat & Sun</asp:ListItem>
+                <asp:ListItem Value="2">Every week day (Mon - Fri)</asp:ListItem>
+                <asp:ListItem Value="3">Every Mon, Wed and Fri</asp:ListItem>
+                <asp:ListItem Value="4">Every Tuesday and Thursday</asp:ListItem>
                 <asp:ListItem Value="5">Every week</asp:ListItem>
-                <asp:ListItem Value="6">Every other week</asp:ListItem>
-                <asp:ListItem Value="7">Every month</asp:ListItem>
-                <asp:ListItem Value="8">Every year</asp:ListItem>
+                <asp:ListItem Value="6">Every month</asp:ListItem>
+                <asp:ListItem Value="7">Once a year</asp:ListItem>
+                <asp:ListItem Value="8">Every weekend</asp:ListItem>
+                <asp:ListItem Value="99">Custom</asp:ListItem>
             </asp:DropDownList><br />
             <asp:Label ID="Label5" runat="server" Text="Event Date" 
                 AssociatedControlID="Calendar1" EnableViewState="False"></asp:Label>

@@ -229,7 +229,7 @@
     <value>Sticky Topic</value>
   </data>
   <data name="lblViewCount" xml:space="preserve">
-    <value>Read</value>
+    <value>Views</value>
   </data>
   <data name="ttlPolicyPage" xml:space="preserve">
     <value>Forum Policy</value>
@@ -523,7 +523,7 @@
     <value>No new Posts</value>
   </data>
   <data name="lblRememberMe" xml:space="preserve">
-    <value>Remember me</value>
+    <value>Remember my settings for this computer</value>
   </data>
   <data name="lblReplyQuote" xml:space="preserve">
     <value>Reply with Quote</value>
@@ -814,7 +814,7 @@
     <value>For</value>
   </data>
   <data name="lblSearch" xml:space="preserve">
-    <value>Find</value>
+    <value>Search</value>
   </data>
   <data name="lblDay" xml:space="preserve">
     <value>Day</value>
@@ -980,5 +980,14 @@
   </data>
   <data name="lblUnsubscribeCat" xml:space="preserve">
     <value>remove category notifications</value>
+  </data>
+  <data name="lblAuthor" xml:space="preserve">
+    <value>Post Author: </value>
+  </data>
+  <data name="lblFirstPostJump" xml:space="preserve">
+    <value>Go to first message in Topic</value>
+  </data>
+  <data name="lblRepliesViews" xml:space="preserve">
+    <value>Views&lt;br/&gt;Replies</value>
   </data>
 </root>

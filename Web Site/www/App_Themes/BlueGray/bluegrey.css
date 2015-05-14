@@ -1,4 +1,5 @@
 b{font-size: 105%;}
+img { border: 0px;}
 
 fieldset{padding:5px;font-size:1.1em;border:1px solid #0FA1B8;margin:3px;}
 legend{color:#0FA1B8;}
@@ -22,7 +23,7 @@ input,textarea, select {
     border-left-width : 1px;  
 }
 input { text-indent : 2px; }
-
+.ddTopicSince { max-width: 250px;}
 a:link, a:active
 {
     color: #0FA1B8;text-decoration: none;
@@ -38,8 +39,13 @@ a:hover
     color: #006699;
 }
 
-/* links*/
 
+/* links*/
+.smallText a {color: #006699;}
+a.authorLink {
+    color: #006699;
+}
+a.lastpostlink{color: #006699;}
 a.forumlink 	{ text-decoration: none; }
 a.forumlink:visited
 {
@@ -56,7 +62,7 @@ a.active:visited {color:#FFFFFF;}
 .tableheader a{	color: #FFFFFF; font-weight : bold;text-decoration:none;}
 #contentfooterDIV .statsPanelHeader a {color:#FFF;}
 #contentfooterDIV .statsPanelHeader a:hover {text-decoration:none;background:none;}
-span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;}
+span.topicPageLnk{border:1px solid silver;padding-left:2px;padding-right:2px;border-radius: 4px;background-color: white;}
 
 .allReadButton { 
     background:url(images/buttons/book.png) no-repeat; 
@@ -76,9 +82,11 @@ img.captchaImage
 /*classes*/
 .breadcrumb{height:auto;width:auto;background-color:transparent;}
 .breadcrumb a{color:#0FA1B8;text-decoration:none;}
+span.PageTitle{ height: 100%;vertical-align: middle;}
 .PageTitle	{
 	font-weight: bold;color:White;float:left;margin-left:5px;font-size:1em;margin-top:8px;
 	text-decoration: none; line-height : 120%;
+    
 }
 
 .smallText{font-Size:0.8em;}
@@ -101,24 +109,30 @@ img.captchaImage
 }
 .row td.CatHeaderRow{background-color:#CCCCCC;border:0px;}
 .row td.ForumHeaderRow {background-color: rgb(200,200,200); color:silver;border:0px;}
-.row td.iconCol, .altrow td.iconCol {max-width:20px;width:20px; vertical-align:top;}
-.row td.buttonCol, .altrow td.buttonCol {min-width:110px;width:110px; max-width: 110px;vertical-align:top;}
-.row td.subjectCol, .altrow td.subjectCol {overflow:hidden;max-width:300px;width:300px;}
+.row td.iconCol, .altrow td.iconCol {vertical-align:top;}
+.row td.buttonCol, .altrow td.buttonCol {vertical-align:top;}
+.row td.subjectCol, .altrow td.subjectCol {overflow:hidden;}
 
 .emptyrow{text-align:center;}
 
-.category{background-color: #0FA1B8; height: 24px;background-image:url(images/cat-bar.gif)}
-tr.category {background-image:url(images/cat-bar.gif);}
+.category {
+    background-color: #0FA1B8;
+    min-height: 24px;
+    background-image: url(images/cat-bar.gif);
+    background-size: auto 100%;
+
+}
+/*tr.category {background-image:url(images/cat-bar.gif);}*/
 td.category, .row td.categorylink{background-color: #0FA1B8; height: 24px;padding-top:4px;background-image:url(images/cat-bar.gif)}
-.categorylink,th.categorylink ,td.categorylink {color:#ffffff;font-size:1.2em;font-weight:bold;}
+.categorylink,th.categorylink ,td.categorylink {color:#ffffff;font-weight:bold;}
 .CategoryExpanded{
-	background-image: url(/images/collapse_blue.png);
+	background-image: url(/images/collapse.png);
 	background-position: center;
 	background-repeat: no-repeat;
     background-color: transparent;
 }
 .CategoryCollapsed{
-	background-image: url(/images/expand_blue.png);
+	background-image: url(/images/expand.png);
 	background-position: center;
 	background-repeat: no-repeat;
     background-color: transparent;
@@ -130,8 +144,9 @@ td.category, .row td.categorylink{background-color: #0FA1B8; height: 24px;paddin
     font-size: smaller;
 }
 th.iconCol{    
-    max-width: 26px;
-    width: 26px;}
+    width: 40px;
+    text-align: left;
+}
 th.forumCol{    
     width: auto;}
 th.subjCol{    
@@ -141,17 +156,25 @@ th.authorCol{
     width: 60px;
 }
 th.countCol{    
+    text-align: center;
     max-width: 60px;
     width: 45px;}
+td.countCol{
+    text-align: center;
+    vertical-align: middle;
+}
+td.authorCol{    
+    text-align: center;
+}
 th.lastpostCol{  
     overflow: hidden; text-overflow: ellipsis;white-space: nowrap;  
     max-width: 200px;
     width: 140px;
 }
 th.buttonCol{    
-    max-width: 50px;
-    width: 48px;}
-.cattitle		{ font-weight: bold; color : #FFFFFF; }
+    max-width: 76px;
+    width: 62px;}
+.cattitle		{ font-size: 0.8em; color : #FFFFFF; }
 .FooterTable 
 {
 	padding: 5px 10px 0px 10px;
@@ -260,8 +283,8 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 .topicNext a{font-size:small;text-decoration:none;color:White;}
 
 #replyHeader{width:100%; text-align:right;margin-top:4px;margin-bottom:4px;padding-top:4px;padding-bottom:4px;}
-.TopicDiv{width:100%;border:1px solid #0FA1B8;background-color:White;color:Navy;overflow:hidden;}
-.TopicSubject{width:100%;border:1px solid #0FA1B8;background-color:#0FA1B8;color:White;overflow:hidden;}
+/*.TopicDiv{width:100%;border:1px solid #777;background-color:White;color:Navy;overflow:hidden;}*/
+.TopicSubject{width:100%;border:1px solid #777;background-color:#777;color:White;overflow:hidden;}
 .topictitle	{ margin:8px;font-weight:bold; line-height:1.3em; }
 .usertitle	{ font-weight:bold; color:#0FA1B8; line-height:1.2em; }
 .ReplyDiv{width:100%;border:1px solid #0FA1B8;background-color:#efefef;color:Teal;overflow:hidden !important;overflow:hidden;margin-top:2px;margin-bottom:2px;float:left;}
@@ -293,6 +316,8 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 .mContent{min-height:120px;height:auto !important;height:120px;width:99% !important;width:95%;padding:4px;}
 .msgIcons{padding: 1px;display:inline; vertical-align:top;width:16px;height:16px;}
 .buttonbar{color:white;height:20px;border-bottom:1px solid #999999;width:100%;background-color:#cccccc;padding-top:2px}
+.pmbuttonbar{height:20px;border-bottom:1px solid #999999;width:100%;padding-top: 2px;}
+.pmtitle{ color: #000000;}
 .buttonbarImg span{height:auto;display:inline;vertical-align:bottom;}
 .buttonbarImg{height:auto;display:inline;vertical-align:bottom;float:right;}
 .buttonbarTxt{float:left; vertical-align:text-top;}
@@ -302,7 +327,7 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 
 .editedDIV{color:#990033;font-size:0.8em;}
 .editedDIV span {}
-.sigDIV {position: absolute;bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
+.sigDIV {bottom: 0;height:auto;margin-bottom:3px;width: 100%;vertical-align:baseline;font-size:smaller;}
 .sigDIV{font-size:x-small;}
 
  
@@ -317,37 +342,47 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
       height:auto;
 }
 
-
 .avatar
 {
     border: 1px solid black;
     width:80px;
     height:80px;
 }
+.avatarsmall
+{
+    border: 1px solid black;
+    width:36px;
+    height:36px;
+    z-index: -1;
+}
+img.avatar,img.avatarsmall{opacity: 0.4;}
+img.online{opacity: 1;}
+.icon-overlay
+{
+position:relative;
+left:20px;
+top:-15px;
+z-index:10;
+}
 .usrlabel
 {
-    width:160px;
+    width:100px;display: inline-block;font-weight: bold;line-height: 1em;
 }
 
  blockquote.quoteMessage {
    font-size:smaller;
-   font-style: italic;
-   padding: 8px;
-   background-color: #f4f4f4;
-   border-top: 1px solid #efefef;
-   border-bottom: 1px solid silver;
-   margin: 5px;
-   background-image: url(images/smallquote_lt.png);
-   background-position: top left;
-   background-repeat: no-repeat;
-   text-indent: 23px;
+   /*border-top: 1px solid #efefef;*/
+   /*border-bottom: 1px solid silver;*/
+   margin:1.5em 1em;padding:.5em 1em;
+    background-color: #f4f4f4;
    }
    blockquote.quoteMessage span {
-      display: block;
-      background-image: url(images/smallquote_rt.png);
-      background-repeat: no-repeat;
-      background-position: bottom right;
+        display: block;
+        font-style: normal;
     }
+    blockquote.quoteMessage em:before { content: url(images/smallquote_lt.png);}
+    blockquote.quoteMessage span:last-child:after {content: url(images/smallquote_rt.png);display: block;float: right;}
+
  /*code window*/
 .codebox
 {
@@ -360,8 +395,8 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
     line-height: 1em;
     font: 0.8em Monospace;
     color: black;
-    overflow: hidden;
-    width: 80% !important;
+    overflow: auto;
+    width: 90% !important;
     min-height: 100px;
     min-width: 200px;
     max-height: 250px;
@@ -392,7 +427,7 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 	display: block;
 	margin: 0px;
 	color: black;
-	overflow: auto;
+	
 	min-width:500px;
     width:auto !important;
 	width: 700px;
@@ -403,7 +438,6 @@ tr.rowsticky{border-bottom:1px solid #0FA1B8;}
 .scrollcode ol
 {
     background: #E4E4E4 url(images/gutter.gif) repeat-y 2.3em 0;
-    overflow: auto;
     margin: 0;
     padding: 0.7em 0 0.7em 2.8em;
     color: #fff;
@@ -548,7 +582,7 @@ span.moderation{font-weight:bolder; color:Red;}
 .PollBox
 {
     background-color: white;
-	border: 1px solid #0FA1B8;
+	/*border: 1px solid #0FA1B8;*/
 }
 .seperator{line-height: 0.4em;}
 .sideBox {
@@ -588,6 +622,8 @@ table.smallCal { table-layout:auto;}
      .pmoptions fieldset{ font-size: smaller;}
      .pm-footer{ margin-top: 2px;height:22px;background-color:silver;vertical-align: middle;padding:2px;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px}
      .pm-message-header{background-color:silver;padding:3px;}
+     .hidden{ display: none !important;}
+     .memberModalPopup{margin:0 auto;width: 360px;}
 
 .ovHidden{overflow:hidden;}
  .shadow {
@@ -685,7 +721,7 @@ a.Snitzbutton:hover span{
 .snitzMenu ul.AspNet-Menu li a:hover,
 .snitzMenu ul.AspNet-Menu li span.Asp-Menu-Hover
 {
-    color: White;
+    color: dimgray;
     background: transparent url(images/menu-expand.gif) right center no-repeat;
 }
 .snitzMenu ul.AspNet-Menu li.AspNet-Menu-Leaf a:hover
@@ -770,5 +806,6 @@ a.Snitzbutton:hover span{
 .popup-button-panel {
     margin: 5px;
 }
+.selected{ background-color: #006699;}
 .clearfix:after {content: ".";display: block;height: 0px;clear: both;visibility: hidden;}
 #__asptrace{position:relative;}

@@ -11,7 +11,7 @@ namespace ModConfig
 {
     public class EventsConfig : ModConfigBase, ISnitzModConfig
     {
-        
+        public static bool EventShowHolidays { get; set; }
         public static string[] EventAdminRoles { get; set; }
 
         public bool ShowOnMenu { get { return true; } }
@@ -23,7 +23,7 @@ namespace ModConfig
                 string menuNode = String.Format("<siteMapNode url=\"{0}\" title=\"Events\" description=\"Events\"/>",@"~\Events");
                 return new ModMenuItem()
                        {
-                           InsertAfter = "Active",
+                           InsertAfter = "Topics",
                            MenuXml = menuNode
                        };
             }
@@ -34,6 +34,7 @@ namespace ModConfig
             string allowedRoles = ModConfiguration.Settings["EventAdminRoles"] != null ? ModConfiguration.Settings["EventAdminRoles"].ToString() : String.Empty;
             EventAdminRoles = Regex.Split(allowedRoles, ",", RegexOptions.Singleline);
             ModConfiguration.AdminControl = "EventsAdmin.ascx";
+            EventShowHolidays = ModConfiguration.Settings["EventShowHolidays"] == null || ModConfiguration.Settings["EventShowHolidays"].ToString() == "1";
         }
 
         protected override ModInfo LoadDefaultConfig(ModController controller)
@@ -43,6 +44,9 @@ namespace ModConfig
                                                       {
                                                           "EventAdminRoles",
                                                           "Administrator,Moderator"
+                                                      },
+                                                      {
+                                                          "EventShowHolidays","1"
                                                       }
                                                   };
             ModInfo modinfo = new ModInfo

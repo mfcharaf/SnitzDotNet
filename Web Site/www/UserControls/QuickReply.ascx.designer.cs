@@ -48,6 +48,24 @@ public partial class QuickReply {
     protected global::System.Web.UI.WebControls.Label Label1;
     
     /// <summary>
+    /// QRR control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel QRR;
+    
+    /// <summary>
+    /// qrMessage control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox qrMessage;
+    
+    /// <summary>
     /// QRL control.
     /// </summary>
     /// <remarks>
@@ -73,24 +91,6 @@ public partial class QuickReply {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.CheckBox cbxSig;
-    
-    /// <summary>
-    /// QRR control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel QRR;
-    
-    /// <summary>
-    /// qrMessage control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox qrMessage;
     
     /// <summary>
     /// QRF control.

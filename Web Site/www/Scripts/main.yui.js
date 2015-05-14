@@ -41,7 +41,8 @@ mainScreen.CancelModal = function () {
 };
 mainScreen.LoadServerControlHtml = function (a, b, c) {
     mainScreen.ShowModal(a, mainScreen.activityImgObj ? "<center><img src='" + mainScreen.activityImgObj.src + "' /></center>" : "");
-    mainScreen.ExecuteCommand("GetWizardPage", c, b)
+
+    mainScreen.ExecuteCommand("GetWizardPage", c, b);
 };
 mainScreen.ExecuteCommand = function (a, b, c) {
 

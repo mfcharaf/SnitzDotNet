@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Security;
 using Snitz.BLL;
 using Snitz.Entities;
+using Snitz.IDAL;
 using Snitz.Providers;
 using SnitzConfig;
 
@@ -116,13 +117,18 @@ namespace SnitzUI.Setup
                     AddDefaultData();
                     break;
                 case "upgrade":
-                    dbsUpgrade.Process();
+                    var restext = dbsUpgrade.Process();
+                    if(restext != "success")
+                        UpdateProgress(5, restext + "<br/>");
                     StoredProcedures();
+                    AddRankings();
                     AddRoles();
                     UpdateUserRoles();
                     UpdateForumAllowedRoles();
                     UpdateMembersTable();
                     UpdateMembersRole();
+                    TransferAvatars();
+                    
                     break;
                 case "upgradeadmin":
 
@@ -135,6 +141,26 @@ namespace SnitzUI.Setup
 
             Config.UpdateConfig("RunSetup", "false");
 
+        }
+
+        private void TransferAvatars()
+        {
+            StringBuilder sql = new StringBuilder();
+            ISetup dal = Factory<ISetup>.Create("SnitzSetup");
+            if (dal.TableExists("FORUM_AVATAR"))
+            {
+                sql.AppendLine("UPDATE");
+                sql.AppendLine("    FORUM_MEMBERS");
+                sql.AppendLine("SET");
+                sql.AppendLine("    FORUM_MEMBERS.M_AVATAR = REPLACE(RAN.A_URL,'avatars/','')");
+                sql.AppendLine("FROM");
+                sql.AppendLine("    FORUM_MEMBERS SI");
+                sql.AppendLine("INNER JOIN");
+                sql.AppendLine("    FORUM_AVATAR RAN");
+                sql.AppendLine("ON ");
+                sql.AppendLine("    SI.MEMBER_ID = RAN.A_MEMBER_ID");
+            }
+            
         }
 
         #region Creating
@@ -215,6 +241,23 @@ namespace SnitzUI.Setup
 
         #region Upgrading
 
+        private void AddRankings()
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("SET IDENTITY_INSERT FORUM_RANKING ON;");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (0,'Administrator','icon_star_gold.gif',0,5)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (1,'Moderator','icon_star_bronze.gif',0,5)");
+
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (2,'Starting Member','',0,0)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (3,'New Member','icon_star_orange.gif',50,1)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (4,'Junior Member','icon_star_cyan.gif',100,2)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (5,'Average Member','icon_star_blue.gif',500,3)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (6,'Senior Member','icon_star_purple.gif',1000,4)");
+            sql.AppendLine("INSERT INTO FORUM_RANKING (RANK_ID,R_TITLE,R_IMAGE,R_POSTS,R_IMG_REPEAT) VALUES (7,'Advanced Member','icon_star_silver.gif',2000,5)");
+            sql.AppendLine("SET IDENTITY_INSERT FORUM_RANKING OFF;");
+            Snitz.BLL.Admin.ExecuteScript(sql.ToString());
+            UpdateProgress(0, "Ranking Table populated<br/>");
+        }
         private void UpgradeDatabase()
         {
             //Needs an upgrade
@@ -263,7 +306,7 @@ namespace SnitzUI.Setup
 
         private void UpdateMembersTable()
         {
-            Snitz.BLL.Admin.ExecuteScript("UPDATE FORUM_MEMBERS SET M_VALID=1 WHERE M_STATUS=1");
+            Snitz.BLL.Admin.ExecuteScript("UPDATE FORUM_MEMBERS SET M_VALID=1");
             UpdateProgress(0,"Members Table Updated</br>");
             Thread.Sleep(500);
         }
@@ -304,7 +347,8 @@ namespace SnitzUI.Setup
                     case 4: //## members
                     case 5:
                     case 7:
-                        string role = SnitzMembership.Helpers.BusinessUtil.GetRoleFull(1).LoweredRolename;
+                        RoleInfo rInfo = SnitzMembership.Helpers.BusinessUtil.GetRoleFull(1);
+                        string role = rInfo.RoleName.ToLower();
                         SnitzMembership.Helpers.BusinessUtil.AddRolesToForum(forumid, new[] { role });
                         break;
                     case 1: //## Allowed Users
@@ -328,7 +372,7 @@ namespace SnitzUI.Setup
 
         private void UpdateMembersRole()
         {
-            const string update = "INSERT INTO aspnet_UsersInRoles (UserId,RoleId) SELECT MEMBER_ID, 1 FROM FORUM_MEMBERS WHERE M_LEVEL = 1 AND M_STATUS = 1";
+            const string update = "INSERT INTO snitz_UsersInRoles (UserId,RoleId) SELECT MEMBER_ID, 1 FROM FORUM_MEMBERS WHERE M_LEVEL = 1 AND M_STATUS = 1";
             Snitz.BLL.Admin.ExecuteScript(update);
             UpdateProgress(0,"Members Role Updated</br>");
             Thread.Sleep(500);
@@ -338,7 +382,8 @@ namespace SnitzUI.Setup
         protected void UpdateProgress(double PercentComplete, string Message)
         {
             // Write out the parent script callback.
-            Response.Write(String.Format("<script type=\"text/javascript\">parent.UpdateProgress({0}, '{1}');</script>", PercentComplete, Message + "</br>"));
+            Message = Message.Replace(Environment.NewLine, " ");
+            Response.Write(String.Format("<script type=\"text/javascript\">parent.UpdateProgress({0}, '{1}');</script>", PercentComplete, Message.Replace("'",@"\'")));
             // To be sure the response isn't buffered on the server.    
             Response.Flush();
         }

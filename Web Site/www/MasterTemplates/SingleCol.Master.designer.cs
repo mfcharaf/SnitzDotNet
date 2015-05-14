@@ -49,15 +49,6 @@ namespace SnitzUI.MasterTemplates {
         protected global::System.Web.UI.WebControls.Literal jqUi;
         
         /// <summary>
-        /// CPhead control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder CPhead;
-        
-        /// <summary>
         /// rtlCss control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,15 @@ namespace SnitzUI.MasterTemplates {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal rtlCss;
+        
+        /// <summary>
+        /// CPhead control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder CPhead;
         
         /// <summary>
         /// form1 control.
@@ -202,6 +202,69 @@ namespace SnitzUI.MasterTemplates {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder CPF1;
         
         /// <summary>
+        /// RightCol control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder RightCol;
+        
+        /// <summary>
+        /// CPPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel CPPanel;
+        
+        /// <summary>
+        /// CPMPD control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel CPMPD;
+        
+        /// <summary>
+        /// CPclB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton CPclB;
+        
+        /// <summary>
+        /// recoverpass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SnitzUI.UserControls.Popups.PasswordRetrieve recoverpass;
+        
+        /// <summary>
+        /// cpModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender cpModal;
+        
+        /// <summary>
+        /// CPHid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CPHid;
+        
+        /// <summary>
         /// lblFooterTitle control.
         /// </summary>
         /// <remarks>
@@ -281,68 +344,5 @@ namespace SnitzUI.MasterTemplates {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image validCSS;
-        
-        /// <summary>
-        /// RightCol control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder RightCol;
-        
-        /// <summary>
-        /// CPPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel CPPanel;
-        
-        /// <summary>
-        /// CPMPD control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel CPMPD;
-        
-        /// <summary>
-        /// CPclB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton CPclB;
-        
-        /// <summary>
-        /// recoverpass control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::SnitzUI.UserControls.Popups.PasswordRetrieve recoverpass;
-        
-        /// <summary>
-        /// cpModal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender cpModal;
-        
-        /// <summary>
-        /// CPHid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CPHid;
     }
 }

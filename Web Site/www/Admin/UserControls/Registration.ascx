@@ -41,7 +41,7 @@
             <asp:Label ID="Label5" runat="server" Text="Minimum LowerCase Characters" AssociatedControlID="txtMinLower"></asp:Label><asp:TextBox ID="txtMinLower" runat="server" Text=""></asp:TextBox><br/>
         </asp:Panel>
             <asp:Panel ID="pnlReg" runat="server" CssClass="regform" GroupingText="Member settings">
-                <p>If you have set a minimum age, the data of birth field will be automatically chosen and set to required.</p>
+                <p>If you have set a minimum age, the date of birth field will be automatically chosen and set to required.</p>
                 <asp:PlaceHolder runat="server" ID="mRegControls"></asp:PlaceHolder>
             </asp:Panel>
             <br/>
